@@ -20,6 +20,5 @@
 ## 上游
 
 本项目使用独立仓库与独立提交历史。
-[上游安装指南](https://github.com/Nejuf/magnacarta-installguide/blob/0e998f6ab759a6c12c21d07e90c52d188a9b727c/InstallGuideForMagnaCartaThePhantomOfAvalanche.md) 仅供历史参考，不随源码复制，不代表本项目安装方案或现代 Windows 验收。
 英文汉化工具参考来自 [Nejuf/magnacarta](https://github.com/Nejuf/magnacarta)，署名 Talbain（Lakuuna）、Sobodash、Nejuf。来源版本与验证范围见运行调查。
 原始游戏与商业资源归原权利人所有，不发布完整原版游戏文件。

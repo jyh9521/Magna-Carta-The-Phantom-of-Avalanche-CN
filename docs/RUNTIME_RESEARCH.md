@@ -7,20 +7,17 @@
 
 | 来源 | 固定版本 | 阅读范围 |
 |---|---|---|
-| Nejuf/magnacarta-installguide | `0e998f6ab759a6c12c21d07e90c52d188a9b727c` | README、安装指南、GitHub 元数据与文件树 |
 | Nejuf/magnacarta | `9ce77cace0d717f5ad75bb2910517802e55932c8` | README、LICENSE、文件树；本轮未完整审计转换脚本 |
 | narzoul/DDrawCompat | `2c9a07fdf9308e2b0b117886a7e363b149ee1bc7` | README、官方配置 Wiki |
 | FunkyFr3sh/cnc-ddraw | `279a057ee7e1e4d584b56141c014ab01f3c6ee6d` | README、仓库许可证元数据 |
 
-初步调查使用的旧中文仓库 fork 自 `Nejuf/magnacarta-installguide`，不是工具仓库 `Nejuf/magnacarta`。2026-10-12 同名远端重建为独立仓库，新历史不继承安装指南；旧历史仅作本地归档。上述指南 commit 已在原上游核对。
+2026-10-12 中文项目建立独立仓库与独立提交历史。英文汉化项目 `Nejuf/magnacarta` 作为技术参考，不整体导入其资源。
 主机注册表报告 build `26300.9550`、DisplayVersion `26H2`，ProductName 仍为 Windows 10 Home；标签存在歧义，不据此声称 Windows 10/11 双平台验收。
 初步调查时源码/工具目录只有占位文件；随后新增文档检查脚本。三个候选安装目录检查均不存在，不代表已扫描整个硬盘。
 
 ## 游戏运行依赖
 
-固定版本安装指南仍要求运行时挂载 MC_PLAY，因此这份指南没有证明无盘运行。MCV104a.exe 的来源、是否官方、内部修改和保护行为均待样本核实；英文工具仓库也没有提供游戏启动 EXE 的运行证据。
-
-指南包含 Direct3D 选择、Drv 恢复及存档位于安装目录的说明。这些属于上游运行记录，提示优先调查驱动差异和写入权限，不属于本项目 Windows 10/11 复现结果。
+原版启动程序、MC_PLAY 文件清单及更新包尚未提供。光盘依赖、存档路径、更新版本、驱动差异和写入权限均待样本核实；英文工具仓库没有提供足以验证本项目无盘运行的证据。
 `Drv_unpatched/AsrD3DDrv.dll` 和 `AsrGlDrv.dll` 的存在给出 Direct3D / OpenGL 驱动线索，但具体 API 版本与实际加载分支待 PE 和运行日志确认。
 
 | 问题 | 当前判断 | 所需证据 |
@@ -45,7 +42,7 @@
 DDrawCompat 官方明确不支持与其他 wrappers/hooks 组合。本项目也统一采用单兼容层隔离测试。
 SDL3 Gamepad 是输入候选，其设备管理能力不意味着已接入本游戏；具体 SDL 版本、许可和映射数据许可在选型时另锁定。
 
-无边框阶段性结论：可以设计单兼容层试验，但目前没有运行游戏的验证。安装指南未给出足以确认原始比例、内部分辨率、计时或输入 API 的证据。
+无边框阶段性结论：可以设计单兼容层试验，但目前没有运行游戏的验证。原始比例、内部分辨率、计时和输入 API 均待原版样本确认。
 
 ## 测试输入需求
 
@@ -57,7 +54,6 @@ SDL3 Gamepad 是输入候选，其设备管理能力不意味着已接入本游�
 
 ## 官方及项目来源
 
-- [固定版安装指南](https://github.com/Nejuf/magnacarta-installguide/blob/0e998f6ab759a6c12c21d07e90c52d188a9b727c/InstallGuideForMagnaCartaThePhantomOfAvalanche.md)
 - [英文工具及署名](https://github.com/Nejuf/magnacarta/tree/9ce77cace0d717f5ad75bb2910517802e55932c8)；LICENSE 为 BSD-2-Clause，署名 Derrick Sobodash（2003, 2012）；不把该许可证自动套用于商业游戏 DLL。
 - [DDrawCompat 固定版](https://github.com/narzoul/DDrawCompat/tree/2c9a07fdf9308e2b0b117886a7e363b149ee1bc7) / [官方配置 Wiki](https://github.com/narzoul/DDrawCompat/wiki/Configuration)，Wiki 为 2026-10-12 查阅的动态页面。
 - [cnc-ddraw 固定版](https://github.com/FunkyFr3sh/cnc-ddraw/tree/279a057ee7e1e4d584b56141c014ab01f3c6ee6d)

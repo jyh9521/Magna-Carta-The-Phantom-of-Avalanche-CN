@@ -122,6 +122,3 @@ decompiled/
 # Keep intentionally tracked placeholders if used
 !.gitkeep
 
-# Local historical upstream references
-/InstallGuideForMagnaCartaThePhantomOfAvalanche.md
-/guide_assets/
