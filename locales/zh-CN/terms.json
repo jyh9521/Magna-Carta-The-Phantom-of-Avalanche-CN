@@ -4212,6 +4212,77 @@
       ],
       "evidence_level": "source_context_reviewed_relationship_not_confirmed",
       "wording_decision": "韩文称呼音译；人物称号/本名分别记录，不推定参考作品同名人物"
+    },
+    {
+      "id": "concept-0112",
+      "source": "론웰 동굴",
+      "target": "隆韦尔洞窟",
+      "english_reference": null,
+      "category": "地点",
+      "status": "待复核",
+      "translation_state": "approved",
+      "meaning": "0239任务 briefing直接称洞窟；沿用隆韦尔词面，但与地图隆韦尔地下城条目分开，未按名称相似合并场景ID。",
+      "relation": "pending",
+      "reference_candidates": [],
+      "resource_ids": [
+        "Fpb/0239.fpb:text:0:0"
+      ],
+      "evidence_level": "source_context_reviewed_relationship_not_confirmed",
+      "wording_decision": "韩文地点称呼与上下文审查；中文词面已定，跨作品及内部场景身份未自动确认"
+    },
+    {
+      "id": "concept-0113",
+      "source": "루미네스",
+      "target": "卢米内斯",
+      "english_reference": null,
+      "category": "地点",
+      "status": "待复核",
+      "translation_state": "approved",
+      "meaning": "0250南部席哈拉森林所在地区名称；采用韩文音译，未额外推定国家/行政级别或跨作品同地。",
+      "relation": "pending",
+      "reference_candidates": [],
+      "resource_ids": [
+        "Fpb/0250.fpb:text:0:0"
+      ],
+      "evidence_level": "source_context_reviewed_relationship_not_confirmed",
+      "wording_decision": "韩文地点称呼与上下文审查；中文词面已定，跨作品及内部场景身份未自动确认"
+    },
+    {
+      "id": "concept-0114",
+      "source": "시하라 숲",
+      "target": "席哈拉森林",
+      "english_reference": null,
+      "category": "地点",
+      "status": "待复核",
+      "translation_state": "approved",
+      "meaning": "0250带空格的完整森林名称；本作用词与地图无空格形一致，保留独立源形及来源ID，不自动合并资源。",
+      "relation": "pending",
+      "reference_candidates": [],
+      "resource_ids": [
+        "Fpb/0250.fpb:text:0:0",
+        "Fpb/0251.fpb:text:3:3"
+      ],
+      "evidence_level": "source_context_reviewed_relationship_not_confirmed",
+      "wording_decision": "韩文地点称呼与上下文审查；中文词面已定，跨作品及内部场景身份未自动确认"
+    },
+    {
+      "id": "concept-0115",
+      "source": "클라이브",
+      "target": "克莱夫",
+      "english_reference": null,
+      "category": "人物",
+      "status": "待复核",
+      "translation_state": "approved",
+      "meaning": "0261称毁灭祖国的人；0544提及其对母亲祖国的行为；CHA另有同名记录，显示与内部对象身份仍分开审查，不擅自改写角色ID。",
+      "relation": "pending",
+      "reference_candidates": [],
+      "resource_ids": [
+        "CharData/0000.cha:name:90:93",
+        "Fpb/0261.fpb:text:7:7",
+        "Fpb/0544.fpb:text:16:16"
+      ],
+      "evidence_level": "source_context_reviewed_relationship_not_confirmed",
+      "wording_decision": "韩文人物名音译；词面已定，不推定系列同人或额外官职"
     }
   ]
 }

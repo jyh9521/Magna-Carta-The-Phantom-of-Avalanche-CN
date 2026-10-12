@@ -79,5 +79,14 @@ class TermGlossaryTests(unittest.TestCase):
         self.assertEqual(m.conflicts('아이젠','艾森','Fpb/0230.fpb:text:19:19',data['terms']),[])
         self.assertEqual(m.conflicts('아이젠','乔克','Fpb/0230.fpb:text:19:19',data['terms'])[0]['expected'],'艾森')
 
+    def test_location_forms_do_not_merge_cave_and_dungeon_ids(self):
+        data=json.loads((ROOT/'locales/zh-CN/terms.json').read_text('utf8'))
+        cave=next(t for t in data['terms'] if t['source']=='론웰 동굴')
+        dungeon=next(t for t in data['terms'] if t['source']=='론웰던젼')
+        self.assertNotEqual(cave['id'],dungeon['id'])
+        self.assertEqual(cave['target'],'隆韦尔洞窟')
+        self.assertEqual(dungeon['target'],'隆韦尔地下城')
+        self.assertEqual(m.conflicts('루미네스의 시하라 숲','卢米内斯的席哈拉森林','Fpb/0250.fpb:text:0:0',data['terms']),[])
+
 
 if __name__=='__main__':unittest.main()

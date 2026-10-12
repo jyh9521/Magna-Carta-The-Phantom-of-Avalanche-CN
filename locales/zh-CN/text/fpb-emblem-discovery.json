@@ -1,0 +1,950 @@
+[
+  {
+    "id": "Fpb/0251.fpb:text:0:0",
+    "source_sha256": "3521638b034bfb6920f8e21f98c42bdbb03e2fe085351b27a8c48f7bb04da082",
+    "target": "令人怀念的地方，是吧，萝洁？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:1:1",
+    "source_sha256": "d716c1fe73d2aeebe89a09317bac4f775dcd0dd6585c7a84076a00d85553d9aa",
+    "target": "……哼。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:2:2",
+    "source_sha256": "1e29312aeeed6f3ccd797b911bbc9c6c64e90f8ef6ef7c3f914ed511fdc9ff2b",
+    "target": "什么意思？你认识这里？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:3:3",
+    "source_sha256": "45452cadb264fd9a8c681e966e5392a28ebe207620278c77af3328cb54bb74f5",
+    "target": "以前经常在席哈拉森林玩。我、费尔南、萝洁……小时候总在一起，我们年纪相近。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:4:4",
+    "source_sha256": "b67e8067dbed0ee034efb612c056a294bbfa2e25930a81f697a3fd4a84a2eac9",
+    "target": "你也是贝尔米利昂的人？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:5:5",
+    "source_sha256": "2f6aa6089bbf3aaa225f18d846c10e0695717b63f734913586c079f35231d795",
+    "target": "准确地说，是我父亲。可我小时候，他退出了贝尔米利昂，因此有一段时间，我们被追得很惨。因为离开贝尔米利昂的人，必须以死亡偿还。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:6:6",
+    "source_sha256": "70e002d8a3af9efa8a1ffdf174f5f1a5286ea5c04beb25a8b0ae3bb7ef059333",
+    "target": "看来顺利逃走了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:7:7",
+    "source_sha256": "0acb80cff0022fce5618fbaf1dfdfad5391acec6dac582cca06313e14f7e1eb8",
+    "target": "确实逃出去了……可父亲似乎死在温贝特手里。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:8:8",
+    "source_sha256": "4886eb5fc2e6fa70c8bb0a6da6747d9d60c722ed65fcee7ccf6d98b82533b208",
+    "target": "温贝特……！？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:9:9",
+    "source_sha256": "6f07c7b181e141824cd6195cdaf51e73cfa1a9d6b1de0c2bc502b9e0e974aa31",
+    "target": "他是实际掌控贝尔米利昂的隐藏首领。原本的首领是费尔南的父亲，而在那个人之外，隐藏着的首领就是温贝特。我父亲在贝尔米利昂，也有个叫雅德的绰号……父亲似乎对贝尔米利昂残酷的恐怖袭击，产生了许多怀疑。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:10:10",
+    "source_sha256": "f5c5b64850f1e405b59c6689af0d5c390f8c68830e5dc17d8a09731b44cf9b73",
+    "target": "于是背叛、逃走了。明明是克罗伊斯王族的尊贵王子……却对重建克罗伊斯置之不理。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:11:11",
+    "source_sha256": "6428c1f2cab8ea7c69f3c8ca500555489a1d14a93d90492d3b7d7b95c8d7fb5f",
+    "target": "说话小心。你对我父亲，又知道些什么？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:12:12",
+    "source_sha256": "48d892e2362e582d60e82088c65a301cb691deef9f93c1b69f0135e45c5e8e5c",
+    "target": "温贝特很失望。他梦想着与雅德联手，重建克罗伊斯，结果却彻底遭到背叛。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:13:13",
+    "source_sha256": "f4f01caaf014872a6962d490c648c1fada92f9ec4f50e90b54b7c78ea6ac54da",
+    "target": "像杀牲口一样杀害无辜的人，就能重建克罗伊斯？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:14:14",
+    "source_sha256": "50b49a5073ad37bd56c446edf6b43b05f650696dd58c1af89864f96b8761954c",
+    "target": "不付出牺牲，能做成什么？还厚着脸皮，想白白得到一切？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:15:15",
+    "source_sha256": "eebd9c2ca8cc1e26dc228c96dede01dcb155c9576380fe75edd6623aa1f7d90e",
+    "target": "那把正常的人变成怪物，就是对的？你们贝尔米利昂，总是只用重建克罗伊斯这一个理由，把所有行为都合理化。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:16:16",
+    "source_sha256": "2ad9ce7a5a56d95070d8258716aa23f5d93fb5d1e550a7df95e0188f9113f4e7",
+    "target": "够了，你们两个，现在在执行任务。尤其是萝洁，别再刺激乔克，这是命令。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:17:17",
+    "source_sha256": "c7151d2031f6c255afb7175902db3e5df1064905893baf7b4341a718add3a47e",
+    "target": "呃……知、知道了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:18:18",
+    "source_sha256": "5dad140c732ff268c50a4d21a26d262e1cbebf7f1b3fc4d5e1b733220d5cd139",
+    "target": "一收到命令，就动不了了啊，自尊心女王。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:19:19",
+    "source_sha256": "04e3da7bc8a4c60c71e612139e6e7dd5745cfca1c73994366df8062625cd8f8d",
+    "target": "……闭嘴。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:20:20",
+    "source_sha256": "a6057537bbb891e338c7c4c3440a4e0eaa099c686ec8ad05b47d1636e28d6544",
+    "target": "不过，听起来，乔克就是克罗伊斯王族的后人吧。没想到，克罗伊斯王族竟还有血脉留下。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:21:21",
+    "source_sha256": "b104764da33f838fe5af9e850fdcd785aea02b0fe9f163c6cc9206cca553d52e",
+    "target": "已经是过去的事了。我对重建克罗伊斯毫无兴趣。唯独无法忍受的，是温贝特杀死了父亲。只有那家伙，我绝不能原谅。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:22:22",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0251.fpb:text:23:23",
+    "source_sha256": "14b31d481c721699ce2d8ad71abdcf1659032acc3f61efc86ba2d591655b5e0e",
+    "target": "温贝特……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:0:0",
+    "source_sha256": "77470b5c1712b6d3741f07708cf8ec9b4b90d3692b7e8a048306b01a36ce5d9c",
+    "target": "你好。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:1:1",
+    "source_sha256": "fb23a6a2b4ff505598038c4d43a92726189e38029edd469567475b6f997180f0",
+    "target": "咦，是阿多拉啊。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:2:2",
+    "source_sha256": "0b9e8501cd90ad7841071b7e87464927cda49dc99a281de9109b88d2ed1dfb0e",
+    "target": "就是上次那位姑娘吧？罗普玛说，你是组长的情人？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:3:3",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:4:4",
+    "source_sha256": "34afb237d52c4a889410e04c990b40eea8bb337d2eaa84b3799d952043e7c534",
+    "target": "哎呀，卡林兹，连那种话都说了吗？哎，我还没想过那一步呢，太害羞了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:5:5",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:6:6",
+    "source_sha256": "a0263ddccb47395dd3b8bfc790d743ae6784a138a89f18446ad6433f8674740c",
+    "target": "什、什么啊？这姑娘真让人起鸡皮疙瘩……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:7:7",
+    "source_sha256": "ce46f7b2b0c3dbbecacb32549971ccf8e45a54dec7519c2c2082f6838ef73616",
+    "target": "别在意，她向来这样。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:8:8",
+    "source_sha256": "5a6e98f8bfedca87968e222d8c55dee6a9eb4132d5e3bcc914ae866f5fa6149c",
+    "target": "执行任务还约会……真有本事。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:9:9",
+    "source_sha256": "9a88cc3e3e540fc390d3af0a2227765b6dd2190c8f1999185d2d574a0ec369f5",
+    "target": "……不过，今天更接近真正的模样。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:10:10",
+    "source_sha256": "9bcedcd3c31e6211e8e535a40ee43d6a845b48c7e0b31cdd75b72860da523509",
+    "target": "嗯？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:11:11",
+    "source_sha256": "001ff5ae7bef532333b35bfaebfbfb1aad3668d65edaf47a99f37eb8d1379695",
+    "target": "可……仍然不是真的。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:12:12",
+    "source_sha256": "de2fd94c865b197f5b3a177969cdc6bf18aca2a5c1ce02806d3e47c5302604ed",
+    "target": "……？？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:13:13",
+    "source_sha256": "e7bf5f37164c87f2b11f4505aa64a39e5bbb83912af9b6c25079b49f60483864",
+    "target": "进去吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:14:14",
+    "source_sha256": "58983457a36e8fe13049fedb317832208883ec219201cb388143918a6f975558",
+    "target": "你到底在说什么？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0252.fpb:text:15:15",
+    "source_sha256": "acaaa7b09407e71957078557f2687cca31a06e33304dc8b1356463d759be4f88",
+    "target": "……我也不太明白。不过……有别的样子重叠在一起。在那两个人身上……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:0:0",
+    "source_sha256": "e89d860e52c6fee878291edd1aa376327dc9f352aae798ed5aab2c762686f6e9",
+    "target": "这是什么？会不会是古代人的希安？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:1:1",
+    "source_sha256": "2d6b46cc3d808c5b24b21482f787773f78ebb42a53968eb0f445dc5ea631399b",
+    "target": "也许吧。看起来是挺古老的东西，虽然不像有什么了不起的。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:2:2",
+    "source_sha256": "5df516806727ff38e47fbda4724bf3f9f1959a4e31af9f498c0fcd2cb962a280",
+    "target": "胡说什么，上面还镶着像样的宝石，卖掉肯定值钱……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:3:3",
+    "source_sha256": "3f3466d1c9adae274ccfa41d918d64729965435792117e03320ff8e48c948f69",
+    "target": "那家伙，什么都只想到钱。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:4:4",
+    "source_sha256": "b2637c322a2603ad6d3e209722edb19105b1517aa4cbbef9795da260b285bec3",
+    "target": "那又怎样？我一天挣的钱，连当天吃饭都难。你懂这种处境吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:5:5",
+    "source_sha256": "3a58f8bb55dede843ddf58e8f0b793655244672afd09793c4d8bf081894f9116",
+    "target": "成为养女之前，我也过得很苦。别说得只有你一个人吃过苦。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:6:6",
+    "source_sha256": "6f1555b96bb14c02abba86cff581bdf457c8f165dcf005161333bedb49914828",
+    "target": "他们两个总是吵架。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:7:7",
+    "source_sha256": "0a6459d0d1a08409eb9a63e941d09bc04096ae2e4b724da27034ff56d0d927de",
+    "target": "要是赌一赌谁更穷，倒挺有看头。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:8:8",
+    "source_sha256": "75985d6a30c76aaf7c01f7e6d750e0e96f6cbab12bf8df74eb62009738c3d79e",
+    "target": "尽是些不像样的家伙。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:9:9",
+    "source_sha256": "f09a10e0df8b74506cc7ac58f75035197c86b4d9d1b13afa49bb91fb1eac026a",
+    "target": "小时候吃过一点苦，又能懂什么……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:10:10",
+    "source_sha256": "86b91c4edde392fd46f368cf12fb394a6f16f1f83f95ccffafc13b559181af16",
+    "target": "穷有什么可炫耀的？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:11:11",
+    "source_sha256": "f0fc3415dae147a6cc34c62b80e4e626f413f49c39f9d7a26e25f9987f71a360",
+    "target": "真是的，一直让着你，你倒……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:12:12",
+    "source_sha256": "1ad05e660d3e07c4fc30adc8a913ce7dd14d3f25664b1767d00049505d8df8ac",
+    "target": "闭嘴，你这个丑南瓜！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:13:13",
+    "source_sha256": "ce7e17a2204b0beea1751408de079a5c91ab9ad2f0f885e8f91fb2d4aeb5db09",
+    "target": "……什、什么？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:14:14",
+    "source_sha256": "902b6b976a810c297ae99764aeedaf91bac5c0d2bb45c6dcde431124108191b6",
+    "target": "什么……！？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:15:15",
+    "source_sha256": "ef015859e9f96fa3cac14f25df9a9efaa40f89e8918bcd09b9284e87210f2515",
+    "target": "！？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:16:16",
+    "source_sha256": "3c08116ab39cda472e3f1d7e18579e78ee13501c2f4859c2cf4dc35389ef4651",
+    "target": "怎、怎么回事？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:17:17",
+    "source_sha256": "027b5910f7663dd7c760938dde8c0f91f2a52572df945d574634759344d7401a",
+    "target": "哇，真的变成南瓜了。这是魔法？真神奇！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:18:18",
+    "source_sha256": "c15234770b9340d0b4be037f5429320ccca474ccc1d962563b05a0ff06dbea59",
+    "target": "喂，你刚才做了什么！？别闹了，快变回原样！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:19:19",
+    "source_sha256": "187cdc1be7f1c1c42151547bfd3a464328b0cbb12060abee2ecde2c26faa2f3a",
+    "target": "要我怎么做？我刚才根本没用魔法。为什么会这样，我也不知道。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:20:20",
+    "source_sha256": "93cd59e1eb965da99661b0b40a7280f2da398891af9a06c17a5ca4bacf7df967",
+    "target": "少胡说，你用了奇怪的魔法吧。还不快解开？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:21:21",
+    "source_sha256": "3a73c5004956960cd9fb904bfb1eab1c4052edde41fed898ebdb48c45f6a3509",
+    "target": "可我真的……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:22:22",
+    "source_sha256": "27df76cb7fd26c4d6b27022b76da62cf529c201e0c7456ae22209faf1fe531b7",
+    "target": "把那只手镯打碎……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:23:23",
+    "source_sha256": "3463298a20c97609b828ed8eafdaa8059b0441049fbde106144525a289c67b8b",
+    "target": "咦？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:24:24",
+    "source_sha256": "1070e2f2d43ba2f80d83d17be106ee0c5f532f91b7f501f84b22bce204eb542e",
+    "target": "……这是希安的力量。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:25:25",
+    "source_sha256": "c8a144ceb8ea6acdfb3a60682f2daa24937a6a6df07ff23e1370d73c3d45f467",
+    "target": "呼啊，还以为要死了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:26:26",
+    "source_sha256": "460671f6bd2fc943bce9eeb4657686639a2bd87b9a9dcfd91d42a0e4e8ec7347",
+    "target": "呼，太好了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:27:27",
+    "source_sha256": "f4cbb71237d6cf29ef5ecad53d4b4905eb40152a2af70dc6b1b36226c3b01a33",
+    "target": "你这家伙，敢耍我。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:28:28",
+    "source_sha256": "8b329bf5bee91f81066b1a43fc1d6791f2af9db488db4868629170d1bc0c2d93",
+    "target": "啊，不是我的错，是希安的错。一打碎，不就变回来了？而且，南瓜脑袋其实更适合你。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:29:29",
+    "source_sha256": "e2803708e720c5e67b806e6d414c81012ca47302e3af335f6326eab3bf45313d",
+    "target": "你怎么知道，打碎希安就能变回来的？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:30:30",
+    "source_sha256": "1c0294447b07b00592110e2c2dc676bb0155aeda57b3665eabe73a149687d99a",
+    "target": "听说……有些希安能改变人的模样……虽然极为罕见……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:31:31",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:32:32",
+    "source_sha256": "1e7f4298b6996a62e11072232592745b66747e0ca6a9484cb29794ccda6d5cb1",
+    "target": "阿多拉……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:33:33",
+    "source_sha256": "bd6a8e5b84ee200cb29842779a092520bb6c943db76279159059b750d2e42357",
+    "target": "卡林兹，我也许……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:34:34",
+    "source_sha256": "658446afe4ff899fb75c8e0c1fdeafe510490da627ff0a078e66a13972079584",
+    "target": "嗯……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:35:35",
+    "source_sha256": "444a8d39d66fb748d49a06e59da874e68a0c04e214c07a223d11b05438602ff0",
+    "target": "不，回去吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0253.fpb:text:36:36",
+    "source_sha256": "3d21c3009107c73a93277130afc79369add8bf06306fbf7b8635690247ed5ea2",
+    "target": "……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:0:0",
+    "source_sha256": "915e6876aa57ce890861c822d2783b4432cfecc1d696e59479fb0fb1ac250510",
+    "target": "今天又完成了一件事。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:1:1",
+    "source_sha256": "aa5c1dbdb8fd3af757a5ed4c961f153f710305577fcce7159fcfef175fad2282",
+    "target": "这些日子还真刺激，天天都这样拼得头破血流吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:2:2",
+    "source_sha256": "279cf85416dccd7437b13c49624d96707633d32f4f355f9b8f9c24fc389d592d",
+    "target": "现在才知道？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:3:3",
+    "source_sha256": "aac595d4d620ef89e8158fb500e1bfd53f8dc782e92fb2f19a0920ccdde00f60",
+    "target": "这就是第7组。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:4:4",
+    "source_sha256": "5e48efa2060f22c7803c18502bc26ad13a943e15ef3158d7f5205d62094e0daa",
+    "target": "那些话先放一边，回去吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:5:5",
+    "source_sha256": "1e7f4298b6996a62e11072232592745b66747e0ca6a9484cb29794ccda6d5cb1",
+    "target": "阿多拉……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:6:6",
+    "source_sha256": "9a7f9319a62e81f08768539854e8b7dda69dcca927a2e6d0b0c4cb8c1be8671c",
+    "target": "我……该走了……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:7:7",
+    "source_sha256": "c02928552513541ce9ddcb85f390941a5532b9725be012e2a4edca456ca42172",
+    "target": "（朱克蕾西亚……要醒来了，不能被发现。）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:8:8",
+    "source_sha256": "30bfd2008fceb8d7dda39e09324a4cedcfc2739f08634b315a5645b172f4ec3e",
+    "target": "……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:9:9",
+    "source_sha256": "976e73a01bfc796ba91ae2ad52166aca52c4056b0b5562f8db73dcf0fcccae37",
+    "target": "怎么回事？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:10:10",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:11:11",
+    "source_sha256": "bd49ba10b8e382aa7c327f5e93ebda73ced7fa782893cf4b1ba7eb48422acf51",
+    "target": "（不像……平时的阿多拉。虽然她总是说来就来，说走就走……说起来，为什么至今，我一次也没想过跟在她身后看看？果然是因为觉得，不知道她的身份会更好吗？）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:12:12",
+    "source_sha256": "72fac070f009e0e81d1b2cfad15c7be93a862a779ff9c15ebc3cb8c38d6ce359",
+    "target": "喂，去哪儿？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:13:13",
+    "source_sha256": "b396d0b2414f2fd50377bd628824c8fbe4bcbde1128638995e6e732efb6b9ca6",
+    "target": "先回去吧，我有个地方要去。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0254.fpb:text:14:14",
+    "source_sha256": "49541785cb8eeaf21ae49c58b08dbff5dcf8e5274a47d3d4b6a4a3292978e120",
+    "target": "……他们两个，到底怎么了？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0256.fpb:text:0:0",
+    "source_sha256": "830bfd155fa8c37876c3aabd56305c5f96b145c537c0338095c7c275715d6d87",
+    "target": "欢迎。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0256.fpb:text:1:1",
+    "source_sha256": "e8459ade62dcfb2c28acac550524d7d1038495ae4202630ce4d17c3e9cf608ee",
+    "target": "不必寒暄。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0256.fpb:text:2:2",
+    "source_sha256": "c0c59c605efe6b2fc04418e1c295f3fa0ddc9e4d3d686767e22162f1572c72ab",
+    "target": "梅菲斯托正在等您。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:0:0",
+    "source_sha256": "78f59fe2d320028268c511ee771f115870a1c64cde334cd1174d57a108a5dffe",
+    "target": "没想到，您会亲自来到这种地方。现在终于明白您的决心了。没法给予应有的礼遇，还请见谅。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:1:1",
+    "source_sha256": "1c83bc7b0af3952481dd7f81b4f8c67eb8e5ee4fa948c72c652fc77b6331cf0a",
+    "target": "没法给予应有的礼遇，还请见谅。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:2:2",
+    "source_sha256": "e8881a06b75902fcca4e53beb32e424947b280a1067063979026de6b8ef0702b",
+    "target": "如果在意那种事，我就不会来到这里了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:3:3",
+    "source_sha256": "c2ce887ecec19ea0009657e890d7102781a5e87afa0690b98366905ab271c7e0",
+    "target": "那天见到梅菲斯托阁下时，我就觉得，您是个有自己野心的人。有着相同眼神的人，总能很快认出彼此。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:4:4",
+    "source_sha256": "539167f93fa22099aae3bb5e22e5e4fd51ada19afd44d6bb1cc23971ba584a61",
+    "target": "有着相同眼神的人，总能很快认出彼此。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:5:5",
+    "source_sha256": "f399ca260fe183ea52486572d96da42b2ca2e42a4001f6c37721dd43e1f74d18",
+    "target": "目前，最妨碍我计划的，是施瓦茨·施图尔姆。我已经拉拢了许多贵族。出乎意料，皇帝与太后竟没笼络住那些必须留意的人。因此，周围藏着许多敌人。吉尔伯特虽然棘手，但更棘手的是他的精锐部队，施瓦茨·施图尔姆。只要他们还留在修德尔米尔，我就无法按自己的意愿推进计划。据我所知，能抗衡施瓦茨的，只有你们贝尔米利昂。施瓦茨正拼命寻找你们，要让双方相遇，也很容易。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:6:6",
+    "source_sha256": "813f62cc8dd35675c646ae5852a1cc7243aad9ead442477983c0865e51114d1c",
+    "target": "我已经拉拢了许多贵族。出乎意料，皇帝与太后竟没笼络住那些必须留意的人。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:7:7",
+    "source_sha256": "14650247fcd53a9e91c2124a767f8866dd17eec2a804b8144e06ed2c07de8e39",
+    "target": "只要他们还留在修德尔米尔，我就无法按自己的意愿推进计划。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:8:8",
+    "source_sha256": "dcb5932a2d558c6d5874c8c4c37639c252da0da252f13dd5df15c4520bf856a2",
+    "target": "据我所知，能抗衡施瓦茨的，只有你们贝尔米利昂。施瓦茨正拼命寻找你们，要让双方相遇，也很容易。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:9:9",
+    "source_sha256": "c17ef84d03c534a88d9a63142cc7911386c16e0dfcb740eacd57fc8a1f033978",
+    "target": "……代价是什么？没有明确的承诺，我们无法行动。对抗施瓦茨，对我们而言，也是风险很大的事。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:10:10",
+    "source_sha256": "f863d72fe4c430374a26d73698290c4e05f03b23b35db613d19d7e04dacbbdc5",
+    "target": "对抗施瓦茨，对我们而言，也是风险很大的事。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:11:11",
+    "source_sha256": "2f1581d950a36fa1df6982a67bc4072c1805706ec38602c4fb93cc489641c787",
+    "target": "没有报偿，当然说不过去。若这次成功，成为女皇，我就给你们重建克罗伊斯的机会。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:12:12",
+    "source_sha256": "0fa525371075a2a52991844cc4d5da3b312d6ed593e013c778b850f87c9bd70e",
+    "target": "不过，我们怎么能相信您？登上女皇之位以后，难道不会想把贝尔米利昂一网打尽……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:13:13",
+    "source_sha256": "a1b192a33ebd052d800480afec38d0b1f195a509b7bc0809561231e458e461d1",
+    "target": "无礼……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:14:14",
+    "source_sha256": "f84b1517342dc690e7b61dc5082ffbf60ff3588daeba7ed29229d308a11c15a1",
+    "target": "温贝特！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:15:15",
+    "source_sha256": "a4f51074e0a206a7c8cb206e8e0a36d803c179b79963227a8c30613d20971104",
+    "target": "殿下……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:16:16",
+    "source_sha256": "a4ce66f8aa98789bb01dcc5c8094f43a9f40edbdc0b7c8975be19c17923c477c",
+    "target": "现在别称我殿下。是温贝特阁下吧？我听说过您。我们时间不多，因此需要各位的力量。我保证，帮助我们，就会得到相应的报偿。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:17:17",
+    "source_sha256": "58bcf09fa6d0605309cc93d6ddc2791e7885c9d63bf955605842344d30fd810d",
+    "target": "是温贝特阁下吧？我听说过您。我们时间不多，因此需要各位的力量。我保证，帮助我们，就会得到相应的报偿。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:18:18",
+    "source_sha256": "0a87b0bdc70d664d0eccc3db9d5a7a6b5607c00199edd8aec472940963b500ce",
+    "target": "我保证，帮助我们，就会得到相应的报偿。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:19:19",
+    "source_sha256": "cebd274a59759e140066b36b4af3b71e7badea698b97237052d15ba4a295240c",
+    "target": "从某种意义上说，您和我们一样，对皇家怀有怨恨。若您成为女皇，一定会改变皇家吧？哪怕掀起一场腥风血雨。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:20:20",
+    "source_sha256": "fdd01ef499b4c36e0d2eaa0cb8416a7c42c056cb016cf7e3a6a97aa4efb4fc11",
+    "target": "哪怕掀起一场腥风血雨。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:21:21",
+    "source_sha256": "71b7888acac437838f9a1debfa456dd23174a6357fca4131425e4febbbba9d2b",
+    "target": "反正，皇家一向就是以这种方式维持的。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:22:22",
+    "source_sha256": "8426905b3f8f6f30aef8333f342ac311dbe1f8aa1cb53b1b2a0bc14384adb6d9",
+    "target": "……好。那么订立契约吧，一个足以颠覆这个世界的契约。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:23:23",
+    "source_sha256": "6a4a282e17affdb60353e1d5376c6dd13af7365c37a68802e6bf4a7bdc2b31a4",
+    "target": "在那之前……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:24:24",
+    "source_sha256": "67c3f50e3742eb6bcd643f1faa16bf999bfcb4db0574b27a658b969f885d062d",
+    "target": "我想看看各位的实力。在赶走施瓦茨之前……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:25:25",
+    "source_sha256": "cc59057f44077e572db18d87e32d2604118a7785a65859264c6912b23c86cd55",
+    "target": "想亲自确认一次。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0258.fpb:text:26:26",
+    "source_sha256": "4aa4d10ec2715d9e9dc7f36c8e698b3d464a57d035a258dbdb4e6aaa7214508d",
+    "target": "是啊，太无礼了，梅菲斯托。再怎么说，也是在皇女殿下面前……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0259.fpb:text:0:0",
+    "source_sha256": "14b31d481c721699ce2d8ad71abdcf1659032acc3f61efc86ba2d591655b5e0e",
+    "target": "温贝特……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0259.fpb:text:1:1",
+    "source_sha256": "743dc3b6d4759422b8fdf2ce78a81b827bd33090124db7016e5386cbca0da962",
+    "target": "（没用的。已经都是过去的事……如今再翻出来，又能改变什么……）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0260.fpb:text:0:0",
+    "source_sha256": "30bfd2008fceb8d7dda39e09324a4cedcfc2739f08634b315a5645b172f4ec3e",
+    "target": "……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0261.fpb:text:0:0",
+    "source_sha256": "a6eca629d33ab14c27377f537162c20c63d9eff7bb0397fa5571721c9f12c6c8",
+    "target": "怎么来到这里，还带着那么可怕的表情？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0261.fpb:text:1:1",
+    "source_sha256": "11dc141bc1a348c5d02200a656626e4b6bcb2ab6965aaeb8aefb393cc004186d",
+    "target": "收集希安，是为了真名法典？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0261.fpb:text:2:2",
+    "source_sha256": "f8a3be74cfcebc147bfa8cfd31eef4929f1e3e5c8956fac0eb842c094fdfa407",
+    "target": "……看来你知道了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0261.fpb:text:3:3",
+    "source_sha256": "1086bb20445869c04486686cbbc4a7aec6cde625120e6cc85cd1f158a1508c20",
+    "target": "你知道，那种魔法会唤来多么可怕的力量吗？真名法典一旦发动，不会只以皇家崩溃告终。修德尔米尔，不，甚至整片大陆，都可能被卷进去，遭受巨大损失。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0261.fpb:text:4:4",
+    "source_sha256": "ce7e89001af4c16278f345b5d378f205f990d80546c9729c5ed96d663c025e79",
+    "target": "修德尔米尔，不，甚至整片大陆，都可能被卷进去，遭受巨大损失。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0261.fpb:text:5:5",
+    "source_sha256": "de13db1e87871ac04655e242d38306c0cfce09da5f0e0a79883c260e3c41b984",
+    "target": "必须有那种力量，皇家才会跪下。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0261.fpb:text:6:6",
+    "source_sha256": "7c135767f47de299bccee8e46809b46b57362367e95f007d917ffee54a9ececd",
+    "target": "这不是玩笑。我不想毁掉这个世界，再重建克罗伊斯。你打算毁灭世界吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0261.fpb:text:7:7",
+    "source_sha256": "53ec529d4d5aa987bc4569c8630b361d54eb1097bdfad300504af3cb56e53c20",
+    "target": "你太小看皇家了。克莱夫是毁灭我们祖国的人，你不会知道，那家伙有多可怕。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0263.fpb:text:0:0",
+    "source_sha256": "8dcf17d700cdce09c7bbc335827487b0563cc96adc178dab3785b33c86107bf2",
+    "target": "竟然存在那种希安？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0263.fpb:text:1:1",
+    "source_sha256": "04fe46c101940a3918c5de58cfe155cbe3f06e9c631a13e155d865d05622f938",
+    "target": "我们也是第一次见到这种类型。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0263.fpb:text:2:2",
+    "source_sha256": "3d350fcc9b9eef34b23b28aea6ccf1d5faada996359a83de1050b6ff0425e602",
+    "target": "也是，希安的能力太过多样，至今仍没有妥当的分类。蕴藏其中的卡尔塔组合，数量根本无法计算。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0263.fpb:text:3:3",
+    "source_sha256": "ccad2799482c36f62b271b2f44382d9b8e59e9036b43b5ae273aa3829cf40cb7",
+    "target": "遗憾的是，那个希安被打碎了，没法带回来。菲莉西亚似乎知道，事情是因为希安产生反应而发生的。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0263.fpb:text:4:4",
+    "source_sha256": "4422b0c3550ab041ea341858f6530f535c37072457271a5948f07c2eae2d5c4a",
+    "target": "……是吗？菲莉西亚知道的话，贝尔米利昂对希安的了解，也许比预期更深。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0263.fpb:text:5:5",
+    "source_sha256": "1e2dec86d7da2531627a3547ff73b11a06aea4cfa789f41863bf149dcb4efc8b",
+    "target": "真是意外。虽然碎掉很可惜……但能发现希安的新能力，已是重大成果。也许，是因为切尔西的灵力格外高，才发生了那件事。通常，想引出希安的力量，必须先提高与那个希安的亲和力。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0263.fpb:text:6:6",
+    "source_sha256": "74e1c9ae4748b337241fd4f53e59bae40bec3d42bdff2d4a42444d7752df13ce",
+    "target": "……古代人的文明，果然强大得超乎想象。既然存在这种希安，就一定还有更厉害的。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0263.fpb:text:7:7",
+    "source_sha256": "2f987d701fdd957d7495454b5e02e62cbd3c9a071a8bdfc16a49e995a6eb1b93",
+    "target": "如果真有那种希安……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:0:0",
+    "source_sha256": "50004586626b7b21c05b4b7f38cfdc01214eb2968fe9483d22790a711d25c8e8",
+    "target": "（卡尔塔，是古代人发现的最大奇迹。那种象形文字所蕴含的魔力，超乎想象。而能够刻入卡尔塔的容器，就是希安……在希安中同时放入多种卡尔塔，就能进行组合，由组合产生新的能力。这就是历史上所记载的卡尔塔与希安……）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:1:1",
+    "source_sha256": "c82604f0532afc572d992578169fba90c3b80cf2c3e0bf1177d37fb2362c34aa",
+    "target": "（希安之所以受到特别重视，是因为刻在其中的卡尔塔，能通过组合产生能力。因此，希安的种类至今仍未整理清楚。）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:2:2",
+    "source_sha256": "994123e2dae94dd400a1626f6180f97d3fd7dc229f41369039b901b15a9169e1",
+    "target": "总队长，上次古文献的解读已经完成。我也亲自确认了内容，发现了出乎意料的事实。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:3:3",
+    "source_sha256": "c411d9b52203632dc88b9f8d03fde2adc36aa65b0b29313595e5f77433af06ad",
+    "target": "什么事？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:4:4",
+    "source_sha256": "3eecd1664b53f4d22e378175bceaa7b835e4db18f0e05b2f59c3128e61cea71d",
+    "target": "皇家拥有的古代纹章，似乎其实就是希安。那是只有意志强大的人才能驾驭的高级希安，据说能使用改变人的模样、操纵人格等高难度术法。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:5:5",
+    "source_sha256": "b84c993b9d267b7fd0251778b4b20dde08ac74601417965b0ed22195864aadce",
+    "target": "古代纹章啊……那些东西，现在还保存在皇家吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:6:6",
+    "source_sha256": "574bd8b9b02d0b431a9957d3a6eb402c105040f1abb96f208b10a0630001bdda",
+    "target": "……什么？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:7:7",
+    "source_sha256": "16d752558e00a32648d6bce35f183e0e685b56f38c1d455121714f5e9806293c",
+    "target": "怎么了？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:8:8",
+    "source_sha256": "1bb1c1ed72042bcbe2a7e75bc43d3fe254a1fc43f035c541b8ab2f17347edc69",
+    "target": "那个……是不是误解了我的意思……古代纹章，是初代皇帝卢阿南赐给初代奥拉坎们的东西。总队长，不也持有一枚吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:9:9",
+    "source_sha256": "843fa6bae7b77ee8a40f2064acc3b74d4d462706b97f8aaca715f6817d8262c1",
+    "target": "……啊，原来如此，一时忘记了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:10:10",
+    "source_sha256": "0dddb8eb934a9c67526c8e801f2a8e9b26d1f85f5f57dd8b0711a8debb6e583a",
+    "target": "（为什么会忘记？如此基本的事实……）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:11:11",
+    "source_sha256": "0f2cd4cf2760e5f26c62ffd786544f3fc4af9166dc7bdd5e53951e3d814c7271",
+    "target": "总队长……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:12:12",
+    "source_sha256": "16d752558e00a32648d6bce35f183e0e685b56f38c1d455121714f5e9806293c",
+    "target": "怎么了？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:13:13",
+    "source_sha256": "cdda275ed7254c2c580db31d1c06248d2f6cb82b8a82190ea9c302c6b33f7c8d",
+    "target": "……没、没什么。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:14:14",
+    "source_sha256": "58bca524a01ccd7a7fc6dbdb579bf11188715733b49cc5b196a2acf1b18bddda",
+    "target": "古代纹章，现在是怎么分配的？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:15:15",
+    "source_sha256": "cef54f964b742624ac6289ec6e555d9cb0c35594c5b02bcd6fd334d19273e799",
+    "target": "首先，月之纹章由总队长持有，它是拜耶尔的象征。太阳之纹章在马拉卡特，大地之纹章在吉拉特。最后，风之纹章交给了克罗伊斯的奥拉坎，可惜，似乎在战乱中遗失了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0264.fpb:text:16:16",
+    "source_sha256": "5fcbc3652ffe96831c2ea6bd15944eb7de9bbf5fe30c76756e42174060d4858c",
+    "target": "（果然……那么，威尔莱特是用太阳之纹章，让皇女殿下……）",
+    "state": "translated"
+  }
+]
