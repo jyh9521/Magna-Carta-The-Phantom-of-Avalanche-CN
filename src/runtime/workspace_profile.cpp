@@ -2,12 +2,14 @@
 #include <cstring>
 #include <cwchar>
 #include "texture_lifetime.h"
+#include "focus_guard.h"
 
 namespace {
 wchar_t session[512]{};
 wchar_t logPath[32768]{};
 wchar_t captureHelper[32768]{};
 bool textureLifetime = false;
+bool focusGuard = false;
 wchar_t textureDriverPath[32768]{};
 using MessageFunction = int(WINAPI*)(HWND, LPCSTR, LPCSTR, UINT);
 MessageFunction originalExceptionMessage = MessageBoxA;
@@ -135,6 +137,8 @@ void patch(HMODULE module) {
     if (dos->e_magic != IMAGE_DOS_SIGNATURE) return;
     auto nt = reinterpret_cast<IMAGE_NT_HEADERS32*>(bytes + dos->e_lfanew);
     if (nt->Signature != IMAGE_NT_SIGNATURE || nt->OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR32_MAGIC) return;
+    if (focusGuard && !_wcsicmp(base, L"MCAlpha.dll"))
+        trace(installFocusGuard(module, trace) ? L"FOCUS_GUARD_READY" : L"FOCUS_GUARD_REJECTED");
     auto dir = nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT];
     if (!dir.VirtualAddress || dir.VirtualAddress >= nt->OptionalHeader.SizeOfImage) return;
     unsigned changes = 0;
@@ -184,6 +188,7 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) {
         GetEnvironmentVariableW(L"MC_CAPTURE_HELPER", captureHelper, 32768);
         wchar_t option[8]{};
         textureLifetime = GetEnvironmentVariableW(L"MC_TEXTURE_LIFETIME", option, 8) && !wcscmp(option, L"1");
+        focusGuard = GetEnvironmentVariableW(L"MC_FOCUS_GUARD", option, 8) && !wcscmp(option, L"1");
         GetEnvironmentVariableW(L"MC_TEXTURE_DRIVER", textureDriverPath, 32768);
         patch(GetModuleHandleW(nullptr));
         trace(L"PROFILE_ATTACHED");

@@ -44,3 +44,5 @@ HAL 对照反馈无改善，后续独立驱动版本对照见 [UNPATCHED_DRIVER_
 未更新驱动副本已收到当前场景画面正常的实际反馈，并核实自然退出码 0，作为后续研究的可用显示基线保留。该结果不等于全部场景、中文、无盘或现代化增强验收通过；新实验使用独立副本。
 
 P1 独立无边框候选和只读窗口遥测见 [BORDERLESS_UNPATCHED_TRIAL.md](docs/BORDERLESS_UNPATCHED_TRIAL.md)。图形安装工具显式区分两组驱动哈希，不放宽未知版本检查；客户区尺寸不作为内部渲染尺寸。当前只完成非交互样本和配置验证，游戏验收待执行。
+
+首次无边框运行画面正常，但失焦后原窗口持续最小化。WM_KILLFOCUS 自动最小化分支、默认关闭的 IAT 候选和测试记录见 [FOCUS_GUARD_CANDIDATE.md](docs/FOCUS_GUARD_CANDIDATE.md)。焦点恢复未通过验收，暂不推进 1080p 输出配置。

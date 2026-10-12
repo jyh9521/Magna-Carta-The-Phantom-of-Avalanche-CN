@@ -47,3 +47,5 @@ python tools/observe_window.py --session build/runtime-launch/session-<时间> -
 4. 游戏闪退、显示回归或鼠标错位则记录失败，新会话异常采集保留现场；正常入口仍使用 LaunchUnpatchedDriver.cmd，不撤销可用基线。
 
 当前游戏验收未执行。窗口遥测成功不替代画面、输入或存档验收。后续 1080p 输出须在本组通过后再建立单变量配置，内部渲染提升与比例缩放分别记录。
+
+后续实测反馈运行正常，但 Alt+Tab 后切不回；会话 session-20261012-131317-425 退出码 1，原窗口持续最小化、客户区 0×0，因此 P1 未通过。已实现 [默认关闭的失焦候选](FOCUS_GUARD_CANDIDATE.md)，保持原配置，实际修复待验证。

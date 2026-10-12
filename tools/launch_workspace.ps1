@@ -5,6 +5,7 @@ param(
     [int]$Timeout = 0,
     [switch]$CaptureException,
     [switch]$TextureLifetime,
+    [switch]$FocusGuard,
     [string]$ObserverPython = ''
 )
 $ErrorActionPreference = 'Stop'
@@ -43,6 +44,7 @@ $arguments = @(
 if ($Timeout -gt 0) { $arguments += @('--timeout', $Timeout) }
 if ($CaptureException) { $arguments += '--capture-exception' }
 if ($TextureLifetime) { $arguments += '--texture-lifetime' }
+if ($FocusGuard) { $arguments += '--focus-guard' }
 $process = Start-Process -FilePath $launcher -ArgumentList ($arguments -join ' ') -WorkingDirectory $root `
     -WindowStyle Hidden -RedirectStandardOutput (Join-Path $output 'stdout.log') `
     -RedirectStandardError (Join-Path $output 'stderr.log') -PassThru
