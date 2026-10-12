@@ -14,8 +14,9 @@ from resource_sgi import catalog as sgi_catalog
 LAYOUTS = {
     '.itm': (264, [('name', 4, 100), ('description', 164, 100)]),
     '.abi': (344, [('name', 4, 60)]),
+    '.cha': (267, [('name', 4, 100)]),
 }
-SCAN_EXTENSIONS = {'.cha', '.uis', '.jmu', '.wdi', '.mdi', '.msg', '.dll', '.exe', '.gsw', '.mon'}
+SCAN_EXTENSIONS = {'.uis', '.jmu', '.wdi', '.mdi', '.msg', '.dll', '.exe', '.gsw', '.mon'}
 MEDIA_EXTENSIONS = {'.bgr', '.bmp', '.dds', '.tga', '.jpg', '.png', '.wav', '.mp3', '.ogg', '.avi', '.mpg', '.mpeg', '.bik'}
 TOKENS = re.compile(r'\$[A-Za-z]|%[-+ #0-9.*]*[sdifuxX]|\{[^{}]*\}|<[^<>]*>|[\x01-\x1f]')
 
@@ -48,8 +49,13 @@ def fixed_records(data, resource, extension):
             block = data[start + relative:start + relative + capacity]
             if b'\0' not in block:
                 raise ValueError('field missing terminator: ' + resource)
-            rows.append(text_row(resource, ordinal, identifier, field, start + relative,
-                                 block.split(b'\0', 1)[0], capacity))
+            row = text_row(resource, ordinal, identifier, field, start + relative,
+                           block.split(b'\0', 1)[0], capacity)
+            if extension == '.cha':
+                row['field_semantics'] = 'display_name_or_internal_object_name'
+                row['save_name_override'] = True
+                row['translation_eligibility'] = 'requires_per_record_role_review'
+            rows.append(row)
     return rows
 
 

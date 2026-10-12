@@ -20,11 +20,19 @@ def table(extension, identifier=7, name='이름', description='설명'):
 
 class CatalogTests(unittest.TestCase):
     def test_fixed_fields_with_unknown_bytes_preserved(self):
-        for extension in ['.itm', '.abi']:
+        for extension in ['.itm', '.abi', '.cha']:
             data = table(extension); rows = m.fixed_records(data, 'fixture'+extension, extension)
             self.assertEqual(rows[0]['identifier'], 7); self.assertEqual(rows[0]['source'], '이름')
             self.assertEqual(data, table(extension))
             self.assertEqual(rows[0]['offset'], 12)
+
+    def test_character_names_do_not_imply_person_or_save_translation(self):
+        rows=m.fixed_records(table('.cha',name='바퀴'),'Cha/0000.cha','.cha')
+        self.assertEqual(rows[0]['source'],'바퀴')
+        self.assertEqual(rows[0]['field_semantics'],'display_name_or_internal_object_name')
+        self.assertTrue(rows[0]['save_name_override'])
+        self.assertEqual(rows[0]['translation_eligibility'],'requires_per_record_role_review')
+        self.assertEqual(rows[0]['candidate_capacity'],100)
 
     def test_description_offset_and_empty_field(self):
         rows = m.fixed_records(table('.itm', description=''), 'fixture.itm', '.itm')
