@@ -60,3 +60,5 @@ P0 第一阶段 [GLYPH_DISPLAY_PROBE.md](docs/GLYPH_DISPLAY_PROBE.md) 已构建�
 首轮实际截图在属性及装备武器名中确认 `이→中` 命中，对应隔离会话自然退出码 0。其余界面保持原文不是整体翻译失败；探针只覆盖字形。`文`、对话及两套字体分别验收尚未完成，后续转入可见装备显示名的资源回写定位。
 
 武器名称定位到 SGI ordinal 0 / ID 5，已建立 [TEXT_DISPLAY_PROBE.md](docs/TEXT_DISPLAY_PROBE.md) 的显式 `中文` 回写候选，恢复原版字库路线。单记录差异、结构往返及隔离回滚已静态验证，实际资源加载与显示待手动验收。
+
+后续 Status 截图确认完整 `中文` 显示，会话自然退出码 0，本处资源回写链路通过首轮反馈验收。SGI 结构化 catalog 与固定版本 [SERIES_TERMS_AUDIT.md](docs/SERIES_TERMS_AUDIT.md) 已建立，87 项保持待复核；未启动大规模翻译或改变其他游戏资源。

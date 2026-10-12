@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "repository": "https://github.com/jyh9521/Magna-Carta-Tears-Of-Blood-CN",
+  "commit": "7c1d155ced5770458d02e2bd7d61b865565a3996",
+  "path": "GLOSSARY.md",
+  "sha256": "9263d0138d1698c25f49f5a5f4015a9bfeec9915a8b2deb936c0947c62615507",
+  "header": ["Korean / 源文", "中文译名", "分类", "状态", "备注 / 参考"],
+  "locked_status": "已统一"
+}

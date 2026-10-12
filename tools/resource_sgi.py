@@ -1,5 +1,6 @@
 """Byte-preserving SGI records and bounded, diagnostic display-name replacement."""
 from dataclasses import dataclass
+import hashlib
 import struct
 
 
@@ -47,3 +48,16 @@ def parse(data):
         raise ValueError('SGI record count or size mismatch')
     # Header word 2 and all non-name bytes remain uninterpreted and preserved.
     return Table(bytes(data[:8]), tuple(bytes(data[8 + i * 164:8 + (i + 1) * 164]) for i in range(count)))
+
+
+def catalog(data, resource):
+    """Extract stable, distinct display-name rows without trimming or merging identifiers."""
+    table = parse(data)
+    return dict(schema=1, resource=resource, sha256=hashlib.sha256(data).hexdigest(),
+                roundtrip_exact=table.to_bytes() == data,
+                records=[dict(id=f'{resource}:name:{ordinal}:{struct.unpack_from("<I", row)[0]}',
+                              ordinal=ordinal, identifier=struct.unpack_from('<I', row)[0],
+                              field='display_name', offset=12 + 164 * ordinal,
+                              source_hex=table.name(ordinal).hex(),
+                              source=table.name(ordinal).decode('cp949'), target=None)
+                         for ordinal, row in enumerate(table.records)])
