@@ -1,6 +1,6 @@
 # 构建说明
 
-尚未建立资源提取、中文回写、字体生成或发布构建入口，没有可安装汉化包。依赖版本与游戏哈希待样本验证后记录。
+已建立隔离复制、只读调查、输入比对和 FPB 原样往返工具；中文回写、字体生成及发布构建入口尚未完成，没有可安装汉化包。样本哈希见 docs/SAMPLE_AUDIT.md。
 
 预定流程：版本验证 → 提取 → 导入译文 → 控制符/编码校验 → 字体覆盖 → 重建 → 结构验证 → 游戏验收 → 增量发布。
 原始文件保留只读基线，修改作用于副本；未知版本、预期字节不匹配或资源结构错误时停止。
@@ -9,3 +9,19 @@
 当前文档检查：安装 Python 3 后执行 `python tests/check_runtime_docs.py --expect modified`。此检查不证明游戏功能。
 构建输入、来源、依赖和命令必须记录，不依赖私人目录或手工中间文件。发布前在干净检出重建，验证哈希、安装、卸载和回滚。
 完整商业资源不进入仓库或发布包，第三方组件单独记录版本和许可。
+
+## 样本调查命令
+
+工具使用 Python 3.12 或更新版本；本轮验证版本为 3.12.14。安装研究依赖：
+
+```powershell
+python -m pip install -r tools/requirements-research.txt
+python tools/prepare_workspace.py --source ORIGINAL_DIR --target build/runtime/game --manifest build/runtime/installation-manifest.json
+python tools/inspect_game.py --workspace build/runtime/game --images game --report build/runtime/static-survey.json
+python tools/compare_inputs.py --workspace build/runtime/game --iso "game/Magna Carta CD 4.iso" --patch game/MCV104a.exe --report build/runtime/input-comparison.json
+python tools/resource_fpb.py --source build/runtime/game/Fpb --report build/runtime/fpb-roundtrip.json --catalog build/runtime/fpb-catalog.json
+python -m unittest discover -s tests -p "test_*.py"
+```
+
+ORIGINAL_DIR 为只读来源路径；复制工具拒绝已有目标及嵌套源/目标，不覆盖已有实验。原文 catalog 与完整报告保持在忽略的 build/ 中。
+上述命令不启动游戏、不应用补丁、不挂载镜像，也不写注册表。图形配置候选工具只生成独立文件，不能视为已生效设置。

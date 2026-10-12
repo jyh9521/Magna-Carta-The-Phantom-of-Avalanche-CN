@@ -108,6 +108,7 @@ desktop.ini
 *.temp
 
 # Optional local original-game input directories
+/game/
 original/
 original_game/
 game_original/
