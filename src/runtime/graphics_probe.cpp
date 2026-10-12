@@ -36,6 +36,7 @@ int wmain(int argc, wchar_t** argv) {
     IDirect3D7* d3d = nullptr;
     IDirectDrawSurface7* target = nullptr;
     IDirectDrawSurface7* depth = nullptr;
+    IDirectDrawSurface7* texture = nullptr;
     IDirect3DDevice7* device = nullptr;
     HMODULE module = nullptr;
     HWND window = nullptr;
@@ -44,7 +45,8 @@ int wmain(int argc, wchar_t** argv) {
         if ((argc != 2 && argc != 3) || !std::filesystem::path(argv[1]).is_absolute())
             throw std::runtime_error("Explicit absolute DLL path required");
         bool expectHalOnly = argc == 3 && wcscmp(argv[2], L"--expect-hal-only") == 0;
-        if (argc == 3 && !expectHalOnly) throw std::runtime_error("Unknown probe option");
+        bool useTnl = argc == 3 && wcscmp(argv[2], L"--device-tnl") == 0;
+        if (argc == 3 && !expectHalOnly && !useTnl) throw std::runtime_error("Unknown probe option");
         module = LoadLibraryW(argv[1]);
         if (!module) throw std::runtime_error("DLL load failed");
         using Create = HRESULT(WINAPI*)(GUID*, void**, REFIID, IUnknown*);
@@ -71,13 +73,15 @@ int wmain(int argc, wchar_t** argv) {
         desc.ddpfPixelFormat.dwGBitMask = 0xff00;
         desc.ddpfPixelFormat.dwBBitMask = 0xff;
         checked(draw->CreateSurface(&desc, &target, nullptr), "color_surface");
-        checked(d3d->EnumZBufferFormats(IID_IDirect3DHALDevice, depthEnum, nullptr), "depth_enum");
+        const GUID& deviceType = useTnl ? IID_IDirect3DTnLHalDevice : IID_IDirect3DHALDevice;
+        checked(d3d->EnumZBufferFormats(deviceType, depthEnum, nullptr), "depth_enum");
         if (!depthFormat.dwSize) throw std::runtime_error("16-bit depth unavailable");
         desc.ddsCaps.dwCaps = DDSCAPS_ZBUFFER | DDSCAPS_VIDEOMEMORY;
         desc.ddpfPixelFormat = depthFormat;
         checked(draw->CreateSurface(&desc, &depth, nullptr), "depth_surface");
         checked(target->AddAttachedSurface(depth), "depth_attach");
-        checked(d3d->CreateDevice(IID_IDirect3DHALDevice, target, &device), "device");
+        checked(d3d->CreateDevice(deviceType, target, &device), "device");
+        std::cout << "DEVICE_USED " << (useTnl ? "tnl" : "hal") << std::endl;
         D3DVIEWPORT7 viewport{0, 0, 64, 64, 0.f, 1.f};
         checked(device->SetViewport(&viewport), "viewport");
         checked(device->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_TRUE), "z_enable");
@@ -88,6 +92,30 @@ int wmain(int argc, wchar_t** argv) {
         Vertex nearTriangle[] = {{4,4,.25f,1,0xff00ff00},{60,4,.25f,1,0xff00ff00},{32,60,.25f,1,0xff00ff00}};
         Vertex farTriangle[] = {{4,4,.75f,1,0xffff0000},{60,4,.75f,1,0xffff0000},{32,60,.75f,1,0xffff0000}};
         for (unsigned frame = 0; frame < 120; ++frame) {
+            if (frame % 20 == 0) {
+                checked(device->SetTexture(0, nullptr), "texture_unbind");
+                if (texture) { texture->Release(); texture = nullptr; }
+                DDSURFACEDESC2 tex{}; tex.dwSize = sizeof(tex);
+                tex.dwFlags = DDSD_CAPS | DDSD_WIDTH | DDSD_HEIGHT | DDSD_PIXELFORMAT;
+                tex.dwWidth = 8; tex.dwHeight = 8;
+                tex.ddsCaps.dwCaps = DDSCAPS_TEXTURE;
+                tex.ddsCaps.dwCaps2 = DDSCAPS2_TEXTUREMANAGE;
+                tex.ddpfPixelFormat.dwSize = sizeof(DDPIXELFORMAT);
+                tex.ddpfPixelFormat.dwFlags = DDPF_RGB | DDPF_ALPHAPIXELS;
+                tex.ddpfPixelFormat.dwRGBBitCount = 16;
+                tex.ddpfPixelFormat.dwRBitMask = 0x7c00;
+                tex.ddpfPixelFormat.dwGBitMask = 0x3e0;
+                tex.ddpfPixelFormat.dwBBitMask = 0x1f;
+                tex.ddpfPixelFormat.dwRGBAlphaBitMask = 0x8000;
+                checked(draw->CreateSurface(&tex, &texture, nullptr), "texture_create");
+                DDSURFACEDESC2 bits{}; bits.dwSize = sizeof(bits);
+                checked(texture->Lock(nullptr, &bits, DDLOCK_WAIT, nullptr), "texture_upload");
+                for (unsigned y = 0; y < 8; ++y)
+                    for (unsigned x = 0; x < 8; ++x)
+                        *reinterpret_cast<WORD*>(static_cast<BYTE*>(bits.lpSurface) + y * bits.lPitch + x * 2) = 0xffff;
+                checked(texture->Unlock(nullptr), "texture_unlock");
+            }
+            checked(device->SetTexture(0, texture), "texture_bind");
             checked(device->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0, 1.f, 0), "clear");
             checked(device->BeginScene(), "begin");
             // Alternate drawing order: the near green triangle must remain visible.
@@ -105,6 +133,8 @@ int wmain(int argc, wchar_t** argv) {
                 throw std::runtime_error("Depth visibility check failed");
             }
         }
+        checked(device->SetTexture(0, nullptr), "texture_final_unbind");
+        std::cout << "TEXTURE_LIFECYCLE_PASS uploads=6 binds=120 format=A1R5G5B5" << std::endl;
         std::cout << "BACKEND_MODULES d3d11_loaded=" << (GetModuleHandleW(L"d3d11.dll") ? "true" : "false")
                   << " d3d12_loaded=" << (GetModuleHandleW(L"d3d12.dll") ? "true" : "false") << std::endl;
         std::cout << "GRAPHICS_PROBE_PASS frames=120 depth=16 near_visible=120 display_mode_changed=false game_started=false" << std::endl;
@@ -113,6 +143,7 @@ int wmain(int argc, wchar_t** argv) {
         std::cerr << "GRAPHICS_PROBE_ERROR " << e.what() << std::endl;
     }
     if (device) device->Release();
+    if (texture) texture->Release();
     if (depth) depth->Release();
     if (target) target->Release();
     if (d3d) d3d->Release();
