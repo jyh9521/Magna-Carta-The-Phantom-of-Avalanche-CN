@@ -168,6 +168,64 @@
       ],
       "source_sha256": "ac34a9ff8d1a0a9ea7197192f0d2639dfc84bb3aec911e7844ea11c2cd61be2e",
       "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0142.fpb:text:12:12",
+        "Fpb/0171.fpb:text:0:0"
+      ],
+      "source_sha256": "486adaad571d21fde248a864414c41231f9d344a3f000e08c370b76d1744a2fd",
+      "evidence": "0142/0171 contain the same farewell memory speech; raw bytes reviewed identical; keep both records"
+    },
+    {
+      "ids": [
+        "Fpb/0142.fpb:text:13:13",
+        "Fpb/0171.fpb:text:1:1"
+      ],
+      "source_sha256": "67914cae6c9e05f2671012b24ab1bd6b909ae9dc922aad3086289c7e90703047",
+      "evidence": "0142/0171 contain the same farewell memory speech; raw bytes reviewed identical; keep both records"
+    },
+    {
+      "ids": [
+        "Fpb/0142.fpb:text:14:14",
+        "Fpb/0171.fpb:text:2:2"
+      ],
+      "source_sha256": "dee850cb23c0186c03b302a0c4b2727b0aae693ec6b604068056cb07539a1f9e",
+      "evidence": "0142/0171 contain the same farewell memory speech; raw bytes reviewed identical; keep both records"
+    },
+    {
+      "ids": [
+        "Fpb/0142.fpb:text:15:15",
+        "Fpb/0171.fpb:text:3:3"
+      ],
+      "source_sha256": "ffdff2ef5f8f40b76d9590f068c12c828afaa7baccd50c06ba82b5e35ca5f907",
+      "evidence": "0142/0171 contain the same farewell memory speech; raw bytes reviewed identical; keep both records"
+    },
+    {
+      "ids": [
+        "Fpb/0142.fpb:text:16:16",
+        "Fpb/0171.fpb:text:4:4"
+      ],
+      "source_sha256": "736db6b46c15ad3d41901c40ba2b8dc13db6b641e719ef84d852a9af91d2bc33",
+      "evidence": "0142/0171 contain the same farewell memory speech; raw bytes reviewed identical; keep both records"
+    },
+    {
+      "ids": [
+        "Fpb/0142.fpb:text:18:18",
+        "Fpb/0171.fpb:text:6:6"
+      ],
+      "source_sha256": "c1ae87a8b3a0454075b3bcba740b3503180adb70b62b73a2df479578f919296e",
+      "evidence": "0142/0171 contain the same farewell memory speech; raw bytes reviewed identical; keep both records"
+    },
+    {
+      "ids": [
+        "Fpb/0137.fpb:text:22:22",
+        "Fpb/0137.fpb:text:28:28",
+        "Fpb/0177.fpb:text:0:0",
+        "Fpb/0177.fpb:text:1:1"
+      ],
+      "source_sha256": "11d56bd30e28dfef1330a00cfcb6d77cd61cd2ecf0e9730a0fa87924b1dbda88",
+      "evidence": "0137/0177 repeat the same Adora reunion speech including recalled variants; raw bytes reviewed identical; IDs remain separate"
     }
   ]
 }

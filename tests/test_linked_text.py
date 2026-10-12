@@ -1,5 +1,6 @@
 import copy
 import hashlib
+import json
 import sys
 from pathlib import Path
 import unittest
@@ -10,6 +11,18 @@ from translation_data import linked_conflicts,validate
 
 
 class LinkedTextTests(unittest.TestCase):
+    def test_committed_link_groups_match_source_digests_and_targets(self):
+        root=Path(__file__).resolve().parents[1]
+        links=json.loads((root/'locales/zh-CN/linked-text.json').read_text('utf8'))
+        targets={r['id']:r for p in (root/'locales/zh-CN/text').glob('*.json')
+                 for r in json.loads(p.read_text('utf8'))}
+        seen=set()
+        for group in links['groups']:
+            self.assertTrue(group['evidence'])
+            self.assertTrue(seen.isdisjoint(group['ids']));seen.update(group['ids'])
+            self.assertEqual({targets[key]['source_sha256'] for key in group['ids']},{group['source_sha256']})
+            self.assertEqual(len({targets[key]['target'] for key in group['ids']}),1)
+
     def setUp(self):
         self.catalog=[text_row(f'Fpb/{i}.fpb',0,0,'text',20,b'abc') for i in (0,1)]
         self.targets=[dict(id=r['id'],state='translated',target='相同译文',source_sha256=hashlib.sha256(b'abc').hexdigest()) for r in self.catalog]
