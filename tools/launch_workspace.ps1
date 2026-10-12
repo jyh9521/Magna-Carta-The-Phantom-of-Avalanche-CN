@@ -3,7 +3,8 @@ param(
     [string]$Workspace = '',
     [string]$Profile = '',
     [int]$Timeout = 0,
-    [switch]$CaptureException
+    [switch]$CaptureException,
+    [switch]$TextureLifetime
 )
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
@@ -37,6 +38,7 @@ $arguments = @(
 )
 if ($Timeout -gt 0) { $arguments += @('--timeout', $Timeout) }
 if ($CaptureException) { $arguments += '--capture-exception' }
+if ($TextureLifetime) { $arguments += '--texture-lifetime' }
 $process = Start-Process -FilePath $launcher -ArgumentList ($arguments -join ' ') -WorkingDirectory $root `
     -WindowStyle Hidden -RedirectStandardOutput (Join-Path $output 'stdout.log') `
     -RedirectStandardError (Join-Path $output 'stderr.log') -PassThru

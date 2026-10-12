@@ -1,11 +1,14 @@
 #include <windows.h>
 #include <cstring>
 #include <cwchar>
+#include "texture_lifetime.h"
 
 namespace {
 wchar_t session[512]{};
 wchar_t logPath[32768]{};
 wchar_t captureHelper[32768]{};
+bool textureLifetime = false;
+wchar_t textureDriverPath[32768]{};
 using MessageFunction = int(WINAPI*)(HWND, LPCSTR, LPCSTR, UINT);
 MessageFunction originalExceptionMessage = MessageBoxA;
 constexpr char gameKey[] = "SOFTWARE\\Softmax\\MagnaCarta";
@@ -117,6 +120,11 @@ void patch(HMODULE module) {
     if (!GetModuleFileNameW(module, path, 32768)) return;
     const wchar_t* base = wcsrchr(path, L'\\');
     base = base ? base + 1 : path;
+    if (textureLifetime && !_wcsicmp(base, L"AsrD3DDrv.dll")) {
+        bool matched = textureDriverPath[0] && !_wcsicmp(path, textureDriverPath);
+        trace(matched && installTextureLifetime(module, trace) ? L"TEXTURE_LIFETIME_READY" : L"TEXTURE_LIFETIME_REJECTED");
+        return;
+    }
     bool exceptionModule = captureHelper[0] && !_wcsicmp(base, L"Core.dll");
     bool allowed = module == GetModuleHandleW(nullptr) ||
         !_wcsicmp(base, L"MCAlpha.dll") || !_wcsicmp(base, L"MCSetup.exe") ||
@@ -174,6 +182,9 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) {
         constexpr wchar_t prefix[] = L"Software\\MagnaCartaWorkspace\\Sessions\\";
         if (wcsncmp(session, prefix, wcslen(prefix))) return FALSE;
         GetEnvironmentVariableW(L"MC_CAPTURE_HELPER", captureHelper, 32768);
+        wchar_t option[8]{};
+        textureLifetime = GetEnvironmentVariableW(L"MC_TEXTURE_LIFETIME", option, 8) && !wcscmp(option, L"1");
+        GetEnvironmentVariableW(L"MC_TEXTURE_DRIVER", textureDriverPath, 32768);
         patch(GetModuleHandleW(nullptr));
         trace(L"PROFILE_ATTACHED");
     }

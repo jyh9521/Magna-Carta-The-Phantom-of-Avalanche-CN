@@ -53,3 +53,7 @@ python tools/inspect_minidump.py --dump LOCAL_FULL_DUMP --report build/full-cras
 已完成非交互测试：50 项单元测试、8 项注册表隔离检查通过；自建异常样本的完整堆标记与首次读取0x78异常均恢复成功；模拟对话框返回42保持，三个目标/输出守卫通过，无可见窗口、无游戏启动。默认和启用模式的实际游戏表现仍分别待验收。
 测试用 Core.dll 来自 `capture_core_fixture.cpp`，只用于构建目录中的模拟调用，不能复制到任何游戏目录。
 API 依据：[Microsoft MiniDumpWriteDump](https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump)，采用外部进程采集，避免在故障进程中直接执行转储写入。
+
+## 完整游戏现场已采集
+
+PID 11760 的完整取证成功，已恢复首次读取 `0xC` 的异常和设备旧绑定对象字段。针对删除前解绑的实现、版本守卫和待验收范围见 [纹理生命周期候选](TEXTURE_LIFETIME_CANDIDATE.md)。取证工具可用与候选修复生效分别验收。

@@ -153,11 +153,12 @@ int wmain(int argc, wchar_t** argv) {
             return 0;
         }
         fs::path workspace, shim, setting, log;
-        bool fixture = false, captureException = false; DWORD seconds = 0;
+        bool fixture = false, captureException = false, textureLifetime = false; DWORD seconds = 0;
         for (int i = 1; i < argc; ++i) {
             std::wstring arg = argv[i];
             if (arg == L"--fixture") fixture = true;
             else if (arg == L"--capture-exception") captureException = true;
+            else if (arg == L"--texture-lifetime") textureLifetime = true;
             else if (i + 1 < argc && arg == L"--workspace") workspace = fs::canonical(argv[++i]);
             else if (i + 1 < argc && arg == L"--shim") shim = fs::canonical(argv[++i]);
             else if (i + 1 < argc && arg == L"--profile") setting = fs::canonical(argv[++i]);
@@ -185,6 +186,10 @@ int wmain(int argc, wchar_t** argv) {
             "Workspace path is not supported by the active ANSI code page");
         fs::create_directories(log.parent_path());
         fs::path captureHelper = shim.parent_path() / L"capture_helper.exe";
+        if (textureLifetime) {
+            require(!fixture, "Texture lifetime is not a registry fixture option");
+            require(sha256(workspace / L"Drv" / L"AsrD3DDrv.dll") == "27db21dee7dde8ca3463e11fab57cc0b7cf6a7ed3338c950b6b1181eed7959ed", "Unsupported graphics driver");
+        }
         if (captureException) {
             require(!fixture, "Exception capture is not a registry fixture option");
             require(sha256(workspace / L"Core.dll") == "72c91c8102ee268ef491c41b56180babca90760df31a00075f63aed018d62571", "Unsupported exception module");
@@ -194,6 +199,9 @@ int wmain(int argc, wchar_t** argv) {
         SetEnvironmentVariableW(L"MC_WORKSPACE_SESSION", session.path.c_str());
         SetEnvironmentVariableW(L"MC_WORKSPACE_LOG", log.c_str());
         SetEnvironmentVariableW(L"MC_CAPTURE_HELPER", captureException ? captureHelper.c_str() : nullptr);
+        SetEnvironmentVariableW(L"MC_TEXTURE_LIFETIME", textureLifetime ? L"1" : nullptr);
+        auto textureDriver = (workspace / L"Drv" / L"AsrD3DDrv.dll").wstring();
+        SetEnvironmentVariableW(L"MC_TEXTURE_DRIVER", textureLifetime ? textureDriver.c_str() : nullptr);
         if (captureException) std::cout << "EXCEPTION_CAPTURE_ENABLED" << std::endl;
         if (fixture) SetEnvironmentVariableW(L"MC_PROBE_EXPECT_DIRECTORY", workspace.c_str());
         std::wstring command = L"\"" + exe.wstring() + L"\"" + (fixture ? L" --write-session" : L"");
