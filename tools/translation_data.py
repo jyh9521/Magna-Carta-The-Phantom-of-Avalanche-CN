@@ -22,7 +22,25 @@ def load_targets(paths):
     return result
 
 
-def validate(catalog, targets, terms=None, mapping=None, require_complete=False):
+def linked_conflicts(catalog, targets, links):
+    if not isinstance(links,dict) or links.get('schema')!=1 or not isinstance(links.get('groups'),list):
+        raise ValueError('invalid linked text schema')
+    source={r['id']:r for r in catalog};target={r['id']:r for r in targets};seen=set();errors=[]
+    for group in links['groups']:
+        ids=group.get('ids')
+        if (not isinstance(ids,list) or len(ids)<2 or len(set(ids))!=len(ids)
+                or not group.get('evidence') or any(key in seen or key not in source for key in ids)):
+            raise ValueError('invalid, overlapping or undocumented linked text group')
+        seen.update(ids)
+        if any(source_digest(source[key])!=group.get('source_sha256') for key in ids):
+            raise ValueError('linked source text has drifted')
+        supplied=[target[key] for key in ids if key in target]
+        if len(supplied)>1 and len({(r.get('state')=='preserved',r.get('target')) for r in supplied})!=1:
+            errors.append(dict(kind='linked_translation_conflict',ids=ids))
+    return errors
+
+
+def validate(catalog, targets, terms=None, mapping=None, require_complete=False, links=None):
     originals={row['id']:row for row in catalog}
     if len(originals)!=len(catalog):raise ValueError('duplicate source catalog ID')
     for row in catalog:
@@ -60,6 +78,7 @@ def validate(catalog, targets, terms=None, mapping=None, require_complete=False)
                 errors.append(dict(id=key,kind='encoding_or_glyph_error',detail=str(error)));continue
         translated+=1
     missing=[row['id'] for row in catalog if row['id'] not in seen]
+    if links is not None:errors.extend(linked_conflicts(catalog,targets,links))
     if require_complete and missing:
         errors.append(dict(kind='incomplete_catalog',missing_count=len(missing)))
     return dict(schema=1,source_fields=len(catalog),supplied_fields=len(targets),
@@ -71,7 +90,7 @@ def validate(catalog, targets, terms=None, mapping=None, require_complete=False)
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--catalog',type=Path,required=True)
     p.add_argument('--translations',type=Path,nargs='+',required=True)
-    p.add_argument('--terms',type=Path);p.add_argument('--font-overlay',type=Path)
+    p.add_argument('--terms',type=Path);p.add_argument('--font-overlay',type=Path);p.add_argument('--links',type=Path)
     p.add_argument('--require-complete',action='store_true');p.add_argument('--report',type=Path,required=True)
     a=p.parse_args()
     if a.report.exists() or a.report.resolve() in {x.resolve() for x in [a.catalog,*a.translations]}:
@@ -79,7 +98,8 @@ if __name__=='__main__':
     catalog=json.loads(a.catalog.read_text('utf8'));targets=load_targets(a.translations)
     terms=json.loads(a.terms.read_text('utf8')) if a.terms else None
     mapping=json.loads(a.font_overlay.read_text('utf8'))['mapping'] if a.font_overlay else None
-    result=validate(catalog,targets,terms,mapping,a.require_complete)
+    result=validate(catalog,targets,terms,mapping,a.require_complete,
+                    json.loads(a.links.read_text('utf8')) if a.links else None)
     a.report.parent.mkdir(parents=True,exist_ok=True)
     a.report.write_text(json.dumps(result,ensure_ascii=True,indent=2)+'\n',encoding='utf8',newline='\n')
     label='FAIL' if result['errors'] else 'PASS'

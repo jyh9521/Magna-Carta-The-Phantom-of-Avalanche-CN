@@ -12,6 +12,15 @@ from extract_text_catalog import text_row
 
 
 class CorpusTests(unittest.TestCase):
+    def test_linked_scene_conflict_rejected_before_output(self):
+        links=self.root/'links.json'
+        links.write_text(json.dumps(dict(schema=1,groups=[dict(ids=[r['id'] for r in self.sources],source_sha256=hashlib.sha256(b'abc').hexdigest(),evidence='owned alternate event fixture')])),encoding='utf8')
+        rows=json.loads(self.paths[1].read_text());rows[0]['target']='其他译文'
+        self.paths[1].write_text(json.dumps(rows))
+        with self.assertRaisesRegex(ValueError,'linked_translation_conflict'):
+            m.collect(self.catalog,self.paths,self.root/'linked-conflict',links=links)
+        self.assertFalse((self.root/'linked-conflict').exists())
+
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
         self.root=Path(self.tmp.name);self.catalog=self.root/'catalog.json'

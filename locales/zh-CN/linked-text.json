@@ -1,0 +1,173 @@
+{
+  "schema": 1,
+  "groups": [
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:10:10",
+        "Fpb/0112.fpb:text:0:0"
+      ],
+      "source_sha256": "99acd2732599c41e0ecf2b2c334028ae42d6588bc9f7639e794b026ec209858f",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:11:11",
+        "Fpb/0112.fpb:text:1:1"
+      ],
+      "source_sha256": "d51a16a5a49efbcf260529bc5632cd19024d6ca940793288544a85c7954159ab",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:12:12",
+        "Fpb/0112.fpb:text:2:2"
+      ],
+      "source_sha256": "efbb0b661630548a0d843803c575fc95882a478ca8acd6a15959bc6ad363a073",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:13:13",
+        "Fpb/0112.fpb:text:3:3"
+      ],
+      "source_sha256": "35f451bba294a6ca5adeb247b623e1456f806e40244b42eeee80757fafb0041a",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:14:14",
+        "Fpb/0112.fpb:text:4:4"
+      ],
+      "source_sha256": "3fc94fe5a78d01a61ac68c4d2ae13336450667065abba18ef6ea3891439c99e6",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:15:15",
+        "Fpb/0112.fpb:text:5:5"
+      ],
+      "source_sha256": "18409fc1b88d4491daccc24f0219fe47980b08aa26b60c740d3ba2dc1582e0f7",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:16:16",
+        "Fpb/0112.fpb:text:6:6"
+      ],
+      "source_sha256": "a16adca2ed0783b8f39030a2b3dd84a4ece022ec89b352466d4ab668a9c4cc4b",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:17:17",
+        "Fpb/0112.fpb:text:7:7"
+      ],
+      "source_sha256": "2664ae1ede1ced5eb022fa846d2ae27487656c9ae657d3abbd869f2144f32ede",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:20:20",
+        "Fpb/0112.fpb:text:10:10"
+      ],
+      "source_sha256": "2dc5ba0e6952004111d905164222c7f489b057814da653ca25a64e2443ae3d85",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:21:21",
+        "Fpb/0112.fpb:text:11:11"
+      ],
+      "source_sha256": "2ad5d869db0eaebc2eee4c2cbafe15cdfe400d76e0bdc2c4baabe9d7b3801bde",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:22:22",
+        "Fpb/0112.fpb:text:12:12"
+      ],
+      "source_sha256": "1f6adbed440080f7e3233e7a1770f46e21d35d8c817fa2d244f381754f1109b8",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:0:0",
+        "Fpb/0112.fpb:text:13:13"
+      ],
+      "source_sha256": "f420a427cb74cac9b36483b83c1381f50034016afe303fda8aa897354893611a",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:1:1",
+        "Fpb/0112.fpb:text:14:14"
+      ],
+      "source_sha256": "d311e0c830010d7d4c3853ab9033b1bfb41362b9e7debbf81f0a5e06041b4b08",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:2:2",
+        "Fpb/0112.fpb:text:15:15"
+      ],
+      "source_sha256": "a635887116b68ebe017f42ee4c8735cab823eeac3dd0f1c77c6574016eff258b",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:3:3",
+        "Fpb/0112.fpb:text:16:16"
+      ],
+      "source_sha256": "9871d153249ec26799b1ad0199648c8467616337cd2e820d21911cff744b2019",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:4:4",
+        "Fpb/0112.fpb:text:17:17"
+      ],
+      "source_sha256": "2c030b2758eeede0a12a87b5664dc4558858475256c9c694839f7eb11b9eb855",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:5:5",
+        "Fpb/0112.fpb:text:18:18"
+      ],
+      "source_sha256": "041f2118643c509a54a2ea41ad21172cafd44ed59a48aeda136f203491089a61",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:6:6",
+        "Fpb/0112.fpb:text:19:19"
+      ],
+      "source_sha256": "223ff82d998fff9be6d941a6d8d7cb908d45208a90d5de97fcd2fae614296bb2",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:7:7",
+        "Fpb/0112.fpb:text:20:20"
+      ],
+      "source_sha256": "0f505e58ca44eeded3e55fb0dbc527dcb649ddc24323dd8da110700b6aebfdba",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:8:8",
+        "Fpb/0112.fpb:text:21:21"
+      ],
+      "source_sha256": "82083efa5d61ae11c0e4b1a7475c596fa1b2bd6580ed59688e8be573aebb26e9",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    },
+    {
+      "ids": [
+        "Fpb/0111.fpb:text:9:9",
+        "Fpb/0112.fpb:text:22:22"
+      ],
+      "source_sha256": "ac34a9ff8d1a0a9ea7197192f0d2639dfc84bb3aec911e7844ea11c2cd61be2e",
+      "evidence": "0111/0112 alternate event records contain the same scene speech; raw source bytes identical; keep separate IDs"
+    }
+  ]
+}

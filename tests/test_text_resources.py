@@ -17,6 +17,24 @@ from test_glyph_probe import inputs
 
 
 class TextResourceTests(unittest.TestCase):
+    def test_linked_scene_conflict_rejected_before_output(self):
+        self.original=rebuild([(7,'앞'.encode('cp949')),(8,'앞'.encode('cp949'))])
+        (self.source/self.resource).write_bytes(self.original)
+        second=text_row(self.resource,1,8,'text',32,'앞'.encode('cp949'))
+        self.catalog.append(second)
+        self.targets.append(dict(id=second['id'],source_sha256=source_digest(second),target='前文!',state='translated'))
+        self.coverage[0].update(sha256=m.digest(self.original),size=len(self.original))
+        (self.package/'overlay.json').write_text(json.dumps(self.font_state),encoding='utf8')
+        for name,data in [('catalog',self.catalog),('coverage',self.coverage),('targets',self.targets)]:
+            (self.root/f'{name}.json').write_text(json.dumps(data),encoding='utf8')
+        links=self.root/'links.json'
+        links.write_text(json.dumps(dict(schema=1,groups=[dict(ids=[r['id'] for r in self.catalog],source_sha256=source_digest(second),evidence='owned alternate event fixture')])),encoding='utf8')
+        output=self.root/'linked-conflict'
+        with self.assertRaisesRegex(ValueError,'linked_translation_conflict'):
+            m.build(self.source,self.root/'catalog.json',self.root/'coverage.json',
+                    [self.root/'targets.json'],self.package,output,links_path=links)
+        self.assertFalse(output.exists())
+
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
         self.root=Path(self.tmp.name);self.source=self.root/'game';(self.source/'Fpb').mkdir(parents=True)

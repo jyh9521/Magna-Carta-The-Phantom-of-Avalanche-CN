@@ -50,10 +50,10 @@ Win32 构建、配置隔离测试与运行入口见 [副本启动隔离](docs/RU
 完整原始catalog和coverage由只读提取生成，实际游戏资源不进入仓库。`TARGET_FILES`为UTF-8源绑定译文文件列表，收集工具按稳定ID生成字库输入；字库命令读取文件，不将全文放入命令行。
 
 ```powershell
-python tools/translation_data.py --catalog CATALOG --translations TARGET_FILES --terms locales/zh-CN/terms.json --require-complete --report NEW_REPORT
-python tools/collect_translation_corpus.py --catalog CATALOG --translations TARGET_FILES --terms locales/zh-CN/terms.json --output NEW_CORPUS_PACKAGE
+python tools/translation_data.py --catalog CATALOG --translations TARGET_FILES --terms locales/zh-CN/terms.json --links locales/zh-CN/linked-text.json --require-complete --report NEW_REPORT
+python tools/collect_translation_corpus.py --catalog CATALOG --translations TARGET_FILES --terms locales/zh-CN/terms.json --links locales/zh-CN/linked-text.json --output NEW_CORPUS_PACKAGE
 python tools/build_font_overlay.py --source SOURCE_GAME/Font --font OUTLINE_FONT --font-sha256 LOCKED_FONT_SHA --translations NEW_CORPUS_PACKAGE/corpus.json --output NEW_FONT_PACKAGE
-python tools/build_text_resources.py --source SOURCE_GAME --catalog CATALOG --coverage COVERAGE --translations TARGET_FILES --font-package NEW_FONT_PACKAGE --terms locales/zh-CN/terms.json --output NEW_RESOURCE_PACKAGE
+python tools/build_text_resources.py --source SOURCE_GAME --catalog CATALOG --coverage COVERAGE --translations TARGET_FILES --font-package NEW_FONT_PACKAGE --terms locales/zh-CN/terms.json --links locales/zh-CN/linked-text.json --output NEW_RESOURCE_PACKAGE
 ```
 
 各占位路径指实际独立输入/输出。源游戏须匹配提取哈希，轮廓字体须匹配来源锁。输出目录必须不存在，字体包与资源输出分离。局部研究可显式追加`--allow-partial`，不得将该产物当作全文发布或直接覆盖运行副本。FPB控制标记、记录ID及数值属性不翻译；当前工具不支持ITM、ABI、SGI、CHA或图片写入。详见[全文流程](docs/FULL_TRANSLATION_PIPELINE.md)。
