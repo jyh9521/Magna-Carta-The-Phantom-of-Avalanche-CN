@@ -4193,6 +4193,25 @@
       ],
       "evidence_level": "source_context_reviewed_relationship_not_confirmed",
       "wording_decision": "用途或身份仍有疑点，保持建议译名"
+    },
+    {
+      "id": "concept-0111",
+      "source": "아이젠",
+      "target": "艾森",
+      "english_reference": null,
+      "category": "人物本名",
+      "status": "待复核",
+      "translation_state": "approved",
+      "meaning": "0230本名回忆与0231菲莉西亚对乔克的重逢称呼语境；本名与乔克称号分别保留，不自动修改内部角色ID；采用韩文音译，跨作品关系未确认。",
+      "relation": "pending",
+      "reference_candidates": [],
+      "resource_ids": [
+        "Fpb/0230.fpb:text:19:19",
+        "Fpb/0230.fpb:text:21:21",
+        "Fpb/0231.fpb:text:4:4"
+      ],
+      "evidence_level": "source_context_reviewed_relationship_not_confirmed",
+      "wording_decision": "韩文称呼音译；人物称号/本名分别记录，不推定参考作品同名人物"
     }
   ]
 }

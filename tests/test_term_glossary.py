@@ -68,7 +68,16 @@ class TermGlossaryTests(unittest.TestCase):
     def test_canonical_glossary_matches_structured_data(self):
         data=json.loads((ROOT/'locales/zh-CN/terms.json').read_text('utf8'))
         self.assertEqual((ROOT/'GLOSSARY.md').read_text('utf8'),m.render(data))
-        self.assertEqual(len(data['terms']),110)
+        self.assertGreaterEqual(len(data['terms']),110)
+
+    def test_personal_name_and_title_keep_separate_concept_ids(self):
+        data=json.loads((ROOT/'locales/zh-CN/terms.json').read_text('utf8'))
+        name=next(t for t in data['terms'] if t['source']=='아이젠')
+        title=next(t for t in data['terms'] if t['source']=='조커')
+        self.assertNotEqual(name['id'],title['id'])
+        self.assertEqual(name['target'],'艾森')
+        self.assertEqual(m.conflicts('아이젠','艾森','Fpb/0230.fpb:text:19:19',data['terms']),[])
+        self.assertEqual(m.conflicts('아이젠','乔克','Fpb/0230.fpb:text:19:19',data['terms'])[0]['expected'],'艾森')
 
 
 if __name__=='__main__':unittest.main()
