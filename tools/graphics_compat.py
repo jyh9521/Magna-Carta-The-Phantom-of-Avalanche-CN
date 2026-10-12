@@ -18,6 +18,7 @@ EXPECTED = {
     'Drv/AsrD3DDrv.dll': '27db21dee7dde8ca3463e11fab57cc0b7cf6a7ed3338c950b6b1181eed7959ed',
 }
 CONFIG = b'FullscreenMode = borderless\nDisplayAspectRatio = app\nResolutionScale = app\nLogLevel = info\n'
+PROFILES = {'standard': CONFIG, 'hal': CONFIG + b'SupportedDevices = hal\n'}
 CONFIG_NAME = 'DDrawCompat-MagnaCarta.ini'
 STATE_NAME = '.graphics-compat.json'
 LAYER_NAMES = {'ddraw.dll', 'd3d8.dll', 'd3d9.dll', 'dxgi.dll', 'opengl32.dll',
@@ -67,7 +68,9 @@ def package_dll(package):
     return dll
 
 
-def apply(workspace, allowed_root, dll, expected=EXPECTED):
+def apply(workspace, allowed_root, dll, expected=EXPECTED, profile='standard'):
+    if profile not in PROFILES:
+        raise ValueError('Unsupported graphics profile')
     workspace = workspace_path(workspace, allowed_root)
     validate_inputs(workspace, expected)
     if sha(dll) != DLL_SHA256:
@@ -77,8 +80,9 @@ def apply(workspace, allowed_root, dll, expected=EXPECTED):
             for path in folder.iterdir():
                 if path.name.lower() in LAYER_NAMES:
                     raise ValueError('Existing graphics layer or configuration: ' + path.name)
-    outputs = {'ddraw.dll': dll, CONFIG_NAME: CONFIG}
+    outputs = {'ddraw.dll': dll, CONFIG_NAME: PROFILES[profile]}
     state = {'schema': 1, 'layer': 'DDrawCompat', 'version': VERSION,
+             'profile': profile,
              'inputs': expected, 'outputs': {name: sha(data) for name, data in outputs.items()}}
     written = []
     try:
@@ -97,7 +101,10 @@ def apply(workspace, allowed_root, dll, expected=EXPECTED):
 def remove(workspace, allowed_root):
     workspace = workspace_path(workspace, allowed_root)
     state = json.loads((workspace / STATE_NAME).read_text(encoding='utf-8'))
-    expected_outputs = {'ddraw.dll': DLL_SHA256, CONFIG_NAME: sha(CONFIG)}
+    profile = state.get('profile', 'standard')
+    if profile not in PROFILES:
+        raise ValueError('Unsupported rollback profile')
+    expected_outputs = {'ddraw.dll': DLL_SHA256, CONFIG_NAME: sha(PROFILES[profile])}
     if (state.get('schema') != 1 or state.get('layer') != 'DDrawCompat'
             or state.get('version') != VERSION or state.get('outputs') != expected_outputs):
         raise ValueError('Unsupported rollback manifest')
@@ -116,6 +123,7 @@ if __name__ == '__main__':
     parser.add_argument('action', choices=['apply', 'remove'])
     parser.add_argument('--workspace', type=Path, required=True)
     parser.add_argument('--package', type=Path)
+    parser.add_argument('--profile', choices=PROFILES, default='standard')
     args = parser.parse_args()
     if os.name == 'nt':
         listing = subprocess.run([str(Path(os.environ['SystemRoot']) / 'System32/tasklist.exe'),
@@ -127,8 +135,8 @@ if __name__ == '__main__':
     if args.action == 'apply':
         if not args.package:
             parser.error('--package required for apply')
-        apply(args.workspace, root, package_dll(args.package))
-        print('GRAPHICS_APPLY_PASS layer=DDrawCompat version=v0.7.1 original_files_changed=0 game_started=false')
+        apply(args.workspace, root, package_dll(args.package), profile=args.profile)
+        print(f'GRAPHICS_APPLY_PASS layer=DDrawCompat version=v0.7.1 profile={args.profile} original_files_changed=0 game_started=false')
     else:
         count = remove(args.workspace, root)
         print(f'GRAPHICS_ROLLBACK_PASS removed={count} original_files_changed=0 game_started=false')

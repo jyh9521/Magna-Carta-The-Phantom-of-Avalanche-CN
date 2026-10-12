@@ -73,6 +73,18 @@ class GraphicsCompatTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             module.package_dll(package)
 
+    def test_hal_profile_roundtrip(self):
+        with patch.object(module, 'DLL_SHA256', module.sha(b'fixture-layer')):
+            module.apply(self.game, self.root, b'fixture-layer', self.expected, profile='hal')
+            self.assertEqual((self.game / module.CONFIG_NAME).read_bytes(), module.CONFIG + b'SupportedDevices = hal\n')
+            self.assertEqual(module.remove(self.game, self.root), 3)
+        self.assertEqual(self.original.read_bytes(), b'original')
+
+    def test_unknown_profile_rejected(self):
+        with self.assertRaises(ValueError):
+            module.apply(self.game, self.root, b'fixture-layer', self.expected, profile='unknown')
+        self.assertEqual(list(self.game.iterdir()), [self.original])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -17,6 +17,12 @@ void checked(HRESULT result, const char* stage) {
 struct Vertex { float x, y, z, rhw; DWORD color; };
 constexpr DWORD fvf = D3DFVF_XYZRHW | D3DFVF_DIFFUSE;
 DDPIXELFORMAT depthFormat{};
+unsigned halDevices = 0, tnlDevices = 0;
+HRESULT CALLBACK deviceEnum(char*, char*, D3DDEVICEDESC7* caps, void*) {
+    if (IsEqualGUID(caps->deviceGUID, IID_IDirect3DHALDevice)) ++halDevices;
+    if (IsEqualGUID(caps->deviceGUID, IID_IDirect3DTnLHalDevice)) ++tnlDevices;
+    return D3DENUMRET_OK;
+}
 HRESULT CALLBACK depthEnum(DDPIXELFORMAT* format, void*) {
     if (format->dwZBufferBitDepth == 16) {
         depthFormat = *format;
@@ -35,8 +41,10 @@ int wmain(int argc, wchar_t** argv) {
     HWND window = nullptr;
     int result = 1;
     try {
-        if (argc != 2 || !std::filesystem::path(argv[1]).is_absolute())
+        if ((argc != 2 && argc != 3) || !std::filesystem::path(argv[1]).is_absolute())
             throw std::runtime_error("Explicit absolute DLL path required");
+        bool expectHalOnly = argc == 3 && wcscmp(argv[2], L"--expect-hal-only") == 0;
+        if (argc == 3 && !expectHalOnly) throw std::runtime_error("Unknown probe option");
         module = LoadLibraryW(argv[1]);
         if (!module) throw std::runtime_error("DLL load failed");
         using Create = HRESULT(WINAPI*)(GUID*, void**, REFIID, IUnknown*);
@@ -48,6 +56,10 @@ int wmain(int argc, wchar_t** argv) {
         checked(create(nullptr, reinterpret_cast<void**>(&draw), IID_IDirectDraw7, nullptr), "create");
         checked(draw->SetCooperativeLevel(window, DDSCL_NORMAL), "cooperative");
         checked(draw->QueryInterface(IID_IDirect3D7, reinterpret_cast<void**>(&d3d)), "query_d3d7");
+        checked(d3d->EnumDevices(deviceEnum, nullptr), "device_enum");
+        std::cout << "DEVICE_ENUM hal=" << halDevices << " tnl=" << tnlDevices << std::endl;
+        if (expectHalOnly && (halDevices != 1 || tnlDevices != 0))
+            throw std::runtime_error("HAL-only device filter not effective");
         DDSURFACEDESC2 desc{}; desc.dwSize = sizeof(desc);
         desc.dwFlags = DDSD_CAPS | DDSD_WIDTH | DDSD_HEIGHT | DDSD_PIXELFORMAT;
         desc.dwWidth = 64; desc.dwHeight = 64;
@@ -104,6 +116,7 @@ int wmain(int argc, wchar_t** argv) {
     if (d3d) d3d->Release();
     if (draw) draw->Release();
     if (window) DestroyWindow(window);
-    if (module) FreeLibrary(module);
+    // Hook-based compatibility modules remain loaded until process termination.
+    // Explicit unloading can leave hooks targeting released code during teardown.
     return result;
 }
