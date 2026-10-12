@@ -20,6 +20,14 @@ if (Get-Process -Name MagnaCarta,MCSetup -ErrorAction SilentlyContinue) {
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss-fff'
 $output = Join-Path $root "build\runtime-launch\session-$stamp"
 New-Item -ItemType Directory -Path $output | Out-Null
+$graphicsInputs = @()
+foreach ($name in @('DDraw.dll','D3DImm.dll','dgVoodoo.conf','DDrawCompat-MagnaCarta.ini','.graphics-compat.json','.dgvoodoo-candidate.json')) {
+    $file = Join-Path $Workspace $name
+    if (Test-Path -LiteralPath $file -PathType Leaf) {
+        $graphicsInputs += @{ name = $name; sha256 = (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant() }
+    }
+}
+ConvertTo-Json -InputObject @($graphicsInputs) -Depth 4 | Set-Content -LiteralPath (Join-Path $output 'graphics-inputs.json') -Encoding UTF8
 $arguments = @(
     '--workspace', ('"' + (Resolve-Path -LiteralPath $Workspace).Path + '"'),
     '--shim', ('"' + $shim + '"'),
