@@ -26,11 +26,22 @@ class Dump:
         system, _ = self.stream(7, 2)
         if self.unpack('<H', system)[0] != 0:
             raise ValueError('Only x86 contexts supported')
-        at, size = self.stream(5, 4)
-        count = self.unpack('<I', at)[0]
-        if 4 + count * 16 > size:
-            raise ValueError('Truncated memory descriptors')
-        self.memory = [self.unpack('<QII', at + 4 + i * 16) for i in range(count)]
+        if 9 in self.streams:
+            at, size = self.stream(9, 16)
+            count, data_at = self.unpack('<QQ', at)
+            if 16 + count * 16 > size:
+                raise ValueError('Truncated full-memory descriptors')
+            self.memory = []
+            for i in range(count):
+                base, length = self.unpack('<QQ', at + 16 + i * 16)
+                self.memory.append((base, length, data_at))
+                data_at += length
+        else:
+            at, size = self.stream(5, 4)
+            count = self.unpack('<I', at)[0]
+            if 4 + count * 16 > size:
+                raise ValueError('Truncated memory descriptors')
+            self.memory = [self.unpack('<QII', at + 4 + i * 16) for i in range(count)]
         for _, size, offset in self.memory:
             self.take(offset, size)
         at, size = self.stream(4, 4)
@@ -90,6 +101,21 @@ class Dump:
         return rows
 
     def inspect(self):
+        if 6 not in self.streams:
+            at, size = self.stream(3, 4)
+            count = self.unpack('<I', at)[0]
+            if 4 + 48 * count > size:
+                raise ValueError('Truncated thread list')
+            threads = []
+            for i in range(count):
+                entry = at + 4 + 48 * i
+                thread = self.unpack('<I', entry)[0]
+                length, context = self.unpack('<II', entry + 40)
+                regs = self.registers(self.take(context, length))
+                threads.append({'thread': thread, 'registers': {n: hex(v) for n, v in regs.items()},
+                                'earlier_contexts': self.recover(regs)})
+            return {'recorded_exception': None, 'snapshot_threads': threads,
+                    'earlier_contexts': [dict(item, thread=t['thread']) for t in threads for item in t['earlier_contexts']]}
         at, _ = self.stream(6, 168)
         thread, code = self.unpack('<I4xI', at)
         address = self.unpack('<Q', at + 24)[0]
@@ -99,6 +125,11 @@ class Dump:
                   'recorded_location': self.location(address),
                   'recorded_registers': {n: hex(v) for n, v in regs.items()},
                   'recorded_frame_chain': self.frames(regs['ebp']), 'earlier_contexts': []}
+        result['earlier_contexts'] = self.recover(regs)
+        return result
+
+    def recover(self, regs):
+        rows = []
         # Recover an exception record followed by an x86 CONTEXT preserved on
         # the recorded thread's stack. Do not scan unrelated heaps or emit text.
         for base, length, offset in self.memory:
@@ -116,13 +147,13 @@ class Dump:
                 prior = self.registers(context)
                 if prior['eip'] != values[3] or not base <= prior['esp'] < base + length:
                     continue
-                result['earlier_contexts'].append({
+                rows.append({
                     'record_address': hex(base + pos), 'exception': '0xc0000005',
                     'fault_location': self.location(prior['eip']),
                     'access': 'read' if values[5] == 0 else 'other', 'access_address': hex(values[6]),
                     'registers': {n: hex(v) for n, v in prior.items()},
                     'frame_chain': self.frames(prior['ebp'])})
-        return result
+        return rows
 
 
 if __name__ == '__main__':

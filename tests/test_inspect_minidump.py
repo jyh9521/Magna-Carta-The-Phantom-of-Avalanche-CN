@@ -58,3 +58,22 @@ class MinidumpTests(unittest.TestCase):
         data = fixture()
         struct.pack_into('<I', data, 8, 0xffffffff)
         with self.assertRaises(ValueError): module.Dump(data)
+
+    def test_full_memory_snapshot_without_exception_stream(self):
+        data = fixture()
+        struct.pack_into('<III', data, 32 + 12 * 2, 9, 32, 0x300)
+        struct.pack_into('<QQQQ', data, 0x300, 1, 0x800, 0x10000, 0x800)
+        struct.pack_into('<III', data, 32 + 12 * 3, 3, 52, 0x340)
+        struct.pack_into('<I', data, 0x340, 1)
+        struct.pack_into('<I', data, 0x344, 7)
+        struct.pack_into('<II', data, 0x344 + 40, 716, 0x500)
+        result = module.Dump(data).inspect()
+        self.assertIsNone(result['recorded_exception'])
+        self.assertEqual(result['earlier_contexts'][0]['thread'], 7)
+        self.assertEqual(result['earlier_contexts'][0]['access_address'], '0x78')
+
+    def test_invalid_full_memory_descriptor_rejected(self):
+        data = fixture()
+        struct.pack_into('<III', data, 32 + 12 * 2, 9, 32, 0x300)
+        struct.pack_into('<QQQQ', data, 0x300, 1, 0x800, 0x10000, 0x10000)
+        with self.assertRaises(ValueError): module.Dump(data)

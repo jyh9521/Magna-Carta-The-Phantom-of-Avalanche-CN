@@ -35,3 +35,21 @@ python tools/inspect_minidump.py --dump LOCAL_DUMP --report build/crash-analysis
 
 独立 graphics_probe 补充 A1R5G5B5 托管纹理创建、上传、绑定、解绑、释放和重建，覆盖 6 次纹理重建与 120 次绑定；增加 T&L 设备选项 `--device-tnl`。原生 HAL、T&L 与本地 D3D11 探针仍可完成该有限用例，尚未复现游戏对象故障，不将结果当作读档修复。
 当前副本保留可读档的无图形层基线。本轮没有启动游戏，也没有改写游戏或系统 DLL；没有新的修复候选需要重复测试。
+
+## 完整对象取证：已实现，游戏现场待采集
+
+现有小转储没有设备与纹理堆对象，故新增独立 `capture_helper.exe`。显式 `--capture-exception` 诊断模式在锁定 Core.dll 的 Exception 对话框调用前，委托独立进程写完整内存转储，随后调用原对话框函数；不吞掉异常、不跳过绘制、不更改原函数返回值，也不修改保护模块。
+常规入口默认关闭取证模式。启动器同时验证游戏、引擎及 Core.dll 哈希；helper 限定 build/ 中的游戏或自身故障样本，输出须为 build/ 中的新文件，不结束目标进程。完整转储只保存在本地忽略目录，不提交、不作为发行内容。
+Core.dll 锁定 SHA-256：`72c91c8102ee268ef491c41b56180babca90760df31a00075f63aed018d62571`。
+
+```powershell
+& tools/launch_workspace.ps1 -Workspace build/runtime/diagnostic-game -CaptureException
+python tools/inspect_minidump.py --dump LOCAL_FULL_DUMP --report build/full-crash-analysis.json
+```
+
+独立诊断副本从当前可读档工作副本复制并逐文件校验；仅诊断副本加入原失败的 DDrawCompat standard 配置，以重现已知异常并采集对象。正常工作副本不重新启用图形层；两份存档、设置与后续写入分别隔离。该配置是取证重现，不是重新推荐的修复方案。
+诊断入口由测试确认后手动启动，本轮没有运行游戏。读档如触发锁定的异常对话框，日志记录 `ENGINE_FULL_CAPTURE_PASS`，并在会话目录生成 `engine-PID-TICK.dmp`。没有该事件不报告成功捕获；其他错误或直接终止仍需另行分析。
+
+已完成非交互测试：50 项单元测试、8 项注册表隔离检查通过；自建异常样本的完整堆标记与首次读取0x78异常均恢复成功；模拟对话框返回42保持，三个目标/输出守卫通过，无可见窗口、无游戏启动。默认和启用模式的实际游戏表现仍分别待验收。
+测试用 Core.dll 来自 `capture_core_fixture.cpp`，只用于构建目录中的模拟调用，不能复制到任何游戏目录。
+API 依据：[Microsoft MiniDumpWriteDump](https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump)，采用外部进程采集，避免在故障进程中直接执行转储写入。

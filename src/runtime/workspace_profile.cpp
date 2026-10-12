@@ -5,6 +5,9 @@
 namespace {
 wchar_t session[512]{};
 wchar_t logPath[32768]{};
+wchar_t captureHelper[32768]{};
+using MessageFunction = int(WINAPI*)(HWND, LPCSTR, LPCSTR, UINT);
+MessageFunction originalExceptionMessage = MessageBoxA;
 constexpr char gameKey[] = "SOFTWARE\\Softmax\\MagnaCarta";
 
 void trace(const wchar_t* message) {
@@ -59,8 +62,33 @@ LSTATUS WINAPI createKey(HKEY root, LPCSTR key, DWORD reserved, LPSTR cls, DWORD
 }
 
 void patch(HMODULE module);
+int WINAPI exceptionMessage(HWND owner, LPCSTR text, LPCSTR caption, UINT type) {
+    if (caption && !strcmp(caption, "Exception") && captureHelper[0]) {
+        wchar_t output[32768]{};
+        wcscpy_s(output, logPath);
+        wchar_t* slash = wcsrchr(output, L'\\');
+        if (slash) {
+            *slash = 0;
+            wchar_t dump[32768]{};
+            swprintf_s(dump, L"%s\\engine-%lu-%llu.dmp", output, GetCurrentProcessId(), GetTickCount64());
+            wchar_t command[65536]{};
+            swprintf_s(command, L"\"%s\" --pid %lu --output \"%s\"", captureHelper, GetCurrentProcessId(), dump);
+            STARTUPINFOW start{}; start.cb = sizeof(start);
+            PROCESS_INFORMATION info{};
+            if (CreateProcessW(captureHelper, command, nullptr, nullptr, FALSE, CREATE_NO_WINDOW,
+                               nullptr, nullptr, &start, &info)) {
+                DWORD waited = WaitForSingleObject(info.hProcess, 30000), code = 1;
+                if (waited == WAIT_OBJECT_0) GetExitCodeProcess(info.hProcess, &code);
+                trace(waited == WAIT_OBJECT_0 && code == 0 ? L"ENGINE_FULL_CAPTURE_PASS" : L"ENGINE_FULL_CAPTURE_FAILED");
+                CloseHandle(info.hThread); CloseHandle(info.hProcess);
+            } else trace(L"ENGINE_FULL_CAPTURE_START_FAILED");
+        }
+    }
+    // Preserve the original error dialog, return value and termination behavior.
+    return originalExceptionMessage(owner, text, caption, type);
+}
 void dependencies() {
-    const wchar_t* names[] = {L"MCAlpha.dll", L"Asura.dll", L"MCSetup.exe"};
+    const wchar_t* names[] = {L"MCAlpha.dll", L"Asura.dll", L"MCSetup.exe", L"Core.dll"};
     for (const wchar_t* name : names) {
         if (HMODULE module = GetModuleHandleW(name)) patch(module);
     }
@@ -89,9 +117,10 @@ void patch(HMODULE module) {
     if (!GetModuleFileNameW(module, path, 32768)) return;
     const wchar_t* base = wcsrchr(path, L'\\');
     base = base ? base + 1 : path;
+    bool exceptionModule = captureHelper[0] && !_wcsicmp(base, L"Core.dll");
     bool allowed = module == GetModuleHandleW(nullptr) ||
         !_wcsicmp(base, L"MCAlpha.dll") || !_wcsicmp(base, L"MCSetup.exe") ||
-        !_wcsicmp(base, L"Asura.dll");
+        !_wcsicmp(base, L"Asura.dll") || exceptionModule;
     if (!allowed) return;
     auto bytes = reinterpret_cast<BYTE*>(module);
     auto dos = reinterpret_cast<IMAGE_DOS_HEADER*>(bytes);
@@ -110,6 +139,11 @@ void patch(HMODULE module) {
             if (IMAGE_SNAP_BY_ORDINAL32(names->u1.Ordinal)) continue;
             auto name = reinterpret_cast<IMAGE_IMPORT_BY_NAME*>(bytes + names->u1.AddressOfData)->Name;
             void* replacement = nullptr;
+            if (exceptionModule) {
+                if (!strcmp(reinterpret_cast<char*>(name), "MessageBoxA") ||
+                    !strcmp(reinterpret_cast<char*>(name), "_MessageBoxA@16")) replacement = reinterpret_cast<void*>(&exceptionMessage);
+                else continue;
+            }
             if (!strcmp(reinterpret_cast<char*>(name), "LoadLibraryA")) replacement = reinterpret_cast<void*>(&loadA);
             if (!strcmp(reinterpret_cast<char*>(name), "LoadLibraryW")) replacement = reinterpret_cast<void*>(&loadW);
             if (!strcmp(reinterpret_cast<char*>(name), "RegOpenKeyExA")) replacement = reinterpret_cast<void*>(&openKey);
@@ -117,6 +151,7 @@ void patch(HMODULE module) {
             if (!replacement || slots->u1.Function == reinterpret_cast<DWORD>(replacement)) continue;
             DWORD previous;
             if (!VirtualProtect(&slots->u1.Function, sizeof(DWORD), PAGE_READWRITE, &previous)) continue;
+            if (exceptionModule) originalExceptionMessage = reinterpret_cast<MessageFunction>(slots->u1.Function);
             InterlockedExchange(reinterpret_cast<LONG*>(&slots->u1.Function), reinterpret_cast<LONG>(replacement));
             DWORD ignored;
             VirtualProtect(&slots->u1.Function, sizeof(DWORD), previous, &ignored);
@@ -138,6 +173,7 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) {
             !GetEnvironmentVariableW(L"MC_WORKSPACE_LOG", logPath, 32768)) return FALSE;
         constexpr wchar_t prefix[] = L"Software\\MagnaCartaWorkspace\\Sessions\\";
         if (wcsncmp(session, prefix, wcslen(prefix))) return FALSE;
+        GetEnvironmentVariableW(L"MC_CAPTURE_HELPER", captureHelper, 32768);
         patch(GetModuleHandleW(nullptr));
         trace(L"PROFILE_ATTACHED");
     }

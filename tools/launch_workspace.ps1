@@ -2,7 +2,8 @@
 param(
     [string]$Workspace = '',
     [string]$Profile = '',
-    [int]$Timeout = 0
+    [int]$Timeout = 0,
+    [switch]$CaptureException
 )
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
@@ -35,6 +36,7 @@ $arguments = @(
     '--log', ('"' + (Join-Path $output 'profile.log') + '"')
 )
 if ($Timeout -gt 0) { $arguments += @('--timeout', $Timeout) }
+if ($CaptureException) { $arguments += '--capture-exception' }
 $process = Start-Process -FilePath $launcher -ArgumentList ($arguments -join ' ') -WorkingDirectory $root `
     -WindowStyle Hidden -RedirectStandardOutput (Join-Path $output 'stdout.log') `
     -RedirectStandardError (Join-Path $output 'stderr.log') -PassThru
