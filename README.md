@@ -13,6 +13,7 @@
 - [技术说明](TECHNICAL.md)
 - [技术路线](docs/MODERNIZATION_ROADMAP.md)
 - [运行调查](docs/RUNTIME_RESEARCH.md)
+- [副本启动隔离](docs/RUNTIME_ISOLATION.md)
 - [验收清单](docs/RUNTIME_TESTING.md)
 - [构建说明](BUILDING.md)
 - [翻译规范](TRANSLATING.md)
