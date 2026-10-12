@@ -21,10 +21,11 @@ CONFIG = b'FullscreenMode = borderless\nDisplayAspectRatio = app\nResolutionScal
 PROFILES = {'standard': CONFIG, 'hal': CONFIG + b'SupportedDevices = hal\n'}
 CONFIG_NAME = 'DDrawCompat-MagnaCarta.ini'
 STATE_NAME = '.graphics-compat.json'
-LAYER_NAMES = {'ddraw.dll', 'd3d8.dll', 'd3d9.dll', 'dxgi.dll', 'opengl32.dll',
+LAYER_NAMES = {'ddraw.dll', 'd3dimm.dll', 'd3d8.dll', 'd3d9.dll', 'dxgi.dll', 'opengl32.dll',
                'glide.dll', 'glide2x.dll', 'glide3x.dll', 'dxwnd.dll',
                'dgvoodoo.conf', 'ddraw.ini', 'ddrawcompat.ini',
-               CONFIG_NAME.lower(), 'ddrawcompatoverlay-magnacarta.ini', STATE_NAME}
+               CONFIG_NAME.lower(), 'ddrawcompatoverlay-magnacarta.ini', STATE_NAME,
+               '.dgvoodoo-candidate.json'}
 
 
 def sha(data):
@@ -41,7 +42,7 @@ def workspace_path(workspace, allowed_root):
     workspace = workspace.resolve(strict=True)
     if workspace == root or not workspace.is_relative_to(root) or not workspace.is_dir():
         raise ValueError('Workspace must be below the isolated build root')
-    for relative in ['Drv', *EXPECTED, 'ddraw.dll', CONFIG_NAME, STATE_NAME]:
+    for relative in ['Drv', *EXPECTED, *LAYER_NAMES]:
         candidate = workspace / relative
         if candidate.is_symlink() or candidate.is_junction():
             raise ValueError('Linked input rejected')
@@ -118,6 +119,15 @@ def remove(workspace, allowed_root):
     return len(expected_outputs) + 1
 
 
+def ensure_idle():
+    if os.name == 'nt':
+        listing = subprocess.run([str(Path(os.environ['SystemRoot']) / 'System32/tasklist.exe'),
+                                  '/FO', 'CSV', '/NH'], capture_output=True, text=True, check=True)
+        active = {row[0].casefold() for row in csv.reader(io.StringIO(listing.stdout)) if row}
+        if active & {'magnacarta.exe', 'mcsetup.exe', 'workspace_launcher.exe'}:
+            raise ValueError('Close the game and launcher before changing the graphics layer')
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('action', choices=['apply', 'remove'])
@@ -125,12 +135,7 @@ if __name__ == '__main__':
     parser.add_argument('--package', type=Path)
     parser.add_argument('--profile', choices=PROFILES, default='standard')
     args = parser.parse_args()
-    if os.name == 'nt':
-        listing = subprocess.run([str(Path(os.environ['SystemRoot']) / 'System32/tasklist.exe'),
-                                  '/FO', 'CSV', '/NH'], capture_output=True, text=True, check=True)
-        active = {row[0].casefold() for row in csv.reader(io.StringIO(listing.stdout)) if row}
-        if active & {'magnacarta.exe', 'mcsetup.exe', 'workspace_launcher.exe'}:
-            raise ValueError('Close the game and launcher before changing the graphics layer')
+    ensure_idle()
     root = Path(__file__).resolve().parents[1] / 'build'
     if args.action == 'apply':
         if not args.package:

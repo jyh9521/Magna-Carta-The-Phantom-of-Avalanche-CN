@@ -8,4 +8,5 @@ dgVoodoo2 不作为开源组件描述，其作者条款单独适用；未经具�
 优先分发源码、译文、补丁和增量变换数据，不分发完整商业 EXE、DLL、档案、媒体或专有字体。
 参考术语表只读，继承译名记录来源和 commit。
 
-图形候选使用 DDrawCompat v0.7.1，固定源码 commit、0BSD 许可、发行资产 SHA-256 和使用范围见 docs/GRAPHICS_CANDIDATE.md。第三方 DLL 仅置于忽略的本地研究与运行副本目录，当前不加入仓库或玩家发行包。
+已撤回的图形候选使用 DDrawCompat v0.7.1，固定源码 commit、0BSD 许可、发行资产 SHA-256 和使用范围见 docs/GRAPHICS_CANDIDATE.md。第三方 DLL 仅置于忽略的本地研究与运行副本目录，当前不加入仓库或玩家发行包。
+后续独立试验使用 dgVoodoo2 2.87.5，作者专有条款、来源和固定哈希见 docs/D3D11_CANDIDATE.md；未纳入项目 MIT，也未作为通用多应用框架捆绑或公开发行。

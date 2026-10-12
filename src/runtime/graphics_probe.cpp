@@ -105,6 +105,8 @@ int wmain(int argc, wchar_t** argv) {
                 throw std::runtime_error("Depth visibility check failed");
             }
         }
+        std::cout << "BACKEND_MODULES d3d11_loaded=" << (GetModuleHandleW(L"d3d11.dll") ? "true" : "false")
+                  << " d3d12_loaded=" << (GetModuleHandleW(L"d3d12.dll") ? "true" : "false") << std::endl;
         std::cout << "GRAPHICS_PROBE_PASS frames=120 depth=16 near_visible=120 display_mode_changed=false game_started=false" << std::endl;
         result = 0;
     } catch (const std::exception& e) {
