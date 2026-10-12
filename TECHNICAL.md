@@ -52,3 +52,5 @@ P1 独立无边框候选和只读窗口遥测见 [BORDERLESS_UNPATCHED_TRIAL.md]
 activation 组合已实际完成四五次切换并正常退出，后续独立 [RENDER_SCALE_TRIAL.md](docs/RENDER_SCALE_TRIAL.md) 先验证整数倍渲染目标，保持已通过配置不变。退出竞争导致观察器未保存数据的问题已修复；旧会话缺失采样不重建。
 
 2 倍组合已实际反馈更清晰且退出码 0，31 个观察采样正常保存；后续 [RENDER_1080_TRIAL.md](docs/RENDER_1080_TRIAL.md) 核对固定上游缩放计算，预测 1440×1080 不作为实际测量。配置/白名单一致性加入测试，旧可用组合不覆盖。
+
+1080 行候选当前场景反馈无问题且退出码 0，接续 P0 [FONT_PIPELINE_RESEARCH.md](docs/FONT_PIPELINE_RESEARCH.md)。REA/Ghidra 已定位实际字体读取、字宽、固定编码索引及位图读取，六字库原样往返验证；简体中文显示尚未进行游戏验证。

@@ -15,3 +15,8 @@ BGR、FPB、ITM、SGI、ABI 为实际样本及上游工具的调查对象。FPB 
 - ITM、ABI、SGI 的单一样本满足 `8 + count*record_size`，record_size 分别为 264、344、164；数值验证不等于全部字段已理解。
 
 上游字段线索来自 Nejuf/magnacarta 固定 commit `9ce77cace0d717f5ad75bb2910517802e55932c8` 的提取/重建脚本；当前 Python 实现独立编写，并按实际样本验证。
+
+## Font DAT：MCAlpha 字库
+
+固定头 100 字节，byte42 非零表示随后包含 count 字节的逐槽 advance 表，再接 1-bit 位图区。height=u16@88、pitch=u8@90、count=u32@92、bitmap_size=u32@96，实际样本满足 bitmap_size=count×height×pitch。每槽逐行 LSB-first，Eng0/1 存 advance、Kor/Chi 不存。
+六个实际文件原样往返字节一致，未知头字段保留；尺寸、大小和槽边界不符拒绝。角色编码和固定索引常量必须一起核对，详见 [字体逆向](FONT_PIPELINE_RESEARCH.md)；该结构验证不是新字库游戏验收。
