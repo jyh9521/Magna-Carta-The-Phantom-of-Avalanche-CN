@@ -29,3 +29,5 @@ ORIGINAL_DIR 为只读来源路径；复制工具拒绝已有目标及嵌套源/
 ## 原生启动隔离工具
 
 Win32 构建、配置隔离测试与运行入口见 [副本启动隔离](docs/RUNTIME_ISOLATION.md)。该原生启动工具与前述只读调查命令分开：只读命令不启动进程，启动工具新建独立 HKCU 会话并启动副本，但不改写原安装登记或文件。
+
+同一 CMake 工程新增 `graphics_probe.exe`，接受显式绝对路径的 DirectDraw DLL，使用非交互离屏目标测试深度遮挡，不启动游戏、不改变桌面模式。图形层安装、单层约束和恢复命令见 [图形候选](docs/GRAPHICS_CANDIDATE.md)。

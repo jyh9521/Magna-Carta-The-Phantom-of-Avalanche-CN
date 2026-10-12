@@ -61,4 +61,4 @@ SDL3 Gamepad 是输入候选，其设备管理能力不意味着已接入本游�
 - [DxWnd 官方项目](https://sourceforge.net/projects/dxwnd/)
 - [SDL3 Gamepad 官方文档](https://wiki.libsdl.org/SDL3/CategoryGamepad)
 
-上游信息是调查起点，所有本作运行行为仍需样本和实测。本轮未下载游戏、保护补丁或图形兼容二进制。
+上游信息是调查起点，所有本作运行行为仍需样本和实测。首次静态调查未下载图形兼容二进制；后续已建立 DDrawCompat v0.7.1 单层候选并验证模块加载，当前状态见 [图形候选](GRAPHICS_CANDIDATE.md)。没有下载游戏或保护规避补丁。
