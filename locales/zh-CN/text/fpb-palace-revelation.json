@@ -1,0 +1,764 @@
+[
+  {
+    "id": "Fpb/0291.fpb:text:0:0",
+    "source_sha256": "c7be08bc9a634acaa42dab9d5c645549e230435b2377080e1c757cd1f39bcfc1",
+    "target": "各位都到齐了，那么开始吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:1:1",
+    "source_sha256": "991f0b48070202a5bbfee87b63341e681903e97448128a45edd6d7b8cf28b896",
+    "target": "那边的施瓦茨·施图尔姆第7组组长，卡林兹，今晚暗杀了皇帝陛下与太后殿下。目击者不止一位。这场惨剧，究竟该怎样解释？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:2:2",
+    "source_sha256": "addd6b6ef7ca3cdedaae5f48057ac0c4f5ebefea04b64592d4b637a0b8da74c3",
+    "target": "当然……我很清楚，殿下。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:3:3",
+    "source_sha256": "7856f351dec5f99f95cd6c7f1e47798ac9e9c2439f9b406aebeb0a2251b38faa",
+    "target": "卡林兹不可能独自做出如此鲁莽的事。他身后，一定有人指使。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:4:4",
+    "source_sha256": "3f09a54495ed31d010ce6edee74c8c1cb4a18f39395e9dccd6d0924cb85eb28a",
+    "target": "所以，才把矛头指向我。恕我冒昧……单看局势，皇帝陛下与太后殿下驾崩之后，下一位皇位继承人，正是殿下。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:5:5",
+    "source_sha256": "adecccb65eb4344dc572050e8091ac8320df7d32fdefc2b3cbaa67e00289845e",
+    "target": "所以，您是想说，是我指使卡林兹暗杀的？真是无礼，吉尔伯特阁下。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:6:6",
+    "source_sha256": "7a5520d7ec5f22391b5b067bf5b3e86942a58eff1c9889c3b05f5f02970bfab2",
+    "target": "不过，奥拉坎吉尔伯特指使卡林兹，也很不合情理。他平日对皇帝陛下与太后殿下，一向忠心耿耿。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:7:7",
+    "source_sha256": "1802e2447c1ca922c4492298687f767685f8ed3c2d639e0db0f69a445a0138e0",
+    "target": "可施瓦茨·施图尔姆，不是完全无关陛下意志、只按吉尔伯特阁下意思行动的私人部队吗？而且，其中尽是拜耶尔出身的贵族……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:8:8",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:9:9",
+    "source_sha256": "0b361b73d92041aa1c3e6bd519f3c000d1706143393667a91c89b475f1ea87ce",
+    "target": "坦白吧，吉尔伯特阁下。您被皇家的权力蒙蔽双眼，害死了两位。接着……下一个大概就是我，对吧？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:10:10",
+    "source_sha256": "a6b6f40260ea9b68fdae17eaa457a9c1a3de9a7c65e783c8edab2da30eaf6a2b",
+    "target": "来，吉尔伯特，解释一下吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:11:11",
+    "source_sha256": "61ff3fdaa04ac53c00b1e2d769d82f000c29ec591329503b098e17b16d2a4873",
+    "target": "吉尔伯特仍是奥拉坎，还请不要如此无礼。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:12:12",
+    "source_sha256": "c20340fc04ad732157f7ff4b8e27cb5f816f152b9bf96734da659553242c852e",
+    "target": "卡林兹……怎么回事？你知道自己做了什么吗？为什么是那种失魂落魄的表情？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:13:13",
+    "source_sha256": "1bedd5ddc635f31f6d9d8a669f735e247b27cbebe6295205600f7d0819d2c5ce",
+    "target": "因为无话可辩，才把注意力放在不相干的地方。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:14:14",
+    "source_sha256": "4629a047b15ee684a1834f2fe14cff9078eb1b1c6ae5e44536458cebca63c3f0",
+    "target": "……说实话，我不想做到这一步，殿下。在我眼中，您就是一位完美的皇女。即使是虚假的人生，只要您因此幸福，我本不愿强行毁掉它。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:15:15",
+    "source_sha256": "30bfd2008fceb8d7dda39e09324a4cedcfc2739f08634b315a5645b172f4ec3e",
+    "target": "……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:16:16",
+    "source_sha256": "b72b8e504f09647e708a9b072db5273043afb4a2b929d351ec0f8f94473eade4",
+    "target": "可是……已经无计可施。皇帝陛下与太后殿下的死，我不能就这样视而不见。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:17:17",
+    "source_sha256": "58d69d1a757c4d91fe8f3c56ef35fd8e5c5e56fc7c66007b21ddb57cb0be2f01",
+    "target": "那、那是……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:18:18",
+    "source_sha256": "153a73adab03bca9cc6918dcbbf41e1886ed90ddb958b2a1cc42f25e9006787c",
+    "target": "什么时候……？从我的房间偷出来的吗？吉尔伯特阁下，您疯了吗？怎么能做这种事……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:19:19",
+    "source_sha256": "4ac6501d8709c71175ad94c5c7d4588e7c372b95f3018427ea9f53b8fa43c354",
+    "target": "……请原谅我揭开真相，殿下。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:20:20",
+    "source_sha256": "f1a3098f1c37f0a0ce0c3492e163b3bdf6338a1fd536d11a393fa2ed386822cc",
+    "target": "成功了，吉尔伯特……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:21:21",
+    "source_sha256": "2f7bc8269c69d3a10e005fc8935968f259644f901b9607a7cdac18f429d74e87",
+    "target": "殿、殿下……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:22:22",
+    "source_sha256": "5c4068ba7eaec4c392adbdcea6b5d38b828c92025819635ccd2e5de8cb3efd93",
+    "target": "……我、我……不对劲……全身……全身都很痛……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:23:23",
+    "source_sha256": "0ddf15e6109cf1b189e04a00854668a827871c01bce4f5ac29a7a5ee9725b053",
+    "target": "你是……那时的……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:24:24",
+    "source_sha256": "ffcc2dbbc0c751a6b6cabfb4eaf46385a66cd5ad5a6df6b1abe40b3f4bbd0e8d",
+    "target": "啊，怎么回事？朱克蕾西亚……消失了。明明我才是假的，为什么……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:25:25",
+    "source_sha256": "9f68762ad9fb1e283ef6ce937a3158b591f95834d1eafd7591fb9bf8a23a4cc7",
+    "target": "……阿多拉。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:26:26",
+    "source_sha256": "dc47b17fbb946156687ae06c0a29d5b7d8ba1c25f2624113e6536798a2845154",
+    "target": "卡林兹……我……我……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:27:27",
+    "source_sha256": "2749b659a03323937c8d10a5b2773058bf9c99b8d2078c393c4e59921fe4df56",
+    "target": "这枚纹章，曾作为忠诚的象征，赐给初代奥拉坎……本以为只是古代人的遗物，实际上，却是操纵人精神的希安之一。奥拉坎威尔莱特，请说出真相。真正的皇女殿下，早就因病去世了。之后，您制造了替身，抹去记忆，又通过纹章的力量，覆盖上皇女的外貌与记忆。为了造出任由自己操纵的傀儡……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:28:28",
+    "source_sha256": "a766ba70f2548a788b50ca84e1ce994ed9690aaedf98a6f65ce0823622497cc5",
+    "target": "……怎、怎么知道的……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:29:29",
+    "source_sha256": "d369d3765ce063c6350c591a4684cd9a91d53ab815adbd487faeb605f886f0f7",
+    "target": "我通过密探，得知皇女殿下去世的消息……可之后又听说，她仍好好活着，因此疑惑了很久。于是，按自己的方式进行了调查。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:30:30",
+    "source_sha256": "5bac5c3a9ff60d1d8f0fe4c4da2f540bea98de7538f62b32573e490031782925",
+    "target": "呵……奥拉坎威尔莱特，您已经落入陷阱了。带着假皇女忙到现在，辛苦了。我们早已识破，您那套傀儡把戏。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:31:31",
+    "source_sha256": "e0b47f2900e4d02792b76c5c50dea7e2cd6985a770e8cdd44000c1051ed6232f",
+    "target": "不、不是，我……我……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:32:32",
+    "source_sha256": "bacaee0f832921aaeeba5025793217dd05e93d15b97a518c8de41e182fc85dca",
+    "target": "竟想把罪名扣到我们头上。还有卡林兹，难得我给你在施瓦茨成长的机会，你却让我失望。竟与马拉卡特勾结，做这种事？……而且，总是带着这位姑娘，筹划各种阴谋，对吧？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:33:33",
+    "source_sha256": "a275b27d2bb9945ab5c20b9a9f3cea93f1e98d3cf98a43b1370810f1dd07a71f",
+    "target": "我……我……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:34:34",
+    "source_sha256": "13c3f55ef056cfacf0126f0f6fa9471333f64853858eb519db1f63e7191f5dab",
+    "target": "拉德琳娜，卡林兹似乎什么也不知道……真是他的话，不可能收尾得如此草率。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:35:35",
+    "source_sha256": "c3421c46cf221cff05885ca3842f4d6dddbe9d1223640b12056475e06d53deaa",
+    "target": "吉尔伯特，因为这个人，我们险些蒙受天大的冤屈，您竟还觉得，有同情他的余地？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:36:36",
+    "source_sha256": "9fc4350c656e4783387bc9c603172d3924808a15650dbef590a513c9b8918477",
+    "target": "卡林兹……我……什么也没做……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:37:37",
+    "source_sha256": "f66b309f0a968f81c678d2c1b2f8d20c9ddc49ddb9d5a86fd44d1ad372ecb3a2",
+    "target": "到底……怎么回事？你和我……两个人都……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0291.fpb:text:38:38",
+    "source_sha256": "fa4d110ad431f7401fff856994aeb20b53d8da0177a8f5a7b65686f7eceb712a",
+    "target": "今天，我失去了唯一的弟弟和母亲。我的心情有多悲痛，各位应该很清楚吧？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0292.fpb:text:0:0",
+    "source_sha256": "f47f8354c2efd24398e2baf9b859e9c621e835dbf604d8037d37fee9d2b3f1b5",
+    "target": "以威尔莱特为首，依附马拉卡特、帮助此次阴谋的贵族，已经全部被捕。总算痛快了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0292.fpb:text:1:1",
+    "source_sha256": "81c148ca311abff0aa86c86a0ea839aeb1d86515f941b3f8e788a7501bf8b1f8",
+    "target": "……我不明白，为什么会变成这样。我并不希望如此。那个叫阿多拉的姑娘，没有任何罪。除了被人利用……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0292.fpb:text:2:2",
+    "source_sha256": "87e55b91210ebd9fedddbf235334d5b0588eb79d811a5ab3dac0317d8275179a",
+    "target": "真不明白，您现在是在帮谁说话？稍有差池，登上刑台的可是吉尔伯特阁下。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0292.fpb:text:3:3",
+    "source_sha256": "13b5b4c4cd4b192829fd8479a4ec54d5fab664393ff7f9c3e1979a09bcf9fbe3",
+    "target": "……那卡林兹为什么要做这种事？还如此愚蠢地被抓住。真下了决心，绝不会这么容易被捕。无论怎么想……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0292.fpb:text:4:4",
+    "source_sha256": "18289ea2c47f46d04d61d422bff73faf913c93804625a287de9b3a2dfb018cc0",
+    "target": "不必再想。重要的是，皇家的血统已经彻底断绝。暂时，会由您担任摄政。往后该怎么办，各方会争论不休，但最终，拜耶尔的奥拉坎——您，应该会继续坐在摄政的位置上。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0292.fpb:text:5:5",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0292.fpb:text:6:6",
+    "source_sha256": "8ab2add7677254f8f2eed3105f805f7e7d80863358888a69ac391c382994745b",
+    "target": "不必愧疚，吉尔伯特。您已经掌握一切。反正，从一开始，就预料到马拉卡特会变成这样。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0292.fpb:text:7:7",
+    "source_sha256": "7a1522d301c4db686277d49d6ea45fb00f53c01cde8c7a211695c07fbe5dc04a",
+    "target": "虽说为了揪出那些势力，一直默默忍耐至今……$n还是全都处死，以儆效尤吧，让他们再也不敢妄想……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0292.fpb:text:8:8",
+    "source_sha256": "2e8daf1e4f4e678981f65909864723e80e26232d7a18686867b1372b896d9008",
+    "target": "卡林兹的事，也有些说不通。他……怎么会做这种事……说他与威尔莱特联手，总觉得推断得太过了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0292.fpb:text:9:9",
+    "source_sha256": "a0e4b5725206f57cfa8b121bbc4ae405895f7cc9bd9e179155bff1144f5cabdf",
+    "target": "您太软弱了。竟然能平安守住奥拉坎的位置到现在，实在令人惊讶。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:0:0",
+    "source_sha256": "dfc4e71c3b2e2e1a738d0997aaca679f2a1384d2ff871644afa033fc9f328d9c",
+    "target": "我不明白……为什么杀了皇帝陛下？我为什么……会做那种事……到底为什么，因为什么？$n不是我做的，是另一个人……不是我，不是……！我什么都不记得。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:1:1",
+    "source_sha256": "d980feb6e90f9dc5258c9493642a114dd105f11b8e00e63144f2cad207dff695",
+    "target": "又要怪别人？明明装得很强，却在重要的时候退缩，你就是这样。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:2:2",
+    "source_sha256": "01cfe889ab2de737c6438da77bc1427bc8bfa8be65733c9d774e82f275a03dd2",
+    "target": "什么……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:3:3",
+    "source_sha256": "3adf316da883af17b710c4a4f03efe92ffc0937816fbaa05b47a6554f8add685",
+    "target": "没能控制自己，是你的错。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:4:4",
+    "source_sha256": "a2e54968538cdfcb17721c584880a12d4ea17a3b8817894d52381340884ff6ae",
+    "target": "胡说……什么？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:5:5",
+    "source_sha256": "d5c83afeb3dcf09222d1d0d1786f84e84fd555f3c116dd3bc3c3d5350370702b",
+    "target": "……看来醒了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:6:6",
+    "source_sha256": "4d9a4b318afcdac92bf020394fbbe34b2398a70764f36ad68c8607fd381ec38a",
+    "target": "……拉、拉德琳娜……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:7:7",
+    "source_sha256": "92996ae5ef0cb41008f5d9b506326dcdf206f6aa097a8a9070b709cbf3274a13",
+    "target": "看来累得不轻，这种处境竟然也睡得着。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:8:8",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:9:9",
+    "source_sha256": "d35c3c76e3010f0be9fe3843d97bf7fccb63d840eb785b4b4b317a2389b368f7",
+    "target": "果然，父王被你骗了。不，连我也被你骗了吧。反正，你从以前就总是任性地把一切弄得一团糟。这下终于结束了。父王竟曾收你为养子，想让你登上王位，光是想想就让人恨得发抖。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:10:10",
+    "source_sha256": "87a3c7b2a6b96a590c894232fe6204e1bf19139a58c785630038c4896e340e4e",
+    "target": "……不是我做的。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:11:11",
+    "source_sha256": "c5e50007fef951eb0838be04db59d11ab19afba50f02c49ab779f134c9284557",
+    "target": "真无耻。谋反的证据都在，还想找机会脱身？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:12:12",
+    "source_sha256": "103f883e291e90bf2c6897cfde9f11e7b448bb58cb49827fc49b5ca9a3fe4411",
+    "target": "谋反……？如果我真暗杀了陛下，你以为我会留下证据？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:13:13",
+    "source_sha256": "0e86b69bfdb403b62807f95a14376777375041ed32c9dcf8582353344585f201",
+    "target": "混乱之中，面对拉德琳娜，我却突然清醒了。一切都鲜明地浮现在脑海：倒在面前的血淋淋尸体，顶着朱克蕾西亚模样的阿多拉……总觉得，一切都被人操纵了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:14:14",
+    "source_sha256": "9dd3f9b150ef219e63b19a9a9c119f2b4c7c429f3575a16ae1e50b5ed9f98d96",
+    "target": "这个嘛……真是凶手，不可能如此愚蠢地被抓住。从这一点看，只要想想，陛下死后获利最大的是谁，答案就很简单。不正是你，拉德琳娜？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:15:15",
+    "source_sha256": "01cfe889ab2de737c6438da77bc1427bc8bfa8be65733c9d774e82f275a03dd2",
+    "target": "什么……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:16:16",
+    "source_sha256": "1a85e4746b43687ca93ea3613c970c3f0b02ac1b4c048156b5bbe6c3ad09059b",
+    "target": "意思是，不用总戴着面具，假装高贵。你很想看到我落到这步田地，怎么样，现在痛快了？不……不对，我死之前，你还不能安心。只要活着，不知道什么时候又会碍你的事。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:17:17",
+    "source_sha256": "35fe01a532a6b7c04ca7d6598ef6127af1d6fbb99c8c73da1bc5a12ad54b8aa8",
+    "target": "……肮脏的女人。为了得到权力，连这种事都肯做？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:18:18",
+    "source_sha256": "6ecf2efb5957fa179108b76d06d6862c9de959e1c1c2bbeb7050b47fd920b160",
+    "target": "……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:19:19",
+    "source_sha256": "e7fd2fbe3c30435f11d30f04a9b04718a22005e9ec7b300b8a4c1bf46f775ae0",
+    "target": "没错。你又懂什么？我的父亲……对你来说，像是救命恩人吧。对我，却是想杀死的仇人。我的丈夫、我的儿子……你以为，是因为谁才死的？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:20:20",
+    "source_sha256": "3cc2f0b7b3a294a7a4d95761604a249b8f991a20b0821ee794681e5bf6ee3bad",
+    "target": "呃……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:21:21",
+    "source_sha256": "2a789389d9636047824073da5b0a0b6a0e15751a54edd8b0e1cdcee9570afeb9",
+    "target": "因为他。至少，我以为父亲会帮助我，可他无情地践踏了我的幸福。还不如……在克罗伊斯灭亡时，就让我死在那里。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:22:22",
+    "source_sha256": "b076ba0bb022aef8f76b27d25cfb890f19a38e95c4e8e0ce68085e3f126f15b0",
+    "target": "呃……呃啊……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:23:23",
+    "source_sha256": "d184c801eb52f4b4f612a77008d0f796bde28e24f194e92e9b0882862a3639d0",
+    "target": "为什么……要救我？为什么，把我变成如此丑恶的女人！如果他还活着……如果我的孩子还活着……就不会变成这样！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:24:24",
+    "source_sha256": "3cc2f0b7b3a294a7a4d95761604a249b8f991a20b0821ee794681e5bf6ee3bad",
+    "target": "呃……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:25:25",
+    "source_sha256": "4d9deeacbd720b6e71ef352914edb082bd9fc76cc053249cb68768b664b55af9",
+    "target": "像你这种人，怎么会懂，我有多悲惨……你这种人……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0293.fpb:text:26:26",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:0:0",
+    "source_sha256": "3567bd4217116d3cc4014f8d3e911fb9e4d427e6df04425b566ac513dcc5efd9",
+    "target": "（朱克蕾西亚是假的。那么，现在……这副模样，才是真的吗？可为什么，一点记忆都没有？为什么……每次见到卡林兹，都只会想起艾丝特尔的记忆？我……不是艾丝特尔，只是阿多拉。）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:1:1",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:2:2",
+    "source_sha256": "65007da37828e00b8fe5b6ce7a158bde81614f1a53d81477d548fbd369e1d6d2",
+    "target": "（真正的自己……哪里都不存在吗？反倒觉得朱克蕾西亚才是真的。我沉睡时，她却活着，比我看到、听到的都更多。我空白的时光，全都为朱克蕾西亚而用。现在的我，才是真正的我……可没有记忆，我的存在就没有意义了吗……我不明白。）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:3:3",
+    "source_sha256": "83104e7d75aa6794100358b985ec1053f7ce11d8f9c8c5489d16ada2f1e94cad",
+    "target": "呃……呃啊……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:4:4",
+    "source_sha256": "7d4c6f888de07cae64c5dba1e3bd2f8d8715716f8a632b57be7a570371240fe1",
+    "target": "卡林兹……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:5:5",
+    "source_sha256": "5a927486cd5c27749c166ebb56ab13bc0563b6446e51b900ffe72bfb862738f8",
+    "target": "卡林兹……？到底怎么了？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:6:6",
+    "source_sha256": "19402f96ef3ecb96b3cdcf26375c928d33d68b3872615717c2abd37e1acce7e1",
+    "target": "……竟然如此残酷……太过分了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:7:7",
+    "source_sha256": "f008bb5bbad2b6b23f3b2df96ee0b31089cee3ab8afa8f8918d533bd87b7ef9e",
+    "target": "……唔……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:8:8",
+    "source_sha256": "49dc6e92a0abab60410f8abe1b82c256270cbda9b89bbd172ddd8cdb8b56eb82",
+    "target": "卡林兹，没事吧？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:9:9",
+    "source_sha256": "3e2fe6ff51fa0e47d30baf4d5b65d2f0a0512574be39e30a265ffc8180cf787c",
+    "target": "……艾丝特尔……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:10:10",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:11:11",
+    "source_sha256": "213297fd1d412c17cfd3f42f0e450d976477859bcd93e58efc85c9cd65daeedd",
+    "target": "（艾丝特尔……如果我是艾丝特尔……）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:12:12",
+    "source_sha256": "637a3384813eb18ab4b20576059e36147aa643b3da3e5eb6afc1c7f926a5db99",
+    "target": "卡林兹……这全是噩梦。所以安心休息，睡醒以后，一切都会恢复原样。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:13:13",
+    "source_sha256": "55c54f123665c520ee2609063ca188efc93d953111995e906868135b8da952f2",
+    "target": "……艾丝特尔，别走……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:14:14",
+    "source_sha256": "85360d4bf8fdbeafa032b29f826710133af4794d688a3ca60560163a255aca00",
+    "target": "不会走，永远在你身边，放心。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:15:15",
+    "source_sha256": "3602e5c75e6d95e46c8f0e09e58c74a2421f7cfad1034e9c884186dde3ad5bd9",
+    "target": "（明明这么……这么近，却仿佛是世上最遥远的距离。）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0294.fpb:text:16:16",
+    "source_sha256": "902985f3419e6ca2c9875e2bb33457598394836d317064f808034ac72604db13",
+    "target": "（能记得的，只有和卡林兹快乐度过的日子……那是支撑我的全部。卡林兹……总害怕，从今往后，再也见不到你。）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:0:0",
+    "source_sha256": "7e26c9be790d6a2c3f130e8e7686d3566480b25294666b4ef7d045de1b5c5499",
+    "target": "阿多拉！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:1:1",
+    "source_sha256": "8994a9b47dda8fdce7338908740d2400595813eac65a9d146cf5adbb0043d425",
+    "target": "切尔西？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:2:2",
+    "source_sha256": "273c52f083eaf47e201328af391aaf13e96715dfec6eae4b106054640cfba9d7",
+    "target": "哎呀，居然傻傻地被关着，这可不像你。究竟在做什么？怎么看，都像是那位了不起的拉德琳娜干的。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:3:3",
+    "source_sha256": "5c5b67f0c6927d3bbfbd3d5c9a632d380ac41263842b261965718d9bb1d6fcdd",
+    "target": "卡林兹……受了拷问……还没有醒。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:4:4",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:5:5",
+    "source_sha256": "8f6ee51d351234216d2848fbeb0e24bb9e9e0c49a8bd585254d5b9f3e3081759",
+    "target": "拷问……？还有什么好问的，竟然连拷问都用上了？相关的人，不是都被捕了吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:6:6",
+    "source_sha256": "f3158f78ab728780333fec6652ae360e6306d714b848ba94a389d2d482a6be9c",
+    "target": "我不知道……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:7:7",
+    "source_sha256": "8afa63eb44f57684426d5e5eee93f6b13be34318779e56accae2b3637f85d666",
+    "target": "哥哥也太软弱了。明知道卡林兹不是罪人，却说没有证据，束手无策。卡林兹那么精明，真做了，绝不可能被抓住。一定有人用了诡计。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:8:8",
+    "source_sha256": "d07e78342c5c8953d0ca0dfbb1f240cfc41701bb6481a2ea19107b661f2a8a8f",
+    "target": "可是，确实有人亲眼看见，卡林兹做了那件事。但被抓得如此莫名其妙，确实疑点重重。如果有人故意操纵，造成这种结果……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:9:9",
+    "source_sha256": "98e893261340a7e48be684002de1913c17045013f63b9b4a366917300022f3ca",
+    "target": "会做这种事的，只有拉德琳娜。哥哥不是那种人。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:10:10",
+    "source_sha256": "6a39496bd5942f7025ecc70d08303b1e1e9a79eb6e06f14a994446929af8b721",
+    "target": "可恶，没有证据，什么也做不了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:11:11",
+    "source_sha256": "ef4a154b71c8a69ac2ce9f31ed30163ee9bd0f4f2d17fa28a91d62d2e811d6d2",
+    "target": "那么……我们接下来会怎样？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:12:12",
+    "source_sha256": "e4f013d71b12da682b434ecd23fc502584e3fb5e284a3d6559609c681dd687a2",
+    "target": "这个……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:13:13",
+    "source_sha256": "0d1be38722e57acc59fdceb9a422cf9293706665756ac755a6758fbb4ee7ea8b",
+    "target": "两天后处刑……修德尔米尔各处，已经贴出告示了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:14:14",
+    "source_sha256": "798d982a8fa6fafb46d615e77dbb5446b0c2bc4ff42106017464648777a795fc",
+    "target": "乔克！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:15:15",
+    "source_sha256": "5fc9411b04146c4a1046a7d0117e533eef2ef015a5862c68862009f6866e3bd9",
+    "target": "我只是照实说罢了。而且，你也知道，已经无法推翻。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:16:16",
+    "source_sha256": "60391ccda6b6963f5539a4916b9ec98dc95355b023771a2ef443021e68977bed",
+    "target": "可恶……这里面肯定有很大的问题。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0295.fpb:text:17:17",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0296.fpb:text:0:0",
+    "source_sha256": "a75fc1f368e5ede417925e176a4363efa724297f50d4ed6cb609426ecc928421",
+    "target": "皇帝与太后竟遭暗杀……卡林兹，那家伙到底在想什么？竟然自掘坟墓。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0296.fpb:text:1:1",
+    "source_sha256": "25b6a34603d3f88fd9f072c1c2868e427ee1a2a57bf87047856ef1ed485cc154",
+    "target": "是啊。不过，问题终究还是……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0296.fpb:text:2:2",
+    "source_sha256": "af468adb84ef498aa0c1becfbc8da89af58682ad4401860df346eb97078a86a2",
+    "target": "朱克蕾西亚皇女是假的吧。最终，因此掌握政权的，是吉尔伯特与拉德琳娜。不过，要说这一切都是他们做的……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0296.fpb:text:3:3",
+    "source_sha256": "5bf50290ca1243b664f5928802a1e7d72526aaccfe46caa6f5b3a69aee3c2039",
+    "target": "不过，要说这一切都是他们做的……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0296.fpb:text:4:4",
+    "source_sha256": "e8ac47387b6a7947ab5f82a506ee24f1892ae884f108ea974c62595e054fc2cc",
+    "target": "怎样才能向您展示，我们的实力？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0296.fpb:text:5:5",
+    "source_sha256": "50663813adb86f93538d9d667d14b6f0cf1f1c9d0112aafb94b6b1441af597e8",
+    "target": "……如果能不借助怪物，暗杀重要人物。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0296.fpb:text:6:6",
+    "source_sha256": "a86dbf78230f54e4d6e15f5912c9604bb69680c53baf7756a2a8b301f39cef35",
+    "target": "那之后……雷姆布尔顿公爵被暗杀了。本以为，我们与皇女的契约终于开始了……皇女竟然是假的，究竟怎么回事，真不明白。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0296.fpb:text:7:7",
+    "source_sha256": "812afba5ee06f7715fad922b11ae6950a698357c7ea6a343bf3d67b453a0a7cf",
+    "target": "究竟怎么回事，真不明白。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0296.fpb:text:8:8",
+    "source_sha256": "d995cc63bd6e3cef73fe22ac29162bed8d2fcdaf043e0ea51933cce7eef9287c",
+    "target": "果然，还是得告诉温贝特……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0296.fpb:text:9:9",
+    "source_sha256": "ab5df625bc76dbd4e163bed2dd888df828f90159bb93556525c31821b6541d46",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0296.fpb:text:10:10",
+    "source_sha256": "3019f4cad5b3d12e90155046c7e720d795c2c3dd77b0a1435146f2a8adc5c53b",
+    "target": "（仿佛被某种力量操纵了，这一切，全都……而且，皇帝与太后的暗杀，也非同寻常。怎么看都……）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0296.fpb:text:11:11",
+    "source_sha256": "5bd3a08796c26836c8e167b80e0e207496b542c81b4311fcef6ef3aafc6f923e",
+    "target": "（怎么看都……）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0297.fpb:text:0:0",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0297.fpb:text:1:1",
+    "source_sha256": "96ffdf38863600a34117e2968e84fcccdd2116b4027edc1f11551dcd74541dcf",
+    "target": "就算……父王救活你，以后也只能作为普通人生活。这种毒，会夺走你所有能力。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0297.fpb:text:2:2",
+    "source_sha256": "c76773da20bfc3220e96df31d9facfbd8045e2834ef791aac4d9c7c94fb19e01",
+    "target": "我也……不愿如此。可现在，任何阻挡前路的人，都不能原谅。克罗伊斯被烈火笼罩的那一天，我就发誓，要让自己成为恶魔。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0297.fpb:text:3:3",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  }
+]

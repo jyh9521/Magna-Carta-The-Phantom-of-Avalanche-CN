@@ -4322,6 +4322,26 @@
       ],
       "evidence_level": "source_context_reviewed_relationship_not_confirmed",
       "wording_decision": "韩文专名音译；本作用词已定，系列关系未确认"
+    },
+    {
+      "id": "concept-0118",
+      "source": "레오나",
+      "target": "蕾欧娜",
+      "english_reference": null,
+      "category": "人物",
+      "status": "待复核",
+      "translation_state": "approved",
+      "meaning": "0298宫廷流言称其为皇后，与艾丝特尔的新皇后传闻对照；不据此自动关联其他身份、人物ID或系列角色。",
+      "relation": "pending",
+      "reference_candidates": [],
+      "resource_ids": [
+        "CharData/0000.cha:name:48:50",
+        "Fpb/0298.fpb:text:0:0",
+        "Fpb/0457.fpb:text:3:3",
+        "Fpb/0457.fpb:text:4:4"
+      ],
+      "evidence_level": "source_context_reviewed_relationship_not_confirmed",
+      "wording_decision": "韩文人物称呼音译；词面已定，不新增未经确认的家族关系"
     }
   ]
 }

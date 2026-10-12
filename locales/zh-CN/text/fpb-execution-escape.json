@@ -1,0 +1,596 @@
+[
+  {
+    "id": "Fpb/0298.fpb:text:0:0",
+    "source_sha256": "e7839307ad35cb1949a58971b41f09025032b3d876b978f224a019c82753623d",
+    "target": "最近，皇宫里流传着奇怪的传闻。蕾欧娜皇后会被赶走，艾丝特尔将成为新的皇后……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:1:1",
+    "source_sha256": "2c3307443e9046a5992893b003feb3ca00ac2d41233e39092c6ee97583e77c81",
+    "target": "什么意思？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:2:2",
+    "source_sha256": "4dc12ed796d3cb20ca11b150de31a0e395b7a6960461f402552b538fcfde26e4",
+    "target": "艾丝特尔生下了皇女，又得到威尔莱特等马拉卡特派系的支持。是不是太放任她了？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:3:3",
+    "source_sha256": "095df170aa7296e0fdb4ac795751a6c742c6f22c6ed447ec9204a873bf6420b2",
+    "target": "她没有背叛的胆量。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:4:4",
+    "source_sha256": "a80261ec7e6e9808f5d216e256d74ef9a39492634abecd7079f99ac95079f321",
+    "target": "从前一无所知、刚进皇宫时，也许是这样。可现在，夜夜过着华丽的生活，也充分尝到权力的甜头。而且，皇帝明年就会正式宣布，朱克蕾西亚是皇位继承人。到了那时，艾丝特尔还缺什么，为什么要替贝尔米利昂当间谍？也许，她早已向皇帝坦白了全部真相。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:5:5",
+    "source_sha256": "7b115e2df96534857179b1c0b5c5025d96b7d55009e487f1162e3b9674dda075",
+    "target": "而且，皇帝明年就会正式宣布，朱克蕾西亚是皇位继承人。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:6:6",
+    "source_sha256": "defe49d2cd60fa1f1e66f1f879b508064335958800452b1254d95f89f285e262",
+    "target": "到了那时，艾丝特尔还缺什么，为什么要替贝尔米利昂当间谍？也许，她早已向皇帝坦白了全部真相。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:7:7",
+    "source_sha256": "f85d30e7d95a052f65167f1f1095186d1190c91502b4ab7aedab460a6eab8870",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:8:8",
+    "source_sha256": "85332c2e9306b337808514439e51d1cb3db230ce3266738614c3f91df5460e68",
+    "target": "而且，自从那封说找到最后一个希安的信以后，就再也没有消息。我也没在约定的日子，联系上艾丝特尔。负责传信的侍从们，全都悄无声息地消失了。她应该也听到，我们要求见面的消息，却始终毫无音讯。不奇怪吗？为什么无视我们的联络？平常在我们面前，总是战战兢兢的艾丝特尔……难道如今，已经没有什么可怕的了？我总觉得担心，怕到头来被她反咬一口。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:9:9",
+    "source_sha256": "c416fe3a85911685212b8a503cd07421fa435429deae36d71fab5fa061e6c5cb",
+    "target": "负责传信的侍从们，全都悄无声息地消失了。她应该也听到，我们要求见面的消息，却始终毫无音讯。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:10:10",
+    "source_sha256": "d3f8ea8fc54057197dee12b15b4be7bea7155c67ff55791d1fc55f5b592705ab",
+    "target": "不奇怪吗？为什么无视我们的联络？平常在我们面前，总是战战兢兢的艾丝特尔……难道如今，已经没有什么可怕的了？我总觉得担心，怕到头来被她反咬一口。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:11:11",
+    "source_sha256": "02500833e9c3b1ff02ac05d623f8f204fed538a194ce959d16f8600a95b334d0",
+    "target": "难道如今，已经没有什么可怕的了？我总觉得担心，怕到头来被她反咬一口。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:12:12",
+    "source_sha256": "4578ce8625f76b92a925d54746d79af85537e6eeefe000e13ef5bedf82e01e22",
+    "target": "……明明告诫过，背叛的话，绝不饶恕。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:13:13",
+    "source_sha256": "b6bf4ff3ea63a63c50f4d7895ede522333833c75fc9463436bba2591942e6cb3",
+    "target": "（上钩了，洛佩伊登。你不轻易信任别人，却很容易听进去别人的坏话。还是说，就这么相信我？）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0298.fpb:text:14:14",
+    "source_sha256": "fc2ec8f44b9f252c190057c8cbb447c7a332ad54911933d2542a01e0cb617c71",
+    "target": "（还是说，就这么相信我？）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0299.fpb:text:0:0",
+    "source_sha256": "36b58fa56e0d70d1c8e3454768db49d2715267ec96fea20569755bfc6e048336",
+    "target": "请救救卡林兹和阿多拉，哥哥能做到的吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0299.fpb:text:1:1",
+    "source_sha256": "a4e6e19b6d13b05bd243fa0585f9a0baac574024169af145d964e9aee6cc6eb5",
+    "target": "这件事……就算是我，也办不到。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0299.fpb:text:2:2",
+    "source_sha256": "af262844d253e4c05f57792df66b5010632edfc720c82d4c4fabe8c17e2b54e0",
+    "target": "为什么？哥哥马上就要成为摄政了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0299.fpb:text:3:3",
+    "source_sha256": "e18ac7293f11e67678f22e998826e6cf76c04e25aac203ba0f66c2ba5754002f",
+    "target": "成为摄政，并不是什么都能随心所欲。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0299.fpb:text:4:7",
+    "source_sha256": "73ee396fb08cfb939704aae3bc2a43c027f5059eed4ae26ab885d12949fdf69f",
+    "target": "最重要的是，卡林兹犯下的暗杀，还有虽被威尔莱特利用，却扮演了假皇女的阿多拉……他们做的事，都是无法挽回的罪。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0299.fpb:text:5:8",
+    "source_sha256": "cc2b16d93f2656c466e0c2eb24189066bd450e9a42422d203d74f38f158647a7",
+    "target": "很遗憾……救他们，太勉强了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0299.fpb:text:6:4",
+    "source_sha256": "35241730b83617adf10c84804f0c92225b084218c77744d04f77866b463bd74a",
+    "target": "可是……只是被人利用，却必须死，太不公平了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0299.fpb:text:7:5",
+    "source_sha256": "b3b911f981c8f3378b0b09ab723d59665d0c7c956673a2794615e2ef9757f1a0",
+    "target": "没有证据……就无计可施。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0299.fpb:text:8:6",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0300.fpb:text:0:0",
+    "source_sha256": "68407123c2b8b2227d8e436aace222ea43c68f56cdabe4f2e04d625b1faf4fa7",
+    "target": "卡林兹……身体好些了吗？脸色好像更差了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0300.fpb:text:1:1",
+    "source_sha256": "443e9d015444bca2e36d426a375249b89eca344a9562bbff567302a285c6baf5",
+    "target": "没事……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0300.fpb:text:2:2",
+    "source_sha256": "7f3fb8f930bfe1cb166491808e581cfa7e3372622b8c3e9ff555baf8e0abd205",
+    "target": "不过……反正，我们已经完了。乔克说，会被处刑。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0300.fpb:text:3:3",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0300.fpb:text:4:4",
+    "source_sha256": "c8e387d29b9f4834b639bf07980edb26ff010ce3ead94570661ffc7b03989b72",
+    "target": "可并不是很害怕。不知道死是什么感觉……就算痛，也只是一瞬间吧。我只是……不知为什么，很悲伤。本来，还想和卡林兹多待一会儿。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0300.fpb:text:5:5",
+    "source_sha256": "26e98294a85147276449e91b7d3adf5ae03b9a362081420f847909fabeba8dd4",
+    "target": "……为什么，没有告诉我，朱克蕾西亚就是你？早点知道，也许就能阻止。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0300.fpb:text:6:6",
+    "source_sha256": "623ed424daec77b6052a236d4d9099b78d17f1fa8fd2e923577f648fa983df14",
+    "target": "我……以为自己是假的，是总有一天会消失的存在……所以不能说。觉得不能被发现，虽然一直隐瞒，却还是想见卡林兹。对不起……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0300.fpb:text:7:7",
+    "source_sha256": "c40702ba676ace3ec6be20e1b6980ca48384188e426429cf4e1ead92f09d11a7",
+    "target": "十多年……一直作为朱克蕾西亚生活？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0300.fpb:text:8:8",
+    "source_sha256": "eecc32dfc34b48bd4d66ba8f18404d63cca893c44c904f8c0190c799bfcfbaff",
+    "target": "应该吧……第一次见你，仿佛从漫长的睡眠里醒来。每次与你相见，艾丝特尔的记忆就会浮现，熟悉得像我自己的。我想，也许见到你，就能找回真正的我。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0300.fpb:text:9:9",
+    "source_sha256": "c8960b20b48dbf965214965ee3823bc648cced288d7783f7eacbe54eb962a1ef",
+    "target": "可真正的我，只是被朱克蕾西亚压住了。为了成为她，连幼年记忆也被夺去。然而，她也是我的一部分……扮演她的，终究还是我。明白以后……不知道至今，自己究竟为了什么而活，变得好空虚。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0300.fpb:text:10:10",
+    "source_sha256": "ee05bdc65841caa39b01a84b2b998fa8640bfb05a158dfef4a0da72791df2f70",
+    "target": "两个人都出来，执行死刑！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0300.fpb:text:11:11",
+    "source_sha256": "a4d793e3cb24330c2e99b49a6d2f19e64326a7ebd664e2f68105a9d2cf2a8963",
+    "target": "啊……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0300.fpb:text:12:12",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:0:0",
+    "source_sha256": "5fca727ca0137bb0f02532c90a1d1faf35f51ba3e2726709dcca74a3a5174954",
+    "target": "今日在此，处死杀害至高无上的帝国皇帝陛下及其母亲——太后殿下的穷凶极恶杀人犯，卡林兹·杰尔比南；以及与奥拉坎威尔莱特共谋，伪装成早已驾崩的朱克蕾西亚殿下，假扮皇女、企图篡夺皇权的谋反者，阿多拉。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:1:1",
+    "source_sha256": "6b79839b2e5a1066ca3d097b3f62c407b93171f5a191f7fd8ae089537cba5f74",
+    "target": "卡林兹……我们真的会死吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:2:2",
+    "source_sha256": "2ba75810c7af71194e83a5d0726e17145506a6e2e0646a3c35e1a948d35ad2ff",
+    "target": "……对不起。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:3:3",
+    "source_sha256": "e2a9c251c679a8b27e12205235e1a5ee6b0b4c48414059646baf4128d2191e68",
+    "target": "不……我没事。可不知为什么……有些害怕。明明很快就会结束……还是害怕。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:4:4",
+    "source_sha256": "8f713f1c7a4346421de91c4ebfb5492bfc6350005eb9eb9d10b19c28f6e9bbf7",
+    "target": "阿多拉……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:5:5",
+    "source_sha256": "4ce0d9e4d4bf6b1692e5a30fb155bb3b925495531ef4625abf9cad5d23a1e85a",
+    "target": "罪人，有最后要说的话吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:6:6",
+    "source_sha256": "8b198f2645aa05ad19e42804240033c6448c414dfbcc1480c3cb5eca4d2b8945",
+    "target": "……没有。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:7:7",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:8:8",
+    "source_sha256": "65e53442286e12d2af82a775b20817cc5e75b265e83d67cdf0b1f76a7b4d5ae5",
+    "target": "那么，执行处刑。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:9:9",
+    "source_sha256": "57c0452bafbb41cfb53c5e67e09f3dc886cb73f221895baae21dd9315f12d466",
+    "target": "梅菲斯托……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:10:10",
+    "source_sha256": "f28c13385b8b0bd47a8b17460122aaaecb2a08142acd67f54d5c6c384c98befb",
+    "target": "糟了，不相干的人先出手，让我慢了一步。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:11:11",
+    "source_sha256": "5cde37d1cb8cfd15813e4239f9d9a2048f1b765af7bd160dcd539501fa67094f",
+    "target": "不能就这样看着他们死去。即使没有证据，他们也是牺牲者。我会按自己的方式行动，哥哥。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:12:12",
+    "source_sha256": "3166300b927b07cd74bc66c82f5bc70cafda6c1331e702dbc95b684504653a46",
+    "target": "喂，卡林兹，还好吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:13:13",
+    "source_sha256": "8e3a623bc77804ec7c440b6083c6950d6ccc07e70c9681741c63143cb6615455",
+    "target": "你们，为什么做这种事……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:14:14",
+    "source_sha256": "d43defb21aad3292d8315161e0c106781579465ebd05115c7cc2e90f36ec59de",
+    "target": "哼，这话该由我说。怎么办，本来想看你怎么死，结果脚却自己往前走了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:15:15",
+    "source_sha256": "b7378c0148556acc665bc2dc6b2d8661129912540b6e50a1be9b1f54ac24a210",
+    "target": "真蠢。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:16:16",
+    "source_sha256": "2312c83fe03a195c1316e24a673898de3fe405ee5c5dcec2052e36a78ded2fd0",
+    "target": "连你们也出手了？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:17:17",
+    "source_sha256": "67c48fab22115fe86a32f29c839bd14ced2af1b095ed3cdb1f6710b86b04ee13",
+    "target": "梅菲斯托……倒是你，为什么出手？你和施瓦茨，不是仇敌吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:18:18",
+    "source_sha256": "91d4faf48e00775d7dc7ef9b462a89784e9d160de55b656773305dc5a37548c7",
+    "target": "只是无法坐视。被利用到再也没有价值，最终遭到丢弃……沦为权力的牺牲品，这种事，我不想再看见。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:19:19",
+    "source_sha256": "2cf1cbf88c3200cbcacd50c06e4113f4b159cdc62eefaa8a606d32b6ccde8e6d",
+    "target": "终于，还是变成这样。虽不愿如此，却也没有别的办法。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0301.fpb:text:20:20",
+    "source_sha256": "ba22c9dc4f9c4e39bd10d95de59ce76d33c9ecbbfc95cd967d8d3b429a405bc9",
+    "target": "把这些人，全部逮捕。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0302.fpb:text:0:0",
+    "source_sha256": "74d96af185c7af8dbd3297147350ba61ad31fd84630fb7a410335eb9cde517c3",
+    "target": "快离开这里。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0302.fpb:text:1:1",
+    "source_sha256": "da5fdd75b05cf11cc6471f76128c4495562c3191c088cc8f53ab44b9a4d8ead6",
+    "target": "你到底为什么帮我们？打什么主意？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0302.fpb:text:2:2",
+    "source_sha256": "524aac8f51e8bdf892a4821622c9d17480034a28ad03dbea49b4a0ab085c051d",
+    "target": "刚才说过了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0302.fpb:text:3:3",
+    "source_sha256": "4fdb480be62b994962b4913dc4bdd4ef1ef47e798e688551b03136186f05ae55",
+    "target": "费尔南……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0302.fpb:text:4:4",
+    "source_sha256": "de5f8fcaf31de49b1acab712ee8ac23f8b0ea2ba59518454f927e397863e6606",
+    "target": "萝洁，我相信，你没有背叛我们。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0302.fpb:text:5:5",
+    "source_sha256": "7535918d93d350809f41b7722cebd6fee7d05074315d80d78105c2389e40134a",
+    "target": "……嗯。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0302.fpb:text:6:6",
+    "source_sha256": "0a2c816de33e8dc73097747deed8dfbf20ee3c05652872ff1a449fdef0ccbb47",
+    "target": "最后，大家都被卷进来了……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0302.fpb:text:7:7",
+    "source_sha256": "d520d7776cae6caa36273c8046e0848c61996a30c1fd6c309a424195c5e5589c",
+    "target": "别这么说。我们也是经过自己的思考，才作出决定，不想听这种话。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0302.fpb:text:8:8",
+    "source_sha256": "0613b62aeefddb0a5625a7cc545934879aa247f98f41c748b6aa5ba51de69370",
+    "target": "那些话以后再说，现在先找地方避难。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0302.fpb:text:9:9",
+    "source_sha256": "161d9aef8a12596085b458ecb38b34d963a943e70367a01f72cec59d37bd27ed",
+    "target": "……去那里吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0303.fpb:text:0:0",
+    "source_sha256": "5b4a99655579ae03016d8f1731af8321b5a19dca3a08df834f0f661a9906636e",
+    "target": "真是一关接一关。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0303.fpb:text:1:1",
+    "source_sha256": "90c3b88b5f200dde170370110b4ba2226a38343c790533a8376afddfa992c08b",
+    "target": "哼，不能在这里被抓。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0304.fpb:text:0:0",
+    "source_sha256": "4edff9e9758e1c854b52e88ff7424bc84534b6cc99e1a358f1f73e3d7c2e611f",
+    "target": "总算……到了。不知为什么，有种奇妙的安心感。这里也不是特别安全，却只想休息，哪怕一会儿也好。身体越来越虚弱，已经撑不了多久。$n所以，在那之前，暂时……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0304.fpb:text:1:1",
+    "source_sha256": "7d4c6f888de07cae64c5dba1e3bd2f8d8715716f8a632b57be7a570371240fe1",
+    "target": "卡林兹……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0304.fpb:text:2:2",
+    "source_sha256": "020e93a4305a1cb5e667ad9893cd8f272528f3686781ce8e816b337d5007b548",
+    "target": "对不起，让我……休息一下。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0304.fpb:text:3:3",
+    "source_sha256": "2590ad97ebf4d8a55eb04d154c0f0703025742ebac1428ee3b7f5293495fcbb3",
+    "target": "……嗯。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:0:0",
+    "source_sha256": "312d54310c25261b0a9b4faa9161a53e60662ee4497de8ed19aa5fd197c439fa",
+    "target": "为什么突然站在我们这边？现在成了被追捕的人，就想利用我们了？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:1:1",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:2:2",
+    "source_sha256": "66f39404937b3a6570847e4f79cab5c4f33b4682b1ca61e42ff8e36df9f8ff9e",
+    "target": "因为你们，我失去了故乡与家人。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:3:3",
+    "source_sha256": "16a1d38422fdde5c9219dfb40b5d7fae94d456ce76ed24b81fbf1798ccdfeb73",
+    "target": "……那件事，我也认为是错的。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:4:4",
+    "source_sha256": "e757499cd953ec07c351b776aadaa67114cb7a8c28a00b98a6bb6a1115ca41cb",
+    "target": "反正，已经无法挽回。不想听借口。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:5:5",
+    "source_sha256": "ab8fdd7dc34ea78961bc680584abed5b150912588158b2c75f9545f819b3072d",
+    "target": "不知从什么时候起，贝尔米利昂一直朝恐怖袭击这种极端方向发展。温贝特出现后，更加加速了。从那时起，我就觉得有些不对，但彻底明白时，已经无法阻止。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:6:6",
+    "source_sha256": "4fdb480be62b994962b4913dc4bdd4ef1ef47e798e688551b03136186f05ae55",
+    "target": "费尔南……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:7:7",
+    "source_sha256": "532abd24e8f310804bac05fb11e65898bae2be79cae75f942c4b68a0deffbe3b",
+    "target": "我……不会再追随温贝特。不想连艾贝尔也攻击，付出这种代价，来换取重建克罗伊斯。现在，似乎明白了，乔克的父亲雅德为什么离开贝尔米利昂。我……会退出贝尔米利昂，寻找其他方法。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:8:8",
+    "source_sha256": "391243a6ad5b37575b6a9b47f48463391f19297065db21d970f94c3a4fc840e2",
+    "target": "你不是那么追随温贝特吗……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:9:9",
+    "source_sha256": "9c96cb09edfd1100de942fddb6bc13c35e7a27c8374759959bf71cf3c366bf02",
+    "target": "……可是，变了很多。温贝特……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:10:10",
+    "source_sha256": "5d945f771682d45fec12fd0608421726716a0c9351291849f1293c0e61960bbc",
+    "target": "那个人……很奇怪。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:11:11",
+    "source_sha256": "9bcedcd3c31e6211e8e535a40ee43d6a845b48c7e0b31cdd75b72860da523509",
+    "target": "嗯？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:12:12",
+    "source_sha256": "b18015c928720a16cd1f4e2003bd8d3effb2c1e12b590423588d0435967df062",
+    "target": "我……不知道，感觉很虚假。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:13:13",
+    "source_sha256": "a03e5182442c4e9072141bdd1c9165b991b08804196ad4b3f84a0454d8fd1130",
+    "target": "什么意思……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:14:14",
+    "source_sha256": "73c3442e54217492ee5cab4983e0bd32bd07efc9ad45e8b32242d2acb3e5c4be",
+    "target": "也许说得对。虽然像温贝特，却又有种奇妙的违和感……他出现之后，我只是按他的命令行动，连自己在做什么，都不知道……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0305.fpb:text:15:15",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0306.fpb:text:0:0",
+    "source_sha256": "f3ae0319c8112e7eaaa6c8e4c793a118f4c9b0fd3321a593dea984f0edc46175",
+    "target": "……失去了艾丝特尔。如此重要的艾丝特尔，终究没能守住，还是失去了。这一直成为，留在心中的遗恨。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0306.fpb:text:1:1",
+    "source_sha256": "8bace16662eb2b63713673d0c00a517069421d02660719bedad911b9c0e970a7",
+    "target": "要沉浸在那种伤感里，到什么时候？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0306.fpb:text:2:2",
+    "source_sha256": "983eeb10120aaabf423a24216dd772736a8c1a28a2ac9c7f3d1f8f2ec6eff45d",
+    "target": "因为父亲，艾丝特尔总过着痛苦的生活。可我只能看着。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0306.fpb:text:3:3",
+    "source_sha256": "424d6f6d7692d21555b52bfb8df7fb9b4cbc34cc1e10ecfe035883aa9858ac53",
+    "target": "很明白自己的处境。到头来，你也不过如此。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0306.fpb:text:4:4",
+    "source_sha256": "672fe2e64ddc3f90eed2f8c909a2f798759b8a411ac7a1afb0af38eca9ce4ceb",
+    "target": "所以，想复仇……想向杀死艾丝特尔和父亲的特里斯坦复仇。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0306.fpb:text:5:5",
+    "source_sha256": "9e07bd549d28b4a7dc8575665ab66d06fb51dc587b0b297639891846ce5c426b",
+    "target": "哈，真可笑。复仇？想复仇？不是已经做过了吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0306.fpb:text:6:6",
+    "source_sha256": "4e22edc67fd8da398db482ab2916d6b5b2c88e674fb75fe004510ae104eab170",
+    "target": "啊！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0306.fpb:text:7:7",
+    "source_sha256": "3911139e80a79534bb8d90e9f62fc537ebbfcd59468d7b7903fae36358623db7",
+    "target": "卡林兹……怎么了？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0306.fpb:text:8:8",
+    "source_sha256": "ce40c8f0207f0e1bfa37407cdd5639ca9850edbeeb1b8ad13677a0b06e3a1cf7",
+    "target": "不……没什么。",
+    "state": "translated"
+  }
+]
