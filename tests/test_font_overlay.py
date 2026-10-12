@@ -1,5 +1,6 @@
 from pathlib import Path
 import sys
+import json
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -60,6 +61,30 @@ class OverlayTests(unittest.TestCase):
     def test_output_reuse_refused(self):
         self.build()
         with self.assertRaisesRegex(ValueError,'new separate'):self.build()
+
+    def test_large_corpus_file_is_not_limited_by_command_line(self):
+        path=self.root/'translations.json'
+        rows=[dict(id='z',target='中文'*40000),dict(id='a',target='测试')]
+        raw=json.dumps(rows,ensure_ascii=False).encode('utf8');path.write_bytes(raw)
+        text,corpus=m.translation_corpus(path)
+        self.assertEqual(text,'测试\n'+'中文'*40000)
+        self.assertEqual(corpus[1],raw);self.assertEqual(corpus[2],2)
+        self.assertEqual(path.read_bytes(),raw)
+
+    def test_missing_targets_duplicate_ids_and_nulls_are_refused(self):
+        path=self.root/'translations.json'
+        for rows in [[],{},[dict(id='a',target=None)],[dict(id='a',target='中\0')],
+                     [dict(id='a',target='中'),dict(id='a',target='文')]]:
+            path.write_text(json.dumps(rows),encoding='utf8')
+            with self.assertRaises(ValueError):m.translation_corpus(path)
+
+    def test_corpus_changes_refused_before_output_publication(self):
+        path=self.root/'translations.json';path.write_text('[{"id":"one","target":"中文"}]',encoding='utf8')
+        text,corpus=m.translation_corpus(path);path.write_text('changed',encoding='utf8')
+        with patch('fontTools.ttLib.TTFont',FakeOutline),patch.object(m,'rasterize',side_effect=lambda c,p,h,w,*rest:b'\x03'*(h*w)):
+            with self.assertRaisesRegex(ValueError,'corpus changed'):
+                m.build(self.source,self.outline,m.sha(self.outline.read_bytes()),text,self.output,500,corpus)
+        self.assertFalse(self.output.exists())
 
 
 if __name__=='__main__':unittest.main()

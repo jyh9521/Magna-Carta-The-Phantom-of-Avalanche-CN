@@ -11,6 +11,25 @@ from resource_font import parse
 def sha(data): return hashlib.sha256(data).hexdigest()
 
 
+def translation_corpus(path):
+    """Read UTF-8 target rows instead of passing a whole game through argv."""
+    path = Path(path).resolve(strict=True)
+    original = path.read_bytes()
+    rows = json.loads(original.decode('utf8'))
+    if not isinstance(rows, list) or not rows:
+        raise ValueError('translation corpus must be a nonempty row list')
+    ids = set()
+    for row in rows:
+        if (not isinstance(row, dict) or not isinstance(row.get('id'), str) or not row['id']
+                or row['id'] in ids or not isinstance(row.get('target'), str)):
+            raise ValueError('translation corpus has missing target or invalid/duplicate ID')
+        if '\0' in row['target']:
+            raise ValueError('translation corpus contains embedded terminator')
+        ids.add(row['id'])
+    text = '\n'.join(row['target'] for row in sorted(rows, key=lambda row: row['id']))
+    return text, (path, original, len(rows))
+
+
 def rasterize(character, font_path, height, pitch, variations=(), face_cache=None):
     from PIL import Image, ImageDraw, ImageFont
     image = Image.new('L', (height, height), 0)
@@ -40,7 +59,7 @@ def rasterize(character, font_path, height, pitch, variations=(), face_cache=Non
     return bytes(data)
 
 
-def build(source, font_path, expected_font_sha, text, output, weight=500):
+def build(source, font_path, expected_font_sha, text, output, weight=500, corpus=None):
     from fontTools.ttLib import TTFont
     from PIL import __version__ as pillow_version, features
     source = Path(source).resolve(strict=True)
@@ -91,6 +110,8 @@ def build(source, font_path, expected_font_sha, text, output, weight=500):
         raise ValueError('source fonts changed during build')
     if sha(font_path.read_bytes()) != expected_font_sha:
         raise ValueError('source outline font changed during build')
+    if corpus is not None and corpus[0].read_bytes() != corpus[1]:
+        raise ValueError('translation corpus changed during build')
     report = dict(schema=1, kind='private_native_glyph_overlay_candidate',
                   source_font_sha256=expected_font_sha, source_font_notices=notices,
                   derived_font_name='Locale Glyph Overlay', pillow_version=pillow_version,
@@ -100,6 +121,9 @@ def build(source, font_path, expected_font_sha, text, output, weight=500):
                   native_modified_sha256=[sha(data) for data in outputs],
                   mapping=mapping, deltas=deltas, encoded_text_hex=encoded.hex(),
                   source_unchanged=True, game_started=False, in_game_verified=False)
+    if corpus is not None:
+        report['translation_input'] = dict(sha256=sha(corpus[1]), rows=corpus[2],
+                                         ordering='stable_id_ascending', semantic_approval_not_inferred=True)
     output.mkdir(parents=True)
     for font_set, data in enumerate(outputs):
         (output/f'Chi{font_set}.dat').write_bytes(data)
@@ -111,7 +135,11 @@ def build(source, font_path, expected_font_sha, text, output, weight=500):
 if __name__ == '__main__':
     p = argparse.ArgumentParser(); p.add_argument('--source', type=Path, required=True)
     p.add_argument('--font', type=Path, required=True); p.add_argument('--font-sha256', required=True)
-    p.add_argument('--text', required=True); p.add_argument('--output', type=Path, required=True)
+    inputs = p.add_mutually_exclusive_group(required=True)
+    inputs.add_argument('--text'); inputs.add_argument('--translations', type=Path)
+    p.add_argument('--output', type=Path, required=True)
     p.add_argument('--weight', type=int, default=500)
-    a = p.parse_args(); result = build(a.source, a.font, a.font_sha256, a.text, a.output, a.weight)
+    a = p.parse_args()
+    text, corpus = translation_corpus(a.translations) if a.translations else (a.text, None)
+    result = build(a.source, a.font, a.font_sha256, text, a.output, a.weight, corpus)
     print(f'FONT_OVERLAY PASS glyphs={len(result["mapping"])} sets=2 source_unchanged=true game_started=false in_game_verified=false')

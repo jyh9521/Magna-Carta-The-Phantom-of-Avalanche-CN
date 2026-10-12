@@ -28,6 +28,14 @@ python tools/fetch_locked_asset.py --manifest assets/font-sources/noto-sans-sc.j
 python tools/build_font_overlay.py --source ORIGINAL/Font --font build/font-source/NotoSansSC.ttf --font-sha256 a3041811a78c361b1de50f953c805e0244951c21c5bd412f7232ef0d899af0da --weight 500 --text 中文测试汉龙 --output build/font-overlay-candidate
 ```
 
+全文输入使用 `--translations TRANSLATIONS.json` 替代 `--text`，避免Windows命令行长度限制。文件为UTF-8行列表，每项至少有唯一非空字符串id和字符串target；缺译、重复ID及嵌入零字符拒绝。按稳定id排序汇集目标字符，来源摘要与行数进入报告，发布前再次检查输入文件未变。字库构建不自动批准译文语义，也不把候选变成定稿。
+
+```json
+[{"id":"RESOURCE:text:ORDINAL:IDENTIFIER","target":"目标文本"}]
+```
+
+已通过80,004个目标字符的文件输入及两次实际构建；两套字库和报告逐字节一致，输入含相同6字时也与短探针字库一致。新增3项覆盖大文件、缺译/重复/零字符和构建期间输入变化拒绝，当前总计194项通过；该大文件为受控重复文本，不是全文译文完成量。
+
 生成完整原版格式的候选字库只保存在忽略的 build/ 中；不提交商业字库或完整修改文件。增量数据与原创构建脚本分开保存，原商业字段来源不因生成而改变。
 
 ## 静态结果
