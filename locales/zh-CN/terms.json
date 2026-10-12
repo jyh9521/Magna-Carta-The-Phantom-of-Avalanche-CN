@@ -804,7 +804,7 @@
       "category": "人物",
       "status": "待复核",
       "translation_state": "approved",
-      "meaning": "0092吉拉特公主父亲、主角养父；0107讨论继承。",
+      "meaning": "吉拉特国王、拉德琳娜之父、主角养父；0092王位继承与0107父王语境确认，称陛下。",
       "relation": "pending",
       "reference_candidates": [],
       "resource_ids": [
@@ -812,6 +812,7 @@
         "Fpb/0090.fpb:text:22:22",
         "Fpb/0092.fpb:text:13:13",
         "Fpb/0092.fpb:text:9:9",
+        "Fpb/0107.fpb:text:9:9",
         "Fpb/0118.fpb:text:15:15",
         "Fpb/0190.fpb:text:7:7",
         "Fpb/0191.fpb:text:7:7",

@@ -18,7 +18,7 @@ LAYOUTS = {
 }
 SCAN_EXTENSIONS = {'.uis', '.jmu', '.wdi', '.mdi', '.msg', '.dll', '.exe', '.gsw', '.mon'}
 MEDIA_EXTENSIONS = {'.bgr', '.bmp', '.dds', '.tga', '.jpg', '.png', '.wav', '.mp3', '.ogg', '.avi', '.mpg', '.mpeg', '.bik'}
-TOKENS = re.compile(r'\$[A-Za-z]|%[-+ #0-9.*]*[sdifuxX]|\{[^{}]*\}|<[^<>]*>|[\x01-\x1f]')
+TOKENS = re.compile(r'\$[dDcC][0-9]{2}|\$[A-Za-z]|%[-+ #0-9.*]*[sdifuxX]|\{[^{}]*\}|<[^<>]*>|[\x01-\x1f]')
 
 
 def digest(data):

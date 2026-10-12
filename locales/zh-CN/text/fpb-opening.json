@@ -1,0 +1,314 @@
+[
+  {
+    "id": "Fpb/0075.fpb:text:0:0",
+    "source_sha256": "3130edb5e60ad6bb34144f5d8648f4f81b74d8b7c192613ee3e8683bd6e82cc7",
+    "target": "啊……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0075.fpb:text:1:1",
+    "source_sha256": "04fabd081c1b4565b5d00d57e6a8b96de13062a675c87a900cb6ff83f247d654",
+    "target": "呼……又是那个该死的梦……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0075.fpb:text:2:2",
+    "source_sha256": "8a14a33920bb724d96808f3e77819420c950b074dfb17698799a0530f02c1647",
+    "target": "就快到了吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0075.fpb:text:3:3",
+    "source_sha256": "361acd11538b08ef0a37adcd4ccdf63826a573a9eca4bdaf9fee42e09e4a8747",
+    "target": "自从那个不愿再回想的残酷日子过去，转眼已是十年。我从没想到，重返这里竟需要这么久。这片承载着怀念，却也留下更深伤痛的土地……修德尔米尔。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:0:0",
+    "source_sha256": "471a6cce54c7214831064d2f83486c90f3534cf6b28399b67b68b7439e81860d",
+    "target": "欢迎，卡林兹组长。赫利俄斯陛下亲自寄来的信，我已经收到了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:1:1",
+    "source_sha256": "d11e672762d5432229c7b9660d30b1436182178d0bd91af27b10005854a6de0e",
+    "target": "也没必要重新自我介绍了吧。我是卡林兹·杰尔比南。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:2:2",
+    "source_sha256": "1d47b755d2eea7d43a0a2dcf8129b7ec68fec902eb15f89f15c7952f0446f8c9",
+    "target": "呵呵，果然和传闻一样。听说你是个相当无礼的人。不过，“冰之魅影”这个称号在近卫队里可是大名鼎鼎。就连拉德琳娜也承认你的本事……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:3:3",
+    "source_sha256": "3cc884c4a277102dd35465481c7755d0377206810105a9606dd6e43bd3530ae2",
+    "target": "（那个大婶……真稀奇。明明是她擅自把人塞到这种地方的。）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:4:4",
+    "source_sha256": "e8d2a98bdbce8e025a4bd1e0b1196f570c1d1d758c399abcb4148d21c44dc794",
+    "target": "总之，被派到这里，你心里肯定不怎么痛快。你负责的第7组刚成立不久，加上目前处境不佳，组员也比较少。今后会逐渐补充人手，好好干吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:5:5",
+    "source_sha256": "f8aa3fb20000b142d82b764c584aa7b043e1d8d72ac65b1957612101401b1042",
+    "target": "我看过报告，大致了解了你的能力。和那些死板的普通军人相比，你的思维相当灵活。正因为如此，我才认为你能带领第7组。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:6:6",
+    "source_sha256": "ade42a75c4ea254abc0acbc1643e1e80c09f7404db33c048a1d52143ccbfa8dc",
+    "target": "随意摆布别人，换个好听的说法，就叫思维灵活了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:7:7",
+    "source_sha256": "359ff314eed24de4931f11c6205222fe0ce1ac77757e44d2bc2d3d0e4625b144",
+    "target": "咳……在施瓦茨，亲自上阵交锋的机会可比近卫队时期多得多。我很期待你能发挥出多少实力。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:8:8",
+    "source_sha256": "0f85a619904506d2f1ea7c4eafe411ade6db1b621ee4a5f214b3b70cb477faee",
+    "target": "我也很期待。毕竟不管三七二十一地打上一场，才合我的胃口。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:9:9",
+    "source_sha256": "1a9abf257ecb1e77c511e991bcb3b2fa480964951d9284a267cd00a13298e77d",
+    "target": "挖苦人是你的爱好啊。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:10:10",
+    "source_sha256": "dfc9af3d64dfcc25f885ac3ff2b61e43b6c7d9f32d0747e8f5dca722dbec6762",
+    "target": "切尔西，这里是施瓦茨总部，不是你家。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:11:11",
+    "source_sha256": "fbf9373ad16c2e3ead1d3904e4bdcd7c6ea8c2288dce689f68ddb2c5ce86772f",
+    "target": "我知道啦，哥哥。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:12:12",
+    "source_sha256": "a9f9e019d070be9e61dde74a14ea2f676bd36126b19acb4aebf52fa16034d24f",
+    "target": "最好称我总队长。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:13:13",
+    "source_sha256": "e9470f5740772562046e78f8b3524cde652bdb2383fcf29039cbd979fcd999c1",
+    "target": "明白了，总.队.长.大.人。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:14:14",
+    "source_sha256": "e55db71a538bb0447eb5a88b4f5d7e1b266cc10bc75b8b7d166ebe57637d395b",
+    "target": "那就带卡林兹组长去认识一下第7组的其他组员吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0078.fpb:text:15:15",
+    "source_sha256": "9e239a47f193632d5263eda7bc9c82a55112ecb8a57818c65a3decf4a0108262",
+    "target": "是，总.队.长.大.人。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:0:0",
+    "source_sha256": "6e69eab69475752721342461cc65899550b383fbbb0d8029ab1a910a805469f6",
+    "target": "这里虽然已经成了废宅，却是我度过童年的家。与艾丝特尔的回忆留在这里，让人怀念……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:1:1",
+    "source_sha256": "82083efa5d61ae11c0e4b1a7475c596fa1b2bd6580ed59688e8be573aebb26e9",
+    "target": "……艾丝特尔。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:2:2",
+    "source_sha256": "c538990cdd40242fdd1edcca80046e1004a36142bc32e1d93474a650a0c49e3b",
+    "target": "好厉害！这里简直像另一个世界。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:3:3",
+    "source_sha256": "f73defc689271dd0e18f5da78db8e6f7b2b8d336214dc841059a7b0ba126b608",
+    "target": "……你是谁？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:4:4",
+    "source_sha256": "ee92c04a06195c71c870533277f2d4c7b06ca4e46f459aed1894ef68e6f261b6",
+    "target": "咦，我？我……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:5:5",
+    "source_sha256": "1de0d0bc55496a47f7241e3e29ad579fb11bdbe69f218dc5bdeaa163de240c31",
+    "target": "那个……我叫阿多拉……对，阿多拉。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:6:6",
+    "source_sha256": "af19eec157da601c60784807d967a97cae86921128e21e30c316281bf171c0cb",
+    "target": "对，阿多拉。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:7:7",
+    "source_sha256": "22ac41e6ac088020c68490ab09951736cd40295317916298a494eca87b71bc74",
+    "target": "你到底是怎么进来的？这里已经封闭了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:8:8",
+    "source_sha256": "c983bdc8eb91536447cd6e734a626ffc02e127db461cdab685bee0327f1b5421",
+    "target": "不知怎么的，不知不觉就走进来了。花香也很好闻……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:9:9",
+    "source_sha256": "e43af8296e2acbf55db035b6d8febbaf8d780f4ecb535a9a624fa8fcf4ba8a54",
+    "target": "（不会……是拉德琳娜派来的间谍吧。）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:10:10",
+    "source_sha256": "26a07a7b35aed1ada22e5738e76590caf1b44566d568b76bba3ecc0599b7316c",
+    "target": "你叫什么名字？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:11:11",
+    "source_sha256": "486a9c975521374311d02a3431293c53c76292f22887c1969ad859b418526614",
+    "target": "……知道了又怎样。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:12:12",
+    "source_sha256": "7ebbdd5f1bc2dd55d071c1b11be7b08976cce58531eb57f27de8863d51e60c49",
+    "target": "哼，真小气。告诉我名字又不会怎么样。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:13:13",
+    "source_sha256": "1214e65c9ca12e56233635bb27c14a237d93a60e1bc22924d1a4fb06d78e1ffd",
+    "target": "别烦我了，出去。我没时间陪你这样的小丫头。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:14:14",
+    "source_sha256": "9045da3a0fdb59273c4cf0e7e89a0d75d0a408d2a15893ffc8bd72cd4ba43cd9",
+    "target": "太过分了！我该有的都有了，哪里像小丫头？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:15:15",
+    "source_sha256": "7f7711c1ebc02c041a1e6624a627f55aeae1ad0b52fa070d103db54eab7d75f4",
+    "target": "唉……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:16:16",
+    "source_sha256": "ae468b1b6389f0a232067b852a33251346b480d6195ca33bd270714377711228",
+    "target": "这家伙到底怎么回事……老是缠着我。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:17:17",
+    "source_sha256": "1bb45b4197c18f06e86c4a673e331d50312a2b0129b2c6de826f40d72a84c652",
+    "target": "嘻嘻，其实你对我一见钟情了吧？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:18:18",
+    "source_sha256": "09e08def28960cad2b3e905999cb5197a5b00f3ac1e103bf4e9cdec23152c110",
+    "target": "什……什么？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:19:19",
+    "source_sha256": "67598aa9b1f6f90959894efb7b32d2743a77672038d7ebdaa5cec550c25793df",
+    "target": "真是任性……倒是挺像某个人的。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:20:20",
+    "source_sha256": "57bb4c75689f3e1e42b5198f8986046606e855b5d94764e49480af5d7e9a5cf7",
+    "target": "……嗯，真是段有趣的记忆。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:21:21",
+    "source_sha256": "30bfd2008fceb8d7dda39e09324a4cedcfc2739f08634b315a5645b172f4ec3e",
+    "target": "……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:22:22",
+    "source_sha256": "eca0c0103039d05640fb8a21700d34045c14d4bd09bc0c8809f3197f7de231c8",
+    "target": "啊，我好像该走了。不过我很喜欢你，还会来找你的。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:23:23",
+    "source_sha256": "f7afdc606be0e0ea57f8322a3832a66632e3d3e594c61b6da0a4cefa30b1ba66",
+    "target": "那可不好说。我大概会把你忘了，不会有下次了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:24:24",
+    "source_sha256": "e879bc31559d8e869b861bfd0d0823a0e54394481fc74f6ff7fd02436536bd67",
+    "target": "太过分了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:25:25",
+    "source_sha256": "5c9f1811b5b62becc9eb62f81bd170d852d800b2c77293fb9b59fbdc6eb6478b",
+    "target": "好吧，那我就让你记住。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:26:26",
+    "source_sha256": "319d37a9aa0ab1f47a589d9c13b2674ade7d056734706841e468634ca922c7fc",
+    "target": "喂，你这是……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:27:27",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:28:28",
+    "source_sha256": "65748f61e07d5da23eac9c1f596118138953c808808a3664518bca07532a44f7",
+    "target": "嘿嘿，这样你就会记得我，直到下次见面吧？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:29:29",
+    "source_sha256": "f88a26656a4a943a6408a9a9ce25038823a0c69380f38c07490227dd13f17dca",
+    "target": "那再见啦。可不许忘了我。还有，下次见面一定要告诉我名字哦。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:30:30",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0084.fpb:text:31:31",
+    "source_sha256": "e4cd6f8d75bfdf2187f75c0079faee60c1f3d6a7cd106e0696facbe5a63faba8",
+    "target": "那丫头，不知为什么……有点像艾丝特尔。",
+    "state": "translated"
+  }
+]

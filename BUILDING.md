@@ -43,3 +43,16 @@ Win32 构建、配置隔离测试与运行入口见 [副本启动隔离](docs/RU
 同一 CMake 工程新增 `graphics_probe.exe`，接受显式绝对路径的 DirectDraw DLL，使用非交互离屏目标测试深度遮挡，不启动游戏、不改变桌面模式。图形层安装、单层约束和恢复命令见 [图形候选](docs/GRAPHICS_CANDIDATE.md)。
 
 完整异常采集和模拟回归见 [转储分析](docs/CRASH_ANALYSIS.md)。构建中的 `capture_core_fixture` 输出模拟 Core.dll，只用于自建故障样本，不复制到游戏副本；实际游戏 Core.dll 保持版本校验。非交互采集测试命令为 `python tests/check_exception_capture.py --bin build/runtime-native/Release --output build/capture-test`，输出目录须为新目录。
+
+
+## 结构译文候选重建
+
+完整原始catalog和coverage由只读提取生成，实际游戏资源不进入仓库。`TARGET_CORPUS`为按稳定ID合并的UTF-8译文数组，字库命令读取文件，不将全文放入命令行。
+
+```powershell
+python tools/translation_data.py --catalog CATALOG --translations TARGET_FILES --terms locales/zh-CN/terms.json --require-complete --report NEW_REPORT
+python tools/build_font_overlay.py --source SOURCE_GAME/Font --font OUTLINE_FONT --font-sha256 LOCKED_FONT_SHA --translations TARGET_CORPUS --output NEW_FONT_PACKAGE
+python tools/build_text_resources.py --source SOURCE_GAME --catalog CATALOG --coverage COVERAGE --translations TARGET_FILES --font-package NEW_FONT_PACKAGE --terms locales/zh-CN/terms.json --output NEW_RESOURCE_PACKAGE
+```
+
+各占位路径指实际独立输入/输出。源游戏须匹配提取哈希，轮廓字体须匹配来源锁。输出目录必须不存在，字体包与资源输出分离。局部研究可显式追加`--allow-partial`，不得将该产物当作全文发布或直接覆盖运行副本。FPB控制标记、记录ID及数值属性不翻译；当前工具不支持ITM、ABI、SGI、CHA或图片写入。详见[全文流程](docs/FULL_TRANSLATION_PIPELINE.md)。
