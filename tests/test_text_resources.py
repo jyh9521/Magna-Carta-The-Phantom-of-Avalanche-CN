@@ -125,7 +125,7 @@ class TextResourceTests(unittest.TestCase):
         wrong=[self.row,self.row]
         with self.assertRaisesRegex(ValueError,'count'):m.rebuild_fpb(self.original,self.resource,wrong,self.targets,self.mapping)
         self.row['resource']='Abi/fixture.abi';self.row['id']='Abi/fixture.abi:text:0:7';self.targets[0]['id']=self.row['id']
-        with self.assertRaisesRegex(ValueError,'format not supported'):self.build()
+        with self.assertRaisesRegex(ValueError,'source-bound field decisions'):self.build()
 
 
 if __name__=='__main__':unittest.main()

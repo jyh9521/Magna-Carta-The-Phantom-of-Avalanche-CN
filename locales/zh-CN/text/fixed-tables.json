@@ -1,0 +1,3689 @@
+[
+  {
+    "id": "Abi/0000.abi:name:0:0",
+    "source_sha256": "657388f245cd76d29959204443d32030e1540ff126c2aede737a19cb671775d8",
+    "target": "火球",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:1:1",
+    "source_sha256": "0f8b5750dd1ce7d5bfe66cf1228a3be7035e549b897be304377cd8b4f153023b",
+    "target": "冰球",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:2:2",
+    "source_sha256": "f0038bd458c154cf226acd2d86a22ebf80f3d89afbfe4186decd24d3483de94b",
+    "target": "效果测试",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:3:3",
+    "source_sha256": "be470c9934bc1e6c393b419900ba9eaf3611fc2d6e04aa13672fdbfb705f148f",
+    "target": "卡林兹 僚机攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:4:5",
+    "source_sha256": "5efec26328e53bb23f128a4b4d14c3cda8fc6b7c3ed981854b0578c00001d381",
+    "target": "骸骨战士 普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:5:6",
+    "source_sha256": "450ad527c101a80c8fd07310f6d37dc1cc0825ea94a582f27db12c1c7f9a8ae7",
+    "target": "真空无声斩(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:6:7",
+    "source_sha256": "fb39716566404123c1dd68b63aaeb622b4e646b0aec6d5ea3236a8f69f86e769",
+    "target": "爆热炎火斩(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:7:8",
+    "source_sha256": "134c59276fb590faceed989980d84efdda0147665a549805ee657bcc6766b8f8",
+    "target": "飞燕闪光斩(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:8:9",
+    "source_sha256": "e6110ae83f39c83d941ee868a8171184324eb50ce6726eb0fb4509cd30bfcc0b",
+    "target": "无影修罗斩(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:9:10",
+    "source_sha256": "31a9b6b6d2d516a3077bb2e94f504a8d21a8f794e76e48b1a3cd80da458a2a72",
+    "target": "冰碎一击斩(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:10:11",
+    "source_sha256": "124929acecb6bb72cb494917dd3a4ccf5fb19282ac81030c970c6b71d7fbfefc",
+    "target": "卡林兹-雷",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:11:12",
+    "source_sha256": "0db7b7a88047e3ba16e79c331faf02d9636a2db50310dc3932008da3d6c69d3c",
+    "target": "亲和破击(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:12:13",
+    "source_sha256": "fefdcc5676cb65c7e7d545def0177db45f92507d1c246169d7b8c0b9ae73ff8b",
+    "target": "卡林兹-普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:13:14",
+    "source_sha256": "9fae6d0136e05357f565263d4234037557b42b570129ec1f28cac7218c3a3c6a",
+    "target": "阿多拉-普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:14:15",
+    "source_sha256": "b4958af6af86c5433c32c4f46109ffb3dd3b11cb1b87f316b312ff5225535261",
+    "target": "真空无声剑(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:15:16",
+    "source_sha256": "a0ffc65228fee30f4bb121ea8d7b61cc3b7473cdaea89938b802a2d7e137c33f",
+    "target": "爆热炎火剑(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:16:17",
+    "source_sha256": "502861c5da908f5bf5cc85e22421eb9c55f55f4ac586455d0973490a1b445044",
+    "target": "飞燕闪光剑(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:17:18",
+    "source_sha256": "db3698df034c3f599c69bfe08b6bc388d78d2e0e12d6cf282dcbcb799d3d288b",
+    "target": "无影修罗剑(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:18:19",
+    "source_sha256": "fd9c8c0462e21e189cde2c538e4f518a675b3b041aa08cc645183b527c01ddb1",
+    "target": "冰碎一击剑(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:19:20",
+    "source_sha256": "7c7fc4cd8220496dc1dcd7e51224bd2cdb074cb14efb65d900d9e4f834f0e8c1",
+    "target": "阿多拉-雷",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:20:21",
+    "source_sha256": "a7246e2d9c169a7f888eb7207e146883825aead5e9668c2c3b0150b2481f5843",
+    "target": "阿多拉-光",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:21:22",
+    "source_sha256": "fe5aceb757b2398ce2a34ef2aabad89dc356c12df43d53ca31f0178ded49f223",
+    "target": "切尔西-普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:22:23",
+    "source_sha256": "d1b2f899a5fb9bc513fa0779f477a9fbe2169fb79eb8ef50a178a0e16e23017e",
+    "target": "切尔西-地",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:23:24",
+    "source_sha256": "4c3441e147374bee3da77cf4a0ea3072792229bcb1df267ee727dafe8a535af3",
+    "target": "地狱火(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:24:25",
+    "source_sha256": "756589497801bbfaa7169277b4dbdff7567d387077049b802fa5ce1afb8a58f7",
+    "target": "加德尼斯之风(風)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:25:26",
+    "source_sha256": "4cd425f83623f8702de7112cac1138a8379336fd90a6f5fc14bb7413631d538f",
+    "target": "混沌爆发(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:26:27",
+    "source_sha256": "8074accd30245a86850ba5504952c170821a6252e60e124adb19cabf37003092",
+    "target": "切尔西-水",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:27:28",
+    "source_sha256": "f6fb54632fcff2e9c84e5ab953e1f3c0623999c9fc5f18b5ee68d8fa5ea2e4ad",
+    "target": "死亡之花(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:28:29",
+    "source_sha256": "65f3f48408eddf4614b670733fa45ccbabef705419b2e79974360f3264534b39",
+    "target": "爆炸(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:29:30",
+    "source_sha256": "183980d65714f64e8de52204f87650a5268e4884b55d08b13bd8e0bd022a049c",
+    "target": "罗普玛-普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:30:31",
+    "source_sha256": "8fbead7e04df67fa62babdb9e53553ae75b697f23a4f6dd591603d69c3ba94ab",
+    "target": "双重治愈(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:31:32",
+    "source_sha256": "e793cc9d531d0aaa9102e50e476235eb090db31580232f7144dc006961c66a67",
+    "target": "炼狱冲撞(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:32:33",
+    "source_sha256": "34b4320fedcad38b058f82b277f9bcb321f0c1259e91b9f67f40caed48f6028d",
+    "target": "完美治愈(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:33:34",
+    "source_sha256": "57654b9f850da420deb722c731669d953cb79048e18c79a49544d2dc159d49a7",
+    "target": "罗普玛-暗",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:34:35",
+    "source_sha256": "97f84b9fa50a4330536cc0973fe394cfde4c12860b965c02f430491c0f2e9bff",
+    "target": "终极治愈(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:35:36",
+    "source_sha256": "659d3e2431ba928853699e57c13c2265c641138a674287c793f8cd89bdcdd8c2",
+    "target": "反射炮(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:36:37",
+    "source_sha256": "2d55e5668ad6b92c2905167908faf022f7dfc5805cc2c4fa36c67a3fad2648ec",
+    "target": "治愈(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:37:38",
+    "source_sha256": "3ed74af6673626041bd327dad70c776214a83cab4551ea94680e1e143efa752d",
+    "target": "菲莉西亚-普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:38:39",
+    "source_sha256": "2b9261060d3715f25dd69a4fb7a00404d2967f865e7bacbaf7821f2895e4a3c3",
+    "target": "火球(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:39:40",
+    "source_sha256": "27b56ad21ce94edf530fd8d377aa45df89558dea6aa5c1623be4ee02570fe838",
+    "target": "火焰吐息(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:40:41",
+    "source_sha256": "72b7f84386423937381f6527881d8dcd7b06e4b68d6adda5cfda05af1d89989c",
+    "target": "菲莉西亚-风",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:41:42",
+    "source_sha256": "88c5c92f4638651b653d8f152f2510964176d519b573f941eb041fb018962c1f",
+    "target": "混沌破击(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:42:43",
+    "source_sha256": "53c1608c7b2ee6846bb18eb1a09e1af755cf9b7f3f1b6c963d85f9d69e961718",
+    "target": "严冬酷寒(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:43:44",
+    "source_sha256": "fe4c3892e17683949b30e8c06654c74d6aab89e09a091b261ad4a3e8dde319ca",
+    "target": "神之矛(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:44:45",
+    "source_sha256": "c47a6057935da3d4f13742c604dfd1af14efc087853a90c68aec1e12fbd89de0",
+    "target": "菲莉西亚-光",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:45:46",
+    "source_sha256": "251b2bb37b95509782ddf714008a565809c2dbc13df7bf17eddf0bf922b1db47",
+    "target": "萝洁-普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:46:47",
+    "source_sha256": "0a3e5479d259f897022f25487f51c72ac2f92d4103f5a511876e39a79763006b",
+    "target": "萝洁-地",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:47:48",
+    "source_sha256": "8c1fe38c3946f56504da93aef9765e76fd73b8cbc90f57337b146ec892a8354c",
+    "target": "破击箭(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:48:49",
+    "source_sha256": "e2d0fb136b979e2c5bc1594edbb7cff4767f015ea94e8832a7f86d27eaefcf77",
+    "target": "风之破击(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:49:50",
+    "source_sha256": "d5bcc484d81f2eafcf2009677da6dddbd96b6116f5f605259e37d6c4b42410bf",
+    "target": "无声破击(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:50:51",
+    "source_sha256": "b52c83364da197389a1472f7730104eb25351efffc82cf8e97df1aca425381f4",
+    "target": "力量破击(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:51:52",
+    "source_sha256": "d2c740045191a251ebfcf81c5adb63a831e7fafe5665a9363f7c6138931a4da9",
+    "target": "萝洁-雷",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:52:53",
+    "source_sha256": "90ba7af45feffffe6ccd78f27d9248e64477f818124e1ca5488dcdc236016495",
+    "target": "萝洁-光",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:53:54",
+    "source_sha256": "4a44b7762e715535c59a60549adc97be6781135c6b76ff1ef2773bebafdda3f1",
+    "target": "乔克-普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:54:55",
+    "source_sha256": "c3c8ca9ee48339f8b68c46483f80c5a7e08a2fc5c1a41eaf281cdfdba2797d6e",
+    "target": "脉冲同步(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:55:56",
+    "source_sha256": "3716771fd5a5188279c802231ef51039ce3a5148b6f2efb76cb24d80992169ee",
+    "target": "乔克-火",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:56:57",
+    "source_sha256": "9a65b17608239d2d566c908ed7e241fe52d9d08c21cdba98efc13d6dd39de53d",
+    "target": "死亡风暴(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:57:58",
+    "source_sha256": "8715dd5aa660a353971abc338b15880bb69928d6fd3ed5c754524a7dc4c748ac",
+    "target": "暗影打击(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:58:59",
+    "source_sha256": "f4613bc0491862e4d2ad2fed2d4aca7bee514e42adaa191809e9cf7b68e58a33",
+    "target": "乔克-水",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:59:60",
+    "source_sha256": "6ae024ba60e8b392b99e6f5ba36e6c616d8ad21904d11aa0769b61ded3fcc955",
+    "target": "乔克-雷",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:60:61",
+    "source_sha256": "09a108aafafd3acfb204cc0491a8bace89cbf3d9f8b184cd9dc14d3ae5e9859a",
+    "target": "半径激流(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:61:62",
+    "source_sha256": "cbec6d4401f7879f663232a1722373ce746ebd325329ed25fb2bd89b5902c3d9",
+    "target": "费尔南-普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:62:63",
+    "source_sha256": "9ef21b2627776b7fb30c031941a4b366bdfdea545f0f886df5ac32cba518f025",
+    "target": "无声粉碎(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:63:64",
+    "source_sha256": "bcafdfc475f1d788ca93b6adb8bf5f1f40c421302eba225e4500d6bb3e096c33",
+    "target": "灵能炸弹(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:64:65",
+    "source_sha256": "2832737535a01cf81a6adc149835d76f52e156370a98b72d932254af544e24b2",
+    "target": "顶点切割(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:65:66",
+    "source_sha256": "c80c5fea240fbc9474bad6ac592cbdd85b1833afb1f3be2561e06d247a5fc26b",
+    "target": "费尔南-暗",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:66:67",
+    "source_sha256": "c520e1053a82a9360626551ffe18b07298fda26afec4a8b122796ca60409548c",
+    "target": "费尔南-水",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:67:68",
+    "source_sha256": "c3673a9c08636b544f4faf1e39471ef484bb2744c9e8d09e2b1796c56a82c00f",
+    "target": "费尔南-雷",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:68:69",
+    "source_sha256": "9ab073e28eaa76974cd5ad11433e425386512ef5d5ee49f22a2321f144d14621",
+    "target": "闪电飞溅(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:69:70",
+    "source_sha256": "2acd67af59af8a6eadf083c306d72206899394d559344f8a47675df47a92117c",
+    "target": "特里斯坦-普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:70:71",
+    "source_sha256": "79e1a07497524a5f28aabe48a7c69ff0c6061f5537e4371ebf4288a50fcc4956",
+    "target": "无声粉碎T",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:71:72",
+    "source_sha256": "df282f14ee55c4184752f136643ac8a6a6a970a5b6805a74259e8983fa47ff4b",
+    "target": "灵能炸弹T",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:72:73",
+    "source_sha256": "4bec330167b6a4f2223a0ce6f871818287daf92d4d586cb60e56819c6098ac58",
+    "target": "顶点切割(風)T",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:73:74",
+    "source_sha256": "a2f94e559d9a718f64d8e72838cb56bd06309ff4297cee2d839cc8b3b7e1748d",
+    "target": "特里斯坦-暗",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:74:75",
+    "source_sha256": "eadd09154e78f6c4f4bd349f110a72e630e6957e8931cc60c087d96b5e60399e",
+    "target": "特里斯坦-水",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:75:76",
+    "source_sha256": "e5cf80662dfede295500d52fade9cc8c4df1cf6d8604e3afebad8ae307710c10",
+    "target": "特里斯坦-雷",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:76:77",
+    "source_sha256": "f0ffdd55d0816e144cc5cfc2e865c3a1b613739c4ed68d7fe1f87e6628d3afda",
+    "target": "闪电飞溅T",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:77:78",
+    "source_sha256": "9b94a18dcfa6eb2a1d3212edd539027ebafc996f485adee81b08d54be441a505",
+    "target": "终结攻击T",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:78:79",
+    "source_sha256": "0f0eac576f3267473cd6d73d37cb552f299c3402fda35676153d9434310796e7",
+    "target": "M小型怪物-普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:79:80",
+    "source_sha256": "92e112b4a397058852577b72eb7f450bf0b04ea1333cf21292b42ee1d1e7d5ad",
+    "target": "M小型怪物-魔法攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:80:81",
+    "source_sha256": "3b5d687400e4fd5e1b366fab999723c7b03048620af551e893aa6b09f2fc0f07",
+    "target": "M中型怪物-普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:81:82",
+    "source_sha256": "d0a226189784f1499a2242cc562791557df21635334de0cf4e3951a7a99f753c",
+    "target": "M中型怪物-魔法攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:82:83",
+    "source_sha256": "acee640f931a08c8d2d1912e67ec3786e2b8fb50e0239efcf97f143ce5e39c64",
+    "target": "M大型怪物-普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:83:84",
+    "source_sha256": "5e3aeed486322ceba4ada6febc51c3eae0ddc2c817f24443357422d2a4c03444",
+    "target": "M大型怪物-魔法攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:84:85",
+    "source_sha256": "c73960a1cb7145bcb9c9cf0aa2a7113694f1bf04e51fdd519730bef94c7653ba",
+    "target": "M尼卡奈特-攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:85:86",
+    "source_sha256": "304e1aab4b44e16eb9f12ca20b61e3bf57a3c112b07a8a777c56612fea68ce29",
+    "target": "M尼卡奈特-攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:86:87",
+    "source_sha256": "b54d1788fb9279a3fbcf29fb3dd0cbdf97ea9314f95e867941f32049cbe39ec4",
+    "target": "M尼卡奈特-攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:87:88",
+    "source_sha256": "679d3f48596b46579174dd14aed6b6109464f85d56aa29e5140695d8fd97c79c",
+    "target": "M兰布拉斯-攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:88:89",
+    "source_sha256": "83c17757259028307e5b6631c34c793c7eb9be33428471908a0356f67d34ae5a",
+    "target": "M兰布拉斯-攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:89:90",
+    "source_sha256": "cd1d9623fc5333dee80f053c2de94dcb9c9201cc0ed68c9ffc617cf9deb69345",
+    "target": "M兰布拉斯-攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:90:91",
+    "source_sha256": "21146c62aac29d611af68b0332b2ac30fa695a5e2db44b10d46b000deb6495fb",
+    "target": "M梅洛斯-攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:91:92",
+    "source_sha256": "855cd17545bada34ad17033e59a51c1e65edb17cec8d4f66f52e35d6d186b226",
+    "target": "M梅洛斯-攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:92:93",
+    "source_sha256": "945a9d35b03b375e77addaebed98543e98b753b1749fd08a952cdfb9d4384384",
+    "target": "M梅洛斯-攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:93:94",
+    "source_sha256": "6e63f6fd6addb062c71b50addaaf71be6acc20beba1afe8a40bcdc8a09e01d93",
+    "target": "M文图斯-攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:94:95",
+    "source_sha256": "5e57a7f8ba58d186b8acfd53f175c261d571dded40532a33f31ed039a3e6daeb",
+    "target": "M文图斯-攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:95:96",
+    "source_sha256": "9b8b9111e5c66ec7e533c1b57d8dc6ddb9323c5948fbd983ee07db4c9f0fe784",
+    "target": "M文图斯-攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:96:97",
+    "source_sha256": "47cd7785ab2c2dab86b6fae5a6671e6bea53cdbf3d536244ac40689390580ce2",
+    "target": "M雷神-攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:97:98",
+    "source_sha256": "7c51a288889c2d6882f330ddd131dffb340e99962f237dd6800773df9e980d19",
+    "target": "M雷神-攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:98:99",
+    "source_sha256": "95497dcfe57efb5ea05f42e69a1afaf46703748549139536582121676cd2d93e",
+    "target": "M雷神-攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:99:100",
+    "source_sha256": "b47523e8ae1cf762a031e5c05feb837c40bd500a09a3c8c4b2f0f05ed9bdcf20",
+    "target": "M严冬酷寒-攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:100:101",
+    "source_sha256": "44dc22dd904f0c2f31ac4f83ff0ce89c93cd5a0101f83edff47cec66bfa3b05f",
+    "target": "M严冬酷寒-攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:101:102",
+    "source_sha256": "81b62d8abbb611a6a220a1a7e4121307b6bf9d39a22539ab69df60d4f071c6fb",
+    "target": "M严冬酷寒-攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:102:103",
+    "source_sha256": "bfe6ba152ff05a997d146f8879416056a1bbceebd66f09eaec61a6ecb5b079b5",
+    "target": "M克罗伊泽尔-攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:103:104",
+    "source_sha256": "c2be489fdbc5181135292024d0d60ebe596c94e1a3e0aa2d12aa9c65fbadec85",
+    "target": "M克罗伊泽尔-攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:104:105",
+    "source_sha256": "458a06f5d98afa385f8f6cc81a82d19f800d4c6664c9f00dd8ab0e4afd1b6941",
+    "target": "M克罗伊泽尔-攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:105:106",
+    "source_sha256": "7e0e26632f195b08aa88577aace5e1f4c10dcde97a161dabac4610a84e5151c3",
+    "target": "僵尸 普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:106:107",
+    "source_sha256": "be2db1a379e86ba0f832e295bbf07e6271523a63e9fa83be0176504403648707",
+    "target": "波米 基本攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:107:108",
+    "source_sha256": "083d143ebe315b939b2ab05eb66412b809a3d83b6486c65c2dea739753b1733f",
+    "target": "波里托 普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:108:109",
+    "source_sha256": "01463fb8f2564ccecc8bf0494bc0f7ceabf10a6a4b4e010120f273e6da4ddfbd",
+    "target": "大型怪物_魔法_冰",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:109:110",
+    "source_sha256": "666d7b00e8de62e52c712d8f4a2fca941dc66a85a2181e01634c939477612231",
+    "target": "中型怪物_魔法_冰",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:110:111",
+    "source_sha256": "c424c01fc7354b9f1d4f9ce6c61a3fbf261658cef27413f53c15b96c221bf8f8",
+    "target": "小型怪物_魔法_冰",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:111:112",
+    "source_sha256": "d6b7144551f9a8c7eb56a4d64a6ac330360db575839839d0fb7d8b36a1cb15ce",
+    "target": "内克莉莎专用_普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:112:113",
+    "source_sha256": "ecde16d2e3df31b727e2ab10a348a05242d5bd57a1fd18799966dbf4e5613e12",
+    "target": "塔拉西俄斯_火焰魔法",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:113:114",
+    "source_sha256": "46749eb06a903a055338ad025eab5ae64af1d6bec71c7332f2cff3d884bccf22",
+    "target": "塔拉西俄斯_冰魔法",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:114:115",
+    "source_sha256": "50adadf53aac3c48d43b1df331873ba9568a143bc27325663c278ba8d7330aab",
+    "target": "科莫耶_普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:115:116",
+    "source_sha256": "27fb06bde7849c1d5cc934d6b6806b4f8fd7338725d9e2a8449a5166975d8bf7",
+    "target": "科莫耶_火焰魔法",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:116:117",
+    "source_sha256": "8d1a8b247d11e6c14e962acaf2512090280b04ea8892c79aaccab46b47877c43",
+    "target": "科莫耶_冰魔法",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:117:118",
+    "source_sha256": "810f4ae9a2645a5a54540baa1879c4d7ac167e8df818a0ffd867a01bd8b28e65",
+    "target": "巴格斯_基本攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:118:119",
+    "source_sha256": "1be107cfa4ca1b888d2695db51da630a93a411a50c2aa2388bdaa0089fa397ba",
+    "target": "穆修戈尔_基本攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:119:120",
+    "source_sha256": "afc723e32c83ce33b43fd3c97de96e839610995493564e226edb05a338d67a10",
+    "target": "拉米亚_基本攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:120:121",
+    "source_sha256": "df46baa342f59d9d511b989bac8b56cc6d3306cdc5d627928137172249f7ad74",
+    "target": "屠夫_基本攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:121:122",
+    "source_sha256": "9cfdc809bf33462c1405ee1135eb1f391036bec71f71b320ed0278321ebfddc7",
+    "target": "死神收割者_基本攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:122:123",
+    "source_sha256": "cc1a45e05bf1d3acc2297ffdcb96749c01670b61ce0dae1227fb802ca3920279",
+    "target": "丹斯玛蒙特_基本攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:123:124",
+    "source_sha256": "0200f94474d1a8117d6df37802130dd8d03b398367c120dea77de963f74a3642",
+    "target": "胶质兽_普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:124:125",
+    "source_sha256": "7c7643fbee3c510c490c31056767f8add1c3894171e8a80798617239cc0262b0",
+    "target": "特雷菲斯_基本攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:125:126",
+    "source_sha256": "726ce03d83273836fe7f7a4ea0faf486501eed3e3a52fcf70fa15255b22791db",
+    "target": "阿比斯_基本攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:126:127",
+    "source_sha256": "70fbb32353237a57e3394dc19875843ddc906579c5143323ce3b4b93823a2ab3",
+    "target": "阿比斯_基本攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:127:128",
+    "source_sha256": "feace42f4ad3dfaff8e1d71566b47cbe3873a794531957be258ff8cd13175694",
+    "target": "阿比斯_基本攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:128:129",
+    "source_sha256": "959a7631a87fc019d6605a5dfe66c6218bc952223e5e74a601d69f38b7b92333",
+    "target": "史莱姆_普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:129:130",
+    "source_sha256": "9b60b2f78518ec6a5ac3295e1081f229628fae0b57a1329abb3c9afa924ca0d4",
+    "target": "卡林兹_连续攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:130:131",
+    "source_sha256": "94c8b98bf9bb39aa4ab21e7b52e9da2a250f8cff1075d691b567475114910e9d",
+    "target": "卡林兹_连续攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:131:132",
+    "source_sha256": "0962276bef60822880faa13b21fbad82a7659a4aed0b57126f136e697c3b6d0e",
+    "target": "卡林兹_连续攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:132:133",
+    "source_sha256": "daad10ff1a51c6931ed4ce2c5ef9a330b915fb890552312a2c1db24952e51596",
+    "target": "阿多拉_连续攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:133:134",
+    "source_sha256": "78492dfb8fa6c170d28e30b6db17b2b6956895c49b0c056f8a337f9963b88db9",
+    "target": "阿多拉_连续攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:134:135",
+    "source_sha256": "7985a45a7bfcae2b778dfc6e84bcb07a8bc0e63e02dccde36941987669fc765f",
+    "target": "阿多拉_连续攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:135:136",
+    "source_sha256": "4ce6b8d920e1252bf209e6ee43deb520e13c6fc23afd6a523c2046c1e6f0170b",
+    "target": "切尔西_连续攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:136:137",
+    "source_sha256": "bbcb69266c3918139d98309bf8900b22d116af1af37ed921b7f587696a84f7ba",
+    "target": "切尔西_连续攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:137:138",
+    "source_sha256": "bc978bfdfa092c45a8b8b92819ba8ee67378ba8e3f434468e0aa02e2a984c7c6",
+    "target": "切尔西_连续攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:138:139",
+    "source_sha256": "de9d17419a50a740565bab0531eea0aee2fb00656c6dcb8c13fe749117ad1c47",
+    "target": "罗普玛_连续攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:139:140",
+    "source_sha256": "c4fda0ab0586203389e163a2f14789058387416901ea5c32405948ab09d7b40b",
+    "target": "罗普玛_连续攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:140:141",
+    "source_sha256": "0bcb2b29ba2a1ca418398375871d47a161b91a36693ca709ccc6991d37e27b2a",
+    "target": "罗普玛_连续攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:141:142",
+    "source_sha256": "979d3b39a50cc3b6f142176b35cc80a74d306d9b50d1124c7c9c69849c698c6b",
+    "target": "菲莉西亚_连续攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:142:143",
+    "source_sha256": "8d542957fd06219293eb39794e8ba29ab3b7af9cf73b225a21ddf39cd275c89b",
+    "target": "菲莉西亚_连续攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:143:144",
+    "source_sha256": "21cf1b29be04f4a81f47aee1312dacedbb98840513f2e4db56cc2853fce3c2fd",
+    "target": "菲莉西亚_连续攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:144:145",
+    "source_sha256": "25226cc3570125a94e873d8bd8e5bf6db3824b462121fc19c105b90888745096",
+    "target": "萝洁_连续攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:145:146",
+    "source_sha256": "31cb43650545a6b0b5aa5f04389d2bce362da8f281bffb19ce13d013eba8cc84",
+    "target": "萝洁_连续攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:146:147",
+    "source_sha256": "2d2fc196f68c558f149018f7747657e965406552b1d4dd98f2fe5dbfa9a9a14e",
+    "target": "萝洁_连续攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:147:148",
+    "source_sha256": "fb205a8f8c4e51a2206c0346806e52c4c753c099acce949fd4e13dea5ce7a7bd",
+    "target": "乔克_连续攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:148:149",
+    "source_sha256": "f886c890d153f4911e0165e76bbfe141420cbd74fac5f37715a70f77d6dc1f54",
+    "target": "乔克_连续攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:149:150",
+    "source_sha256": "db8ee7735662a1bb4987238319a434db22fd23f27fd86d87acd3e808047a7dae",
+    "target": "乔克_连续攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:150:151",
+    "source_sha256": "c26f4cc63e7deb6f56edcaefb72923f91aa860d0b6842fc880cb66bc61e296ee",
+    "target": "利克基本攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:151:152",
+    "source_sha256": "393d65a06225476d5c7984b518f2062e908051f65a85dee3bc7dc5b174edda5e",
+    "target": "费尔南_连续攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:152:153",
+    "source_sha256": "97d89ac91cd87ccc611a3cf1be434739458df0a0ebd72d11c6b6b0547abc41b2",
+    "target": "费尔南_连续攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:153:155",
+    "source_sha256": "d345c86186dfff4538d706aebfbd97f13e4e86659fc6fc51e3a9b4f263e351ab",
+    "target": "费尔南_连续攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:154:156",
+    "source_sha256": "219a3a12568eb925f8b4136486c44ce0790b11b25b87a273546907ad7d69a151",
+    "target": "特里斯坦_连续攻击1",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:155:157",
+    "source_sha256": "19f02e24a37d6c0767975a2d06c8f90bdac4c697a5e325db87bc3140eeae89f8",
+    "target": "特里斯坦_连续攻击2",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:156:158",
+    "source_sha256": "5e8b1d37b583173f9801554803daee66c86a9aa0443985e236b9aebb8034f809",
+    "target": "特里斯坦_连续攻击3",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:157:159",
+    "source_sha256": "e7b525ea61366a9e7f53cbd8866fbc4cdb8de87fd59254f26808e24998ff830a",
+    "target": "切尔西_粒子测试",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:158:160",
+    "source_sha256": "db0b071e0f03ef36e94eba02b66ff962af1d70c78ea0f9e236092e54865eff28",
+    "target": "铜像_粒子测试",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:159:161",
+    "source_sha256": "0ff49b9005181da30da237a5252a0c75a430fd19ad3266b0d752e7776f110658",
+    "target": "首领_萝洁1_普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:160:162",
+    "source_sha256": "d0fe9a6fa35a67dc07a6b930c5481036b4cfc5998cf084b9af7780ec0ee76d9f",
+    "target": "首领_萝洁1_破击箭",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:161:163",
+    "source_sha256": "897e1ad133813e9e1a34f98fe3673f5e001f7da8d277688c79ea77b8bd358a63",
+    "target": "首领_萝洁1_风之破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:162:164",
+    "source_sha256": "7024e4b58c8882c1d78a0d76af2c53dd9b19128f3cd22115ffa2bb507bbab04e",
+    "target": "首领_萝洁1_无声破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:163:165",
+    "source_sha256": "7542039e3a96eb874eaa674f9aa4d84fb396977c260174a43c0e37f8c45a58c5",
+    "target": "首领_萝洁1_力量破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:164:166",
+    "source_sha256": "c3eee0f21be6e2ff326e2c27e9def46743cae9bac584781015e0e5dbc3d1c57b",
+    "target": "首领_萝洁2_普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:165:167",
+    "source_sha256": "b91349508f4eb5126a0042efa3aad1c3cc0f2eadcfa693917f9af0af45e1f27a",
+    "target": "首领_萝洁2_破击箭",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:166:168",
+    "source_sha256": "b543e29329503085ac3b78fef35c3080925431b45dfecb9802d8637590294752",
+    "target": "首领_萝洁2_风之破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:167:169",
+    "source_sha256": "440ec1d34c23bc51584df7d981e128d46df66abfedf331a8b7f51a99a1b801bb",
+    "target": "首领_萝洁2_无声破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:168:170",
+    "source_sha256": "eb295580c683e02c1f16c221702ebf31bb1cda133a4da02f27b9056ccfdc7436",
+    "target": "首领_萝洁2_力量破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:169:171",
+    "source_sha256": "244f836d1a94d60a51229a99e016345122e1c7407913e6b71a3ac4e35800eeb8",
+    "target": "首领_萝洁3_普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:170:172",
+    "source_sha256": "239fbe30f3fbdc55da031304b3cc81119d0e3203622774b910a7090719dc698e",
+    "target": "首领_萝洁3_破击箭",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:171:173",
+    "source_sha256": "82615e8dba49f10536af5bef12413e7e4b1bc51b7890930f2c64c6d2712be6b5",
+    "target": "首领_萝洁3_风之破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:172:174",
+    "source_sha256": "21dabe8b1c33aa9b49c06a4450b9fb81b9a91b7ca388b31803b944a622bf7f3e",
+    "target": "首领_萝洁3_无声破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:173:175",
+    "source_sha256": "759dd9c24799ad6d94b4d3a6eab95cd25f5a34b582a9bf44632fe454996f6f36",
+    "target": "首领_萝洁3_力量破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:174:176",
+    "source_sha256": "8029c726fb0bc5b8a6de3ea949989fe93286d1dff61d619b5119d25090a18a01",
+    "target": "首领_乔克-普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:175:177",
+    "source_sha256": "350aa5207e39491cd3d17ac3f05dea9534d50ab4b688e6f35975100b66c6ac78",
+    "target": "首领_乔克脉冲同步",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:176:179",
+    "source_sha256": "3b5106470d45045234c6d058dcd49631194f2fe164b3c3f227b462a720c34c35",
+    "target": "首领_乔克_死亡风暴",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:177:180",
+    "source_sha256": "b5afc3a7a3343326d6cf7889c23f31606ad4ea71e9e01f44a0dbbee9bb4c640b",
+    "target": "首领_乔克_暗影打击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:178:183",
+    "source_sha256": "010e42e4d547f182c62b9355aa14727e58ce9f6e495369e4d7c9e7376c9ec3e7",
+    "target": "首领_乔克_半径激流",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:179:184",
+    "source_sha256": "28481c23e597230deba2af33f3d74adaa860f70693675c0017c3dbe0c03c6639",
+    "target": "首领_费尔南1_普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:180:185",
+    "source_sha256": "e4c19a2c018688e36936bf26d391a79e38b4cbeb5becc21e2e11cbfbb65b2c9b",
+    "target": "首领_费尔南1_无声粉碎",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:181:186",
+    "source_sha256": "aa774b0c45d5075a6d9d9e9ad72f68e214fa65dc124432504202e1ea91ba56e3",
+    "target": "首领_费尔南1_灵能炸弹",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:182:187",
+    "source_sha256": "ed54a54b88856d1af1fe67539768e015ae6af0f6ec9976eeeeb57dd79db5d95f",
+    "target": "首领_费尔南1_顶点切割",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:183:191",
+    "source_sha256": "88f876e2f66c991d44e60276eeb2f9899280945c54d471f6075af55f450a1600",
+    "target": "首领_费尔南1_闪电飞溅",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:184:192",
+    "source_sha256": "51cd151048dbec3540dc4e6f91222822df229f68b3e794913e7e783959b94091",
+    "target": "首领_费尔南2_普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:185:193",
+    "source_sha256": "6bc4e3799ede008d41f05d33f0bd7297872762279a1c18e17f97a5a4c5e86cc7",
+    "target": "首领_费尔南2_无声粉碎",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:186:194",
+    "source_sha256": "e05a084940f2160d2cbb3d1c9ae6f3eb249c31325fd35ceec9314eab257800e3",
+    "target": "首领_费尔南2_灵能炸弹",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:187:195",
+    "source_sha256": "187f7ce335eba8cd84a86de6839e7e1856d9262769f4465c64b6e62964bb520f",
+    "target": "首领_费尔南2_顶点切割",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:188:196",
+    "source_sha256": "ec01f088fa7dad24e155fbec763b25064a3a1c2303926420e0dd248cfe10a58f",
+    "target": "首领_费尔南2_闪电飞溅",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:189:197",
+    "source_sha256": "9ff806d4a08ec307d06411f711b5d831e6ef575584e9028d5a81d113fbcbf74e",
+    "target": "_费尔南_卡林兹",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:190:198",
+    "source_sha256": "2c8ac8f597e1d22116eb0b0496bd4b4abbd5aff60614f24d7d0ca8083c364ae4",
+    "target": "_卡林兹_切尔西",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:191:199",
+    "source_sha256": "3f9648bba83279446544c81a62708cb582c08a9c6b5130136190def1420c809f",
+    "target": "卡林兹_超越破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:192:200",
+    "source_sha256": "09c1ae1a97c16b13da1cc570fe0e5b11218e450f60af7593d45620644c761322",
+    "target": "阿多拉_超越破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:193:201",
+    "source_sha256": "33e54b992e0d4a52d01dbe83aef5a078489381d4454ababe067b403231c855d5",
+    "target": "菲莉西亚_超越破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:194:202",
+    "source_sha256": "cb8ed3455f331ad886904e15db144532538e8c17547110be2495325330b24554",
+    "target": "萝洁_超越破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:195:203",
+    "source_sha256": "b4197ac614b559030e502c5187dc62fcf00e5c1fc67c4f69d57aed41f809919e",
+    "target": "费尔南_超越破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:196:204",
+    "source_sha256": "3293740e1e27a1f73b6dd866748b191aff11740449aae3be7d0fcc24ae0a5582",
+    "target": "乔克_超越破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:197:205",
+    "source_sha256": "ce4f907c543f665ea88670a6b0f1cf3486812029db73882dc0f7baf8126564ff",
+    "target": "罗普玛_超越破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:198:206",
+    "source_sha256": "602aeefd4d9f650f7b74e34171957a575be58429c6ea4518df92369a371026f2",
+    "target": "首领_舞会费尔南_顶点切割",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:199:207",
+    "source_sha256": "ab8ff0c3973151aa1d567b193ecb02b2374f0c67f39954f54c2a98a8b0189810",
+    "target": "首领_舞会费尔南_闪电飞溅",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:200:208",
+    "source_sha256": "28cc7fa979b15c68caa68f1ebe9b8ecb911a48a07bbce9b14e6c50d7a36538d7",
+    "target": "首领_舞会费尔南_普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:201:209",
+    "source_sha256": "2d7f048e5b961e3d7a89314e29a4acce189d18631b60c63ab5018ab2561ca9dc",
+    "target": "首领_舞会萝洁_普通攻击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:202:211",
+    "source_sha256": "70cf2203a5765f7f862ad3f4acb6c4e9f17fa2c82bc6565f2233cf6b0e4f873e",
+    "target": "首领_舞会萝洁_风之破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:203:212",
+    "source_sha256": "a8bfce0a4b9e8690905054bb0292fc6af526f226c4c638caf89b2593dfe77993",
+    "target": "首领_舞会萝洁_无声破击",
+    "state": "translated"
+  },
+  {
+    "id": "Abi/0000.abi:name:204:213",
+    "source_sha256": "fa79eb005ad6c01859f5c99c7a5f468975a6e10a469ae2155c69629dda1dddc0",
+    "target": "切尔西_超越破击",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:0:0",
+    "source_sha256": "44af1a401b28f2ea3c962306fdb2e074d7be32815498585e7c86f080f3ef6540",
+    "target": "卡林兹",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:1:1",
+    "source_sha256": "9477cdf4cd701f5a6fc1901942a550f6d3816b8c1058d77285143a23c42c2502",
+    "target": "切尔西",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:2:2",
+    "source_sha256": "ecd2b82b51b7f48667dbfe772f8df8ff9def6133645ccd14c4d7b2acb091fce2",
+    "target": "罗普玛",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:3:3",
+    "source_sha256": "cb772138a9510722a7946191f7a352b7b1cb578bae60efc844089939e08ed213",
+    "target": "阿多拉",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:4:4",
+    "source_sha256": "36dc038499b2fb3d20d293b2ef21574f2af0066269e5448a3396ba9e103e6029",
+    "target": "菲莉西亚",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:5:5",
+    "source_sha256": "4255bc861d5a6a10b017b6d6cbc8167d1ac3fa610032deb3d302922599942aaf",
+    "target": "萝洁",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:6:6",
+    "source_sha256": "894cc59e92057bfc643de0b2e08080fba9a2495fa36e5c656f086c493a35c570",
+    "target": "乔克",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:7:7",
+    "source_sha256": "010f79a2e3d19e8e60b143a65c160558bfa6e088b6d8806c442705fea1968b14",
+    "target": "骸骨战士",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:8:8",
+    "source_sha256": "cfa880af0a49ca11ce33c616eb1962994d2910ca319269829ad34a845f58bab5",
+    "target": "特雷菲斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:9:9",
+    "source_sha256": "f8e936be9caa678182b1934634d377ade172802af008ec10e68bb5447a092395",
+    "target": "卡诺潘",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:10:10",
+    "source_sha256": "b1976a24c5275c758a842720e6194fed8d3e9135f3bfa3b90313b654706a3de9",
+    "target": "拉娜",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:11:11",
+    "source_sha256": "a9e00bf43ea62f758e547510b1f5c433f065a13ea2f0e478a67199f3a1400b4c",
+    "target": "凯拉斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:12:12",
+    "source_sha256": "0a7bc78f5aa348d32009acc721eb8f087b2549ea7bdf7aba5181377bb940f634",
+    "target": "拉米亚",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:13:13",
+    "source_sha256": "9533c2beddc110ddae9ec5984e2455ed3273782d918a4f33a9216e4bdcdc5c1b",
+    "target": "恶魔猩猩",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:14:14",
+    "source_sha256": "55560f8faf47d1fbb7c4c44f565dba79f7af7efb22981f1177ccbe265e57a7a4",
+    "target": "利克",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:15:15",
+    "source_sha256": "70f68dda4328ed12dd370d91a125c2a1816b04cd7cd3e8d37908e89e38aea6c4",
+    "target": "塞皮亚",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:16:16",
+    "source_sha256": "dbad824fd6b7848a081bd1a4a35e2a2f4eb212d628c2dfb88fea2a1ed918cb30",
+    "target": "拉德琳娜",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:17:17",
+    "source_sha256": "17fc724411515272245c64c991083ac8d2ea3b22c2905bd4145639ad431280fe",
+    "target": "吉尔伯特",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:18:18",
+    "source_sha256": "015512cb4f6acfff5503d002a3cd4664e2db25152cff7f8b385aa343ed25ef2d",
+    "target": "朱克蕾西亚",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:19:19",
+    "source_sha256": "c8683aa690e04cff6e79a7e516f3cf3d5387bbe20d23e856022d55f0d98be391",
+    "target": "艾丝特尔",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:20:20",
+    "source_sha256": "03e718ef9eb569b3a1f755ebcb3b2e49105f56a6bdd05f9d7c4ae9bd836cf331",
+    "target": "费尔南",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:21:21",
+    "source_sha256": "81487812a4dce2ebd8f0dbe0a44d750cbab1efeeac7ef9e9e8ae70e2ae282e62",
+    "target": "特里斯坦",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:22:22",
+    "source_sha256": "75aac132090cc031e96dbf37c20cbad5244c1fcf6937aa0f48bf6cab72401c4e",
+    "target": "卡林兹(幼年)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:23:23",
+    "source_sha256": "11ed464ddbabee3724d84255bb0ca4d75b9420870a1e19b04192f49095d79168",
+    "target": "雅德",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:24:24",
+    "source_sha256": "b0b4cf3a3d066f6f676cef9200755c9a2eb65c738ea1f195fcf6883a1db899b4",
+    "target": "威尔莱特",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:25:25",
+    "source_sha256": "0157c23c93201394b193bf11fd914eaa2986ae58b267f1072b88a813c6442225",
+    "target": "贝尔米利昂",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:26:26",
+    "source_sha256": "7ddf7440eed666a61c3be889d55a58ba617e2919b14071b52fdbedcf5bef0944",
+    "target": "贝尔米利昂(队长)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:27:27",
+    "source_sha256": "ecda1fe94b6b7b8f40c713b2b9ce240a3be28cdc27311f2c809b76b483d98a90",
+    "target": "尼卡奈特",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:28:28",
+    "source_sha256": "96ee8cdfde2ec4e8ccfa4f9ffbe6b4e95e01d71ff1445baeac4a0709849502e7",
+    "target": "兰布拉斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:29:29",
+    "source_sha256": "ebfaf208ec4b4ba8ce13173e2a6f29eab8c26a9d6336da4a161953fdd11f7cfa",
+    "target": "梅洛斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:30:30",
+    "source_sha256": "595ac7c404478561795aa102f3c6348a1f451e6e322a518b4f962d40946595e5",
+    "target": "文图斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:31:31",
+    "source_sha256": "aa7d698b469a2e8f947cbd9925ad33e7e5c80428be0099f0adcb9655455136f0",
+    "target": "德雷克",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:32:32",
+    "source_sha256": "bfa6ace20133b5b2bb05eb1f25459fd6a07569a846cc2a8c8896c5aefcd3b4dc",
+    "target": "洛克利",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:33:33",
+    "source_sha256": "cc3292adbb0fbddbb99b600c0ecead00e840399f3937e6e233b47816c53be4e2",
+    "target": "拉泽尔",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:34:34",
+    "source_sha256": "3565ea004c808cf56376b17db6b0c6141fe3d139844ee73849ea924d03538744",
+    "target": "赫利俄斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:35:35",
+    "source_sha256": "91fe6263fde2a7c5d1bd317594cd58aaaa6181afcc547a1798648e046c7b7ca3",
+    "target": "圣骑士",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:36:36",
+    "source_sha256": "8d142aff15fd2cabb011519cff66db35347dd7fc0cc4e35f360e468b378fcdc6",
+    "target": "施瓦茨_女",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:37:37",
+    "source_sha256": "6e4a4b33f0f487708bab708d18bb4e20d5f58056198b37c276965ec1eb504a81",
+    "target": "施瓦茨_男",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:38:38",
+    "source_sha256": "100c9ab31ede5472f6d8f2e8c5ab7fd7e46c2f5dbcffc03e8c7bb556d455dd07",
+    "target": "贵族_男",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:39:39",
+    "source_sha256": "af3926bb1c0a0cd96ed8f421c6f1fb3a071619815f0bfa73dd9332cfbb92f9f5",
+    "target": "山贼_1",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:40:40",
+    "source_sha256": "245277fe1fbc903abb9f98ecb2bba637f64a19b58d5af41447073e64b0febccf",
+    "target": "山贼_3",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:41:41",
+    "source_sha256": "90cded6e66d3f00e2284d2c874fe0d6a9a0b4f8e1f862e1128e68afa3634cb91",
+    "target": "威廉明娜",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:42:42",
+    "source_sha256": "45492f5d444f545f4b7667319c4c45f23f18a9482e55797b3220fb6d84caaa3f",
+    "target": "小孩_女",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:43:43",
+    "source_sha256": "048462f34ae647e34bd98e3a582fb618775c539c201493947a619eb059ab3d07",
+    "target": "肥胖男市民",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:44:44",
+    "source_sha256": "401e321b80b5e01a486c3fa89ac382df7ac8cdf29e80d010ef98d2d2bdfc4bee",
+    "target": "年轻男子",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:45:45",
+    "source_sha256": "e8db0e149cd7aae18e51165519c2e8b513bba484f097c0f16a1fcf9acde34ae6",
+    "target": "年轻女子",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:46:46",
+    "source_sha256": "c02fc8f79ed381bcb1aa7b8b2cfd7464a469842c5dabff9b4cd3d00c99d1f2cd",
+    "target": "仆人_女",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:47:49",
+    "source_sha256": "b7d949733b2e60f9218c3920e0f8a0de2abc858c2a481fd0fadb141430c993ec",
+    "target": "泽恩德",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:48:50",
+    "source_sha256": "964b7852e36ede5ae929609b328d2a09add0168d44c097c869c617885d5e9c3b",
+    "target": "蕾欧娜",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:49:51",
+    "source_sha256": "728cced9eee5246eb5bbc90fd11a2fb00957ca988f2d8ddf9805cb2cbb29da61",
+    "target": "仆人_男",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:50:52",
+    "source_sha256": "2d2f6d96b2a1cdd712d3ee94ee7b92bd84685ff32efd512afdba4add8536ad81",
+    "target": "东方贵族男",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:51:53",
+    "source_sha256": "b3e2c5cc69df1f6e94cecc89b61e2db5c92e8402122c3de91463a948c6c541cf",
+    "target": "东方贵族女",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:52:54",
+    "source_sha256": "7f12d4e97417b711ddbce06e05df656e6327ff2cb9ee518ca7d6746a4d4e82ef",
+    "target": "老爷爷",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:53:55",
+    "source_sha256": "b444096641938f5d58e08889659e7b95c39ba02e3d434188c41b86532200bfb1",
+    "target": "沃伦",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:54:56",
+    "source_sha256": "255183bdbf1ee77a5a5e9b1341c1362c64c37052f147c7cc6c39170a53c8b389",
+    "target": "修伦罗德",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:55:57",
+    "source_sha256": "31ed394b832debd64c92140e22326898fe2b5ebe9f3b0448fb685d321d9b6842",
+    "target": "斯卡拉姆修",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:56:58",
+    "source_sha256": "eea35f412d9d5b5facb9f59ac0fe715b4d703ecefef5a6463691de8394fe4667",
+    "target": "圣骑士队长",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:57:59",
+    "source_sha256": "0cf8ffd7e8aa1f19c3e7ecd91c1f4f951f407f38c80ba7b0b726decca90dec72",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "静态角色表中的马、马车、车轮或粒子对象字段，不是已确认显示人名；不修改内部对象标签。"
+  },
+  {
+    "id": "CharData/0000.cha:name:58:60",
+    "source_sha256": "796608af3147e309325be20374ac30401538753883cc0d760f6ed055725459ee",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "静态角色表中的马、马车、车轮或粒子对象字段，不是已确认显示人名；不修改内部对象标签。"
+  },
+  {
+    "id": "CharData/0000.cha:name:59:61",
+    "source_sha256": "1d87473dd65cf8a7ca2614cd020d4a54b108d647da2443a9e3222afb33128fd9",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "静态角色表中的马、马车、车轮或粒子对象字段，不是已确认显示人名；不修改内部对象标签。"
+  },
+  {
+    "id": "CharData/0000.cha:name:60:62",
+    "source_sha256": "1b0e87ae68ad1e8e3c933fb55ac5ac221f3234b20fb421c8ab6a4654e22a15f1",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "静态角色表中的马、马车、车轮或粒子对象字段，不是已确认显示人名；不修改内部对象标签。"
+  },
+  {
+    "id": "CharData/0000.cha:name:61:63",
+    "source_sha256": "aad7590204525180db35087c5105f2bc9ce1f6a5910847f2988b2d7169785355",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "静态角色表中的马、马车、车轮或粒子对象字段，不是已确认显示人名；不修改内部对象标签。"
+  },
+  {
+    "id": "CharData/0000.cha:name:62:64",
+    "source_sha256": "e3c3c48934a593def33a43cc27656523e619ad6b379d642e3055ac4a9c7dfbd1",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "静态角色表中的马、马车、车轮或粒子对象字段，不是已确认显示人名；不修改内部对象标签。"
+  },
+  {
+    "id": "CharData/0000.cha:name:63:65",
+    "source_sha256": "fcc8bf05cdbc8db2c3aace252566ec4935ba45ccfa961c9a706372698e0928a3",
+    "target": "?(特里斯坦)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:64:66",
+    "source_sha256": "4309ee830f6e050ea741fc6c7d7f2fdc8da149d589a2fbf384c20a77cf5b2c70",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "静态角色表中的马、马车、车轮或粒子对象字段，不是已确认显示人名；不修改内部对象标签。"
+  },
+  {
+    "id": "CharData/0000.cha:name:65:67",
+    "source_sha256": "c257006d7d721270908d4189a66c3f3cdfe426d469b3d415474db4b3fe2a6c98",
+    "target": "贵族_女",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:66:68",
+    "source_sha256": "602704664ca6924be5b2447341735810d29754f21769f6d3680b85f121ac2929",
+    "target": "克罗伊泽尔",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:67:69",
+    "source_sha256": "26a043b1d8a8d3083f508c95c26ff33ec280b906fa21efc1383af99ba52ae214",
+    "target": "雷神",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:68:70",
+    "source_sha256": "02d2d5a0b89d9b01465408e52828488aada019e4fc60700f177c3662f46914cc",
+    "target": "内克里夏",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:69:71",
+    "source_sha256": "2a1eec7433f15a002b9ecb306bd509cd4e463871592efa0d2a39512c60906740",
+    "target": "黑暗巫师",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:70:72",
+    "source_sha256": "0a0522f12c22d50551aff5ab5d31382a40fb8f1204464b0e2b49d9da3a959ec2",
+    "target": "达芙妮",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:71:74",
+    "source_sha256": "dc08c8667240448ccc0dd98ba9b8d4b68e1cca57faaa73852008494cade94d99",
+    "target": "死亡收割者",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:72:75",
+    "source_sha256": "535e4ca45ea7b9891d936906e5bc248e5e5abc4bb4c8a9c5fa9480d14b8e1820",
+    "target": "屠夫",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:73:76",
+    "source_sha256": "3ad41f2836cfe9116714372bb97d5730da5c41e6d9987d0b407b92065c5995bc",
+    "target": "穆修戈尔",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:74:77",
+    "source_sha256": "fdaa365005539618c34eb439fa350308402037fb9a327900d464786bcce27583",
+    "target": "巴格斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:75:78",
+    "source_sha256": "58d420500817ce17cb6cd339c900275fc408988ec8a432a80b9b187c42fe4540",
+    "target": "波利托",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:76:79",
+    "source_sha256": "f185ece22ce60879853a76face026d8a67ba38d2841040057b4bbbde49e27847",
+    "target": "阿比斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:77:80",
+    "source_sha256": "b055a9aa360793933ba6557cb8ab89d4bd6932c452509678d78d50169746ac2b",
+    "target": "严冬酷寒",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:78:81",
+    "source_sha256": "55cf7fba89d512c77f1f04ed095b79fc73a881b7d856e466acdbee18eaa0b9fd",
+    "target": "科莫艾",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:79:82",
+    "source_sha256": "37134df8c11b41fe3655fdcebf3f3e4aa84dc622d19208766783a6ac8fa6d5af",
+    "target": "塔拉西奥斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:80:83",
+    "source_sha256": "6ea4561a284047373826e404604bbae5cbfd423a405e67fc383caabbfbed4c32",
+    "target": "波米",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:81:84",
+    "source_sha256": "c6645e2a891bb847807879305d0f428e6924e6e8ff7c8b70a8b72c8340d71f0b",
+    "target": "僵尸",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:82:85",
+    "source_sha256": "19361d0c6b3bf7aca1917a7c2baafb6dca2aaad52522544edfce1f0438fb59b0",
+    "target": "奥杜斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:83:86",
+    "source_sha256": "1690f1e1546eeb9985308def2c5caf4d97b29baea9def0601f5e758405dfaed2",
+    "target": "扎波拉",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:84:87",
+    "source_sha256": "3bb2b6ac83d59b74b5ecab4fdb3c31f53d18adb01e563ce99ae6a5684963451b",
+    "target": "血腥拳手",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:85:88",
+    "source_sha256": "dea59f4a09112d32a5fc2565fe3019b4ee96c20840cd263e9ba5fc72d77fcabe",
+    "target": "弗尔莫",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:86:89",
+    "source_sha256": "6eceb4fcc175d573adc4646afe94b24d6e3d20ed113e59b3686a9f92ad0bdc8f",
+    "target": "胶质兽",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:87:90",
+    "source_sha256": "a0c957f859fdc05af442b80483f1ecce7cc1affc6672b84397d00c7154076f6c",
+    "target": "史莱姆",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:88:91",
+    "source_sha256": "008d237a767eab6fce4b90d28dca368ce48c070b6baa014bc4cbe837c6ef14e9",
+    "target": "巴尔绍伊斯科尔",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:89:92",
+    "source_sha256": "cd2ca5cb59d2da8fd8c0816a87200544a8b090f4f7ebf19de3a8266ae6330c48",
+    "target": "丹斯玛蒙特",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:90:93",
+    "source_sha256": "394b453a34dd38c82ffbbe9ee8d7bbf2d608b6fefc2fd2557232e39b4a6b8a23",
+    "target": "克莱夫",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:91:94",
+    "source_sha256": "4498fd0d5a6bc26c565225baa984abd1789bddaccaba27b1908ae70f68a7a8f2",
+    "target": "天下无敌骸骨战士",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:92:95",
+    "source_sha256": "ad5b6a31aadcbb181b29ff961b0e389915757372e8eea0c2285f258344cd6196",
+    "target": "乔克(敌)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:93:96",
+    "source_sha256": "bb6db6266bdef8527c62f397276202774e9cee08bcef9cf32bac67104c6996a4",
+    "target": "萝洁1(敌)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:94:109",
+    "source_sha256": "3d1e1f712ed78e0c990294714cf6192df323544a9bf56ead66c552309b7c4aca",
+    "target": "萝洁2(敌)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:95:110",
+    "source_sha256": "c8cf1e0dcfd3c4bf7ee32fe00d4908bf21e9bd0fb4a5ec3bdbbcba2e8c1d2b6d",
+    "target": "萝洁3(敌)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:96:97",
+    "source_sha256": "61087bc30f9c7a28eb6ca11acef58753c9cd81cfc15609dfa58b723b5e45d7cd",
+    "target": "费尔南1(敌)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:97:112",
+    "source_sha256": "e87fb0ff6907ba1428f968d8eaab951995d7584d63a7319d865d4f719e4efce2",
+    "target": "费尔南2(敌)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:98:98",
+    "source_sha256": "8727e4e2180d50df8e12384b2bff19d7358521f289f9095ca3072144fb3434fb",
+    "target": "斯卡拉姆修(敌)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:99:99",
+    "source_sha256": "90315042c7ee2067568a9d05b88fb94444be0c791f81fd9bb35c35d05959ae5f",
+    "target": "贝尔米利昂(敌)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:100:100",
+    "source_sha256": "2ca8ed1fdd75e339e79a9f816473300696a17ff21ba8226e143b3b3728a68f2e",
+    "target": "雷加武士",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:101:101",
+    "source_sha256": "86eafd7afd4a7bb7207698828fc4f8753fd6f1ba60bf8ad6d523bc776e6ed379",
+    "target": "圣骑士(敌)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:102:102",
+    "source_sha256": "7531080ae9b24bd808737b4bee29fa8213dc4928fe1612ecc272abfd475de450",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "静态角色表中的马、马车、车轮或粒子对象字段，不是已确认显示人名；不修改内部对象标签。"
+  },
+  {
+    "id": "CharData/0000.cha:name:103:103",
+    "source_sha256": "de6c6d87ca458d39a4f91a9e1f6101c1dd643369f277203d4acae55ac0aba20a",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "静态角色表中的马、马车、车轮或粒子对象字段，不是已确认显示人名；不修改内部对象标签。"
+  },
+  {
+    "id": "CharData/0000.cha:name:104:106",
+    "source_sha256": "d5e46fd34c22a25a0d241847876cbebcb8e2131d1ac75a01cfbf41ff9a7202b7",
+    "target": "卡林兹 中级",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:105:108",
+    "source_sha256": "3442f3afe59d47420792f5f057c14942182bc166e8e8b73dc5f4f6d0c8f6acb2",
+    "target": "卡林兹 高级",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:106:113",
+    "source_sha256": "ecda1fe94b6b7b8f40c713b2b9ce240a3be28cdc27311f2c809b76b483d98a90",
+    "target": "尼卡奈特",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:107:115",
+    "source_sha256": "e552809ff593c8f7fae356caeb192f97158db4889563dfb53a5a61d93755c0ea",
+    "target": "卡诺潘2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:108:117",
+    "source_sha256": "11c11e3fff91f8464df0b638bd80f822ab014c0575d7e6b46c70c876c9ba317e",
+    "target": "奥杜斯2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:109:118",
+    "source_sha256": "3ec62d3632d27c13d3cf814da0e3c86fa12ad1563b7cf050cf5ddb8ad02d023f",
+    "target": "扎波拉2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:110:119",
+    "source_sha256": "ce44877c73d823403f5543b9b30ade86a16de6158b37bb3347fd91d246579044",
+    "target": "贝尔米利昂(敌)2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:111:120",
+    "source_sha256": "b143fb7c54df747958b0f4849bb6c0677f03ab4835a9eace133a9cb8d3f461e7",
+    "target": "雷加武士2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:112:121",
+    "source_sha256": "abe419c09886d944309fb1d1cac8036caeff9197eb5e862ffda1aa1e726c1f82",
+    "target": "萝洁_舞会",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:113:122",
+    "source_sha256": "97701d46ecdbf422207dfc0807b111153e4cdd5397aaa8652db2c59e1a249731",
+    "target": "费尔南_舞会",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:114:123",
+    "source_sha256": "28300bef5ba6765ce36738bfe6abf0185f345b5b5d0b28eab82cdd227125f389",
+    "target": "斯卡拉姆修2(敌)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:115:124",
+    "source_sha256": "3cd756148f1d02612b4d4d65560fc432cb4041f941893ca94dd2b93fd7cc278f",
+    "target": "贝尔米利昂3(敌)",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:116:125",
+    "source_sha256": "fc62af0b44a5858373399b2d7704032e7a54733640bfd495a83e68fa0e3f8b0c",
+    "target": "严冬酷寒2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:117:126",
+    "source_sha256": "b82e0a9154ad13fc0251e1d75924134f3ab62571e3762a9b98ce456a0c722055",
+    "target": "科莫艾2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:118:127",
+    "source_sha256": "aae6564670845da422408cce0feea80b3f997558fa61f1dd8e39a3e81d22218a",
+    "target": "奥杜斯3",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:119:128",
+    "source_sha256": "282bf3e1578b4bfd2cf81daaca9e02a2c37ebfed4478a714684804db3a97e25a",
+    "target": "扎波拉3",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:120:129",
+    "source_sha256": "ebbb041708778604ee8d0b2c70943dc23bd882f319028b6b238ded308e4f3213",
+    "target": "血腥拳手2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:121:130",
+    "source_sha256": "8dca08dd57cc5f7c1ed06619f09aeb22dd1b45c005cfd216fb8735c523eaa870",
+    "target": "内克里夏2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:122:131",
+    "source_sha256": "6c16d83bc46acb89d058d398dd37318c5742d24cb57d94a46e0fffe81e022ac9",
+    "target": "黑暗巫师2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:123:132",
+    "source_sha256": "f627da0aaf0b2ad1d06b30786dece9476bf2f51e72f0d09462086aa845d9b36e",
+    "target": "达芙妮2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:124:133",
+    "source_sha256": "69628968374af4e1c5d6f73616e76c47fb41a0dce40b0ab50264e46d92bc41e8",
+    "target": "屠夫2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:125:134",
+    "source_sha256": "a8036a2613c1d785e1aa9cdf324c6dabad670cbe3a002fad56be5e29928d6d61",
+    "target": "穆修戈尔2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:126:135",
+    "source_sha256": "fc178cf4e903a3477190fa9f7b2e7c509a52e4b678b71da308f992c2c540f8d5",
+    "target": "巴格斯2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:127:136",
+    "source_sha256": "7057a4658751656bf77796807388b41e8f51dfa338ed71d71a87891d7d55f7c9",
+    "target": "骸骨战士2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:128:137",
+    "source_sha256": "f8b5fbb9603286a36052de57e2ec5bfb1fd0e8f243c63e484985452415a55c54",
+    "target": "特雷菲斯2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:129:138",
+    "source_sha256": "50d153427c6a6dccb6f586523acec9439c8360f3829eeda3b9c175394a65a076",
+    "target": "卡诺潘3",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:130:139",
+    "source_sha256": "775e0d02169cd73fd390da2ce46e2d298c60cdaa47e16e12e780b98601579869",
+    "target": "凯拉斯2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:131:140",
+    "source_sha256": "84b56fe33779c483c1242f27c71ac1270768aed00c3fe25ebc321a35fb996aa3",
+    "target": "拉米亚2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:132:141",
+    "source_sha256": "d699d052007e8751bf3ed381f01a641feaacd885c4c3c0e6d87464be845d15b2",
+    "target": "恶魔猩猩2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:133:142",
+    "source_sha256": "52be3c868d57c1a4ef45b9b9ea3519c527bdee531deac475ef932c08efb392d3",
+    "target": "巴尔绍伊斯科尔2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:134:143",
+    "source_sha256": "61b4fe98511677c1db6de2b88e6808426c0f0bcabcc76e2eb4ea34860ae2a0c0",
+    "target": "丹斯玛蒙特2",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:135:144",
+    "source_sha256": "9533c2beddc110ddae9ec5984e2455ed3273782d918a4f33a9216e4bdcdc5c1b",
+    "target": "恶魔猩猩",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:136:146",
+    "source_sha256": "70f68dda4328ed12dd370d91a125c2a1816b04cd7cd3e8d37908e89e38aea6c4",
+    "target": "塞皮亚",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:137:147",
+    "source_sha256": "f185ece22ce60879853a76face026d8a67ba38d2841040057b4bbbde49e27847",
+    "target": "阿比斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:138:148",
+    "source_sha256": "b055a9aa360793933ba6557cb8ab89d4bd6932c452509678d78d50169746ac2b",
+    "target": "严冬酷寒",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:139:149",
+    "source_sha256": "ecda1fe94b6b7b8f40c713b2b9ce240a3be28cdc27311f2c809b76b483d98a90",
+    "target": "尼卡奈特",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:140:150",
+    "source_sha256": "96ee8cdfde2ec4e8ccfa4f9ffbe6b4e95e01d71ff1445baeac4a0709849502e7",
+    "target": "兰布拉斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:141:151",
+    "source_sha256": "ebfaf208ec4b4ba8ce13173e2a6f29eab8c26a9d6336da4a161953fdd11f7cfa",
+    "target": "梅洛斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:142:152",
+    "source_sha256": "595ac7c404478561795aa102f3c6348a1f451e6e322a518b4f962d40946595e5",
+    "target": "文图斯",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:143:153",
+    "source_sha256": "602704664ca6924be5b2447341735810d29754f21769f6d3680b85f121ac2929",
+    "target": "克罗伊泽尔",
+    "state": "translated"
+  },
+  {
+    "id": "CharData/0000.cha:name:144:154",
+    "source_sha256": "26a043b1d8a8d3083f508c95c26ff33ec280b906fa21efc1383af99ba52ae214",
+    "target": "雷神",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:0:26",
+    "source_sha256": "d2f073c4c6255fa0de35602ebee590797660b84a629616d5210ce1a2fba1b85c",
+    "target": "碧玉戒指",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:0:26",
+    "source_sha256": "5bd32a5213f1382c983130bc02efd0c60cb4c53db080ce9c63d0a94aa3fdb286",
+    "target": "敏捷+10",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:1:0",
+    "source_sha256": "eee83318ed3d7aa75b6f51217bd990b7ae6c6ec66afa2164ad20cd599a410d23",
+    "target": "传说手镯",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:1:0",
+    "source_sha256": "6454c462a476a7a2a3c9c908007844adc5f692d9badbeaadd16d08205d3b2cb1",
+    "target": "体力+125, 攻击力+120, 敏捷+5, '地'亲和度+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:2:24",
+    "source_sha256": "522cc59d81f5f06ab02e55db6b7fb30ebcce4417fc39f7a15893e9d2b12db55d",
+    "target": "玻璃人偶",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:2:24",
+    "source_sha256": "3d49b5fcad56c794af037ef824ca715f47c27bebef466eecf5057dcf8d332c02",
+    "target": "敏捷+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:3:29",
+    "source_sha256": "234b61deacbca8a06091f950b38586e8a89bfe6fdad259fc5d097b010bd78368",
+    "target": "武士项链",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:3:29",
+    "source_sha256": "1b48605ac1265caf87fcb71c3ce64e0b397ca9edf9acfb2dbce77f080cb6feda",
+    "target": "攻击力+75",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:4:30",
+    "source_sha256": "6156eda7f5a9d518a4a22313777f97056e3f899b3f3892382d30d49279012a10",
+    "target": "龙之眼",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:4:30",
+    "source_sha256": "dcc7633f1f63aa232858e226f0f72d4496a649ce21f29c0b21642f53e6b8e831",
+    "target": "体力+50, 攻击力+15, 防御力+10, '雷'亲和度+5",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:5:31",
+    "source_sha256": "efda03b26d787e6fc8ced86b32b7dd5ee45d1ccd3ed04d76fb828228ae24b1eb",
+    "target": "马拉卡特的恩泽",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:5:31",
+    "source_sha256": "873666bd6829d5ba6d52e100f25925d7037bbe57e8dec8bd020090500ed11347",
+    "target": "体力+40, 防御力+10, 敏捷+15, '暗'亲和度+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:6:32",
+    "source_sha256": "84f9403ff5d445baedfb0af8331749de2383ac1ac5b0c5dd6377960576e8d9b2",
+    "target": "诺茨项链",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:6:32",
+    "source_sha256": "ce8cd103979d8f03c1e3cc859423502e49f43832b1a20ed9141ae0e27ffc655d",
+    "target": "体力+30, 攻击力+42, '火'亲和度+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:7:33",
+    "source_sha256": "bacb72fbf993e2362fcf521fe1b3d7e4240896b442c710f489f68c19118b1998",
+    "target": "修利艾尔卷轴",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:7:33",
+    "source_sha256": "7681dfe2ab00586ff3b07478be25d6c4fd82b09cb6346c14746b1703e5e3ea59",
+    "target": "'火'亲和度+45",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:8:34",
+    "source_sha256": "ce040c453dc87561184ce426ea24807b6a05424e22222e9434760efc9c9e1f96",
+    "target": "德兹里什卷轴",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:8:34",
+    "source_sha256": "9222ba1032f81f578adc5a4b836728a4ed3d8451d1354a91cdef41f980773cdc",
+    "target": "'水'亲和度+45",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:9:35",
+    "source_sha256": "2f4a5accf1584e201202183fafb4538319347f16d85caab008b83d5b1c819517",
+    "target": "鲁伊内尔卷轴",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:9:35",
+    "source_sha256": "b65533d312165da49062be0a5a3be07751a68a537a6a54dc5187d04a96fb7525",
+    "target": "'雷'亲和度+45",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:10:36",
+    "source_sha256": "c1e51ddf7ea57e289eb072a33bbbac656c031d307d75bbf72fbee672beefdc01",
+    "target": "塔斯梅尔卷轴",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:10:36",
+    "source_sha256": "55d811790bc2ea18375d43da42a57a5097b2b9ea5fcd45c7a411f00d39f0412d",
+    "target": "'风'亲和度+45",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:11:37",
+    "source_sha256": "3d4b528525ddd35dabdb655579e4db6984646baa96d3e369e9373bb795120787",
+    "target": "格奥尔格卷轴",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:11:37",
+    "source_sha256": "e6f968150296e0dcdea86f6b4ab7c121420d0d5acbaa8e6dee5f3f090cb72c98",
+    "target": "'光'亲和度+45",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:12:38",
+    "source_sha256": "27aadabf2237d83353fece2ce6c0483f3263d21a3420932bdbf3fbbc888a3bdf",
+    "target": "丘克拉卷轴",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:12:38",
+    "source_sha256": "fdd17c7730e3d003cf2c59ec06bfbd0d44a9f47a00aec01139ccc751fde757f9",
+    "target": "'暗'亲和度+45",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:13:39",
+    "source_sha256": "1f26e855938684738183585c996b6e3675dd1501e274da7036b2171355088cff",
+    "target": "贝里特卷轴",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:13:39",
+    "source_sha256": "134fa69dcc4a52e9d8fb120b470797260e7dd431c5da1179f1e90d8c9132f017",
+    "target": "'地'亲和度+45",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:14:41",
+    "source_sha256": "aa440013cc7c0d6b19c2a07fcb6384a4d44e01c979d24bad9239d72a183743f7",
+    "target": "治愈戒指",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:14:41",
+    "source_sha256": "cbbb6bb1215f7b95c9b259890940d2b0d492cad30e4162deeac61305a5e3b97b",
+    "target": "体力+250",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:15:43",
+    "source_sha256": "9df157dc97f06d78d0971f487613a175726c6ae6c4ff36ae2aa6ba0c643c49bb",
+    "target": "银钥匙",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:15:43",
+    "source_sha256": "92af2e364f759763b6450f2b3fd0506462fa44eff74bd07c8712ba46869f0639",
+    "target": "开启用银锁锁住的宝箱。",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:16:44",
+    "source_sha256": "fb02f62a1a6b0177af080bfd0c1766ef8537e0b3ce9f261e046b63fc3309bf84",
+    "target": "金钥匙",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:16:44",
+    "source_sha256": "bd750f5df1770d7233067846e69916dea0110604d4a96cd7c3ca1c897fb81fbd",
+    "target": "开启用金锁锁住的宝箱。",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:17:47",
+    "source_sha256": "a62808d5a4f4f69e4253cd71db54fc1059082abfb8d706ab2f8fa30629b0e36e",
+    "target": "拉米亚之鳞",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:17:47",
+    "source_sha256": "55a78f9fb1d5d602a9a60cb653baa5171b0f7e9c0140ad345008167559680167",
+    "target": "体力+25, 攻击力+15, 防御力+25, 智力+10, 敏捷+5",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:18:48",
+    "source_sha256": "bb41a083ec2d7fba7cd4162140e6143352851b6903504a2c7f6bc2c828fa9b43",
+    "target": "女武神紧身裤",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:18:48",
+    "source_sha256": "585513f6a1dc2485fd7a9122eb2ad0b0b112d0bf23e92479cd49dc65ae992a88",
+    "target": "体力+250,攻击力+90,防御力+150,智力+50,敏捷+10,'风'亲和度+50",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:19:49",
+    "source_sha256": "dd00f91cbfc3b0100dccf003df42ae402fa90edabfa8754fe4d06f6be4f43f28",
+    "target": "克雷·克罗斯",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:19:49",
+    "source_sha256": "b84d26ed6849c8cfea9b8080ba7569356d8ae4734001b89993231e7fb6229a7d",
+    "target": "防御力+130",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:20:50",
+    "source_sha256": "0507bfd190b9f22230898015c441d689e3fc0353cf23bbf86c2af9e034fc146e",
+    "target": "火龙纹身",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:20:50",
+    "source_sha256": "81e195f675d84ba37c2d02b4d0cf3db787083aac90106d46f7e321da895abf43",
+    "target": "攻击力+30, 防御力+50",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:21:51",
+    "source_sha256": "2c671de011d03334b3eb7f2d03775a2569c5559292fd6fb2f415396526f5d670",
+    "target": "皮腰带",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:21:51",
+    "source_sha256": "7aef1f2b8e0d504d2cd9bec594a51cdebfc7f853be6eb2a2e7babe05a8ebf479",
+    "target": "防御力+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:22:52",
+    "source_sha256": "ad3a86367e866190006f154c167c92fd25d083976a6e9277f159bf6911fab8eb",
+    "target": "破坏手套",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:22:52",
+    "source_sha256": "b180a8a03599468a17f8683f73809925c13b7b9e404d38a4816eadc22928c32d",
+    "target": "攻击力+30, 防御力+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:23:53",
+    "source_sha256": "113d1785e67ebdee53ae9f9e0c1a281fcd4ec377509581bbfbd5189b14152185",
+    "target": "木偶",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:23:53",
+    "source_sha256": "b04b914a286dfdf280b19ea4e88ac028c97975d84b1cf4a8ce5a211b9f783316",
+    "target": "攻击力+45",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:24:54",
+    "source_sha256": "89dd96d9beaba2fb461840be39b3815c5af03d3a23cd3864bb1eac6f93fe14d0",
+    "target": "芭比人偶",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:24:54",
+    "source_sha256": "d030efec92e5f51b33b205622842e2fcd4103f8f8c10591479ce8081b2a18e9e",
+    "target": "体力+50, 攻击力+60",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:25:55",
+    "source_sha256": "afed20fb57e4d4daa04976cad5ee8f70ae397c323bc2df8bb93b75b6fa0b4dfe",
+    "target": "骷髅人偶",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:25:55",
+    "source_sha256": "6d5e5e64d14e6732286833da936c3c9b350b2b753abcc52ca19ef4946ee46b02",
+    "target": "智力+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:26:56",
+    "source_sha256": "bed9ed7068d7ea436d0f1d91e25c07fdef89550a87d5f21aade023583331eee7",
+    "target": "天使人偶",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:26:56",
+    "source_sha256": "659c49c62ca9dac1f40d87dccaa9d278d5ccbad1ab5e8e0ef1437324946b47cd",
+    "target": "体力+200, 防御力+50, 智力+10, '火'亲和度+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:27:57",
+    "source_sha256": "f6f9cb249ad042d143ec64734d689810335931fda5ed83dde066499fc75a118e",
+    "target": "僵尸人偶",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:27:57",
+    "source_sha256": "68224820ce2e562984b3239f9a54f08c78804fb15c0089cc0c37c4275910e4be",
+    "target": "智力+20, 敏捷+10",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:28:58",
+    "source_sha256": "374af0882ffdba6ca59339ff82ea026d5247648ad5a28347cc7460a907279f3b",
+    "target": "风精灵之泪",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:28:58",
+    "source_sha256": "46f463892c64c3e5dcda069c41674a98c84b8bf48520afb7d1df5b8f864cbd57",
+    "target": "敏捷+15",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:29:59",
+    "source_sha256": "be5847a35d9eca48781044f7187cb2351f1c8454d288b26f37d3d49095a6f0db",
+    "target": "天使项链",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:29:59",
+    "source_sha256": "8a40dd9f2f44ca9bcc851c0a81c85c4ff968c1fc49f4dce15bd9da24415836c1",
+    "target": "体力+125",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:30:60",
+    "source_sha256": "6bbb11cbc0f0f3c6774f0ecc97b6501e43cd818a34f2f65d240d32280ebbd760",
+    "target": "智慧项链",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:30:60",
+    "source_sha256": "6d5e5e64d14e6732286833da936c3c9b350b2b753abcc52ca19ef4946ee46b02",
+    "target": "智力+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:31:61",
+    "source_sha256": "50a71735a91a281f2ba8f1a7edf13c8f207f23d2304abcccac351da9b0980f21",
+    "target": "玛那项链",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:31:61",
+    "source_sha256": "6d5e5e64d14e6732286833da936c3c9b350b2b753abcc52ca19ef4946ee46b02",
+    "target": "智力+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:32:62",
+    "source_sha256": "7284acba39671a20eb9e2f1750bfcac28d755ca28371a512b6277a6534f1ab63",
+    "target": "保护项链",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:32:62",
+    "source_sha256": "1b06829f14edd003c729aa2db53e566d159fcc37f7f6be9627a60b02a6475e23",
+    "target": "防御力+125",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:33:63",
+    "source_sha256": "cdcce6f1320b8d33f3181760bd032441b839b6412824a98839962297a356f5d4",
+    "target": "忍耐项链",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:33:63",
+    "source_sha256": "6191ee9e4aeced9126c7a488e0a7d7219ab34de01bc33df3f19c977d38dc029e",
+    "target": "防御力+10, 智力+10",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:34:64",
+    "source_sha256": "8b08ae88264dd39c63c504c940a7193916baffdaee8debb18c7775b13f39f5da",
+    "target": "祝福项链",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:34:64",
+    "source_sha256": "41e0a9a598792be3f1d3cef94634cae2770bd29c03f8b7a6961ed99626ff0253",
+    "target": "体力+115",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:35:65",
+    "source_sha256": "10ae60bed0fdd54d010ea72c59ce6da6f61a9e29b868ff76d8b4dffd26230034",
+    "target": "马拉卡特的恩泽2",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:35:65",
+    "source_sha256": "6bfab87bd7005c4bb38cf2af5b151c4d67ad014e5dd19dbcbd3eb1c78700f56d",
+    "target": "体力+80, 防御力+20, 敏捷+20, '暗'亲和度+5",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:36:66",
+    "source_sha256": "3ab5f9916ce4421b1fee2596243053b68f94325363cb9bf91a98cc3543e5e76f",
+    "target": "大地戒指",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:36:66",
+    "source_sha256": "6d5e5e64d14e6732286833da936c3c9b350b2b753abcc52ca19ef4946ee46b02",
+    "target": "智力+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:37:67",
+    "source_sha256": "70424bd7dd8e8faa62663b2fbfa92aa67af4cadba3bb7046f50cf653cb4936c7",
+    "target": "索尔戒指",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:37:67",
+    "source_sha256": "46651413b06e86dca1072333c2895c46c50f96e0c35ce4976158315d363643b0",
+    "target": "防御力+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:38:68",
+    "source_sha256": "b0361575278ab142b0eeb3f3dcd63cc732ddf5163cf983746257b2c7dbce6dd6",
+    "target": "火焰红宝石戒指",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:38:68",
+    "source_sha256": "134fb19c2f17a57785f858096561416273e6960683d3b985fe826fef8a7e7c26",
+    "target": "体力+75, '光'亲和度 +5",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:39:69",
+    "source_sha256": "b2bb992f1fca69046d30f44a94645e800d75d4e7d222bf1848f95612b04801b1",
+    "target": "堕天使戒指",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:39:69",
+    "source_sha256": "7b4f569a08c488fd986cdc70bcf2f568234a6c169268a2c66a37ec1c923dae43",
+    "target": "体力+50,攻击力+150,防御力+20,智力+70,敏捷+10,'风'亲和度+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:40:70",
+    "source_sha256": "48254041856cd1fc1c528458861c36c234be61b14c9c8b3472f07b0d6c9ad406",
+    "target": "战斗戒指",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:40:70",
+    "source_sha256": "aaed9eea684ccde43ec8f8842f04f69064613938ace88d8c3c249b3ff96ef2c6",
+    "target": "攻击力+60, 智力+60, 敏捷+5",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:41:71",
+    "source_sha256": "49dde1741308f048a5f0e589115c99c9f82b2989f8d074b47c698c7fb55fe711",
+    "target": "阿尔坎的智慧",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:41:71",
+    "source_sha256": "180c37a07971b091cae26c9dd94b1dc97ca5a9c1511d23ab4c8cfab892a158df",
+    "target": "智力+50, '暗'亲和度+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:42:72",
+    "source_sha256": "ca93c97a326f93f08b8d3f1bdeabf0fd5ed5046862a2a197f3c837d4a88c85fd",
+    "target": "战士戒指",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:42:72",
+    "source_sha256": "9f5b6a2d4c1fde0b384749642304b8e0f067ad83e2d16e08eba4d1be8f50660c",
+    "target": "攻击力+75, 敏捷+10",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:43:73",
+    "source_sha256": "9ec993368a9c81cf11d25a2dea5655e4036be6599c08612165858195c81a7e28",
+    "target": "祝福戒指",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:43:73",
+    "source_sha256": "283090590394892dabdac8e94b916333ae9de398fc5adda5fcbb55f9bb2dc66e",
+    "target": "体力+125, 防御力+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:44:74",
+    "source_sha256": "c1df17cc8187187ebc26cf70a034cf2cd718ffb257d810a70b6939433c5cd50c",
+    "target": "守护戒指",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:44:74",
+    "source_sha256": "02bdf3c6eff5fdcaf2cbaa76d7944d6e05b56d2a2f18d6723efc5d288c607df9",
+    "target": "体力+50, 防御力+50",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:45:75",
+    "source_sha256": "8e4503a4a8fa76e7be30f3dd5a8e618322c1bdc1bde3b8e43c575f386e6de202",
+    "target": "忍耐手套",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:45:75",
+    "source_sha256": "7f56cc7276a80e01146b27a337f190cba84dd4e9d623baf867c6be8a3e92af5f",
+    "target": "防御力+30, 智力+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:46:76",
+    "source_sha256": "d82970a83fd272ae6794a668ce83d0b74e828f1089d0b699d0f6256a0f6e5172",
+    "target": "密涅瓦护手",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:46:76",
+    "source_sha256": "4d293471307d84d3a5f17ee3ef9ffa62b0cd5314aa8a9dfcf262eb99632a1ff2",
+    "target": "攻击力+50, 防御力+40, 敏捷+5",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:47:77",
+    "source_sha256": "10116d83fc57db61b189184c9dd07110e142c12fc1768c3edf2e8884a0bac5fb",
+    "target": "闪避护手",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:47:77",
+    "source_sha256": "536f48a0f9962f25fe353fa476c85d3791b94d42f957e6c109ad0b62a085a5fe",
+    "target": "防御力+50",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:48:78",
+    "source_sha256": "c6540cc5f8778d52c4912a7cf331bb0ea71c424fa80d4d2a8f7b5cbcf8415094",
+    "target": "埃佩里尔护手",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:48:78",
+    "source_sha256": "788dbf8015046db189edc350e599ec11cccfd648d17fb869e4565a842ae6902b",
+    "target": "攻击力+90, 防御力+100, '地'亲和度 +35",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:49:79",
+    "source_sha256": "4b4d1701f30f525027d1ff9c3927a31ea8424b28b8761eddf41f501a583dff60",
+    "target": "爆炎纹身",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:49:79",
+    "source_sha256": "8a72a071dba3ebbe7ca9bd679b19de6a3c196f2ce39eb1dfd2c02e4ef2f4daf5",
+    "target": "体力+25, 攻击力+45, 防御力+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:50:80",
+    "source_sha256": "68138b8fb846ab52767ecc6247bd829e93f8901ad103d814b5f7ca5a01815374",
+    "target": "风之纹身",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:50:80",
+    "source_sha256": "23a52efcf1dfeac564606940631564c7ef3a11d43050a07d5dedc3e080fb48a4",
+    "target": "防御力+30, 智力+10, 敏捷+15",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:51:81",
+    "source_sha256": "8529bea1ebf3f155b4d3476ec5c0d68a7d149e6eedf21e5f40b65f68d828b568",
+    "target": "吸血鬼纹身",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:51:81",
+    "source_sha256": "752a1496f390879a4d477d69ad8bc022783acba293ee99afbcfcea32d2071fe6",
+    "target": "体力+75, 防御力+40, '火'亲和度 +40",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:52:82",
+    "source_sha256": "d2931ec93a35d2a31c376e8fbbf17eea8b5c89c3e63d94fc727b51b606f4415f",
+    "target": "魔导师纹身",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:52:82",
+    "source_sha256": "95fc4490ace3426f01967acd2f635260fe1498df6b667a56c1758ea985f6bd46",
+    "target": "防御力+60, 智力+10",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:53:83",
+    "source_sha256": "3905847cfa4c0a8c4f6bcc439feeb3a2a131be9d3e8d3f9d3fe47a87474dabc8",
+    "target": "反射纹身",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:53:83",
+    "source_sha256": "459ec7818b891241047241ac5609219f2d31bba8760c97b2b6f74f885978a70d",
+    "target": "防御力+20, 智力+60",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:54:84",
+    "source_sha256": "818d208ecb372831aecdb022f85f2ca532abee14ab1cb0e11fa43b7c66a62636",
+    "target": "暗影紧身裤",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:54:84",
+    "source_sha256": "22b16b37b222a1a58b2ad590499d71850ca38a12599468e678c129f96dd391e0",
+    "target": "体力+25, 攻击力+15, 防御力 +60, 敏捷+5",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:55:85",
+    "source_sha256": "493c43a8d58d9a18ab3a98e7247a4cf7c082875223e384836ac0c41e6168e224",
+    "target": "战斗紧身裤",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:55:85",
+    "source_sha256": "81e195f675d84ba37c2d02b4d0cf3db787083aac90106d46f7e321da895abf43",
+    "target": "攻击力+30, 防御力+50",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:56:86",
+    "source_sha256": "6ff63b62fedfbd7031a73e2bb1c8a581fe013c8fe5feb6ae541324a464d85979",
+    "target": "精致紧身裤",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:56:86",
+    "source_sha256": "a164fd8f7da41c25f3f35d43888f5384c0d8d4c3efb761fabfb786888752bc75",
+    "target": "防御力+40, 智力+10, 敏捷+5",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:57:87",
+    "source_sha256": "2f47d4820efb21f6da52944c55924771abe08e8f0a2c15bc5425f70b6fdeaece",
+    "target": "妖精紧身裤",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:57:87",
+    "source_sha256": "7f56cc7276a80e01146b27a337f190cba84dd4e9d623baf867c6be8a3e92af5f",
+    "target": "防御力+30, 智力+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:58:88",
+    "source_sha256": "c41c1b3f47f48181f769de9b7ae2346ac516a7afd13f15198f9ec23bca82b1b5",
+    "target": "丝绸紧身裤",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:58:88",
+    "source_sha256": "f74dcb34ba6cc7980386a291f389e8396ccf36f2d37df6e16537c665a42c3280",
+    "target": "防御力+20,敏捷+15",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:59:89",
+    "source_sha256": "749393599bf21ee174a857594e6a211b4d1dc84c21d54374333715abd8dca0ec",
+    "target": "治愈紧身裤",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:59:89",
+    "source_sha256": "0f362480cf0d4e3011a0c9181543020e783ba195c1278db528fd92ffd3dcf9d0",
+    "target": "体力+75, 防御力+30, '暗'亲和度+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:60:90",
+    "source_sha256": "cfccb8599968356293aecb93bc83b47a48fdafd4195db0e833f6612a74f266f2",
+    "target": "丝绸衬衣",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:60:90",
+    "source_sha256": "7aef1f2b8e0d504d2cd9bec594a51cdebfc7f853be6eb2a2e7babe05a8ebf479",
+    "target": "防御力+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:61:91",
+    "source_sha256": "c64e9c33fe3df57d463e568ec22660d3f47e212b0348ce0f4aff54d055c96557",
+    "target": "克罗斯衬衣",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:61:91",
+    "source_sha256": "1a12ca6ae71396fdd8b673633cfede8e7cd6bd45575d24fd699754384ea1bb1c",
+    "target": "体力+25, 攻击力+30, 防御力+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:62:92",
+    "source_sha256": "543ba2c0d290f03290644909f466b622f74c9484a5a6cae49ed10afd62b0aef2",
+    "target": "智慧衬衣",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:62:92",
+    "source_sha256": "7258b8da9873d332a6ad0b25820d649a7ff37f499ccc0dd4ab1569f6f7168255",
+    "target": "防御力+50, 智力+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:63:93",
+    "source_sha256": "646e3fd0562376e79e7de039f73c950fab5d0b0f3de49ce5c07d39c274d67ed1",
+    "target": "魔法盾衬衣",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:63:93",
+    "source_sha256": "70ef733162ab33c3dfab230e6cfd1315c5eb0ade1db2f7a37cc1046b04f5b77e",
+    "target": "体力+25, 防御力+60, '水'亲和度+35",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:64:94",
+    "source_sha256": "ace23b88a53f8e8049f767129234a002de9f747e6f2f217ac291c57beed12f63",
+    "target": "荣耀腰带",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:64:94",
+    "source_sha256": "11fd3e652a7e9af6ad1a08a28eeafa864a462cf7faa20464e4736e33f3ee461a",
+    "target": "体力+75, 防御力+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:65:95",
+    "source_sha256": "0815fe22c2e6c335a0c54a9e5742ee7397cd3df60004049a4e5f08faf66864a0",
+    "target": "天空腰带",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:65:95",
+    "source_sha256": "6d840f28c9e32d193ce40da451bdba1489409ac43e15abc3fa0a14ab5ceb3c3d",
+    "target": "防御力+30, 智力+30, '雷'亲和度+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:66:96",
+    "source_sha256": "15094d8a7e187509b1c139facc10d159c0fdef5d7ace5d48e4e6fba9c9882790",
+    "target": "龙甲腰带",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:66:96",
+    "source_sha256": "462b4d1c713aca146fbeb02a9182331c5b937c6ba0bd6402f32c8404d22d51dc",
+    "target": "攻击力+30, 防御力+60",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:67:97",
+    "source_sha256": "fe4ed75b2f881058d956f65f179d4b85ad511ff2e3bae59e13b7b08beaf53966",
+    "target": "魔法反射腰带",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:67:97",
+    "source_sha256": "7258b8da9873d332a6ad0b25820d649a7ff37f499ccc0dd4ab1569f6f7168255",
+    "target": "防御力+50, 智力+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:68:98",
+    "source_sha256": "80fef133c7cfd9f0585f6cd65b217c29ff576dcd22a7f3fd9de48c9faf7405e9",
+    "target": "技能盾腰带",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:68:98",
+    "source_sha256": "cd3967421f7206af501da3189c8f649a7dcbc157ff4110b9abb8f3b1b246c5f1",
+    "target": "体力+25, 攻击力+15, 防御力+20, '光'亲和度+40",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:69:99",
+    "source_sha256": "2e1d299f5f2490d30a49516a23c3b5ca31a49b4f9b58db75afa708b7bda1b1a0",
+    "target": "伊格尼斯皮革",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:69:99",
+    "source_sha256": "6e45e27c80ba3329cb9e38dbb0141733b1432d5dd54ed98b6b5e9c547822bbf9",
+    "target": "体力+50, 防御力+20, 敏捷+10",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:70:100",
+    "source_sha256": "0f3b588929053951798a2dc9d8eab38f8c076fd858ef519a10482134903d9d52",
+    "target": "皮背心",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:70:100",
+    "source_sha256": "f5f4033469d5cd62fc222f31ab1d1e0934239f5613a75ff55fd7b7a9fd9d6517",
+    "target": "攻击力+30, 防御力+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:71:101",
+    "source_sha256": "f42d52cdb44af1fa1b9361521099a0108f57b060d2be381c1f1a8b6534bd4fba",
+    "target": "火蜥蜴背心",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:71:101",
+    "source_sha256": "614cceb5cbf73748ab2cce4ad6d2a8086b2325a9003a6be91fbac30e70437753",
+    "target": "攻击力+150, 防御力+80, 智力+40",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:72:102",
+    "source_sha256": "6d7a4f2c66480a9e7084e7350821cec4d97e24209e7e2759b80592484824b76c",
+    "target": "狂战士背心",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:72:102",
+    "source_sha256": "41decd6867a4973ea6623941feac304a8ab7abfacc82376470318ed6c6da2d34",
+    "target": "攻击力+60, 防御力+40",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:73:103",
+    "source_sha256": "699cb3203f239ee2744ab9437a688d5a41e16dfd3b113b99b268af30af4b7fe3",
+    "target": "战斗背心",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:73:103",
+    "source_sha256": "44aa114f6240679ec9924e83e97809837a6abe3323d66564d30837432aa763ae",
+    "target": "攻击力+45, 防御力+40, 智力+35",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:74:104",
+    "source_sha256": "8cca9ae306fe8ebc7445dde530e667ca0ac9f9998a36475e91f0ab4cbbdc2290",
+    "target": "混沌背心",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:74:104",
+    "source_sha256": "cf411aa27ef1d887235bd2d8c0343ebabe20b804c014dc573fd3935c64c91a6f",
+    "target": "攻击力+90, 防御力+80, 敏捷+20, '地'亲和度+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:75:105",
+    "source_sha256": "b00087ba00a07444dc815c92c1b21865e83d78b040cf894603f1241d2ede2551",
+    "target": "冰之板甲",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:75:105",
+    "source_sha256": "197eec23c76dd9dc96b4ceb98df340c1da1b917862aa8853d710b7fd25ce9d32",
+    "target": "防御力+100",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:76:106",
+    "source_sha256": "357a80a0ecb106e2df236fbc80e3d24c60a3b5f145b56aa85eecd2049e9cace0",
+    "target": "皮甲",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:76:106",
+    "source_sha256": "f6813915612b143af4df13bafea77b054bb94726bb10ac0296eb66f6bad7d7ce",
+    "target": "防御力+10",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:77:107",
+    "source_sha256": "1b06c49fc846dc8479e71109407b9751d293b4dcdd3fc05bebfc11ecdc1406ef",
+    "target": "刀刃甲",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:77:107",
+    "source_sha256": "46651413b06e86dca1072333c2895c46c50f96e0c35ce4976158315d363643b0",
+    "target": "防御力+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:78:108",
+    "source_sha256": "81e4acf3f51ee2ecfb6d3ec69bce056104be6e1f57debc395d6fa7c0aef2ae72",
+    "target": "半身板甲",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:78:108",
+    "source_sha256": "60463cba68203114257118ae8e21afe2c44933afd88b9e8c5882d27765660882",
+    "target": "防御力+40",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:79:109",
+    "source_sha256": "c1533d6b81a9f33d18b9f3ad283ceed93b2349796cb335ec99a9ced3fde80ee2",
+    "target": "黄金板甲",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:79:109",
+    "source_sha256": "5c29e876b1f294f6a14c8ebb661115d387c84c4442ea908343c7bc3e2b02cb6e",
+    "target": "攻击力+30,防御力+80",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:80:110",
+    "source_sha256": "2f27e091039fea823556cb99d981fb59ac39385a142597a5971194ab7cfda101",
+    "target": "全身板甲",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:80:110",
+    "source_sha256": "c2d92867d4d480e82761a98b378f1c18c1438bb7489059c44ae0284d4796021e",
+    "target": "防御力+60, '火'+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:81:111",
+    "source_sha256": "786aea1790bb3911e98514e3f3dd5ef9f4df0e30d2806c6057c644e6e785a453",
+    "target": "胶质兽之牙",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:81:111",
+    "source_sha256": "214c95a7235f08d09fee46945356dd8426271087eea41a22963007355d95192c",
+    "target": "攻击力+30,防御力+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:82:112",
+    "source_sha256": "5eba5d768858d39603bc39c3d3a80479911125de145af957f7df3adbeafdca56",
+    "target": "水之宝石",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:82:112",
+    "source_sha256": "46651413b06e86dca1072333c2895c46c50f96e0c35ce4976158315d363643b0",
+    "target": "防御力+30",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:83:113",
+    "source_sha256": "21a4dbcdc4721d81ca5be1c749d24ba0d03ff03431073f4fe4bae33ec4fe9afa",
+    "target": "兰帕斯之角",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:83:113",
+    "source_sha256": "bac7b0c0d6a45d5b56182aa0f438ea0035e85ede6a729447652d61952c9c827a",
+    "target": "防御力+40, 智力+20",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:84:114",
+    "source_sha256": "29f24b468458a9c722816536d389094c39e3dd40ddc222d91f9f88a244758a0b",
+    "target": "阿比斯之爪",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:84:114",
+    "source_sha256": "66f80dcf2599322a2bd021b93cb4a91d34eef1e6b64279056f6cf3f395ff7a13",
+    "target": "攻击力+30, 防御力+80",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:85:115",
+    "source_sha256": "68873c937ac132639b0633b15b67e99e8359545cc55bb8ee342324dd6911ffd2",
+    "target": "血色克罗斯",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:85:115",
+    "source_sha256": "d31dd738ed47826d2d87f27a9550593f99fa99c2060600ec318f5e4b842cb3a2",
+    "target": "防御力+30, '风'亲和度+60",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:86:116",
+    "source_sha256": "aebc110fa818474fa5207058c5c06c0ee00403cd2ff452bac3e5caeb1972a297",
+    "target": "古拉德斯DVD S.E",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:86:116",
+    "source_sha256": "5b58ffe97f39f4c850091d92ec69a10ee4efc9b2e1b0f82ed1cfc625bd3569b0",
+    "target": "古拉德斯DVD S.E（附赠毫无用处的超豪华蒂姆圣泰尔报道集）",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:name:87:117",
+    "source_sha256": "75d4be3a4f9e9751a26f4164b0a4c633bc37ef5c5bd02df98d0fd2b33630ee15",
+    "target": "奥诺奥诺DVD 1,2部",
+    "state": "translated"
+  },
+  {
+    "id": "Itm/0000.itm:description:87:117",
+    "source_sha256": "6aa49730c8c66f4fe2a70f837d13acae5fdbea075b82b218ace0e0924b30d5a9",
+    "target": "以5.1声道，生动再现奥诺卑鄙、无耻又幼稚的比赛场面。",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:0:5",
+    "source_sha256": "2e78e5568cfcc8ce0ab0c16af60bae5bfd00166e9d672c9e99e496d1187df40d",
+    "target": "灵魂之刃",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:1:6",
+    "source_sha256": "4b8d99c3bd89bc6b06bb38ab635b2074a3863947db2401c397525fbe489e888d",
+    "target": "烈焰之刃(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:2:7",
+    "source_sha256": "8d253d8ce71e06ac02350851b86dae63913634b0c02a584d6f424035b5b2036b",
+    "target": "水月刃(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:3:8",
+    "source_sha256": "43303754b026f0a49dd6d769ff49c911add57a9709a6687da589cc4f4a89eceb",
+    "target": "风暴追寻者(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:4:9",
+    "source_sha256": "d87add942aa27c2da273e4d556bcb70da37bb4d0cc1fabdcfd31811d5aaa5162",
+    "target": "雷电刃(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:5:10",
+    "source_sha256": "0d80286be81b5b7d12a3ea795093c6b0d24779087d5b618de427be4671e59d7b",
+    "target": "雷霆之刃(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:6:11",
+    "source_sha256": "23d87f9e12e01dfaa993d950d6979511b80d269f15bdcc6bbaf57f192bc6ec72",
+    "target": "大地之刃(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:7:12",
+    "source_sha256": "77b62c98d14ddd0b57c562cc7d0a6459f7e1d90e808dc8a03958897f9b5e148a",
+    "target": "暗黑刀(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:8:13",
+    "source_sha256": "13d8c2d7a8486ef4e8bb8c74a13fafeeac19423d1593e3322906a5bed29c2721",
+    "target": "刹那刀(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:9:14",
+    "source_sha256": "5face45f5b68dca504375fda11d73e96b162912d35bf6513171590675f8bf851",
+    "target": "光明之剑(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:10:15",
+    "source_sha256": "ca69a660669b361d544f5e20398a29edc75603ae61dce871f6d535a6f3461961",
+    "target": "混沌之剑(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:11:16",
+    "source_sha256": "74468242d654720fa4198bd0f9110bfb9d72276b5574f707be3070df350e907e",
+    "target": "暴风剑(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:12:17",
+    "source_sha256": "96f6a3c3b080f8c1015e8ad0ecab7cfd5c062abd00f59bc8b022bb724c600871",
+    "target": "落日剑(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:13:18",
+    "source_sha256": "0609692336cea15e75e4119f63641c0116d46345ebe3a177bd3c2d330f104f17",
+    "target": "埃克斯卡利伯(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:14:19",
+    "source_sha256": "0a30b38649a3c20825c427651287a39961fc7a45b32ea500388177b87f5beef5",
+    "target": "杜兰达尔(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:15:20",
+    "source_sha256": "b2f00fdd6c5296f0989822c651e4d0c401f3bee1e3f9cf1a1d7be2b7b18848ee",
+    "target": "风暴使者(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:16:21",
+    "source_sha256": "b845ad097b12e58ae1ee75e37b4163a6b6cd1b62cc3d767a18433a27f7bb88ce",
+    "target": "巴利萨达(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:17:22",
+    "source_sha256": "e0995b5bd2807259a3c3711654ca135a614e7263b2dea1ae2f07bfeb558fc4c4",
+    "target": "默焰(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:18:23",
+    "source_sha256": "692d3eaf47ea94752a7361ddd0f454adbcae0e79dc6b624a719cbc2caf3e8731",
+    "target": "暗渊(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:19:24",
+    "source_sha256": "6ef6f8d4cc76739a3fdfaa939fb6878f8dfaa45f51b14cf55379574824e9f765",
+    "target": "风月(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:20:25",
+    "source_sha256": "105daea81a9000268b721eeada7ff0765d081685ac30edd2d29d8ed6f55586d3",
+    "target": "永劫(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:21:26",
+    "source_sha256": "bd064f6bd4746b8ee2f81dcc323d44e5ac817641b2d8d04c7515935e81f68fd5",
+    "target": "法杖",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:22:27",
+    "source_sha256": "1cb935b73bf1ae43cfe737f0b8eed0bc2119bc3ce5c782ef5cceb489f8fb58a2",
+    "target": "雷霆法杖(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:23:28",
+    "source_sha256": "2903d357fb10a080e9fa5c195af7089bd8c63a792a7d2a1023a5c4d820a15c71",
+    "target": "烈火杖(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:24:29",
+    "source_sha256": "f868b241fecb07ca5b7db54a81982acc093a7ae3d6c276f1b1ff44b7d02fdad9",
+    "target": "冰之法杖(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:25:30",
+    "source_sha256": "ee9f54b0dde0a2a49ea286d5501302c169562d8cc28f832d5643f134527bc251",
+    "target": "旋风杖(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:26:31",
+    "source_sha256": "ad830330a16930d6a5a2af401d76271f39e2d93a38b128ec806b0d3a84cf62a8",
+    "target": "风之杖(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:27:32",
+    "source_sha256": "a32ba89150ad2aca97eaf2025b437398bb82d05e476dd41b94f1c3a208dd2805",
+    "target": "暗之杖(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:28:33",
+    "source_sha256": "7d317acde212c4537ba7c0835597ccaf68d2daa46685c29faf7d0220899d5ebf",
+    "target": "光明杖(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:29:34",
+    "source_sha256": "6590bf19b8b697450b4d617c77bf1b348ba039c940a86aaa83398218f83a86bc",
+    "target": "破裂杖(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:30:35",
+    "source_sha256": "9961a52f25919d20ec37b979af217699fad50d1f13d0cac2e0c2bc4c4fad1a25",
+    "target": "大地之杖(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:31:36",
+    "source_sha256": "cdbe381aad0e37177904dd86b61ce7af0e2f856aa5e1f97b33c78aa12182c1c9",
+    "target": "光之杖(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:32:37",
+    "source_sha256": "aebdbd8e6f18ce90e4faa4387b71221d20bcd304abfbf19447a8570a4141f954",
+    "target": "铁丝棍(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:33:38",
+    "source_sha256": "092eb4449822ae5023577846dc30a7ea28547ee7db7613324044af195b765557",
+    "target": "冰击棍(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:34:39",
+    "source_sha256": "a5ab3eefbbaf3eec760423f421762465d2c7b55265973b54cb2b25bbdbb84e49",
+    "target": "巫师之杖(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:35:40",
+    "source_sha256": "b08a6a5b393bc5ea868c93614707b36a2526b1a800541e25e90eea1963860be9",
+    "target": "术士之魂(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:36:41",
+    "source_sha256": "3158c265bb0fd69fefd029fee36d97c7e91978ba45418022c0cfc6e936c15038",
+    "target": "风暴权杖(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:37:42",
+    "source_sha256": "d8971e7a9b6492cac7b680444f21dd0d546766eeb6921fc55cd711153c9c8e04",
+    "target": "巴哈姆特(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:38:43",
+    "source_sha256": "1eafb9923dba1a084f331f924c6789fc8c8797b744f13afd6513b9ffc497b58c",
+    "target": "大地权杖(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:39:44",
+    "source_sha256": "b551107fab5d4706cdba50c50d20f4c90f4c633f81383fd0b7ae0126a5b2f86b",
+    "target": "雷电权杖(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:40:45",
+    "source_sha256": "38b7918c5cbde93eedd1544d416c7560a70f3880878ca25426e73410bf8148eb",
+    "target": "雷神之印(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:41:46",
+    "source_sha256": "74d51806a04aaaa1aa4f4d5e0295cb80d17480388d0348ab9df6a9540cc1eb25",
+    "target": "太阳之印(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:42:47",
+    "source_sha256": "f5b53f5bbd5a67857efcbf290896e41df5c00dbdf85d842336f21784824ff7cc",
+    "target": "死神镰",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:43:48",
+    "source_sha256": "731e41fa9c3ab198d92783220b60eeb31c323356a70d3a1adf734b70707e6d14",
+    "target": "雷霆镰(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:44:49",
+    "source_sha256": "37a05a3605a67d4e9d6f94272a475aa123b86083f4f11194525ab6e589b11cec",
+    "target": "冰霜镰(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:45:50",
+    "source_sha256": "1eb051d03a9ca042e74d2f73167f5ac7b0e832cbe44d9a8a761cdb1071b066d1",
+    "target": "风暴镰(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:46:51",
+    "source_sha256": "c1da734983296f61dd8dbed0eae836b47e58108c01cc0ad93da80c08e55c3ed3",
+    "target": "黑暗镰(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:47:52",
+    "source_sha256": "709cdeaecab834ef336259298ab029489180cc89ea03560d2e4f8bc797c653bd",
+    "target": "死神之牙(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:48:53",
+    "source_sha256": "8f24360517c2173546c171fc26fae55b3bc9a39b2fc51610a803513d073cc097",
+    "target": "阿夸里斯(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:49:54",
+    "source_sha256": "98754065eb0eaa0b20c13c1c575be05a22c910b6d93417150d89cdd411cf82a5",
+    "target": "雷霆风暴(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:50:55",
+    "source_sha256": "b63bb9de9a61709b4109c887e0753cc994fccc2c4ef9afdf4cdc228325f5ecd2",
+    "target": "死亡之刃(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:51:56",
+    "source_sha256": "c6a90063087398d3e61fbc6f5aa589a455fb19c022c3fd9a645b28be70ab18f1",
+    "target": "斩铁剑",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:52:57",
+    "source_sha256": "d9832e5622312f7874d849578508bfdb015773b0ed835578001cde96416bdfd2",
+    "target": "苏琼",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:53:58",
+    "source_sha256": "c453ab89c8e3d05d834a0995583dffab0b978b4de2437b8a4603ff6a98b17f9b",
+    "target": "索里比多(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:54:59",
+    "source_sha256": "e73029d878207921f694cd4c70a97e5b7ae891af26a8e99828ad80a28501f221",
+    "target": "天罗地网(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:55:60",
+    "source_sha256": "e7afe46e12e870394a8dbbfbb79cad7563bc26db8f38dbf14b8b48f59426aad1",
+    "target": "流星雨(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:56:61",
+    "source_sha256": "e5098c0b488a30be52516e5e146b538465ad1a7f37829dc995de978e4fd7a2fc",
+    "target": "手枪",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:57:62",
+    "source_sha256": "f7dcd7c61b7154a305c58c30ea2119d37b1a0487dbb3a8d074c32660a095e157",
+    "target": "手炮(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:58:63",
+    "source_sha256": "c494b8a658f481579005fa31eb29fed7487998cba2dd18a584fb37dc9bec9c22",
+    "target": "铁炮(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:59:64",
+    "source_sha256": "d274cb86ff8f2d684155b8108dcd2d73b472a5ff6e3902ff9754249c32d9fda7",
+    "target": "震地者(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:60:65",
+    "source_sha256": "6d82eaa28a63d21ce5e93ccf33f91a04f5bdbf8a893ad75c2984e82df5ad8944",
+    "target": "铳筒(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:61:66",
+    "source_sha256": "5d901ae914522d8e5280b228c25edf404abcba1a4dcda051f149a712dc4c9879",
+    "target": "雷霆炮(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:62:67",
+    "source_sha256": "c932426420569fffa7bbaea0f86ff6bb28deefb9bd89ba2b432376ae18c85c50",
+    "target": "暗夏(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:63:68",
+    "source_sha256": "bfd7bfce19d665ffe2c95550646dcbde6f9d39de4533a4585bacc9ffcd89ff35",
+    "target": "天字铳筒(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:64:69",
+    "source_sha256": "9f3b6326342e762e59f5a19c03b36906d3ea446596f3cad66f9aaf3a3ed77ccc",
+    "target": "地字铳筒(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:65:70",
+    "source_sha256": "ed6ff34db40addda0ec76d5baf7f3119d9d4eca9cb8bd9e402006e174bef2221",
+    "target": "温克(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:66:71",
+    "source_sha256": "e16dc5001e23cbe32233af74a922fdfec1184c9119b360e7ff19b68920e03e38",
+    "target": "阿斯拉达(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:67:72",
+    "source_sha256": "59f6005bc018d31e8c107ea4ffd8a923c902279692b40871d4e0aa02dbdb962a",
+    "target": "六穴炮(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:68:73",
+    "source_sha256": "324b40be8d6ebdf5099273f3ffbe08a5ef64be2eac4a9583a15a916a6a174e89",
+    "target": "地雷震(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:69:74",
+    "source_sha256": "3e6b5af13b95441456025699ce768de37fedd67fccc4e5fbe72069f23f87fbeb",
+    "target": "弩炮(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:70:75",
+    "source_sha256": "3ca0fa6d779cf19a9e74adae4cd330d49c6b2112ddaaa52dcc239022e4c648ab",
+    "target": "卡利珀(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:71:76",
+    "source_sha256": "59c91c9a3a4acf5bda9ca43411ec07f77e8f4485f4daeac92efe2b34e91cd76f",
+    "target": "铁处女(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:72:77",
+    "source_sha256": "c7f80f3a15348b19ba525aae47ef1e8f6c7c69854167be12b8289f574ec6ebe6",
+    "target": "红男爵(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:73:78",
+    "source_sha256": "9869f4faf0e545a94486a42092c342fca501bd3024c7bf3ff7a2a155e6f85af3",
+    "target": "飞龙炮(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:74:79",
+    "source_sha256": "4a1e18729c26aa36eb78d77db577d3eeb03ac98affa12077036ff5c6f56e99bb",
+    "target": "飞击震天雷(雷)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:75:80",
+    "source_sha256": "06229d7c571a8440378bde508847218726e6d7cdff312f3ff41cb87abbf38efc",
+    "target": "风云落(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:76:81",
+    "source_sha256": "b9d4bcfb4434e16c24139f67bd941d48ae23d456729ba288061908f245ab7bb8",
+    "target": "冰寒水雷(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:77:82",
+    "source_sha256": "b5e039f7a4a17712cf1515946b57afb6b9217d04492a7147d85548b2da622e10",
+    "target": "护身符",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:78:83",
+    "source_sha256": "936e466c8fbed0b7d88567351415a08272931a6218f4d01b47b4983110c67f9b",
+    "target": "招财符(火)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:79:84",
+    "source_sha256": "5491024ec2eba5feef063e38929f184003b0ba978ed0987294e75d4cb7488950",
+    "target": "天中符咒(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:80:85",
+    "source_sha256": "5fd2b23cbf3d6ccb7d99a69d086f6c82da2657d45e4b8237ac868bb20fe8debd",
+    "target": "生者符(地)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:81:86",
+    "source_sha256": "52fe561e71abdaabe81366739e37e13bc133378cea86958f179c74a7931f44a2",
+    "target": "七星符(光)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:82:87",
+    "source_sha256": "85061d593f239aada6110ec5cbc5b297ca53cbcdfd2560845111ee5c3bbb80cf",
+    "target": "归布钦布尔(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:83:88",
+    "source_sha256": "871d832b82369cb96d93eafd5e1038acb58b6c369e72da8071d666a644a54ad8",
+    "target": "辟邪符(水)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:84:89",
+    "source_sha256": "f92729f6984528365a195e6310e9786409c774d7e7e6f395300d4fac72c796dd",
+    "target": "驱魔祭祀符(暗)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:85:90",
+    "source_sha256": "2d13458ff1414d746e07ca98fa07b78620ada7a6709265a5e928e4f05e1b1fbb",
+    "target": "逐邪符(风)",
+    "state": "translated"
+  },
+  {
+    "id": "Sgi/0000.sgi:name:86:91",
+    "source_sha256": "8933ea980fca61ff9c41610f82c9a6bdcca903da8612243b1f3e319168bb8ac5",
+    "target": "屠杀符(暗)",
+    "state": "translated"
+  }
+]

@@ -9,6 +9,7 @@ from native_text_codec import encode, decode, validate as validate_mapping
 from resource_fpb import parse, rebuild
 from resource_font import parse as parse_font
 from translation_data import validate as validate_targets, load_targets
+from resource_fixed_text import rebuild_fixed
 
 
 def digest(data):return hashlib.sha256(data).hexdigest()
@@ -69,13 +70,14 @@ def checked_fonts(source, package, state):
     return outputs
 
 
-def build(source, catalog_path, coverage_path, target_paths, font_package, output, terms_path=None, allow_partial=False, links_path=None):
+def build(source, catalog_path, coverage_path, target_paths, font_package, output, terms_path=None, allow_partial=False, links_path=None, fixed_decisions_path=None):
     source=Path(source).resolve(strict=True);output=Path(output).resolve()
     if output.exists() or output.is_relative_to(source) or source.is_relative_to(output):
         raise ValueError('output must be a new separate directory')
     inputs=[Path(catalog_path),Path(coverage_path),*map(Path,target_paths)]
     if terms_path:inputs.append(Path(terms_path))
     if links_path:inputs.append(Path(links_path))
+    if fixed_decisions_path:inputs.append(Path(fixed_decisions_path))
     font_package=Path(font_package).resolve(strict=True)
     if output.is_relative_to(font_package):raise ValueError('output must be outside font package')
     inputs.extend([font_package/'overlay.json',font_package/'Chi0.dat',font_package/'Chi1.dat'])
@@ -84,6 +86,7 @@ def build(source, catalog_path, coverage_path, target_paths, font_package, outpu
     targets=load_targets(target_paths);font_state=json.loads((font_package/'overlay.json').read_text('utf8'))
     terms=json.loads(Path(terms_path).read_text('utf8')) if terms_path else None
     links=json.loads(Path(links_path).read_text('utf8')) if links_path else None
+    decisions=json.loads(Path(fixed_decisions_path).read_text('utf8')) if fixed_decisions_path else None
     report=validate_targets(catalog,targets,terms,font_state['mapping'],not allow_partial,links)
     if report['errors']:raise ValueError('translation validation failed: '+json.dumps(report['errors']))
     source_rows={row['id']:row for row in catalog};resources={source_rows[row['id']]['resource'] for row in targets}
@@ -93,14 +96,19 @@ def build(source, catalog_path, coverage_path, target_paths, font_package, outpu
     for resource in sorted(resources):
         rel=relative(resource)
         if rel in outputs:raise ValueError('duplicate normalized resource output path')
-        if rel.suffix.lower()!='.fpb':raise ValueError('resource format not supported by this builder')
+        if rel.suffix.lower() not in ('.fpb','.itm','.sgi','.abi','.cha'):
+            raise ValueError('resource format not supported by this builder')
+        if rel.suffix.lower()!='.fpb' and decisions is None:
+            raise ValueError('fixed resource requires source-bound field decisions')
         path=source/rel
         if path.is_symlink() or not path.resolve(strict=True).is_relative_to(source):
             raise ValueError('linked resource is not supported')
         original=path.read_bytes();entry=locked.get(resource)
         if entry is None or digest(original)!=entry['sha256'] or len(original)!=entry['size']:
             raise ValueError('resource coverage digest mismatch')
-        changed=rebuild_fpb(original,resource,catalog,targets,font_state['mapping'])
+        changed=(rebuild_fpb(original,resource,catalog,targets,font_state['mapping'])
+                 if rel.suffix.lower()=='.fpb' else
+                 rebuild_fixed(original,resource,catalog,targets,font_state['mapping'],decisions))
         original_files[path]=original;outputs[rel]=changed
         resource_report.append(dict(resource=resource,original_sha256=digest(original),
                                     modified_sha256=digest(changed),original_size=len(original),modified_size=len(changed),
@@ -117,6 +125,7 @@ def build(source, catalog_path, coverage_path, target_paths, font_package, outpu
                   font_overlay_sha256=digest(snapshots[(font_package/'overlay.json').resolve()]),
                   target_inputs=[dict(sha256=digest(snapshots[Path(p).resolve()])) for p in target_paths],
                   linked_text_sha256=digest(snapshots[Path(links_path).resolve()]) if links_path else None,
+                  fixed_decisions_sha256=digest(snapshots[Path(fixed_decisions_path).resolve()]) if fixed_decisions_path else None,
                   resources=resource_report,fonts={name:digest(data) for name,data in font_outputs.items()},
                   requires_native_text_step=True,all_game_text_complete=False,
                   source_unchanged=True,deployed=False,game_started=False,in_game_verified=False)
@@ -134,7 +143,8 @@ if __name__=='__main__':
     p.add_argument('--catalog',type=Path,required=True);p.add_argument('--coverage',type=Path,required=True)
     p.add_argument('--translations',type=Path,nargs='+',required=True);p.add_argument('--font-package',type=Path,required=True)
     p.add_argument('--terms',type=Path);p.add_argument('--links',type=Path);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--fixed-decisions',type=Path)
     p.add_argument('--allow-partial',action='store_true');a=p.parse_args()
-    result=build(a.source,a.catalog,a.coverage,a.translations,a.font_package,a.output,a.terms,a.allow_partial,a.links)
+    result=build(a.source,a.catalog,a.coverage,a.translations,a.font_package,a.output,a.terms,a.allow_partial,a.links,a.fixed_decisions)
     print(f'TEXT_RESOURCE_BUILD PASS resources={len(result["resources"])} translated={result["catalog_validation"]["translated_fields"]} '
           f'catalog_complete={str(result["catalog_validation"]["complete"]).lower()} all_game_text_complete=false deployed=false game_started=false')

@@ -56,4 +56,4 @@ python tools/build_font_overlay.py --source SOURCE_GAME/Font --font OUTLINE_FONT
 python tools/build_text_resources.py --source SOURCE_GAME --catalog CATALOG --coverage COVERAGE --translations TARGET_FILES --font-package NEW_FONT_PACKAGE --terms locales/zh-CN/terms.json --links locales/zh-CN/linked-text.json --output NEW_RESOURCE_PACKAGE
 ```
 
-各占位路径指实际独立输入/输出。源游戏须匹配提取哈希，轮廓字体须匹配来源锁。输出目录必须不存在，字体包与资源输出分离。局部研究可显式追加`--allow-partial`，不得将该产物当作全文发布或直接覆盖运行副本。FPB控制标记、记录ID及数值属性不翻译；当前工具不支持ITM、ABI、SGI、CHA或图片写入。详见[全文流程](docs/FULL_TRANSLATION_PIPELINE.md)。
+各占位路径指实际独立输入/输出。源游戏须匹配提取哈希，轮廓字体须匹配来源锁。输出目录必须不存在，字体包与资源输出分离。局部研究可显式追加`--allow-partial`，不得将该产物当作全文发布或直接覆盖运行副本。FPB控制标记、记录ID及数值属性不翻译；固定表回写追加`--fixed-decisions locales/zh-CN/fixed-field-decisions.json`，逐字段验证显示用途、源摘要、字段容量与格式化预算，支持ITM、ABI、SGI和CHA；图片写入仍未完成。详见[全文流程](docs/FULL_TRANSLATION_PIPELINE.md)。

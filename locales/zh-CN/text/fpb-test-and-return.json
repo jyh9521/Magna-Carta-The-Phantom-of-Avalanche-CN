@@ -1,0 +1,163 @@
+[
+  {
+    "id": "Fpb/0000.fpb:text:0:0",
+    "source_sha256": "d75d4d4615ac680e86dcb091ec6297c3ae06be968cc8ec585a094dcf885e2e8b",
+    "target": "魔戒战争",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0000.fpb:text:1:1",
+    "source_sha256": "b5f1f9124debd6f25daded33cb50d27a7c9d8804ae3a4339882e8c53f28edf86",
+    "target": "游戏批评",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0000.fpb:text:2:2",
+    "source_sha256": "3f642ecb9ba37f7726482728bbe14cfcddaf59cc93b4686cc7057b8141f4e651",
+    "target": "半条命……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0000.fpb:text:3:3",
+    "source_sha256": "a365c35b2f36e9afd67c6dd5f59d281c9182a72086ec51194585ce3529cca02f",
+    "target": "嗯！！！！！！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0000.fpb:text:4:4",
+    "source_sha256": "f808b3e666e7f46efd481b2a2c1d35c0d2762fedf458df801c4732e26aa80277",
+    "target": "这……！！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0000.fpb:text:5:5",
+    "source_sha256": "61e99fd2e8c5c10b4449213e2d6546acac62e4e1ed072cd3f8c49e1d74e1ab1d",
+    "target": "能顺利吗？？？ㅡㅡa",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0004.fpb:text:0:0",
+    "source_sha256": "d75d4d4615ac680e86dcb091ec6297c3ae06be968cc8ec585a094dcf885e2e8b",
+    "target": "魔戒战争",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0004.fpb:text:1:1",
+    "source_sha256": "b5f1f9124debd6f25daded33cb50d27a7c9d8804ae3a4339882e8c53f28edf86",
+    "target": "游戏批评",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0004.fpb:text:2:2",
+    "source_sha256": "3f642ecb9ba37f7726482728bbe14cfcddaf59cc93b4686cc7057b8141f4e651",
+    "target": "半条命……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0004.fpb:text:3:3",
+    "source_sha256": "a365c35b2f36e9afd67c6dd5f59d281c9182a72086ec51194585ce3529cca02f",
+    "target": "嗯！！！！！！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0004.fpb:text:4:4",
+    "source_sha256": "f808b3e666e7f46efd481b2a2c1d35c0d2762fedf458df801c4732e26aa80277",
+    "target": "这……！！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0004.fpb:text:5:5",
+    "source_sha256": "61e99fd2e8c5c10b4449213e2d6546acac62e4e1ed072cd3f8c49e1d74e1ab1d",
+    "target": "能顺利吗？？？ㅡㅡa",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0005.fpb:text:0:0",
+    "source_sha256": "96efbc43a462ab9d9c6a8173e5b322e17f218b56eb3a05a4bbc53221adebc7b3",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "仅含字母、符号或数字的测试字段，含义及运行用途未确认，保留原字节且不计为翻译。"
+  },
+  {
+    "id": "Fpb/0005.fpb:text:1:1",
+    "source_sha256": "dd9c8445e43d2717ad906b284ae560a4e9e16eb87f64ce27d0fdf3446e64ef44",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "仅含字母、符号或数字的测试字段，含义及运行用途未确认，保留原字节且不计为翻译。"
+  },
+  {
+    "id": "Fpb/0012.fpb:text:0:0",
+    "source_sha256": "dd9c8445e43d2717ad906b284ae560a4e9e16eb87f64ce27d0fdf3446e64ef44",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "仅含字母、符号或数字的测试字段，含义及运行用途未确认，保留原字节且不计为翻译。"
+  },
+  {
+    "id": "Fpb/0012.fpb:text:1:1",
+    "source_sha256": "dd9c8445e43d2717ad906b284ae560a4e9e16eb87f64ce27d0fdf3446e64ef44",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "仅含字母、符号或数字的测试字段，含义及运行用途未确认，保留原字节且不计为翻译。"
+  },
+  {
+    "id": "Fpb/0012.fpb:text:2:2",
+    "source_sha256": "05ffd7a4b6d53e5294648239a0f7a76b58b74f418183457e6abab59594545da0",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "仅含字母、符号或数字的测试字段，含义及运行用途未确认，保留原字节且不计为翻译。"
+  },
+  {
+    "id": "Fpb/0012.fpb:text:3:3",
+    "source_sha256": "dd9c8445e43d2717ad906b284ae560a4e9e16eb87f64ce27d0fdf3446e64ef44",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "仅含字母、符号或数字的测试字段，含义及运行用途未确认，保留原字节且不计为翻译。"
+  },
+  {
+    "id": "Fpb/0012.fpb:text:4:4",
+    "source_sha256": "a30b7727af55fd71159f5321acc4f0f235b78058ace6358beaae6d6e713c1f9a",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "仅含字母、符号或数字的测试字段，含义及运行用途未确认，保留原字节且不计为翻译。"
+  },
+  {
+    "id": "Fpb/0012.fpb:text:5:5",
+    "source_sha256": "dd9c8445e43d2717ad906b284ae560a4e9e16eb87f64ce27d0fdf3446e64ef44",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "仅含字母、符号或数字的测试字段，含义及运行用途未确认，保留原字节且不计为翻译。"
+  },
+  {
+    "id": "Fpb/0012.fpb:text:6:6",
+    "source_sha256": "18dfe1c782275c9ab2ee3b7c15a64d7a6e12ec1405d35f5604768d27b658fba7",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "仅含字母、符号或数字的测试字段，含义及运行用途未确认，保留原字节且不计为翻译。"
+  },
+  {
+    "id": "Fpb/0016.fpb:text:0:0",
+    "source_sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "仅含字母、符号或数字的测试字段，含义及运行用途未确认，保留原字节且不计为翻译。"
+  },
+  {
+    "id": "Fpb/0017.fpb:text:0:0",
+    "source_sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "仅含字母、符号或数字的测试字段，含义及运行用途未确认，保留原字节且不计为翻译。"
+  },
+  {
+    "id": "Fpb/0076.fpb:text:0:0",
+    "source_sha256": "f0823e708ffba4d3fc096fe363709f708a46d2de2f06cab9ec6575ce9e512c75",
+    "target": "终于到了……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0076.fpb:text:1:1",
+    "source_sha256": "9257d29145f88c6f82b182a1b1d10a71559de199731b424eaba58565bbbac90a",
+    "target": "我回来了，艾丝特尔……",
+    "state": "translated"
+  }
+]
