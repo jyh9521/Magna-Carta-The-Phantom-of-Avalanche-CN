@@ -1,0 +1,788 @@
+[
+  {
+    "id": "Fpb/0265.fpb:text:0:0",
+    "source_sha256": "f0f758e038ae0d644799298d9c1c93669a510547f5adffa1a76bdff753120658",
+    "target": "那……是真的吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0265.fpb:text:1:1",
+    "source_sha256": "5652fd7b20753199d318e287e43cf8a54f32fe92b8e96509a269dc15c65b567f",
+    "target": "温贝特的野心太大了。就算皇家屈服，他也会凭借真名法典的力量，试图统治整片大陆。我不希望出现那种无人能够违抗的强大力量。我们克罗伊斯灭亡，也是因为渴求凌驾于皇家之上的权力。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0265.fpb:text:2:2",
+    "source_sha256": "98480b0fe50afb6d78cea038fc53dcdedae30f478833a3e2e81a92c8c6cac8c7",
+    "target": "温贝特似乎对皇家怀有很深的怨恨，不是因为这个吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0265.fpb:text:3:3",
+    "source_sha256": "8abcc1c6506b38143dca5380ab0f2cc4a6f884ca2748f352a0373d55f8b8280a",
+    "target": "他的目的不是复仇，也不是重建克罗伊斯。最终目的，大概是统一大陆。连贝尔米利昂，也只是被他利用。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0265.fpb:text:4:4",
+    "source_sha256": "237f7f6ebed7dac3f1b9460ae8c31a866caa46ee3dcf1c0f84eb51f521c52a96",
+    "target": "其他贝尔米利昂成员知道吗？请他们帮忙如何？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0265.fpb:text:5:5",
+    "source_sha256": "f5c4f2d0baf6ab047450a87b590e8bc73c5072889cac20235f36a4c549613f2b",
+    "target": "不行。支持温贝特的人太多，弄不好，我们反而会被当成叛徒，彻底完蛋。不过，也不是没有阻止真名法典的方法。你要交给温贝特的希安，只要少一个，真名法典就会失败。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0265.fpb:text:6:6",
+    "source_sha256": "1792cf88675b845025867b0b62437270aaef747517ff96532cbec66c376ddc83",
+    "target": "那么……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0265.fpb:text:7:7",
+    "source_sha256": "d32b7148565998f69434f98135774e4c6ad5832ca7a906a22e7374d910236a18",
+    "target": "给我一个希安。之后，我暂时藏起来，温贝特也无计可施。我不能眼睁睁看他，用危险的方法重夺和平。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0265.fpb:text:8:8",
+    "source_sha256": "b5b4f5c98c6cf031a572fadd076174684bedc85b771b6c13c8302207122849d9",
+    "target": "这样没问题吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0265.fpb:text:9:9",
+    "source_sha256": "95798c685b6a3a96017a95bf65a544b2d7f4182909513d4a94c57a8b1a558034",
+    "target": "温贝特什么也不知道。艾丝特尔，你也不希望这个世界化为焦土吧。温贝特甚至想把贝尔米利昂，当成自己复仇的工具。至少这一点，必须阻止。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0265.fpb:text:10:10",
+    "source_sha256": "1dad11924c105cb362f6d16f96c37c7c7da0bf6e60c2fc56a8c9aba0b767372c",
+    "target": "我明白了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:0:0",
+    "source_sha256": "139a2d9c6cf4b18fd5223355f10f117436d50b20a5778dde262a36de79628336",
+    "target": "雷姆布尔顿公爵被杀……不用看，也是贝尔米利昂干的。就像之前怪物闯入赫伦德公爵府那样。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:1:1",
+    "source_sha256": "7cad36412d94d029249d9902c9a8f81634658d4379deea9e3a987ead658bffd6",
+    "target": "为什么这次没用怪物？听说是有人亲自潜入，实施暗杀？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:2:2",
+    "source_sha256": "1ef87559235fec9bcce85e0631a377f1e635332cbfb29b639b7b047fe930c43c",
+    "target": "嗯。哥哥说，用一把巨大的大剑，一下刺穿了心脏。能自如挥舞那么大一把剑的人，一定是高手。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:3:3",
+    "source_sha256": "bcf2d64785bc16e2fa02ba1733f33bedd5b9dc9b53645a34009bef9eb91b2d98",
+    "target": "贵族大人们，又该狠狠畏缩一阵了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:4:4",
+    "source_sha256": "27c455bf0ef8bd4b01897a885187e1c8093025aa1f7e219797696b2c291cef5f",
+    "target": "啊，组长，说起来，哥哥在找你。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:5:5",
+    "source_sha256": "85cb9ac6621ef8278fc5135a97300b8fb7d043b7232ed7772e45677d2146585d",
+    "target": "组长！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:6:6",
+    "source_sha256": "9bcedcd3c31e6211e8e535a40ee43d6a845b48c7e0b31cdd75b72860da523509",
+    "target": "嗯？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:7:7",
+    "source_sha256": "db3bccf78854cddab018f174877c6938c39f18acf57fec5a5af7220b4fe2c7fb",
+    "target": "发什么呆？总队长在找你。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:8:8",
+    "source_sha256": "9b2e00dc92adc2163cdd0cbf55eb1dfa96883ad137c4d3171c10c32f5921e5b2",
+    "target": "啊……嗯。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:9:9",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:10:10",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "verified zero-length FPB text field; empty payload, tag and ordinal retained exactly"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:11:11",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "verified zero-length FPB text field; empty payload, tag and ordinal retained exactly"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:12:12",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "verified zero-length FPB text field; empty payload, tag and ordinal retained exactly"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:13:13",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "verified zero-length FPB text field; empty payload, tag and ordinal retained exactly"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:14:14",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "verified zero-length FPB text field; empty payload, tag and ordinal retained exactly"
+  },
+  {
+    "id": "Fpb/0266.fpb:text:15:15",
+    "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "verified zero-length FPB text field; empty payload, tag and ordinal retained exactly"
+  },
+  {
+    "id": "Fpb/0267.fpb:text:0:0",
+    "source_sha256": "8513fe7ec1c6e94d7f5ecbd8d165ccd4ead7caa43ecf91373e05394e44fa20a4",
+    "target": "来了啊。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0267.fpb:text:1:1",
+    "source_sha256": "b6ec29e3a30b3276ee290931dc0c42339c1857f1dcad492cf9825dcc7688fb63",
+    "target": "又有需要净化的地方？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0267.fpb:text:2:2",
+    "source_sha256": "ada522bc945fd32ce7a01c060b39e340fdc0897b233f15efb6d75db8d15d9bc8",
+    "target": "其实，这次情况有些紧急。已经查明，贝尔米利昂在那里施加灵印，而且局势也在恶化。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0267.fpb:text:3:3",
+    "source_sha256": "983e4522059f83e1b351fa95b9eaa07150fffff6ce7f312422ed3ee6d30a1a80",
+    "target": "是罗斯韦尔德地区的韦尔德里姆平原。那里也可能藏着贝尔米利昂的一个据点，就像利斯顿那次。大量怪物出现，罗斯韦尔德已经陷入混乱。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0267.fpb:text:4:4",
+    "source_sha256": "35e129c7ee058f597ba403ef6dcde1b2c95f60dfd863521d2c2ae01fec30f4de",
+    "target": "那么，我们马上出发。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0267.fpb:text:5:5",
+    "source_sha256": "1fe880554bc3a1422c7ba8148f27e000d4ffe48c7e6f6d33919d77ce54859a02",
+    "target": "你们先尽快净化，部分施瓦茨成员会处理罗斯韦尔德的怪物。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0267.fpb:text:6:6",
+    "source_sha256": "3a9f597ad0d267164acba98e4d093149a489f3320e899fbfb1c7ea5e4ada8d84",
+    "target": "明白。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0267.fpb:text:7:7",
+    "source_sha256": "8f5fd9ff47d14bec0a4dc1bc164838702268627a0899842d42e3ddf5a312b9d6",
+    "target": "雷姆布尔顿公爵被暗杀，罗斯韦尔德又闹出怪物……贝尔米利昂是在宣战吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0267.fpb:text:8:8",
+    "source_sha256": "2aad115459153c5fd27eafb88f5ef0c3e70bca48cef65b501f21286dc4840eb2",
+    "target": "真要宣战，他们的势力还太弱吧。贝尔米利昂的恐怖袭击，确实令人烦心，但他们绝不可能对抗皇家，这一点……再明显不过。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0267.fpb:text:9:9",
+    "source_sha256": "7a297e5669a5aa65cbacbe089f2316e3c441c800c7b9a76172cf04b86d10689d",
+    "target": "也是……也许只是想把注意力引到这边。皇女那边，不知为什么，安静得过头了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0267.fpb:text:10:10",
+    "source_sha256": "fc252cf8a2a785b1b8eecf9c04096f792e3adb10d9c71dd1d07766627be71597",
+    "target": "我也正为此感到不安。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:0:16",
+    "source_sha256": "9b3cb1875bbeb0db0c2a831d78dbff62381e1382a66c101bd541ce7dfe49400a",
+    "target": "哇！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:1:17",
+    "source_sha256": "bb7208bc9b5d7c04f1236a82a0093a5e33f40423d5ba8d4266f7092c3ba43b62",
+    "target": "！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:2:18",
+    "source_sha256": "546e845618e764e574ca146dedeb6dbde685da2be9704c73153d9c38983facdc",
+    "target": "吓到了吧，卡林兹？好久不见。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:3:19",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:4:20",
+    "source_sha256": "2fa8ca4da796c399b5c2ae6ac9f49c4b211a7c1e91e8b47542bdbc45f5190763",
+    "target": "咦，不是卡林兹啊。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:5:21",
+    "source_sha256": "b754698a1a562f761419d09b560ab29e62e7673b96e6d55e0382c06847d712dd",
+    "target": "阿多拉。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:6:22",
+    "source_sha256": "02d520527caa27a05f4ed936ea1f14337b2586818858fe5cf91fe408a2ef166c",
+    "target": "卡林兹，脸色不好。身体不舒服吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:7:23",
+    "source_sha256": "05a382181930d7932acdafdfcd0406a572487310c79336a32e750903dcd423e5",
+    "target": "……没有。不过，又来了？这里很危险吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:8:24",
+    "source_sha256": "bb31570aed26f5a1122fd5cc667c376e2b4d53ea4bee60a13e72fef98c82d822",
+    "target": "嗯，因为卡林兹会去……今天不能来吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:9:25",
+    "source_sha256": "9eb2efb65442b2343715e09773331599469687348b3761b261ee30305bd277b0",
+    "target": "不……不是这样。上次见面的时候，你有没有……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:10:26",
+    "source_sha256": "1cf9a1fa144060b544ca55e86ef1acea866e8d9ff66ab2181dd8ee8bb5da4f95",
+    "target": "咦？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:11:27",
+    "source_sha256": "3938239740b3b7ac8755623764cbc9406ab988791442fe257168cac3d48604c5",
+    "target": "不……没什么。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:12:28",
+    "source_sha256": "ade9dfa2991e8719b28afaad9c6fd584752ddc8baf0cb2ffb52e46a7f2613c01",
+    "target": "卡林兹？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:13:29",
+    "source_sha256": "1a8e5e0d655ed902483afe34340ede3a917aef42deb22d36763c268930c01981",
+    "target": "走吧……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0268.fpb:text:14:30",
+    "source_sha256": "7b790091ec1202f2abcc6e92afe36eefe29c3b5b871d303e9994b53dce0013b4",
+    "target": "有些事让我极为混乱。我……不知为什么，感觉自己正在一点点崩坏。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0269.fpb:text:0:0",
+    "source_sha256": "f9d5df6096adcf51d4c73d9f73791ba2db88d1215e1791df10dcf1452b39393b",
+    "target": "施瓦茨……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0269.fpb:text:1:1",
+    "source_sha256": "8f2d2fd86d84d197b5eb2bb4c3e84d50699d1d9d20d18231aa15f04450e7f8c5",
+    "target": "你们是……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0269.fpb:text:2:2",
+    "source_sha256": "13505c884885fbdbce8f04c076f5ccceb4440ed382cb8570c1f8f35b9c9e9336",
+    "target": "哟，连叛徒萝洁也在。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0269.fpb:text:3:3",
+    "source_sha256": "1b491364c661c7a4128869f522601feb65365d4b752ab8562e340c4594f31660",
+    "target": "……！？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0269.fpb:text:4:4",
+    "source_sha256": "3a93f15d5c745b8aac0811fb7d145d7e7d7d6fbfebc66e65c450b4e306981301",
+    "target": "正好见到你，萝洁！居然背叛我们，加入施瓦茨。我早就在等与你碰面的这一天。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0269.fpb:text:5:5",
+    "source_sha256": "6181b99aa6ba1ebfb468220f8cc83bb1b3832a33971b90459146a43ff59947ff",
+    "target": "……胡说什么？背叛？我没有……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0269.fpb:text:6:6",
+    "source_sha256": "da159182a9dab85557d15cf48b7e4e6be242ca0b0fb2689caf2d17b922fb0ecb",
+    "target": "都加入施瓦茨了，还想辩解？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0269.fpb:text:7:7",
+    "source_sha256": "4e56ea41464714d17beba5019424c0f3aed082ea84a31280b20164f2fd10d50e",
+    "target": "为什么……我没有背叛，我……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0270.fpb:text:0:0",
+    "source_sha256": "153daa66e7a463ff93df6a21b96256f3bc1891d0dccb62a176af3aa26d4e9450",
+    "target": "好，那么……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0270.fpb:text:1:1",
+    "source_sha256": "f3c12f50ec48128e769f85488e83a20ea79126b83c5c27313c54e300d395ba67",
+    "target": "全是你，都是你这家伙害的！要不是这个该死的施瓦茨……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0270.fpb:text:2:2",
+    "source_sha256": "8ec14eba2c17d36ce3d8d5f0946a5da8a549d27c7fbb78941555f6b7a51e5535",
+    "target": "停下。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0270.fpb:text:3:3",
+    "source_sha256": "69348a0c1f61adb1e297c99d4b36bbe96c7b68a0b90464cc110abb0cf1b77fcb",
+    "target": "你……我会杀了你，总有一天……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0270.fpb:text:4:4",
+    "source_sha256": "56a9e6dc28d7232567852dd79044a920c6fd95aa0afb2bfd40df418286ffd7ed",
+    "target": "你已经被洗脑，无法杀死任何施瓦茨成员。无论意志多强，也是一样。你现在是施瓦茨的人。作为第7组组员，要服从组长的命令，尽忠职守。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0270.fpb:text:5:5",
+    "source_sha256": "fc82b18078df3ae2911324af70d696d332eef8276de1bd4d48acc4b76405c64d",
+    "target": "（可恶……手臂……动不了……）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0270.fpb:text:6:6",
+    "source_sha256": "f101e271442ac4347ab8a87bebd4f6327a6112023114084090c81f0986fe3785",
+    "target": "下次再这样，说不定会命令你，用自己的暗器刺伤手臂。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0270.fpb:text:7:7",
+    "source_sha256": "c1ff997e67b698e4aaae7bf28cc7effea35d67fc692fed0ecc413d20cbe50ee8",
+    "target": "卡林兹，这也太过分了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0270.fpb:text:8:8",
+    "source_sha256": "ddf0dbdf9bd164b8e0b59932aeab7f77a0da447ac2fe0431ea0312f6d701e119",
+    "target": "施瓦茨是军队，不是小孩子的游乐场。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0270.fpb:text:9:9",
+    "source_sha256": "bc29c46ae4f02c48f7a0279bc4ce5046dcb548c8e0e91406a328ed68cb8eba42",
+    "target": "再怎么说，也……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0270.fpb:text:10:10",
+    "source_sha256": "14cc8b7f8e645a3f1601b77688bbb18fefae3d807c5764ba958c50c19cb3b9f1",
+    "target": "阿多拉，擅自加入我们的任务，我不会说什么，毕竟你一直如此。但请别干涉我的任务方式。我是对整个第7组负责的组长，因此由我作出所有决定。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0270.fpb:text:11:11",
+    "source_sha256": "07725a62c71a2e5a16536fad2642ae6d73cb9bdcc07945053f8eb7c63946bc68",
+    "target": "（……总觉得，卡林兹变得很敏感。发生了什么事吗？）",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0275.fpb:text:0:0",
+    "source_sha256": "74c4cc632b012209dc665e29dab07816cb3d00c5812a96a0177be7124470d62d",
+    "target": "……太可怕了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0275.fpb:text:1:1",
+    "source_sha256": "1a781da7347318aedff0ecb835588c3e58206c760e6511c7650f9f10eaeb8575",
+    "target": "全是你们害的。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0275.fpb:text:2:2",
+    "source_sha256": "f85d30e7d95a052f65167f1f1095186d1190c91502b4ab7aedab460a6eab8870",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0275.fpb:text:3:3",
+    "source_sha256": "02f561df8b21dae49c12f9c85c782d72f3387c5266f5a2b2624f4faee8499a05",
+    "target": "萝洁已经是施瓦茨的人，别朝不相干的人撒气。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0276.fpb:text:0:0",
+    "source_sha256": "bc7bbf0c720a17787f562e395bd22119465154d47e48a53ca10b605c79e1c927",
+    "target": "救救我……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0276.fpb:text:1:1",
+    "source_sha256": "09d8535cd1e9f02ee18e3f883dc57ab5e6bc33a557551778c0c8363f9dce33cd",
+    "target": "你……真的不是怪物吗……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0276.fpb:text:2:2",
+    "source_sha256": "1f31cd71c40da150a0c7254a4836c0bccc8426c2111633e1614aeda29aa0c92d",
+    "target": "不是……我不是。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0276.fpb:text:3:3",
+    "source_sha256": "b8740c0f6a979b5c365a998a980ac692a5457157da38687e8fc33060d4dda174",
+    "target": "别被骗。刚才也是这样，然后就变成怪物，杀了同伴。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0276.fpb:text:4:4",
+    "source_sha256": "cc89ad7c484901552358bccea2ad9a2311414087483ea8db6b53ae207aa8a6fa",
+    "target": "可、可是……怎么看都是人啊。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0276.fpb:text:5:5",
+    "source_sha256": "c64e06ad8ebf2b2ae6cafacfb7e2358b723d70b35ceff5850463c5ab4ca955e9",
+    "target": "救、救救我，求您了……救救我。我不是怪物，救救我。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0276.fpb:text:6:6",
+    "source_sha256": "fb18067f9fcad07d898803defb12fa5c50cad197baa74b1e9383b2adca27b8f4",
+    "target": "闭嘴！你这妖物……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0276.fpb:text:7:7",
+    "source_sha256": "e3123e062481a08e9dfe3ff3439b789b154ca48aa4136d2918fc74b25442a2d7",
+    "target": "住手！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0276.fpb:text:8:8",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0276.fpb:text:9:9",
+    "source_sha256": "c3cf0a21590f58063a26d2e50a99d4c628056e82841ac1693e9e6268ad22a61f",
+    "target": "那些家伙……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0276.fpb:text:10:10",
+    "source_sha256": "fe51008c5dc7f0ba1f63366c99a43538b2d98da22a99203a308740f0bda67f69",
+    "target": "算了，真变成怪物，就迟了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0276.fpb:text:11:11",
+    "source_sha256": "a72b0067d93f386baab77b8d4e15730c9217efbd8e1faec882c8897b1b9862d8",
+    "target": "哪里像怪物？只是个普通孩子！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0276.fpb:text:12:12",
+    "source_sha256": "c060e374eccdba35475d669856611ea14d6a373816ff2f131259f9023eedaf8f",
+    "target": "别否认，你自己也很清楚。$n快点，还是尽快消灭灵印士更好。那样，才能想办法阻止这场灾难。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:0:0",
+    "source_sha256": "858a3c0cbb7a702f8507ad328af8a7d24c825112bf9889ef0b3c44a5b2a7214a",
+    "target": "已经……开始变成怪物了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:1:1",
+    "source_sha256": "2a8ddc92057f039533fbd967e56db39a786fdfb96292180d0b01205fef551a92",
+    "target": "……乔伊！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:2:2",
+    "source_sha256": "b13028e59cf314349ba96cffa0a8f0048e6f07378ddbda9ca5c18f5b99b42d5c",
+    "target": "哥哥……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:3:3",
+    "source_sha256": "c1fd85096f75263bc433f4d473ace8868a2de18515f02716bb868b560ed83bdd",
+    "target": "没事，已经……没事了……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:4:4",
+    "source_sha256": "9eaf98b0102b0fae74ae8d85991218bec809857be862c40121ff48f0fb3921b2",
+    "target": "那孩子，已经……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:5:5",
+    "source_sha256": "eeaf1a525eeac33f6d0798fe434d0b49a26cb616f467c605008ee4d1245aa72b",
+    "target": "闭嘴，他是我弟弟！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:6:6",
+    "source_sha256": "43faf055980937a64565d25b589afa047f15f10f7bfc7edfab49612fb7a3e7a6",
+    "target": "哥哥……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:7:7",
+    "source_sha256": "5b842df9f97451f1c37ecedc6dc5c6edb14aa4203470a1307ef95178d2796c75",
+    "target": "乔伊，没事吧？其他人在哪儿？为什么只有你一个？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:8:8",
+    "source_sha256": "db28bfe768677269a8dd88d81ef5200966650a64261e28f50161df7818bb4c13",
+    "target": "死了……哥哥，为什么没来？大家……都在等。相信哥哥一定会救我们，所以一直等着……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:9:9",
+    "source_sha256": "de7bcf9d51a6a2205bdc6c8792d23985a5e63ac5b7282747afccf8f7f41bce8e",
+    "target": "可、可恶……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:10:10",
+    "source_sha256": "43faf055980937a64565d25b589afa047f15f10f7bfc7edfab49612fb7a3e7a6",
+    "target": "哥哥……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:11:11",
+    "source_sha256": "0afb1b64beaf56470a7acaabba52dd3b4ff8233de4167b612d884f927b61d46e",
+    "target": "对不起……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:12:12",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:13:13",
+    "source_sha256": "18f26b1a22bac4c0b688f41cb27669be7094571fedf8f0071777b7d115b6e8da",
+    "target": "唯独你……我一定会救你，所以……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:14:14",
+    "source_sha256": "56382e1447264803fe259a2f8a7459f4500da7bd16a1cd9fa099589f6574214c",
+    "target": "……真的吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:15:15",
+    "source_sha256": "6ecf2efb5957fa179108b76d06d6862c9de959e1c1c2bbeb7050b47fd920b160",
+    "target": "……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:16:16",
+    "source_sha256": "460608474769917113343edbf81385fba65b3e3aec35bdb019ba24317a700a20",
+    "target": "啊……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:17:17",
+    "source_sha256": "f36eafd4b81270fb23ae8202c86d852af0d503eda569822b71bcbba9d0492e20",
+    "target": "乔……乔伊……！$n卡林兹，你在干什么？可恶，你这家伙……疯了吗！？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:18:18",
+    "source_sha256": "9ae338e8fef9a608e118a66dfbdbfe088f9b0968482cfbc598b3a77680fb2b6c",
+    "target": "罗普玛，这是没办法的。放着不管，你就会有危险。那孩子已经是怪物了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:19:19",
+    "source_sha256": "2d36841bc936828059a9f4f949c437e0f60d23ac91f9d26142aeb35767829db6",
+    "target": "可怎么能对罗普玛的弟弟……！$n卡林兹，太过分了，他还……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:20:20",
+    "source_sha256": "3aba05d007a95fcd5fe1e66e1190b9e6b1edf4f23a753e4e64d19f7443c912b4",
+    "target": "放着不管，同伴也许会死。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:21:21",
+    "source_sha256": "730e24d1da50f1cb77a157227e0d89b02c6f628deafdd8dac837538e9f2317bd",
+    "target": "可他还有理智，不是怪物！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:22:22",
+    "source_sha256": "d90695f45087217c74764b1bdf84cd99e02f65d439dc91ce8eaac606dc195749",
+    "target": "那么……变成怪物以后，就可以杀了？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:23:23",
+    "source_sha256": "6ecf2efb5957fa179108b76d06d6862c9de959e1c1c2bbeb7050b47fd920b160",
+    "target": "……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:24:24",
+    "source_sha256": "3c0546db4979efe4f7fab9643d94d9046cdc25f58d3b8552fe241344430f1af8",
+    "target": "你至今杀掉的怪物里，也许就有这种原本是人、后来变异的。杀死怪物，或杀死正在变成怪物的人，反正都一样。冷静想想，也许后者反而能避免伤亡。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:25:25",
+    "source_sha256": "d7aa5582470f6fddf24eb5fd1b0bbcfe2e49698a88bf4f856e3957312c620925",
+    "target": "哈……真卑鄙。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:26:26",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:27:27",
+    "source_sha256": "af08fdb7ee121c74d8c324b56f010e00eaac19a433b445c3ab4b3eba40a4bc8f",
+    "target": "卡林兹，你这家伙！我杀了你。你、你……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:28:28",
+    "source_sha256": "b5b6408219006b1fc8ae6c9edcae0e974db4fa87f53a3e5c6b2f3b54ca5562b5",
+    "target": "冷静点，蠢货。卡林兹是对的。那孩子已经变成怪物，失去理智了……卡林兹反而救了你。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:29:29",
+    "source_sha256": "3f448ae6edab69be19304986f51d93dd27422ec0b0a173619be9bdee3816b177",
+    "target": "闭嘴！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:30:30",
+    "source_sha256": "ef3791989aaa2f49144c2b8acda405a578f22d76c6ddbb304a2b9743f862cec8",
+    "target": "真要责怪，就去怪封锁村子的那些施瓦茨成员。在我们来之前，如果他们早点找到灵印士，把人消灭，事情就不会到这一步。他们看伤亡太多，先害怕了，放弃了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:31:31",
+    "source_sha256": "8035c1cf997323c47a10b39832f40a4d9d90c98cdc0c3bed21b5cea0236f7ffd",
+    "target": "呃……呃……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:32:32",
+    "source_sha256": "08ce4914ea30d7328ffb5e1e8c88bcf2f2bb330659d7b36ce930f7c01ccb8826",
+    "target": "罗普玛……求你了。这是为了……阻止更多人死去，理解一下吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:33:33",
+    "source_sha256": "d42d94116785bef5373ab528263cc55ee00c9ef15e1f82ab592775952ff669ca",
+    "target": "可恶……全都走开。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:34:34",
+    "source_sha256": "6f6d16a794bd7d78647811c8704eacdd44dca3198baa9f4f6605d1b9dfd6a167",
+    "target": "罗普玛……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:35:35",
+    "source_sha256": "c958ddf56c95945318cdbc64afd8df7ce34dbe95466cd9fe92a0707c6063ea8d",
+    "target": "所有人都给我滚！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:36:36",
+    "source_sha256": "83ffacfb1ec735116ec1d1f6c4137a86229b7a505ca7b5ff3e394cc27da45142",
+    "target": "现在……先别管他。他自己也应该知道，弟弟已经没救了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:37:37",
+    "source_sha256": "c0aa11eb2581b814d4c5141fb0695ed0496af59050bb614cd3cb26ad7f05c5fe",
+    "target": "……乔伊，对不起。全都……死了。没想到会这样……我……如果我在身边……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:38:38",
+    "source_sha256": "cb0a1c62e80c97814cd6b03908b841b99f7d3ccb07ebc484bd307759893f3efa",
+    "target": "呵呵呵……是啊，所以哥哥是个蠢货。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0277.fpb:text:39:39",
+    "source_sha256": "f603a2cdee643991c06a74cb24091c23732f24a86f45671856f30f660a5a815f",
+    "target": "……！？",
+    "state": "translated"
+  }
+]

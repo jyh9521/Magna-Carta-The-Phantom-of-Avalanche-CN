@@ -4283,6 +4283,45 @@
       ],
       "evidence_level": "source_context_reviewed_relationship_not_confirmed",
       "wording_decision": "韩文人物名音译；词面已定，不推定系列同人或额外官职"
+    },
+    {
+      "id": "concept-0116",
+      "source": "렘블턴",
+      "target": "雷姆布尔顿",
+      "english_reference": null,
+      "category": "人物",
+      "status": "待复核",
+      "translation_state": "approved",
+      "meaning": "0266公爵被暗杀、0267事件讨论；仅确定人物名音译，未额外推定所属家族。",
+      "relation": "pending",
+      "reference_candidates": [],
+      "resource_ids": [
+        "Fpb/0266.fpb:text:0:0",
+        "Fpb/0267.fpb:text:7:7",
+        "Fpb/0296.fpb:text:6:6"
+      ],
+      "evidence_level": "source_context_reviewed_relationship_not_confirmed",
+      "wording_decision": "韩文专名音译；本作用词已定，系列关系未确认"
+    },
+    {
+      "id": "concept-0117",
+      "source": "로스웰드",
+      "target": "罗斯韦尔德",
+      "english_reference": null,
+      "category": "地点",
+      "status": "待复核",
+      "translation_state": "approved",
+      "meaning": "0267地区怪物与韦尔德里姆平原、0628艾贝尔附近语境；采用音译，行政级别与地图场景ID分开审查。",
+      "relation": "pending",
+      "reference_candidates": [],
+      "resource_ids": [
+        "Fpb/0267.fpb:text:3:3",
+        "Fpb/0267.fpb:text:5:5",
+        "Fpb/0267.fpb:text:7:7",
+        "Fpb/0628.fpb:text:2:2"
+      ],
+      "evidence_level": "source_context_reviewed_relationship_not_confirmed",
+      "wording_decision": "韩文专名音译；本作用词已定，系列关系未确认"
     }
   ]
 }
