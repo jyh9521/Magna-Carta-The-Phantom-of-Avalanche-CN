@@ -66,3 +66,5 @@ P0 第一阶段 [GLYPH_DISPLAY_PROBE.md](docs/GLYPH_DISPLAY_PROBE.md) 已构建�
 全量工作转入 [FULL_TRANSLATION_PIPELINE.md](docs/FULL_TRANSLATION_PIPELINE.md)：11,793 文件覆盖清点、3,992 结构字段、376 隔离字串候选，以及 BGR/TXRS 图片文字调查。提取完整范围与实际可回写范围分开记录；流程完成前不请求阶段性游戏测试或自行运行游戏。
 
 简体字覆盖新增 [NATIVE_GLYPH_MAPPING.md](docs/NATIVE_GLYPH_MAPPING.md) 的私有原生编码候选及可复现字形增量构建，实际两套字体静态生成6字。该候选未部署、未游戏验收，全文译文确定后统一重建全部映射与资源。
+
+文本框换行另有字符步长规则差异，已建立 [TEXT_LAYOUT_COMPATIBILITY.md](docs/TEXT_LAYOUT_COMPATIBILITY.md) 的版本锁定进程内修正；原DLL不变，自建镜像夹具和4,795个私有码静态模型通过。未启动游戏，不以标签显示推定对话可用。

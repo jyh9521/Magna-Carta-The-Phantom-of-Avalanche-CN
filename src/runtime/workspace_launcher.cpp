@@ -153,13 +153,14 @@ int wmain(int argc, wchar_t** argv) {
             return 0;
         }
         fs::path workspace, shim, setting, log;
-        bool fixture = false, captureException = false, textureLifetime = false, focusGuard = false; DWORD seconds = 0;
+        bool fixture = false, captureException = false, textureLifetime = false, focusGuard = false, nativeTextStep = false; DWORD seconds = 0;
         for (int i = 1; i < argc; ++i) {
             std::wstring arg = argv[i];
             if (arg == L"--fixture") fixture = true;
             else if (arg == L"--capture-exception") captureException = true;
             else if (arg == L"--texture-lifetime") textureLifetime = true;
             else if (arg == L"--focus-guard") focusGuard = true;
+            else if (arg == L"--native-text-step") nativeTextStep = true;
             else if (i + 1 < argc && arg == L"--workspace") workspace = fs::canonical(argv[++i]);
             else if (i + 1 < argc && arg == L"--shim") shim = fs::canonical(argv[++i]);
             else if (i + 1 < argc && arg == L"--profile") setting = fs::canonical(argv[++i]);
@@ -171,6 +172,7 @@ int wmain(int argc, wchar_t** argv) {
         require(seconds <= 86400, "Timeout is out of range");
         require(!fs::exists(log), "Log path already exists");
         fs::path exe = workspace / (fixture ? L"registry_probe.exe" : L"MagnaCarta.exe");
+        require(!nativeTextStep || !fixture, "Native text step requires a version-locked game workspace");
         if (!fixture) {
             require(sha256(exe) == "be2ae107373835defc6ec33643eaf435dcc5c882ea0b6e3c47032cd013690651", "Unsupported game executable");
             require(sha256(workspace / L"MCAlpha.dll") == "79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f", "Unsupported engine module");
@@ -212,6 +214,7 @@ int wmain(int argc, wchar_t** argv) {
         SetEnvironmentVariableW(L"MC_CAPTURE_HELPER", captureException ? captureHelper.c_str() : nullptr);
         SetEnvironmentVariableW(L"MC_TEXTURE_LIFETIME", textureLifetime ? L"1" : nullptr);
         SetEnvironmentVariableW(L"MC_FOCUS_GUARD", focusGuard ? L"1" : nullptr);
+        SetEnvironmentVariableW(L"MC_NATIVE_TEXT_STEP", nativeTextStep ? L"1" : nullptr);
         auto textureDriver = (workspace / L"Drv" / L"AsrD3DDrv.dll").wstring();
         SetEnvironmentVariableW(L"MC_TEXTURE_DRIVER", textureLifetime ? textureDriver.c_str() : nullptr);
         if (captureException) std::cout << "EXCEPTION_CAPTURE_ENABLED" << std::endl;

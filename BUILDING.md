@@ -1,5 +1,7 @@
 # 构建说明
 
+字形构建的固定来源、依赖和确定性映射见 [NATIVE_GLYPH_MAPPING.md](docs/NATIVE_GLYPH_MAPPING.md)；文本框步长模块的版本、独立夹具和只读检查见 [TEXT_LAYOUT_COMPATIBILITY.md](docs/TEXT_LAYOUT_COMPATIBILITY.md)。全量回写尚未完成，不在此阶段提供游戏运行验收指令。
+
 已建立隔离复制、只读调查、输入比对和 FPB 原样往返工具；中文回写、字体生成及发布构建入口尚未完成，没有可安装汉化包。样本哈希见 docs/SAMPLE_AUDIT.md。
 
 最小中文显示的字形层诊断构建、独立副本及恢复命令见 [显示探针](docs/GLYPH_DISPLAY_PROBE.md)。仅修改四个字形槽，不构成完整中文回写方案，游戏验收待执行。

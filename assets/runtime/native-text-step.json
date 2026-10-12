@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "module": "MCAlpha.dll",
+  "sha256": "79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f",
+  "size": 1089536,
+  "image_size": 1093632,
+  "function_rva": 126925,
+  "function_file_offset": 126925,
+  "function_original_hex": "558bec51894dfc8b45080fbe0883f9b07d198b55080fbe0283f8a47d07b801000000eb1eb802000000eb178b4d080fbe1183faca7d07b802000000eb05b8010000008be55dc20400",
+  "patch_rva": 126976,
+  "patch_file_offset": 126976,
+  "original_byte": 202,
+  "replacement_byte": 0,
+  "evidence": ["ev_d54a3925a053c39d8e4f8367c3f508429c4aca6231347e3df9ac3ce5f0711e28", "ev_0f87e8f2f4554f589f4666232ed1c9e971ba782ec6012ba865ca03e86914fc7e"]
+}
