@@ -72,6 +72,8 @@ python tests/check_runtime_isolation.py --bin build/runtime-native/Release --pro
 ```
 
 本地快捷入口为 `build/runtime/LaunchDirect3D.cmd`。启动脚本只打开副本，日志置于独立的时间戳目录。
+上述入口仅在明确测试确认后使用，默认手动启动；持续开发过程中不自动调用。
+2026-10-12 收到模型间歇性消失与重现的反馈，具体场景及运行配置待确认。当前启动隔离验证不代表渲染验收，问题与对照步骤见 `KNOWN_ISSUES.md` 和 `RUNTIME_TESTING.md`。
 默认不设时限，供实际画面和操作测试；`-Timeout 20` 仅用于限时采样。关闭游戏后会话自动清理。
 此阶段测试顺序：标题画面与菜单 → 新游戏开场 → 正常退出 → 再次启动。随后再扩展存读档、场景和媒体。
 
