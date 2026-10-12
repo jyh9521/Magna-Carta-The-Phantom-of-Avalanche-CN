@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "binaries": {
+    "MCAlpha.dll": "79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f",
+    "MagnaCarta.exe": "be2ae107373835defc6ec33643eaf435dcc5c882ea0b6e3c47032cd013690651"
+  },
+  "fonts": {
+    "Chi0.dat": "fe1b63f557e9754cb6bb5c1a384cb33219968343124d2460acd81f4cb6b22b35",
+    "Chi1.dat": "4214fb5612f6e5fe366474db2355c7883dfecd079366485d398780792786a33a",
+    "Eng0.dat": "440c36222b9755cfb39a9e3fc5bee2bbc5924d633c23db0ad5477f728f0e7c65",
+    "Eng1.dat": "3090d80734e83cb7e43db7d37b286814db8da36b19df57d8a1fd2d9e78887e81",
+    "Kor0.dat": "443919d28afb82fc9d04784dd6d59e8039bfdce967390bda500618c62a0d5d41",
+    "Kor1.dat": "f041bdf30650dd12e0cca4ef1084fd4124cda69f7f97c99cbc09cfaca8f976fe"
+  },
+  "format": "sgi",
+  "resource": "Sgi/0000.sgi",
+  "original_sha256": "13adf18b88d94bcddd1c444e4ce11175c1a0390396ee475ccae94a17f62fa0a8",
+  "original_size": 14276,
+  "ordinal": 0,
+  "identifier": 5,
+  "expected_hex": "bcd2bfef20baedb7b9c0ccb5e5",
+  "target": "中文",
+  "kind": "diagnostic_text_not_final_translation"
+}
