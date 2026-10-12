@@ -18,6 +18,13 @@ def validate(data):
             raise ValueError('incomplete concept decision')
         if len(term['resource_ids']) != len(set(term['resource_ids'])):
             raise ValueError('duplicate resource occurrence ID')
+        excluded=set()
+        for item in term.get('excluded_occurrences',[]):
+            key=item.get('resource_id');sha=item.get('source_sha256','')
+            if (not key or key in excluded or key in term['resource_ids'] or not item.get('reason')
+                    or len(sha)!=64 or any(c not in '0123456789abcdef' for c in sha)):
+                raise ValueError('invalid, duplicate or overlapping term exclusion')
+            excluded.add(key)
         if term['status'] == '继承自《真红的圣痕》':
             refs=term.get('reference_candidates',[])
             confirmed=term.get('confirmed_reference_line')

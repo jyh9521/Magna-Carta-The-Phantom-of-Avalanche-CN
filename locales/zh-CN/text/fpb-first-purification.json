@@ -1,0 +1,855 @@
+[
+  {
+    "id": "Fpb/0132.fpb:text:0:0",
+    "source_sha256": "da87f3ff4694f3a8442c88dd660e9f820e3c5ec33fab7364dd8e9d406daf59a1",
+    "target": "灵印士再厉害又有什么用？没有像样的希安，还不是白搭。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0132.fpb:text:1:1",
+    "source_sha256": "d51ddca192e553fcf0e9f7f2a0151b2279e229da1de582b3f4f4590062de7089",
+    "target": "所以呢？你到底打什么主意？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0132.fpb:text:2:2",
+    "source_sha256": "7a95e4278096f65b8b31c089c12579aff48b791582f10d88b79e16f63227455c",
+    "target": "什么主意，这话可让人伤心。难得久别重逢，对老朋友也太过分了吧？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0132.fpb:text:3:3",
+    "source_sha256": "47ca33dadb85ea931473ea6cfb7fa0cd9a26bdbde3ffa2f9097b757a773c6789",
+    "target": "哈，你说的都是什么时候的事？还以为我是你的老朋友吗？你堂堂斯卡拉姆修的首领，特意来找我，要说没有目的，那才不可能。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0132.fpb:text:4:4",
+    "source_sha256": "0a76246161de31d42c619698103d3cfd37045abb916aa8d68ba6bf9c0a1949d5",
+    "target": "唉，怎样才能让你相信我呢？想俘获一位迷人小姐的芳心，实在太难了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0132.fpb:text:5:5",
+    "source_sha256": "f8b81bc4b80697194036c25aa6c5333499674b2886ada313b2c294139247f89b",
+    "target": "少胡说。你是那个背叛贝尔米利昂、离开组织的叛徒之子。就算过了十年，也没人会忘记那件事。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0132.fpb:text:6:6",
+    "source_sha256": "125e97493190b2c86bcbb230144eabd7010c9036e15c921d97ea34e7b51baf69",
+    "target": "……真会戳人的痛处。那这个怎么样？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:0:0",
+    "source_sha256": "166c8b4aaacc3cc0a9615ebe8072c6be22533db85c9365dc88b649dd2b51e55e",
+    "target": "最近接到报告，北部利斯顿地区频繁有怪物出没。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:1:1",
+    "source_sha256": "f652f234a9d4ccdbd70fb87039a2199a6fe32533f7949cf118eb00a50e8c97d3",
+    "target": "看来贝尔米利昂又在谋划什么了吧？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:2:2",
+    "source_sha256": "92e440ced0c4a3b0d4836f0cefb554e8b33ef5f1c2441163a5f58e910118db83",
+    "target": "恐怕是。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:3:18",
+    "source_sha256": "bcebca4cec36e4558a00042674d399ced9ce476573cf32bda7894dfbde1c6f47",
+    "target": "怪物本身也需要成长的时间。如果数量突然增加，首先就该怀疑，普通生物是否因灵印而变成了怪物。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:4:3",
+    "source_sha256": "a1c9ec68cecbc54beaffff45aabbdefbc8ed9b8980f50585c8b92c7cd046cdaf",
+    "target": "看来又有个力量惊人的希安了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:5:4",
+    "source_sha256": "732aad6d3bc46a74dd1f7c9a87ba50bd159224bd9d647afd4e0f98c6d32b482b",
+    "target": "修佩隆德已经抵达当地，架起路障，划定了平民禁入区域。卡林兹，你前往那里查明情况，然后进行净化。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:6:5",
+    "source_sha256": "9e7ad865baf6c8a0ee17c53ec0d7b7e3d65848b55444bd500658c71ea1ff1c9d",
+    "target": "明白。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:7:6",
+    "source_sha256": "2c9811c6856329b82b0fb21a48000009c1d0b7830e67ebfadf7f2701df295693",
+    "target": "施瓦茨第7组原本主要负责消灭怪物，或作为其他组的辅助战斗人员，承担的尽是艰难任务。不过，冷静地说，这也是让人在第7组活下来的训练。罗普玛没有被赶走，也正是因为第7组暗中承担的任务——净化。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:8:7",
+    "source_sha256": "9c9dcdac29a816b8a1c477767a139a725fede74ff0b2aabf1f15774953377001",
+    "target": "你们平时战斗会使用大量卡尔塔。卡尔塔本身只能发挥一定的力量，只有在能容纳更多卡尔塔的容器——希安之中进行组合，才能引出新的力量。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:9:8",
+    "source_sha256": "cf4d9d7b820ce4e3369c75e5e57e8678a1f3c0d03e41461b990a22215511b120",
+    "target": "也就是说，散落在遗迹中的妖石，也是希安的一种。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:10:9",
+    "source_sha256": "41c2a040f9493d3532401c67e0a1b2ade139f9ecdc0fe8fb8071a5ed88785d0f",
+    "target": "妖石是所有希安中，能容纳最多卡尔塔的一种。古代人还借助妖石，创造出了新的魔法。那就是把妖石内的卡尔塔转移到他人身体中的魔法——灵印。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:11:10",
+    "source_sha256": "d692cc33b550b889acf196cc436a853198707438dc7bbd8b7771c97da94fff3a",
+    "target": "我听说过灵印。把怪物的卡尔塔灵印到人体上，就能把原本正常的人变成怪物。当然，据说必须是足够强大而精确的灵印才行。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:12:11",
+    "source_sha256": "6373f54082ef49a0ff7b1cd3bf644a810853732ce3e97aaed1a8618a12d74dac",
+    "target": "没错。其实妖石本身也具有一定的影响力。长期待在妖石附近的植物或昆虫，受到其中卡尔塔的影响，突然变得巨大，或者化为完全不同的物种，这种事已经屡有报告。也就是说，妖石本身也在施加灵印。不过，前提是在妖石的影响范围内，停留了极为漫长的岁月。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:13:12",
+    "source_sha256": "169e8544743b2dd68380a5709c8dba641ed3972f30af383e6b0d3fe8052234a1",
+    "target": "我听说过灵印士这种职业，究竟是怎么回事？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:14:13",
+    "source_sha256": "b1d8515975bfe3eac635682be1400d7cf5608fe4b038fc30d068d862bbd56614",
+    "target": "在古代人之中，灵印士既是一种职业，也是备受尊敬的身份。他们拥有增强妖石力量、在短时间内施加灵印的特殊能力。很久以前，灵印士随着古代人的灭亡而消失……没想到，贝尔米利昂竟让他们再度出现。贝尔米利昂因此把灵印士派往仍有妖石的遗迹，反复施加灵印，产生的怪物如今正在各个城区肆虐。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:15:14",
+    "source_sha256": "7281c711ebe56834bac86f54f1cc50bd40762edbbb75386d5ebc98ce43d98daf",
+    "target": "而我们就在消灭那些怪物。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:16:15",
+    "source_sha256": "280f1101cab4e1424fe96d6428b44d6b803cf0c4a11c862a1804be8559abd003",
+    "target": "别太不满，我很感谢你们的存在。不过，光消灭怪物是永远没有尽头的。只要妖石里还有卡尔塔，灵印士就能不断把正常的人或动物化为怪物。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:17:17",
+    "source_sha256": "ef1c3e8f0e681dc34f7320ebaf9c26aa1afb60cb91b75747cae71be8ac4fd60d",
+    "target": "于是，我们通过古文献等资料，找到了把妖石中的卡尔塔转移到别处的方法，也就是净化。妖石再强大，一旦没有了卡尔塔，也不过是普通的石块。所幸，把卡尔塔刻入坚固妖石的方法已经失传，而且目前只有我们掌握了净化的方法。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0134.fpb:text:18:16",
+    "source_sha256": "2bd520e9d4d8cc1ee41791d364ad7262ad27556ef5027851e3238f9b24b0280a",
+    "target": "贝尔米利昂虽然懂得灵印士的力量，但净化后的妖石只是一个空容器，他们也无计可施。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0136.fpb:text:0:0",
+    "source_sha256": "dd9c8445e43d2717ad906b284ae560a4e9e16eb87f64ce27d0fdf3446e64ef44",
+    "target": null,
+    "state": "preserved",
+    "preservation_evidence": "source consists only of the literal ^^ marker; exact bytes retained, marker meaning remains unverified"
+  },
+  {
+    "id": "Fpb/0136.fpb:text:1:1",
+    "source_sha256": "76370ab6ed0ac105173e188f0024f0cdb1c269caf4acbc9a21ba3a953c7df8fa",
+    "target": "恭候多时。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0136.fpb:text:2:2",
+    "source_sha256": "0fb6c253f39f3ec33f925de0fda3773fe70f58746a9b5ea60b1021bd8799c3de",
+    "target": "情况如何？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0136.fpb:text:3:3",
+    "source_sha256": "d5672150a721922f0c469f33c139a2fec89e7b3340cd14e149a0849fe52804a5",
+    "target": "利斯顿的居民大多已去避难。据说前不久有一伙盗墓者，以为遗迹里有宝藏，闯了进去。看来他们很可能因灵印变成了怪物。$n因为在他们进去之后，就突然接到了利斯顿出现怪物的报告。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0136.fpb:text:4:4",
+    "source_sha256": "4ef0fb2f3eb25d70701f2beb8d8bb160a482be8a202e7991d1f9736155a2a838",
+    "target": "……是贝尔米利昂干的？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0136.fpb:text:5:5",
+    "source_sha256": "a7df9f71a8de58b5317d1a520831f08d871403daca09789d8c22379770daaa6e",
+    "target": "应该是。按怪物的习性，本来应该待在黑暗的遗迹里，却刻意下山进入村庄，显然是受到了某人的操纵。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0136.fpb:text:6:6",
+    "source_sha256": "bb43feb660c48a718d75b1cfe8d4d069979be065c025233db7782316eebc2f4a",
+    "target": "知道了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0136.fpb:text:7:7",
+    "source_sha256": "80c646ac9bf59f808807fe2a2e581a2f74276606572a92a3fdaaf07a249ceecc",
+    "target": "净化还是越快越好。刚才利斯顿的人看着我们，简直像在看救命的使者。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0136.fpb:text:8:8",
+    "source_sha256": "3d5218b2038a241cae03a9764cdd0d67bad7ec7bba489b8b3ffa94ea0fb077d5",
+    "target": "那是当然。回不了村子，就只能在避难所里饿肚子。你懂这种事吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0136.fpb:text:9:9",
+    "source_sha256": "99b687fcd6989eaf58ec91f1b1688bf61d26499bc824678993698b20762403c2",
+    "target": "……我又不是不懂。能不能别老把我当富家大小姐？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0136.fpb:text:10:10",
+    "source_sha256": "48f1199ee4b102fcf2b946349c137f40964f9216f30ccfb7d0f2057f81d0019a",
+    "target": "我渐渐习惯了施瓦茨的生活。虽然一直摆出随时不干也无所谓的态度，但总队长是个宽厚的人，对我的狂妄仍然包容。$n再加上第7组从一开始就被视为有些古怪，其他施瓦茨成员虽然看我们不顺眼、抱怨几句，也就到此为止了。反正冷嘲热讽，不理会就好。我倒觉得这样也算过得去。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:0:0",
+    "source_sha256": "277923b092c699dc610cd00105b5cdec41004a9adabfe2efa74bb2876654c662",
+    "target": "真是的，遗迹可真多。净化也该差不多做完了吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:1:1",
+    "source_sha256": "49b1c606b36e4c206ebed9f19ff709cebc3832ffe5af018beb77bb063d86f733",
+    "target": "贝尔米利昂那些家伙……讨厌皇家，自己直接去对付不就好了，为什么要祸害无辜的人？仅仅因为他们出身修德尔米尔，就做到这种地步。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:2:2",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:3:3",
+    "source_sha256": "9b3cb1875bbeb0db0c2a831d78dbff62381e1382a66c101bd541ce7dfe49400a",
+    "target": "哇！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:4:4",
+    "source_sha256": "6ecf2efb5957fa179108b76d06d6862c9de959e1c1c2bbeb7050b47fd920b160",
+    "target": "……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:5:5",
+    "source_sha256": "213aaae90f3a60bed847fb3c53e98fc03136e88bc843f14c56460950e87d51ec",
+    "target": "哈哈，吓到了吧？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:6:6",
+    "source_sha256": "7e15c12d371b8dd8152507bcbec9da9bc479fdf338699ad2d5cebdb3f9d462f7",
+    "target": "吓我一跳。她是谁？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:7:7",
+    "source_sha256": "8864118812a3b3506642e3a2799e648cb0f3e43670bc573a210471c9d7bf1526",
+    "target": "你，怎么会……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:8:8",
+    "source_sha256": "1dd8801c32dbddd0e49a1e580f0a5e29c45110ccdd387be3808a8beb3e53bda5",
+    "target": "难得见面，你却板着脸，这样阿多拉会很难过的。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:9:9",
+    "source_sha256": "4519248a090bed723ac86655027c1e11b6b53355b362ee0ce6e26317578e22db",
+    "target": "她是谁？卡林兹，是你的情人吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:10:10",
+    "source_sha256": "24f8edcfc1b8099f5f846c43144c7567c1705b6eeb8b941b02937bdafb6bc49a",
+    "target": "别胡说。我也正想问她是谁呢。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:11:11",
+    "source_sha256": "fced59987d370a19ecf3978691f157a34be3acb054d840fa9e9679bf75f7b6b9",
+    "target": "啊，原来你叫卡林兹，现在知道了。还记得我的名字吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:12:12",
+    "source_sha256": "237a372a5b5b7e0608ff09236827eec286ce7bf0364fe431aaadb2a4193d60b6",
+    "target": "……不记得又怎样？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:13:13",
+    "source_sha256": "752e6a8a838974b2298b99eb7302128c87b057038d4e234387d340534e6273c4",
+    "target": "哎呀，真无情。我们可是连吻都接过了，这样也太过分了吧？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:14:14",
+    "source_sha256": "57deb2e3262fb60cb21cf6554917c49cd8d3f69359852994d8c187da992d28aa",
+    "target": "什么……！？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:15:15",
+    "source_sha256": "4aa2c0cd0bd35f9bece808d170d284ee9ffbccc10f7346787d777e78f5338631",
+    "target": "是你擅自亲的吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:16:16",
+    "source_sha256": "1359187de42f98a5f65c213b558f5958335f099a491c1e9a56bab3bd7ef14eee",
+    "target": "喂，真看不出来，你从哪里钓到这么个大美人？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:17:17",
+    "source_sha256": "f5497ba83ef42d52216159b5be471b559228491f554940609e19cacf5d7238bc",
+    "target": "这里禁止平民进入，你怎么进来的？修佩隆德放你通过了？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:18:18",
+    "source_sha256": "d59113d70fa8ca8eb2c5d57a6a0038b6dc144c81d5150eb44dc2e2fd25e8060b",
+    "target": "我说自己是施瓦茨第7组的人，他们就让我进来了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:19:19",
+    "source_sha256": "db94b86e4249b162b7c112dd45920b05eab2287382b6712966c86c28932a31ea",
+    "target": "……尽是一群笨蛋。$n阿多拉，我们现在是在执行任务，不是出来郊游。你马上回去。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:20:20",
+    "source_sha256": "f37bf04c918ebaac128f1351991a1ef78ecdc6624cb1a93b64ed938e836bd2ba",
+    "target": "啊，什么嘛，你不是记得我的名字吗？我就知道。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:21:21",
+    "source_sha256": "4dc7487ece41e2a5b68b53663ca166ef1247ade22552853cbe49820d239d61e0",
+    "target": "行了，赶快回去。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:22:22",
+    "source_sha256": "11d56bd30e28dfef1330a00cfcb6d77cd61cd2ecf0e9730a0fa87924b1dbda88",
+    "target": "咦，才刚见面啊。你知道我有多想见你吗，卡林兹？这么久没见，为什么还装作不认识，态度那么生疏？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:23:23",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:24:24",
+    "source_sha256": "d2738b08d3e662c94ac5e8b13369281439dcb8b1b2ad4909b98d1695e8fc3a3f",
+    "target": "好久不见。没见面的这段时间，你长高了一些，已经不是以前的小家伙了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:25:25",
+    "source_sha256": "ddc74d910331b688d8014b98188f4437ed32566e8f55ed079750b98aab073f6d",
+    "target": "别再叫我……小家伙。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:26:26",
+    "source_sha256": "edbf24a4c856c0385d368e1b23f8cd84fbfbc1ea863fcbafb02c25194ddaa321",
+    "target": "呵呵，知道了，卡林兹。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:27:27",
+    "source_sha256": "0a22c68ee08bf09ee6bd3c007da842084a800dbfdedb0272eb5c663bd16b2b87",
+    "target": "是来看父亲的吧？他会等你的，去吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:28:28",
+    "source_sha256": "11d56bd30e28dfef1330a00cfcb6d77cd61cd2ecf0e9730a0fa87924b1dbda88",
+    "target": "咦，才刚见面啊。你知道我有多想见你吗，卡林兹？这么久没见，为什么还装作不认识，态度那么生疏？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:29:29",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:30:30",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:31:31",
+    "source_sha256": "a0800fbee72f4a3d93b6808339c20094cc3bf8598f9eb56f97623a790c350d97",
+    "target": "卡林兹，怎么了？真的生气了？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:32:32",
+    "source_sha256": "9b80ad227e8ff84d15cf4d52d648af32600e04517ad04dd79b1a1270eb8f8601",
+    "target": "明明毫无关系，怎么会相似到这种程度？容貌、举止，甚至说话的口气……简直像艾丝特尔转世了一样……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:33:33",
+    "source_sha256": "41de61710ef01ea5e20dd7ddbc38a25dbf7e1546d082c884d499519690d41d65",
+    "target": "你……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:34:34",
+    "source_sha256": "a70589d18618249342a10d9ace9fc580415de0dac110703625a75b017f3b51b4",
+    "target": "我可是忍了好久，才来见你的。不能一起去吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:35:35",
+    "source_sha256": "eefbcadc829b3571facd7abe9f69315bafb9675094e1b46c1ad332a0f2337e15",
+    "target": "真是个了不起的姑娘，竟能若无其事地说出这种话。喂，组长，怎么办？一切都看你的意思了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:36:36",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:37:37",
+    "source_sha256": "18169110c33acb2fe794e28c4ee3b5d3635335c976b11c67e4908a8ce2b62c01",
+    "target": "让她一个人回去，不觉得有些危险吗？既然都这样了，哪怕只是为了保护她，不如一起行动……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:38:38",
+    "source_sha256": "dd5a0b141cfe652f3a32b538e4a70abe3e0d273b63f35686f0d21f5042df0b19",
+    "target": "你的心思都写在脸上了。一见美女就来劲。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:39:39",
+    "source_sha256": "d0b6d6095b0ff8912d3f7996d58f12446b7de451efb046caf0f3daefce6ca74c",
+    "target": "你、你说什么？我、我……别看这样……那、那是基于骑士精神才说的。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:40:40",
+    "source_sha256": "74a455845fbc3aff22fd8392c78709ceaebba34ebcbe46ad96783f14b5342c83",
+    "target": "你这种空脑袋也懂骑士精神？真让人感动啊。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:41:41",
+    "source_sha256": "1f5e661674e16768ac79b8ed081f612e6c28cd64e14f870d8bea0a0efbc373ba",
+    "target": "你、你……真是……！",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:42:42",
+    "source_sha256": "986fcf6757b3323288df3da1ad58ff703e803118f9904824fb7ea519671e071c",
+    "target": "那么，暂时就……和我们一起行动吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:43:43",
+    "source_sha256": "958c15f6fdfab7051654cb8ea9f57547de0e21012d2ec711c8c492e029edbf21",
+    "target": "太好了，成功啦！啊，不，不是这个意思。总之，我会战斗，也会用剑。所以不会拖后腿的，交给我吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0137.fpb:text:44:44",
+    "source_sha256": "82083efa5d61ae11c0e4b1a7475c596fa1b2bd6580ed59688e8be573aebb26e9",
+    "target": "……艾丝特尔。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0138.fpb:text:0:0",
+    "source_sha256": "a84e0a3814219f9326ea587a819cdd307d6277bf447a46edbaa1eebebe88c645",
+    "target": "没出什么事吧？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0138.fpb:text:1:1",
+    "source_sha256": "d6cf7f7ff5976c752a355053570c785d9c253f36d69f380efb59b26be47e3d04",
+    "target": "是的，一切正常。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0138.fpb:text:2:2",
+    "source_sha256": "2251211fb2985669cb82ecf2970de84bab5321dbf4a6ccd7d283946eeddf21be",
+    "target": "我们要进行净化，请留意，不要让平民进来。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0138.fpb:text:3:3",
+    "source_sha256": "3a9f597ad0d267164acba98e4d093149a489f3320e899fbfb1c7ea5e4ada8d84",
+    "target": "明白。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0138.fpb:text:4:4",
+    "source_sha256": "6e226507c6ef2c3526137c00227cb9e815617a3a1fee1da74e50690011f7f1ec",
+    "target": "……那些家伙已经走了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0138.fpb:text:5:5",
+    "source_sha256": "7b8e24d5f16b39a8d5044accf843c4e64511de43b7a6b047f97f65c239647e22",
+    "target": "没想到这么简单。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0138.fpb:text:6:6",
+    "source_sha256": "655c5a5c01a623e5b38ef80dd5f2ac2f4fd7553799e6120ce136cc753267ad96",
+    "target": "那我们也出发吧。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0139.fpb:text:0:0",
+    "source_sha256": "0142c38bc1e177352e2ba0159663dd033d04a7c81dc64a3497e0ca7e1d411f12",
+    "target": "……是斯卡拉姆修啊。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0139.fpb:text:1:1",
+    "source_sha256": "a5149d14a3ab98d5f97508fea7b647b6fe674422932caa8ae6f54f28cb408091",
+    "target": "真是荣幸。高贵皇家养的猎犬，居然认得我们这种卑微的人。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0139.fpb:text:2:2",
+    "source_sha256": "6a5bd72fc70c9c8a0a58fdcb9a2025c285361c49dc635aaf91b650900c908670",
+    "target": "皇家养的猎犬？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0139.fpb:text:3:3",
+    "source_sha256": "a132b8c7fce450e55a0f57c2f948a461d82e3b9002706eafbb66e0df584a250d",
+    "target": "难道不是吗？你们口口声声说维护首都治安，整天携带凶器，毫不留情地处决皇家指定的人……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0139.fpb:text:4:4",
+    "source_sha256": "a12a4775809da59c40e055b920260f2e58d3ad25a1b31f98b5e8f7827e82dcaf",
+    "target": "要是你们安分一点，我们也不必那么做。还不是因为你们闹得烦人，我们才要收拾烂摊子。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0139.fpb:text:5:5",
+    "source_sha256": "398c009bd80e9a210cca20cbfe7079c13166c5b06947dc982edfad928048956b",
+    "target": "哼，就算皇家烂透了，只要他们下命令，你们还是不敢违抗。这样的人居然说出这种话，实在可笑。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0139.fpb:text:6:6",
+    "source_sha256": "15ef9d473ab470c71bde08a201aae8c4212b30ca18896012987cc5f85422c515",
+    "target": "靠偷别人东西过日子，也有资格大放厥词吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0140.fpb:text:0:0",
+    "source_sha256": "d177478d03b11a8781257ad5a2cd96317b37325c4414025578ba88b19ab2585b",
+    "target": "这下逃不掉了吧，投降。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0140.fpb:text:1:1",
+    "source_sha256": "21a0290ed5e84a39447a8c2d4959c4871d83fb04f943a587503795d460984890",
+    "target": "……哼。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0140.fpb:text:2:2",
+    "source_sha256": "3668915acfaaec4f4fce3341e66c4e9f0f5e4990c39ae1a9e74d76ff65549b20",
+    "target": "这就结束了吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0140.fpb:text:3:3",
+    "source_sha256": "0d324022c63f75831375271a7e4f0b4ea3b56f70c525b6d49b837a09d88b6475",
+    "target": "什么意思？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0140.fpb:text:4:4",
+    "source_sha256": "493df36fbc4f0c5a436f161553d2a89005db22f12b15d34e6cef41461ca85646",
+    "target": "感觉太简单了，你们到底在打什么算盘？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0140.fpb:text:5:5",
+    "source_sha256": "2115f9021466623738835d551938ff6857eb95e59f04255f15b733b3ce1d918c",
+    "target": "哼……随你怎么想。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0141.fpb:text:0:0",
+    "source_sha256": "992adb819765edcb44c25aa84b7d7e7a97b012fc291f676a5ab3a8f74fdb6364",
+    "target": "啊，你想做什么？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0141.fpb:text:1:1",
+    "source_sha256": "642abf6ab6f23cea0202d296b5bc01495ade55cc20a380df6ec95902f9ff9119",
+    "target": "净化。不把希安净化掉，他们就会继续施加灵印。也就是把希安里的卡尔塔吸收到武器或其他东西里。这样，希安就会变回普通石头。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0141.fpb:text:2:2",
+    "source_sha256": "7441aac537881399ca5aac34b2e0365fbc8f651573e88750b9a9c7ed2bea3d14",
+    "target": "菲莉西亚……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0141.fpb:text:3:3",
+    "source_sha256": "0f22cf2d1aeca1c846323d01a2841ad1e431d6a1e05137a6ad078c8e36836ad9",
+    "target": "嗯？你说什么？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0141.fpb:text:4:4",
+    "source_sha256": "eeb1a4a0c588b3f6bf26f66ac00a801e9b0e9a63677fe6f6bb8e9962edab3317",
+    "target": "那家伙怎么办？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0141.fpb:text:5:5",
+    "source_sha256": "e215787c73bea29f60fc141eac7e37c744f758b3701ab8a161c3321fbf12a86a",
+    "target": "当然是关进牢里。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0141.fpb:text:6:6",
+    "source_sha256": "a01e53839639fe499466fcbf1f2878cf63b01017bf374419f4efe4fd49e0032e",
+    "target": "呵，把我带走，随你们怎么拷问。说不定会套出意外有用的情报呢？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0141.fpb:text:7:7",
+    "source_sha256": "5aa28141018ac77463a0bdcdb6a019a823d32b400c91fc6e00361db1d6b1ac4a",
+    "target": "既然你想要，就成全你。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:0:0",
+    "source_sha256": "29c0e82438d20862efc939544ffc5376d91db21a9daadcb6208571db6da91d56",
+    "target": "嗯……我该走了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:1:1",
+    "source_sha256": "965bd0186634dcc43b4a734d20374094d9d9dd24ccc01f0dfcf06bb5006b3fbb",
+    "target": "咦，去哪儿？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:2:2",
+    "source_sha256": "c9e26988a9be9b5161347c0d684955f9ce56c2021387189dc846a9e4a7f1d811",
+    "target": "嗯……嗯，就是该回去了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:3:3",
+    "source_sha256": "30bfd2008fceb8d7dda39e09324a4cedcfc2739f08634b315a5645b172f4ec3e",
+    "target": "……？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:4:4",
+    "source_sha256": "d22cda0261613fbd5b28057a99e2352f6522b8eb0e6215eceff43c1c07a8c08a",
+    "target": "那么我走了，下次见，卡林兹。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:5:5",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:6:6",
+    "source_sha256": "88c141162d0792fd783104543ac1294623b5f34ac58afeb55148dddb3005428e",
+    "target": "她到底是谁？确实是组长的朋友吧？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:7:7",
+    "source_sha256": "dff0236a51b8caab8b7fe7b89c39b7ccba0b3af1f097f1422668fe8fc19754c0",
+    "target": "我也完全不认识她。突然就跟着我，烦人罢了……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:8:8",
+    "source_sha256": "aec28ccb59c23a0999c18b8ed2b8544c1aa4f34a8a314a0deddcbfc9e84b0b0d",
+    "target": "不过，也许心底其实很高兴见到她。与阿多拉相见，是一种奇妙的感觉，仿佛回到了过去。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:9:9",
+    "source_sha256": "6a22c9ccad41e8f600c347a7f7618e3b27cbfc80dc6f2559cdb87516c1ef8713",
+    "target": "会不会是很久以前的朋友，只是你忘记了……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:10:10",
+    "source_sha256": "9ab23202231e470b56196f005e8a63ee054e7f6300fc6defff0785cf428146e3",
+    "target": "谁知道呢……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:11:11",
+    "source_sha256": "38fd165efee6c0f8a34a55a05a0c52a0dd1b1a40975aad6b316c8650a2d62421",
+    "target": "啊……我又想起了一件事。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:12:12",
+    "source_sha256": "486adaad571d21fde248a864414c41231f9d344a3f000e08c370b76d1744a2fd",
+    "target": "我该走了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:13:13",
+    "source_sha256": "67914cae6c9e05f2671012b24ab1bd6b909ae9dc922aad3086289c7e90703047",
+    "target": "……一路顺风。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:14:14",
+    "source_sha256": "dee850cb23c0186c03b302a0c4b2727b0aae693ec6b604068056cb07539a1f9e",
+    "target": "嗯，好好保重。偶尔……我会来玩。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:15:15",
+    "source_sha256": "ffdff2ef5f8f40b76d9590f068c12c828afaa7baccd50c06ba82b5e35ca5f907",
+    "target": "不来也没关系。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:16:16",
+    "source_sha256": "736db6b46c15ad3d41901c40ba2b8dc13db6b641e719ef84d852a9af91d2bc33",
+    "target": "又变回以前那副闷闷不乐的性子了。进了皇宫，也不是再也出不来。向陛下请求的话，应该就能出来。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:17:17",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:18:18",
+    "source_sha256": "c1ae87a8b3a0454075b3bcba740b3503180adb70b62b73a2df479578f919296e",
+    "target": "我们一起度过的那三个月，真的很开心，对吧？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:19:19",
+    "source_sha256": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "target": "……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:20:20",
+    "source_sha256": "62946151c36e1bccfd721b1c5d2142b1ce596c5291b4837711815b99e23c4182",
+    "target": "那时……卡林兹，第一次哭了。明明一次都不曾露出脆弱的样子。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0142.fpb:text:21:21",
+    "source_sha256": "3b320d8f698fe32bf4d25e2bab8f45a5ca0166d7cd43625e583b4adbd7f79e58",
+    "target": "啊，对了。我和人有约。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0143.fpb:text:0:0",
+    "source_sha256": "94d4a523c50c511e7c824a1a40c790574390c78e03a1d5efb95b2ea7de973872",
+    "target": "居然抓到了斯卡拉姆修的乔克，真是重大收获。辛苦了。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0143.fpb:text:1:1",
+    "source_sha256": "5b07d4e27163aa59529242f7d06d78ab3289d33bf081115bd5abaaafa964c571",
+    "target": "不过……有件事让我有些在意。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0143.fpb:text:2:2",
+    "source_sha256": "c411d9b52203632dc88b9f8d03fde2adc36aa65b0b29313595e5f77433af06ad",
+    "target": "什么事？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0143.fpb:text:3:3",
+    "source_sha256": "9522834497651704fe55efcbfad66cb3a037a154c7a7f2634a8e2d703cfc4353",
+    "target": "总觉得……他像是故意被抓住的。当然，也不是说他们很弱……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0143.fpb:text:4:4",
+    "source_sha256": "0c91a447c5b16ca5280f4480e90566071a2c03855780e4f13c4c17f7ec6cf875",
+    "target": "还有，那里为什么出现的不是贝尔米利昂，而是斯卡拉姆修，也让人有些……",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0143.fpb:text:5:5",
+    "source_sha256": "1c1e236a4955e32e897f5b6f68595f9a26a13c2f357787f926687ddb28b766b3",
+    "target": "总之，看他那张卑鄙的脸，就觉得肚子里肯定还有算盘。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0143.fpb:text:6:6",
+    "source_sha256": "61e1cb1c804cabdfe1a8da94b67d114fead961c669751c36aaab9f375bd7deea",
+    "target": "贝尔米利昂和斯卡拉姆修，也有可能联手。虽然确实有些出乎意料。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0143.fpb:text:7:7",
+    "source_sha256": "5bcd6037c4657d98ed5aee6a96d0fedf9b1c80e5d1b843f83841d9a91b1f3867",
+    "target": "果然，他们在谋划什么吗？",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0143.fpb:text:8:8",
+    "source_sha256": "e1af2912023aaefa1bb2f8e734f609a8a0af139ad3921623f8aa8ecafa530edf",
+    "target": "继续观察就会知道。盯紧乔克，那家伙可是越狱专家。",
+    "state": "translated"
+  },
+  {
+    "id": "Fpb/0144.fpb:text:0:0",
+    "source_sha256": "5d9286e2cf2df1b5880a0cd756eabc3f8fea1c7e04b40be442fb07dd614e7ce7",
+    "target": "……呼，这样就算暂时成功了吧。",
+    "state": "translated"
+  }
+]

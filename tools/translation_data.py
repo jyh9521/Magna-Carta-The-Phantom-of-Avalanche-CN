@@ -49,6 +49,11 @@ def validate(catalog, targets, terms=None, mapping=None, require_complete=False,
             raise ValueError('source catalog text does not match original bytes')
     terms=[] if terms is None else validate_terms(terms)['terms']
     seen=set();errors=[];translated=0;preserved=0
+    for term in terms:
+        for excluded in term.get('excluded_occurrences',[]):
+            key=excluded['resource_id']
+            if key in originals and source_digest(originals[key])!=excluded['source_sha256']:
+                errors.append(dict(id=key,term_id=term['id'],kind='term_exclusion_source_drift'))
     for target in targets:
         if not isinstance(target,dict) or not isinstance(target.get('id'),str):
             raise ValueError('translation record must have a string ID')

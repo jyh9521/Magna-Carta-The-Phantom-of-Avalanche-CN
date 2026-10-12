@@ -15,6 +15,25 @@ def fixture():
 
 
 class TermGlossaryTests(unittest.TestCase):
+    def test_artifact_and_adjective_homonym_are_not_forced_together(self):
+        data=json.loads((ROOT/'locales/zh-CN/terms.json').read_text('utf8'))
+        self.assertEqual(m.conflicts('신기할','觉得新奇','Fpb/0145.fpb:text:4:4',data['terms']),[])
+        result=m.conflicts('신기','其他','Fpb/0315.fpb:text:13:13',data['terms'])
+        self.assertEqual(result[0]['expected'],'神器')
+        term=next(t for t in data['terms'] if t['id']=='concept-0087')
+        self.assertEqual(len(term['excluded_occurrences']),6)
+        self.assertEqual(len(term['resource_ids']),5)
+
+    def test_exclusion_requires_disjoint_digest_and_evidence(self):
+        for kind in ('overlap','digest','reason','duplicate'):
+            data=fixture();item=dict(resource_id='ordinary',source_sha256='0'*64,reason='owned homonym context')
+            if kind=='overlap':item['resource_id']='row'
+            if kind=='digest':item['source_sha256']='not a digest'
+            if kind=='reason':item.pop('reason')
+            data['terms'][0]['excluded_occurrences']=[item]
+            if kind=='duplicate':data['terms'][0]['excluded_occurrences'].append(copy.deepcopy(item))
+            with self.subTest(kind=kind),self.assertRaises(ValueError):m.validate(data)
+
     def test_longest_phrase_and_no_unreviewed_resource_matching(self):
         data=fixture();long=copy.deepcopy(data['terms'][0]);long.update(id='two',source='마그나 카르타',target='真名法典')
         data['terms'].append(long)

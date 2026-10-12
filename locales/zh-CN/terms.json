@@ -3617,7 +3617,7 @@
       "category": "世界观武器状态",
       "status": "待复核",
       "translation_state": "approved",
-      "meaning": "0315承载大量卡尔塔并获得新能力的武器，仪式所需；源汉字未提供。",
+      "meaning": "0315与0721承载大量卡尔塔并获得新能力的武器，仪式所需；0456制作这种武器。源汉字未提供。另6处신기하다系普通形容词，明确排除，不译为神器。",
       "relation": "pending",
       "reference_candidates": [
         {
@@ -3630,20 +3630,46 @@
         }
       ],
       "resource_ids": [
-        "Fpb/0145.fpb:text:4:4",
-        "Fpb/0240.fpb:text:1:1",
-        "Fpb/0253.fpb:text:17:17",
-        "Fpb/0292.fpb:text:9:9",
         "Fpb/0315.fpb:text:13:13",
         "Fpb/0315.fpb:text:16:16",
         "Fpb/0456.fpb:text:20:20",
-        "Fpb/0499.fpb:text:3:3",
-        "Fpb/0500.fpb:text:2:2",
         "Fpb/0721.fpb:text:13:13",
         "Fpb/0721.fpb:text:16:16"
       ],
       "evidence_level": "source_context_reviewed_relationship_not_confirmed",
-      "wording_decision": "源文语境与本作身份审查；确定中文词面，不确认跨作品概念同一性"
+      "wording_decision": "源文语境与本作身份审查；确定中文词面，不确认跨作品概念同一性",
+      "excluded_occurrences": [
+        {
+          "resource_id": "Fpb/0145.fpb:text:4:4",
+          "source_sha256": "5367240f28a5c59771e09b6d02e207ea08eb107f43bd5af05e89afcff00182ca",
+          "reason": "신기하다/신기할/신기하죠 predicate means surprising or curious; not the artifact noun 신기"
+        },
+        {
+          "resource_id": "Fpb/0240.fpb:text:1:1",
+          "source_sha256": "4cb9995b0497e193528dffea0650dbf6d2d2c73558f755b270acc891174df75d",
+          "reason": "신기하다/신기할/신기하죠 predicate means surprising or curious; not the artifact noun 신기"
+        },
+        {
+          "resource_id": "Fpb/0253.fpb:text:17:17",
+          "source_sha256": "027b5910f7663dd7c760938dde8c0f91f2a52572df945d574634759344d7401a",
+          "reason": "신기하다/신기할/신기하죠 predicate means surprising or curious; not the artifact noun 신기"
+        },
+        {
+          "resource_id": "Fpb/0292.fpb:text:9:9",
+          "source_sha256": "a0e4b5725206f57cfa8b121bbc4ae405895f7cc9bd9e179155bff1144f5cabdf",
+          "reason": "신기하다/신기할/신기하죠 predicate means surprising or curious; not the artifact noun 신기"
+        },
+        {
+          "resource_id": "Fpb/0499.fpb:text:3:3",
+          "source_sha256": "b9a53cb51c5838ea43b3e025a5d07139a6e9726eb9ae63243c15929c7d81a28a",
+          "reason": "신기하다/신기할/신기하죠 predicate means surprising or curious; not the artifact noun 신기"
+        },
+        {
+          "resource_id": "Fpb/0500.fpb:text:2:2",
+          "source_sha256": "353143fc8b8e6d6745ffdf3d907d21624612fcac89b6d691139e3b7508e984b5",
+          "reason": "신기하다/신기할/신기하죠 predicate means surprising or curious; not the artifact noun 신기"
+        }
+      ]
     },
     {
       "id": "concept-0088",

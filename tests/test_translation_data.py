@@ -9,6 +9,15 @@ from native_text_codec import plan
 
 
 class TranslationDataTests(unittest.TestCase):
+    def test_homonym_exclusion_is_source_locked(self):
+        terms=dict(schema=1,terms=[dict(id='one',source='앞',target='概念',meaning='owned homonym fixture',status='待复核',
+                   translation_state='approved',resource_ids=[],relation='pending',
+                   excluded_occurrences=[dict(resource_id=self.row['id'],source_sha256=source_digest(self.row),reason='owned ordinary-word context')])])
+        self.assertTrue(validate([self.row],[self.target],terms=terms)['complete'])
+        terms['terms'][0]['excluded_occurrences'][0]['source_sha256']='0'*64
+        result=validate([self.row],[self.target],terms=terms)
+        self.assertFalse(result['complete']);self.assertEqual(result['errors'][0]['kind'],'term_exclusion_source_drift')
+
     def setUp(self):
         self.row=text_row('Fpb/fixture.fpb',0,7,'text',20,'앞$d05$n %s'.encode('cp949'))
         self.target=dict(id=self.row['id'],source_sha256=source_digest(self.row),target='前$d05$n %s',state='translated')
