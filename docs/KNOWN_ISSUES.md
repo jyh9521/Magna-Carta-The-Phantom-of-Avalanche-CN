@@ -1,5 +1,7 @@
 # 已知限制
 
+最小中文 [字形探针](GLYPH_DISPLAY_PROBE.md) 已准备，尚未实际显示验收。韩文混入中文单字是显式诊断行为，不是正式译文；通用简体字覆盖、文本回写和控制符管线仍未完成。
+
 - 已取得安装样本并建立隔离副本，暂无游戏验收通过的版本。
 - 挂载最小镜像启动原版后报告 `Unknown Error - Cannot Match PixelFormat`，原设置指向 OpenGL；隔离副本已实际加载 Direct3D，画面与流程尚未验收。
 - 当前安装与提供补丁的 Net.dll、Protocol.dll、Replacer.dll 不一致，来源待核实。

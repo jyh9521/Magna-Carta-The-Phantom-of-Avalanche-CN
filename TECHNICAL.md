@@ -54,3 +54,5 @@ activation 组合已实际完成四五次切换并正常退出，后续独立 [R
 2 倍组合已实际反馈更清晰且退出码 0，31 个观察采样正常保存；后续 [RENDER_1080_TRIAL.md](docs/RENDER_1080_TRIAL.md) 核对固定上游缩放计算，预测 1440×1080 不作为实际测量。配置/白名单一致性加入测试，旧可用组合不覆盖。
 
 1080 行候选当前场景反馈无问题且退出码 0，接续 P0 [FONT_PIPELINE_RESEARCH.md](docs/FONT_PIPELINE_RESEARCH.md)。REA/Ghidra 已定位实际字体读取、字宽、固定编码索引及位图读取，六字库原样往返验证；简体中文显示尚未进行游戏验证。
+
+P0 第一阶段 [GLYPH_DISPLAY_PROBE.md](docs/GLYPH_DISPLAY_PROBE.md) 已构建两套字体的四槽中文诊断覆盖，保留字宽、原始资源和内部标识。独立副本、哈希拒绝与回滚已验证；实际显示及完整文本回写分别验收。

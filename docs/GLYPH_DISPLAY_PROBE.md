@@ -1,0 +1,61 @@
+# 最小中文显示探针：字形层
+
+## 目的与验收边界
+
+状态：静态构建、版本校验、差异限制和隔离回滚已验证；游戏内显示待实际测试。
+
+第一阶段只验证现有位图字形通过原生文本绘制路径显示的能力。原生 CP949 索引已经静态定位，详见 [字体逆向](FONT_PIPELINE_RESEARCH.md)。探针将韩文 `이` 所在槽显示为 `中`，将 `다` 所在槽显示为 `文`，覆盖 14 像素和 22 像素两套字体。两字均取自同尺寸的原版 Chi 字库，不引入字体许可依赖。
+
+这是**诊断字形覆盖，不是剧情翻译，也不是完整中文资源管线证明**。韩文句子会混入中文单字，不能据此认为文本语义已翻译或任意简体字已支持。FPB 样本中 `이` 出现 2,858 次、`다` 出现 1,634 次，仅用于提高可观察性；该统计不证明当前存档画面必定显示这两个字符。
+
+实际文本回写、控制符处理和完整简体字映射属于后续阶段。探针不覆盖字体头、字宽、文本测量函数、资源 ID、角色标识或存档，不修改可执行文件及保护模块。
+
+## 可重复构建
+
+通用工具 `tools/build_glyph_probe.py` 与语言数据 `locales/zh-CN/probes/glyph-display.json` 分离。Python 3.12 以上，无新增第三方依赖。源目录 SOURCE 为已验证的独立运行基线；全部输出目录必须为新目录。
+
+```powershell
+python tools/build_glyph_probe.py build --source SOURCE --spec locales/zh-CN/probes/glyph-display.json --output build/chinese-probe
+python tools/prepare_workspace.py --source SOURCE --target build/runtime/glyph-probe-game --manifest build/chinese-probe-evidence/workspace-copy.json
+python tools/build_glyph_probe.py apply --package build/chinese-probe --workspace build/runtime/glyph-probe-game
+python tools/build_glyph_probe.py verify --package build/chinese-probe --workspace build/runtime/glyph-probe-game
+python -m unittest discover -s tests -p "test_*.py"
+```
+
+构建锁定 MagnaCarta.exe、MCAlpha.dll 和六份字库的 SHA-256；不认识的输入拒绝生成。仅写 Kor0.dat、Kor1.dat 的各两个槽，原版 Chi/Eng 文件不变；两套字体尺寸、advance 和文件长度不变。所有字形读取均有槽范围检查，映射重复、缺字、无变化或几何不匹配时拒绝构建。
+
+`probe.json` 记录原始/修改哈希、每个槽的偏移与长度以及未进行游戏验收的状态。完整字库、基线及备份只留在忽略的 build/ 下，不提交或分发。原安装目录不得作为 apply 目标。
+
+## 本轮独立副本
+
+来源：`build/runtime/render1080-game`，保留此前实际通过的驱动、显示及焦点配置。目标：`build/runtime/glyph-probe-game`。复制过程核对来源前后及完整副本清单；字形覆盖后重新比对，除两个字库与探针标记外不得出现差异。没有自动游戏运行步骤。
+
+手动入口 `build/runtime/LaunchGlyphProbe.cmd` 先执行字库及程序哈希检查，再调用既有隔离启动器，启用 CaptureException、FocusGuard 和只读窗口记录。入口仅在实际测试时执行，不作为后台验证命令。
+
+## 实际测试清单
+
+1. 手动运行独立探针入口，保持此前已通过的运行条件。
+2. 读取已有存档，进入能显示韩文文字的菜单或对话；观察是否混入 `中`、`文`。两字可能不相邻，不要求出现完整“中文”短语。
+3. 分别记录菜单小字、对话大字；未出现对应字符时记录“未命中”，不记为显示失败或通过。
+4. 核对字形完整、行高及行距正常、没有残影/裁切/乱码；保存截图并注明界面和字体尺寸。
+5. 保持原存档不覆盖，核对读档、场景画面和 Alt+Tab 没有回归，正常退出。
+
+字形被烘焙到图片的菜单不会受本探针影响。游戏内结果尚未记录，静态解析或字形预览不代替上述验收。
+
+## 恢复
+
+```powershell
+python tools/build_glyph_probe.py restore --package build/chinese-probe --workspace build/runtime/glyph-probe-game
+```
+
+恢复前检查程序、六字库、包内修改/原始文件及标记。内容漂移时拒绝覆盖；全部输入检查完成后恢复两个原版字库并删除标记。回滚测试在另一份隔离字体副本执行，确认六字库恢复为原始哈希，运行探针副本保持修改状态。
+
+普通复制异常会恢复操作前的两个字库与标记；应用和恢复中第二文件部分写入失败均有模拟回归。断电或目标目录持续不可写不保证自动恢复，保留完整基线作为重建来源。
+
+此前的 1080 行运行基线和手动入口不变，可直接使用原入口进行对照。恢复操作仅恢复诊断字形，不改变存档、图形层或注册表。
+
+## 已完成检查
+
+- 原有 89 项测试通过；新增 14 项覆盖字节差异范围、两字体组、构建、应用、验证、恢复、哈希不匹配、重复槽、编码与几何异常、重复应用、漂移拒绝及部分写入异常恢复。合计 103 项通过。
+- 两份实际字库的四个槽验证与原版中文位图完全相同，其他字节不变；实际输入源六字库保持原始哈希。
+- 隔离恢复通过；未启动游戏。实际显示仍待手动验收。
