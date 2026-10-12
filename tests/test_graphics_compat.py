@@ -85,6 +85,58 @@ class GraphicsCompatTests(unittest.TestCase):
             module.apply(self.game, self.root, b'fixture-layer', self.expected, profile='unknown')
         self.assertEqual(list(self.game.iterdir()), [self.original])
 
+    def select_fixture(self, profile):
+        with patch.object(module, 'DLL_SHA256', module.sha(b'fixture-layer')):
+            return module.select_profile(self.game, self.root, profile, self.expected)
+
+    def test_profile_switch_and_restore(self):
+        self.apply_fixture()
+        original = (self.game / module.STATE_NAME).read_bytes()
+        self.assertTrue(self.select_fixture('hal'))
+        self.assertEqual((self.game / module.CONFIG_NAME).read_bytes(), module.PROFILES['hal'])
+        self.assertFalse(self.select_fixture('hal'))
+        self.assertTrue(self.select_fixture('standard'))
+        self.assertEqual((self.game / module.STATE_NAME).read_bytes(), original)
+        self.assertEqual(self.original.read_bytes(), b'original')
+
+    def test_profile_switch_preserves_tampered_config(self):
+        self.apply_fixture()
+        (self.game / module.CONFIG_NAME).write_bytes(b'custom')
+        with self.assertRaises(ValueError):
+            self.select_fixture('hal')
+        self.assertEqual((self.game / module.CONFIG_NAME).read_bytes(), b'custom')
+
+    def test_profile_switch_rejects_competing_layer(self):
+        self.apply_fixture()
+        (self.game / 'D3DImm.dll').write_bytes(b'other')
+        with self.assertRaises(ValueError):
+            self.select_fixture('hal')
+        self.assertEqual((self.game / module.CONFIG_NAME).read_bytes(), module.CONFIG)
+
+    def test_profile_switch_rejects_foreign_manifest(self):
+        self.apply_fixture()
+        with patch.object(module, 'DLL_SHA256', module.sha(b'fixture-layer')):
+            with self.assertRaises(ValueError):
+                module.select_profile(self.game, self.root, 'hal', {'unknown': 'hash'})
+
+    def test_profile_switch_write_failure_restores_both_files(self):
+        self.apply_fixture()
+        original = (self.game / module.STATE_NAME).read_bytes()
+        replace = module.replace_bytes
+        calls = 0
+        def fail_second(path, data):
+            nonlocal calls
+            calls += 1
+            if calls == 2:
+                raise OSError('fixture write failure')
+            return replace(path, data)
+        with patch.object(module, 'replace_bytes', fail_second):
+            with self.assertRaises(OSError):
+                self.select_fixture('hal')
+        self.assertEqual((self.game / module.CONFIG_NAME).read_bytes(), module.CONFIG)
+        self.assertEqual((self.game / module.STATE_NAME).read_bytes(), original)
+        self.assertEqual(len(list(self.game.iterdir())), 4)
+
 
 if __name__ == '__main__':
     unittest.main()

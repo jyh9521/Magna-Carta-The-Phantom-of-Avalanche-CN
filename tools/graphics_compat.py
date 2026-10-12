@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import subprocess
+import tempfile
 import zipfile
 
 VERSION = 'v0.7.1'
@@ -99,7 +100,7 @@ def apply(workspace, allowed_root, dll, expected=EXPECTED, profile='standard'):
     return state
 
 
-def remove(workspace, allowed_root):
+def checked_state(workspace, allowed_root):
     workspace = workspace_path(workspace, allowed_root)
     state = json.loads((workspace / STATE_NAME).read_text(encoding='utf-8'))
     profile = state.get('profile', 'standard')
@@ -113,6 +114,56 @@ def remove(workspace, allowed_root):
     for name, digest in expected_outputs.items():
         if sha((workspace / name).read_bytes()) != digest:
             raise ValueError('Changed output; rollback stopped: ' + name)
+    return workspace, state, expected_outputs
+
+
+def replace_bytes(path, data):
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=path.parent, delete=False) as stream:
+            temporary = Path(stream.name)
+            stream.write(data)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    finally:
+        if temporary and temporary.exists():
+            temporary.unlink()
+
+
+def select_profile(workspace, allowed_root, profile, expected=EXPECTED):
+    if profile not in PROFILES:
+        raise ValueError('Unsupported graphics profile')
+    workspace, state, outputs = checked_state(workspace, allowed_root)
+    if state['inputs'] != expected:
+        raise ValueError('Unsupported input manifest')
+    validate_inputs(workspace, expected)
+    for folder in (workspace, workspace / 'Drv'):
+        if folder.exists():
+            for path in folder.iterdir():
+                if path.name.lower() in LAYER_NAMES - {'ddraw.dll', CONFIG_NAME.lower(), STATE_NAME}:
+                    raise ValueError('Competing graphics layer or configuration: ' + path.name)
+                if folder != workspace and path.name.lower() == 'ddraw.dll':
+                    raise ValueError('Competing graphics layer: ' + str(path))
+    if state.get('profile', 'standard') == profile:
+        return False
+    config_path, state_path = workspace / CONFIG_NAME, workspace / STATE_NAME
+    old_config, old_state = config_path.read_bytes(), state_path.read_bytes()
+    new_state = dict(state, profile=profile, outputs=dict(outputs))
+    new_state['outputs'][CONFIG_NAME] = sha(PROFILES[profile])
+    try:
+        replace_bytes(config_path, PROFILES[profile])
+        replace_bytes(state_path, json.dumps(new_state, indent=2).encode('utf-8'))
+        checked_state(workspace, allowed_root)
+    except Exception:
+        replace_bytes(config_path, old_config)
+        replace_bytes(state_path, old_state)
+        raise
+    return True
+
+
+def remove(workspace, allowed_root):
+    workspace, state, expected_outputs = checked_state(workspace, allowed_root)
     for name in expected_outputs:
         (workspace / name).unlink()
     (workspace / STATE_NAME).unlink()
@@ -130,7 +181,7 @@ def ensure_idle():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('action', choices=['apply', 'remove'])
+    parser.add_argument('action', choices=['apply', 'remove', 'select-profile'])
     parser.add_argument('--workspace', type=Path, required=True)
     parser.add_argument('--package', type=Path)
     parser.add_argument('--profile', choices=PROFILES, default='standard')
@@ -142,6 +193,9 @@ if __name__ == '__main__':
             parser.error('--package required for apply')
         apply(args.workspace, root, package_dll(args.package), profile=args.profile)
         print(f'GRAPHICS_APPLY_PASS layer=DDrawCompat version=v0.7.1 profile={args.profile} original_files_changed=0 game_started=false')
+    elif args.action == 'select-profile':
+        changed = select_profile(args.workspace, root, args.profile)
+        print(f'GRAPHICS_PROFILE_PASS profile={args.profile} changed={str(changed).lower()} original_files_changed=0 game_started=false')
     else:
         count = remove(args.workspace, root)
         print(f'GRAPHICS_ROLLBACK_PASS removed={count} original_files_changed=0 game_started=false')
