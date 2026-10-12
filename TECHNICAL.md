@@ -62,3 +62,5 @@ P0 第一阶段 [GLYPH_DISPLAY_PROBE.md](docs/GLYPH_DISPLAY_PROBE.md) 已构建�
 武器名称定位到 SGI ordinal 0 / ID 5，已建立 [TEXT_DISPLAY_PROBE.md](docs/TEXT_DISPLAY_PROBE.md) 的显式 `中文` 回写候选，恢复原版字库路线。单记录差异、结构往返及隔离回滚已静态验证，实际资源加载与显示待手动验收。
 
 后续 Status 截图确认完整 `中文` 显示，会话自然退出码 0，本处资源回写链路通过首轮反馈验收。SGI 结构化 catalog 与固定版本 [SERIES_TERMS_AUDIT.md](docs/SERIES_TERMS_AUDIT.md) 已建立，87 项保持待复核；未启动大规模翻译或改变其他游戏资源。
+
+全量工作转入 [FULL_TRANSLATION_PIPELINE.md](docs/FULL_TRANSLATION_PIPELINE.md)：11,793 文件覆盖清点、3,992 结构字段、376 隔离字串候选，以及 BGR/TXRS 图片文字调查。提取完整范围与实际可回写范围分开记录；流程完成前不请求阶段性游戏测试或自行运行游戏。
