@@ -47,11 +47,12 @@ Win32 构建、配置隔离测试与运行入口见 [副本启动隔离](docs/RU
 
 ## 结构译文候选重建
 
-完整原始catalog和coverage由只读提取生成，实际游戏资源不进入仓库。`TARGET_CORPUS`为按稳定ID合并的UTF-8译文数组，字库命令读取文件，不将全文放入命令行。
+完整原始catalog和coverage由只读提取生成，实际游戏资源不进入仓库。`TARGET_FILES`为UTF-8源绑定译文文件列表，收集工具按稳定ID生成字库输入；字库命令读取文件，不将全文放入命令行。
 
 ```powershell
 python tools/translation_data.py --catalog CATALOG --translations TARGET_FILES --terms locales/zh-CN/terms.json --require-complete --report NEW_REPORT
-python tools/build_font_overlay.py --source SOURCE_GAME/Font --font OUTLINE_FONT --font-sha256 LOCKED_FONT_SHA --translations TARGET_CORPUS --output NEW_FONT_PACKAGE
+python tools/collect_translation_corpus.py --catalog CATALOG --translations TARGET_FILES --terms locales/zh-CN/terms.json --output NEW_CORPUS_PACKAGE
+python tools/build_font_overlay.py --source SOURCE_GAME/Font --font OUTLINE_FONT --font-sha256 LOCKED_FONT_SHA --translations NEW_CORPUS_PACKAGE/corpus.json --output NEW_FONT_PACKAGE
 python tools/build_text_resources.py --source SOURCE_GAME --catalog CATALOG --coverage COVERAGE --translations TARGET_FILES --font-package NEW_FONT_PACKAGE --terms locales/zh-CN/terms.json --output NEW_RESOURCE_PACKAGE
 ```
 
