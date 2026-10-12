@@ -38,3 +38,5 @@
 # 几何显示回归调查
 
 纹理解绑候选会话已正常退出，模型与地形显示问题仍存在。设备路径的单变量候选、版本检查、恢复和验收记录见 [GEOMETRY_DEVICE_TRIAL.md](docs/GEOMETRY_DEVICE_TRIAL.md)。HAL 配置工具通过自动测试，游戏画面尚未验收。
+
+HAL 对照反馈无改善，后续独立驱动版本对照见 [UNPATCHED_DRIVER_TRIAL.md](docs/UNPATCHED_DRIVER_TRIAL.md)。导出与导入匹配已静态核对，不作为 ABI 或游戏画面兼容证明。

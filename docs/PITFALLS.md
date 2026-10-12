@@ -21,3 +21,7 @@ CP932 终端直接输出部分韩文诊断内容会触发 UnicodeEncodeError。�
 
 DDrawCompat v0.7.1 离屏探针在完成 120 帧后，standard 和 hal 两组均观察到 AMD 驱动退出异常。渲染 stdout 已打印 PASS，但最终进程退出码为 `0xc0000409`，因此整个测试失败。移除显式 DLL 卸载后仍有异常，不能将卸载顺序认定为已解决根因。
 图形验收必须保存最终退出码，重复运行并核对退出稳定性；非零退出覆盖任何中间 PASS 标记。游戏读档的 `0xc000041d` 单独记录，不能用不同探针异常解释游戏根因。
+
+## InstallShield CAB 不按 Microsoft CAB 处理
+
+CD1 安装资源使用 DATA1.CAB、DATA2.HDR、DATA3.CAB。NanaZip 7.0 对 DATA1.CAB 报告不能作为 Cab archive 打开，不据此认定原镜像损坏。上游 Drv_unpatched 可作为固定来源候选，但在安装包驱动提取完成前，不宣称与原版镜像字节一致。
