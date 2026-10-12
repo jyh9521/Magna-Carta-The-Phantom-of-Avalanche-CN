@@ -191,7 +191,9 @@ int wmain(int argc, wchar_t** argv) {
             require(!fixture && !textureLifetime, "Focus guard requires an isolated unpatched borderless trial");
             require(sha256(workspace / L"Drv" / L"AsrD3DDrv.dll") == "00d443327abf56c94f9f088515ab29be63bab9650771a5cacdcef20ab85eff29", "Unsupported focus driver");
             require(sha256(workspace / L"ddraw.dll") == "f75f0ac48d2782f225c483dc2f1142303a513e8dd8a60793891ade89f64755ea", "Unsupported focus graphics layer");
-            require(sha256(workspace / L"DDrawCompat-MagnaCarta.ini") == "45f7df1d1c09bc3fea707d9da3dead33a6b21f48224639b7219656a572b3fa3a", "Unsupported focus graphics configuration");
+            auto focusConfig = sha256(workspace / L"DDrawCompat-MagnaCarta.ini");
+            require(focusConfig == "45f7df1d1c09bc3fea707d9da3dead33a6b21f48224639b7219656a572b3fa3a" ||
+                focusConfig == "9e9c39e6f51eee015fb90533fa67cd4bd66e076908c1a12ff15f70b28a1ead31", "Unsupported focus graphics configuration");
         }
         if (textureLifetime) {
             require(!fixture, "Texture lifetime is not a registry fixture option");

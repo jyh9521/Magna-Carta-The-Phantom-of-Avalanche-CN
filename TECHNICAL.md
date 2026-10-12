@@ -46,3 +46,5 @@ HAL 对照反馈无改善，后续独立驱动版本对照见 [UNPATCHED_DRIVER_
 P1 独立无边框候选和只读窗口遥测见 [BORDERLESS_UNPATCHED_TRIAL.md](docs/BORDERLESS_UNPATCHED_TRIAL.md)。图形安装工具显式区分两组驱动哈希，不放宽未知版本检查；客户区尺寸不作为内部渲染尺寸。当前只完成非交互样本和配置验证，游戏验收待执行。
 
 首次无边框运行画面正常，但失焦后原窗口持续最小化。WM_KILLFOCUS 自动最小化分支、默认关闭的 IAT 候选和测试记录见 [FOCUS_GUARD_CANDIDATE.md](docs/FOCUS_GUARD_CANDIDATE.md)。焦点恢复未通过验收，暂不推进 1080p 输出配置。
+
+失焦调用抑制已实际命中但仍切不回，后续固定源码调查与仅修改 AltTabFix 的对照见 [ACTIVATION_CANDIDATE.md](docs/ACTIVATION_CANDIDATE.md)。未知配置仍拒绝，正常基线保持不变。

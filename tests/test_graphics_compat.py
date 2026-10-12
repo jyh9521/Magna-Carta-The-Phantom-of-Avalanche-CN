@@ -146,6 +146,13 @@ class GraphicsCompatTests(unittest.TestCase):
         self.assertNotEqual(candidate['Drv/AsrD3DDrv.dll'], original['Drv/AsrD3DDrv.dll'])
         self.assertIn('Drv/AsrGlDrv.dll', candidate)
 
+    def test_activation_profile_roundtrip(self):
+        self.apply_fixture()
+        self.assertTrue(self.select_fixture('activation'))
+        self.assertEqual((self.game/module.CONFIG_NAME).read_bytes(),module.CONFIG+b'AltTabFix = noactivateapp(0)\n')
+        self.assertTrue(self.select_fixture('standard'))
+        self.assertEqual((self.game/module.CONFIG_NAME).read_bytes(),module.CONFIG)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -48,3 +48,4 @@
 - 实测反馈：未更新驱动与 DDrawCompat 下运行正常，Alt+Tab 后无法切回。
 - 会话 session-20261012-131317-425 退出码 1；只读遥测显示原窗口持续最小化、客户区 0×0。P1 焦点验收未通过。
 - MCAlpha 的 WM_KILLFOCUS 分支主动调用 SW_MINIMIZE 已静态定位；[版本锁定的调用抑制候选](FOCUS_GUARD_CANDIDATE.md) 已实现并通过自建样本，实际效果待验证。正常未更新驱动基线不变。
+- 后续实测确认抑制候选安装并命中仍切不回；会话 session-20261012-134848-617，退出码 1。候选单独处理验收失败，下一项 [DirectDraw 激活路径单变量对照](ACTIVATION_CANDIDATE.md) 已准备，实际修复待验证。

@@ -25,7 +25,8 @@ VERSION_INPUTS = {
         'Drv/AsrGlDrv.dll': '54d037a13d2e76dc06b6eff47219ca25f0af8cc1ec66683bd856b07088a518fc'},
 }
 CONFIG = b'FullscreenMode = borderless\nDisplayAspectRatio = app\nResolutionScale = app\nLogLevel = info\n'
-PROFILES = {'standard': CONFIG, 'hal': CONFIG + b'SupportedDevices = hal\n'}
+PROFILES = {'standard': CONFIG, 'hal': CONFIG + b'SupportedDevices = hal\n',
+            'activation': CONFIG + b'AltTabFix = noactivateapp(0)\n'}
 CONFIG_NAME = 'DDrawCompat-MagnaCarta.ini'
 STATE_NAME = '.graphics-compat.json'
 LAYER_NAMES = {'ddraw.dll', 'd3dimm.dll', 'd3d8.dll', 'd3d9.dll', 'dxgi.dll', 'opengl32.dll',
