@@ -4,7 +4,8 @@ param(
     [string]$Profile = '',
     [int]$Timeout = 0,
     [switch]$CaptureException,
-    [switch]$TextureLifetime
+    [switch]$TextureLifetime,
+    [string]$ObserverPython = ''
 )
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
@@ -15,6 +16,9 @@ $launcher = Join-Path $native 'workspace_launcher.exe'
 $shim = Join-Path $native 'workspace_profile.dll'
 foreach ($path in @($Workspace, $Profile, $launcher, $shim)) {
     if (-not (Test-Path -LiteralPath $path)) { throw "Required input missing: $path" }
+}
+if ($ObserverPython -and -not (Test-Path -LiteralPath $ObserverPython -PathType Leaf)) {
+    throw 'Window observer Python executable missing'
 }
 if (Get-Process -Name MagnaCarta,MCSetup -ErrorAction SilentlyContinue) {
     throw 'An existing game or settings process must be closed before testing'
@@ -44,3 +48,11 @@ $process = Start-Process -FilePath $launcher -ArgumentList ($arguments -join ' '
     -RedirectStandardError (Join-Path $output 'stderr.log') -PassThru
 $process.Id | Set-Content -LiteralPath (Join-Path $output 'launcher.pid')
 Write-Output "WORKSPACE_LAUNCH_STARTED pid=$($process.Id) logs=$output"
+if ($ObserverPython) {
+    $observer = Join-Path $PSScriptRoot 'observe_window.py'
+    $observerArgs = '"' + $observer + '" --session "' + $output + '" --seconds 120'
+    $reader = Start-Process -FilePath $ObserverPython -ArgumentList $observerArgs -WindowStyle Hidden `
+        -RedirectStandardOutput (Join-Path $output 'window-observer.stdout.log') `
+        -RedirectStandardError (Join-Path $output 'window-observer.stderr.log') -PassThru
+    Write-Output "WINDOW_OBSERVER_STARTED pid=$($reader.Id) read_only=true"
+}

@@ -42,3 +42,5 @@
 HAL 对照反馈无改善，后续独立驱动版本对照见 [UNPATCHED_DRIVER_TRIAL.md](docs/UNPATCHED_DRIVER_TRIAL.md)。导出与导入匹配已静态核对，不作为 ABI 或游戏画面兼容证明。
 
 未更新驱动副本已收到当前场景画面正常的实际反馈，并核实自然退出码 0，作为后续研究的可用显示基线保留。该结果不等于全部场景、中文、无盘或现代化增强验收通过；新实验使用独立副本。
+
+P1 独立无边框候选和只读窗口遥测见 [BORDERLESS_UNPATCHED_TRIAL.md](docs/BORDERLESS_UNPATCHED_TRIAL.md)。图形安装工具显式区分两组驱动哈希，不放宽未知版本检查；客户区尺寸不作为内部渲染尺寸。当前只完成非交互样本和配置验证，游戏验收待执行。

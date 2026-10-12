@@ -18,6 +18,12 @@ EXPECTED = {
     'MCAlpha.dll': '79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f',
     'Drv/AsrD3DDrv.dll': '27db21dee7dde8ca3463e11fab57cc0b7cf6a7ed3338c950b6b1181eed7959ed',
 }
+VERSION_INPUTS = {
+    'patched': EXPECTED,
+    'unpatched': {**EXPECTED,
+        'Drv/AsrD3DDrv.dll': '00d443327abf56c94f9f088515ab29be63bab9650771a5cacdcef20ab85eff29',
+        'Drv/AsrGlDrv.dll': '54d037a13d2e76dc06b6eff47219ca25f0af8cc1ec66683bd856b07088a518fc'},
+}
 CONFIG = b'FullscreenMode = borderless\nDisplayAspectRatio = app\nResolutionScale = app\nLogLevel = info\n'
 PROFILES = {'standard': CONFIG, 'hal': CONFIG + b'SupportedDevices = hal\n'}
 CONFIG_NAME = 'DDrawCompat-MagnaCarta.ini'
@@ -185,16 +191,17 @@ if __name__ == '__main__':
     parser.add_argument('--workspace', type=Path, required=True)
     parser.add_argument('--package', type=Path)
     parser.add_argument('--profile', choices=PROFILES, default='standard')
+    parser.add_argument('--driver-version', choices=VERSION_INPUTS, default='patched')
     args = parser.parse_args()
     ensure_idle()
     root = Path(__file__).resolve().parents[1] / 'build'
     if args.action == 'apply':
         if not args.package:
             parser.error('--package required for apply')
-        apply(args.workspace, root, package_dll(args.package), profile=args.profile)
+        apply(args.workspace, root, package_dll(args.package), expected=VERSION_INPUTS[args.driver_version], profile=args.profile)
         print(f'GRAPHICS_APPLY_PASS layer=DDrawCompat version=v0.7.1 profile={args.profile} original_files_changed=0 game_started=false')
     elif args.action == 'select-profile':
-        changed = select_profile(args.workspace, root, args.profile)
+        changed = select_profile(args.workspace, root, args.profile, expected=VERSION_INPUTS[args.driver_version])
         print(f'GRAPHICS_PROFILE_PASS profile={args.profile} changed={str(changed).lower()} original_files_changed=0 game_started=false')
     else:
         count = remove(args.workspace, root)

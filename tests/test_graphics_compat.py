@@ -137,6 +137,15 @@ class GraphicsCompatTests(unittest.TestCase):
         self.assertEqual((self.game / module.STATE_NAME).read_bytes(), original)
         self.assertEqual(len(list(self.game.iterdir())), 4)
 
+    def test_driver_version_matrix_is_explicit(self):
+        self.assertEqual(set(module.VERSION_INPUTS), {'patched', 'unpatched'})
+        original = module.VERSION_INPUTS['patched']
+        candidate = module.VERSION_INPUTS['unpatched']
+        self.assertEqual(candidate['MagnaCarta.exe'], original['MagnaCarta.exe'])
+        self.assertEqual(candidate['MCAlpha.dll'], original['MCAlpha.dll'])
+        self.assertNotEqual(candidate['Drv/AsrD3DDrv.dll'], original['Drv/AsrD3DDrv.dll'])
+        self.assertIn('Drv/AsrGlDrv.dll', candidate)
+
 
 if __name__ == '__main__':
     unittest.main()
