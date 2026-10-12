@@ -64,3 +64,5 @@ P0 第一阶段 [GLYPH_DISPLAY_PROBE.md](docs/GLYPH_DISPLAY_PROBE.md) 已构建�
 后续 Status 截图确认完整 `中文` 显示，会话自然退出码 0，本处资源回写链路通过首轮反馈验收。SGI 结构化 catalog 与固定版本 [SERIES_TERMS_AUDIT.md](docs/SERIES_TERMS_AUDIT.md) 已建立，87 项保持待复核；未启动大规模翻译或改变其他游戏资源。
 
 全量工作转入 [FULL_TRANSLATION_PIPELINE.md](docs/FULL_TRANSLATION_PIPELINE.md)：11,793 文件覆盖清点、3,992 结构字段、376 隔离字串候选，以及 BGR/TXRS 图片文字调查。提取完整范围与实际可回写范围分开记录；流程完成前不请求阶段性游戏测试或自行运行游戏。
+
+简体字覆盖新增 [NATIVE_GLYPH_MAPPING.md](docs/NATIVE_GLYPH_MAPPING.md) 的私有原生编码候选及可复现字形增量构建，实际两套字体静态生成6字。该候选未部署、未游戏验收，全文译文确定后统一重建全部映射与资源。
