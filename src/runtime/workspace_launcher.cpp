@@ -194,7 +194,8 @@ int wmain(int argc, wchar_t** argv) {
             auto focusConfig = sha256(workspace / L"DDrawCompat-MagnaCarta.ini");
             require(focusConfig == "45f7df1d1c09bc3fea707d9da3dead33a6b21f48224639b7219656a572b3fa3a" ||
                 focusConfig == "9e9c39e6f51eee015fb90533fa67cd4bd66e076908c1a12ff15f70b28a1ead31" ||
-                focusConfig == "ddfc51a2b79757204c67e41d840cca035e0f5b1a0794108905a65f6948a2ebfc", "Unsupported focus graphics configuration");
+                focusConfig == "ddfc51a2b79757204c67e41d840cca035e0f5b1a0794108905a65f6948a2ebfc" ||
+                focusConfig == "0c49061b62b51e4e4dc91458d8c09650d3233895528aea80fafff06ff6b64ea3", "Unsupported focus graphics configuration");
         }
         if (textureLifetime) {
             require(!fixture, "Texture lifetime is not a registry fixture option");

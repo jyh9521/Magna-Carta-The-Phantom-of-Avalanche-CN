@@ -159,6 +159,14 @@ class GraphicsCompatTests(unittest.TestCase):
         self.assertTrue(self.select_fixture('render2x'));self.assertTrue(self.select_fixture('activation'))
         self.assertEqual((self.game/module.CONFIG_NAME).read_bytes(),module.PROFILES['activation'])
 
+    def test_1080_render_profile_roundtrip(self):
+        self.apply_fixture();self.select_fixture('render2x')
+        original=(self.game/module.CONFIG_NAME).read_bytes()
+        self.assertTrue(self.select_fixture('render1080'))
+        self.assertEqual((self.game/module.CONFIG_NAME).read_bytes(),original.replace(b'app(2)',b'1920x1080(-1)'))
+        self.assertTrue(self.select_fixture('render2x'))
+        self.assertEqual((self.game/module.CONFIG_NAME).read_bytes(),original)
+
 
 if __name__ == '__main__':
     unittest.main()
