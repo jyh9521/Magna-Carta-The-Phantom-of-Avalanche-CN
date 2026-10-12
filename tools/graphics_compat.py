@@ -26,7 +26,8 @@ VERSION_INPUTS = {
 }
 CONFIG = b'FullscreenMode = borderless\nDisplayAspectRatio = app\nResolutionScale = app\nLogLevel = info\n'
 PROFILES = {'standard': CONFIG, 'hal': CONFIG + b'SupportedDevices = hal\n',
-            'activation': CONFIG + b'AltTabFix = noactivateapp(0)\n'}
+            'activation': CONFIG + b'AltTabFix = noactivateapp(0)\n',
+            'render2x': CONFIG.replace(b'ResolutionScale = app\n',b'ResolutionScale = app(2)\n') + b'AltTabFix = noactivateapp(0)\n'}
 CONFIG_NAME = 'DDrawCompat-MagnaCarta.ini'
 STATE_NAME = '.graphics-compat.json'
 LAYER_NAMES = {'ddraw.dll', 'd3dimm.dll', 'd3d8.dll', 'd3d9.dll', 'dxgi.dll', 'opengl32.dll',

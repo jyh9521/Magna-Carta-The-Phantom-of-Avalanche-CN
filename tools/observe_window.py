@@ -24,6 +24,16 @@ def geometry(style, window, client, monitor):
                 covers_monitor=list(window) == list(monitor))
 
 
+def target_status(running, query_ok, path_matches):
+    if not running:
+        return 'target_ended'
+    if not query_ok:
+        return 'identity_query_failed'
+    if not path_matches:
+        return 'identity_changed'
+    return 'active'
+
+
 def api():
     if os.name != 'nt':
         raise ValueError('Windows required')
@@ -46,6 +56,8 @@ def api():
     k.CloseHandle.argtypes = [w.HANDLE]
     k.QueryFullProcessImageNameW.argtypes = [w.HANDLE,w.DWORD,w.LPWSTR,c.POINTER(w.DWORD)]
     k.QueryFullProcessImageNameW.restype = w.BOOL
+    k.GetExitCodeProcess.argtypes = [w.HANDLE,c.POINTER(w.DWORD)]
+    k.GetExitCodeProcess.restype = w.BOOL
     # Only affects this observer, never the game or desktop display mode.
     u.SetProcessDpiAwarenessContext.argtypes = [w.HANDLE]
     u.SetProcessDpiAwarenessContext(c.c_void_p(-4))
@@ -114,27 +126,41 @@ def observe(session, root, seconds):
     u.EnumWindows.argtypes = [callback_type,w.LPARAM]
     rows=[]; status='duration_complete'
     end=time.monotonic()+seconds
-    while time.monotonic()<end:
-        handle=k.OpenProcess(0x1000,False,pid)
-        if not handle: status='target_ended';break
-        try:
+    # Retain the process handle: a later process reusing the PID is not the target.
+    handle=k.OpenProcess(0x1000,False,pid)
+    try:
+        while handle and time.monotonic()<end:
+            exit_code=w.DWORD()
+            if not k.GetExitCodeProcess(handle,c.byref(exit_code)):
+                status='process_query_failed';break
+            if exit_code.value!=259:
+                status='target_ended';break
             path=c.create_unicode_buffer(32768);size=w.DWORD(32768)
-            if not k.QueryFullProcessImageNameW(handle,0,path,c.byref(size)) or Path(path.value).resolve()!=expected:
-                raise ValueError('Target identity changed')
-        finally: k.CloseHandle(handle)
-        frame=[]
-        @callback_type
-        def collect(hwnd, unused):
-            owner=w.DWORD();u.GetWindowThreadProcessId(hwnd,c.byref(owner))
-            if owner.value==pid:
-                try: frame.append(read_window(u,hwnd))
-                except OSError: pass
-            return True
-        u.EnumWindows(collect,0)
-        rows.append(dict(elapsed=round(time.monotonic()-started,3),windows=frame));time.sleep(1)
+            query_ok=bool(k.QueryFullProcessImageNameW(handle,0,path,c.byref(size)))
+            # The target may exit between the running check and path query.
+            if not k.GetExitCodeProcess(handle,c.byref(exit_code)):
+                status='process_query_failed';break
+            running=exit_code.value==259
+            identity=target_status(running,query_ok,query_ok and Path(path.value).resolve()==expected)
+            if identity!='active':
+                status=identity;break
+            frame=[]
+            @callback_type
+            def collect(hwnd, unused):
+                owner=w.DWORD();u.GetWindowThreadProcessId(hwnd,c.byref(owner))
+                if owner.value==pid:
+                    try: frame.append(read_window(u,hwnd))
+                    except OSError: pass
+                return True
+            u.EnumWindows(collect,0)
+            rows.append(dict(elapsed=round(time.monotonic()-started,3),windows=frame));time.sleep(1)
+        if not handle:
+            status='target_ended'
+    finally:
+        if handle:k.CloseHandle(handle)
     report=dict(schema=1,pid=pid,game=str(expected),status=status,samples=rows,
                 render_resolution='not measured; client dimensions are not render dimensions',
-                read_only=True,game_started=False,display_mode_changed=False)
+                read_only=True,observer_started_game=False,observer_changed_display_mode=False)
     with output.open('x',encoding='utf-8') as f:json.dump(report,f,indent=2)
     print(f'WINDOW_OBSERVATION_SAVED samples={len(rows)} status={status} read_only=true')
 

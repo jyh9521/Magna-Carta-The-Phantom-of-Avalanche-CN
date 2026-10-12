@@ -153,6 +153,12 @@ class GraphicsCompatTests(unittest.TestCase):
         self.assertTrue(self.select_fixture('standard'))
         self.assertEqual((self.game/module.CONFIG_NAME).read_bytes(),module.CONFIG)
 
+    def test_render_scale_changes_only_one_setting(self):
+        self.assertEqual(module.PROFILES['render2x'],module.PROFILES['activation'].replace(b'ResolutionScale = app\n',b'ResolutionScale = app(2)\n'))
+        self.apply_fixture();self.select_fixture('activation')
+        self.assertTrue(self.select_fixture('render2x'));self.assertTrue(self.select_fixture('activation'))
+        self.assertEqual((self.game/module.CONFIG_NAME).read_bytes(),module.PROFILES['activation'])
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -48,3 +48,5 @@ P1 独立无边框候选和只读窗口遥测见 [BORDERLESS_UNPATCHED_TRIAL.md]
 首次无边框运行画面正常，但失焦后原窗口持续最小化。WM_KILLFOCUS 自动最小化分支、默认关闭的 IAT 候选和测试记录见 [FOCUS_GUARD_CANDIDATE.md](docs/FOCUS_GUARD_CANDIDATE.md)。焦点恢复未通过验收，暂不推进 1080p 输出配置。
 
 失焦调用抑制已实际命中但仍切不回，后续固定源码调查与仅修改 AltTabFix 的对照见 [ACTIVATION_CANDIDATE.md](docs/ACTIVATION_CANDIDATE.md)。未知配置仍拒绝，正常基线保持不变。
+
+activation 组合已实际完成四五次切换并正常退出，后续独立 [RENDER_SCALE_TRIAL.md](docs/RENDER_SCALE_TRIAL.md) 先验证整数倍渲染目标，保持已通过配置不变。退出竞争导致观察器未保存数据的问题已修复；旧会话缺失采样不重建。
