@@ -10,6 +10,7 @@ void motion60TestBlend(const MotionMatrix&,const MotionMatrix&,float,MotionMatri
 using MotionRenderFn=void(__thiscall*)(void*,int,MotionMatrix*,int,int,int,int,int);
 using MotionAbsoluteFn=void(__cdecl*)(void*,unsigned,MotionMatrix*,MotionMatrix*);
 void motion60TestConfigure(MotionRenderFn,MotionAbsoluteFn);
+void motion60TestSetTime(double milliseconds);
 void motion60TestRender(void*,int);
 void motion60TestAbsolute(void*,unsigned,MotionMatrix*,MotionMatrix*);
 #endif

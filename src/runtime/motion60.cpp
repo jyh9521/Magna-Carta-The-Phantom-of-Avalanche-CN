@@ -40,6 +40,9 @@ Render originalRender=nullptr;Absolute originalAbsolute=nullptr;BYTE* engineBase
 void(*trace)(const wchar_t*)=nullptr;
 struct Cache{void* action=nullptr;void* bones=nullptr;Matrix* pose=nullptr;int frame=0;LONGLONG changed=0,last=0;std::vector<Matrix> previous,current;};
 std::map<void*,Cache> caches;SRWLOCK cacheLock=SRWLOCK_INIT;LONGLONG frequency=0;
+#ifdef MOTION60_TEST
+bool fixtureClock=false;LONGLONG fixtureTicks=0;
+#endif
 struct Context{void* object;int frame;Matrix* pose=nullptr;std::vector<Matrix> baseline;Context* parent;};
 thread_local Context* active=nullptr;volatile LONG changes=0;
 bool readable(const void* address,size_t length){
@@ -65,6 +68,9 @@ void __cdecl absoluteHook(void* bones,unsigned root,Matrix* poses,Matrix* parent
  if(!readable(data,0x20)){originalAbsolute(bones,root,poses,parent);return;}unsigned count=*reinterpret_cast<unsigned*>(data+0x14);
  if(!count||count>512||!readable(poses,count*sizeof(Matrix))){originalAbsolute(bones,root,poses,parent);return;}
  std::vector<Matrix> current(poses,poses+count),interpolated=current;LARGE_INTEGER now{};QueryPerformanceCounter(&now);
+#ifdef MOTION60_TEST
+ if(fixtureClock)now.QuadPart=fixtureTicks;
+#endif
  struct Lock {bool held=true;Lock(){AcquireSRWLockExclusive(&cacheLock);}void release(){if(held){ReleaseSRWLockExclusive(&cacheLock);held=false;}}~Lock(){release();}} lock;
  if(caches.find(active->object)==caches.end()&&caches.size()>=128){
 for(auto i=caches.begin();i!=caches.end();)if(now.QuadPart-i->second.last>frequency/4)i=caches.erase(i);else ++i;
@@ -124,10 +130,8 @@ bool removeMotion60(HMODULE engine){return engineBase==reinterpret_cast<BYTE*>(e
 bool motion60TestSetMapped(BYTE* p,size_t n,MotionAbsoluteFn a,bool enabled){return setMapped(p,n,reinterpret_cast<Absolute>(a),enabled,nullptr);}
 void motion60TestInitialize(BYTE* p,MotionAbsoluteFn a){memset(p,0,0x10b000);auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);d->e_magic=IMAGE_DOS_SIGNATURE;d->e_lfanew=0x100;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+0x100);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0x04,0x03,0x00,0x00,0x56,0x57};memcpy(p+0x3b0c0,prefix,sizeof(prefix));BYTE call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);memcpy(p+0x3b7fb,call,sizeof(call));*reinterpret_cast<DWORD*>(p+0xbd9f8)=reinterpret_cast<DWORD>(p+0x3b0c0);*reinterpret_cast<DWORD*>(p+0xbd0a4)=reinterpret_cast<DWORD>(a);}
 void motion60TestConfigure(MotionRenderFn r,MotionAbsoluteFn a){originalRender=reinterpret_cast<Render>(r);originalAbsolute=reinterpret_cast<Absolute>(a);LARGE_INTEGER f{};QueryPerformanceFrequency(&f);frequency=f.QuadPart;caches.clear();}
+void motion60TestSetTime(double milliseconds){fixtureClock=true;fixtureTicks=static_cast<LONGLONG>(milliseconds*frequency/1000.0);}
 void motion60TestRender(void* o,int f){renderHook(o,nullptr,f,nullptr,0,0,0,0,0);}
 void motion60TestAbsolute(void* b,unsigned r,MotionMatrix* p,MotionMatrix* parent){absoluteHook(b,r,reinterpret_cast<Matrix*>(p),reinterpret_cast<Matrix*>(parent));}
 void motion60TestBlend(const MotionMatrix& a,const MotionMatrix& b,float t,MotionMatrix& out){blend(reinterpret_cast<const Matrix&>(a),reinterpret_cast<const Matrix&>(b),t,reinterpret_cast<Matrix&>(out));}
 #endif
-
-
-

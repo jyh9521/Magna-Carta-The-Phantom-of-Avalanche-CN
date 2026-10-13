@@ -168,5 +168,3 @@ void configureWideUiWriteFailureFixture(int site){failingWrite=site;}
 void initializeWideUiFixture(BYTE* image){memset(image,0,0x10b000);auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x80;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(image+0x80);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.SizeOfImage=0x10b000;expected(image);for(auto& s:sites)memcpy(image+s.rva,s.original,s.count);}
 void configureWideUiMouseFixture(Warp fn){originalWarp=fn;}
 #endif
-
-

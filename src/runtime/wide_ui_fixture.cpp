@@ -42,5 +42,3 @@ int main(){try{
  *reinterpret_cast<int*>(a+1)=800;callA();check(*reinterpret_cast<int*>(e+0xf1b48)==800);VirtualFree(e,0,MEM_RELEASE);
  std::cout<<"WIDE_UI_FIXTURE PASS checks="<<checks<<" widths=853,1067 baseline=unchanged window=physical_original mouse=roundtrip compass=anchored guards=rejected rollback=exact commercial_code_executed=false game_started=false\n";return 0;
 }catch(const std::exception& ex){std::cerr<<ex.what()<<'\n';return 1;}}
-
-
