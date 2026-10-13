@@ -53,6 +53,15 @@ std::string sha256(const fs::path& path) {
     return output.str();
 }
 
+bool supportedExecutable(const fs::path& path) {
+    const auto digest = sha256(path);
+    if (digest == "be2ae107373835defc6ec33643eaf435dcc5c882ea0b6e3c47032cd013690651") return true;
+#ifdef WORKSPACE_EXE_SHA256
+    if (digest == WORKSPACE_EXE_SHA256) return true;
+#endif
+    return false;
+}
+
 void copyTree(HKEY source, HKEY target) {
     for (DWORD i = 0;; ++i) {
         wchar_t name[512]; DWORD length = 512, bytes = 65536, type;
@@ -173,7 +182,7 @@ int wmain(int argc, wchar_t** argv) {
         require(!workspace.empty(),"Missing workspace");
         if (verifyOnly) {
             require(!fixture,"Verification requires a version-locked game workspace");
-            require(sha256(workspace/L"MagnaCarta.exe")=="be2ae107373835defc6ec33643eaf435dcc5c882ea0b6e3c47032cd013690651","Unsupported game executable");
+            require(supportedExecutable(workspace/L"MagnaCarta.exe"),"Unsupported game executable");
             auto engine=sha256(workspace/L"MCAlpha.dll");
             bool accepted=engine=="79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f";
 #ifdef LOCALE_ENGINE_SHA256
@@ -189,7 +198,7 @@ int wmain(int argc, wchar_t** argv) {
         fs::path exe = workspace / (fixture ? L"registry_probe.exe" : L"MagnaCarta.exe");
         require(!nativeTextStep || !fixture, "Native text step requires a version-locked game workspace");
         if (!fixture) {
-            require(sha256(exe) == "be2ae107373835defc6ec33643eaf435dcc5c882ea0b6e3c47032cd013690651", "Unsupported game executable");
+            require(supportedExecutable(exe), "Unsupported game executable");
             auto engine=sha256(workspace/L"MCAlpha.dll");
             bool accepted=engine=="79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f";
 #ifdef LOCALE_ENGINE_SHA256

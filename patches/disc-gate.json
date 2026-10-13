@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "resource": "MagnaCarta.exe",
+  "source_size": 45056,
+  "source_sha256": "be2ae107373835defc6ec33643eaf435dcc5c882ea0b6e3c47032cd013690651",
+  "target_sha256": "6046b29600b5e009903b3495bd11df0b4d89fc3545adde028193ea9fbff8d4de",
+  "changes": [
+    {
+      "offset": 4133,
+      "expected_hex": "bb41000000",
+      "replacement_hex": "e9a7000000",
+      "branch_va": "0x401025",
+      "destination_va": "0x4010d1",
+      "meaning": "Skip optical-drive/MC_03 scan; enter original MCAlpha LoadLibrary block without FindClose on a nonexistent handle"
+    }
+  ],
+  "game_started": false,
+  "in_game_verified": false,
+  "evidence": "docs/DISC_GATE.md"
+}
