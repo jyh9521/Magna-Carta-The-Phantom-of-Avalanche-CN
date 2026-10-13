@@ -61,3 +61,5 @@ python tools/build_text_resources.py --source SOURCE_GAME --catalog CATALOG --co
 ## 图片、模块与视频文字
 
 源绑定语言数据、独立候选重建命令和验证范围见 [媒体汉化](docs/MEDIA_LOCALIZATION.md)。图片与模块生成器保持通用，语言数据单独存放；不启动游戏。
+
+系统提示Unicode候选新增9字段6消息、默认关闭的版本锁定MessageBoxA导入适配及自建无窗口回归；详见docs/SYSTEM_MESSAGES.md。未启动游戏、未部署到安装目录；完整候选结合及动态私有字槽参数仍待处理。

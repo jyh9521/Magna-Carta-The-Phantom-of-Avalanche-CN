@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "source_sha256": "79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f",
+  "source_size": 1089536,
+  "source_encoding": "cp949",
+  "code_page": 949,
+  "fields": [
+    {
+      "offset": 864996,
+      "expected_hex": "253034642e6f6273c0c720256420bdc3c4f6bdbab0a120bef8b4c220bdbdb7d428256429c0bb20c2fcc1b6c7dfbdc0b4cfb4d92e",
+      "target": "%04d.obs的序列%d引用了不存在的槽位（%d）。",
+      "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
+    },
+    {
+      "offset": 865052,
+      "expected_hex": "253034642e6f6273c0c720256420bdc3c4f6bdbab0a120bef8b4c220c0ccb9ccc1f628256429c0bb20c2fcc1b6c7dfbdc0b4cfb4d92e",
+      "target": "%04d.obs的序列%d引用了不存在的图像（%d）。",
+      "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
+    },
+    {
+      "offset": 865612,
+      "expected_hex": "253034642e6f6273c0c720256420bdc3c4f6bdbab0a120bef8b4c220bdbdb7d428256429c0bb20c2fcc1b6c7dfbdc0b4cfb4d92e",
+      "target": "%04d.obs的序列%d引用了不存在的槽位（%d）。",
+      "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
+    },
+    {
+      "offset": 865668,
+      "expected_hex": "253034642e6f6273c0c720256420bdc3c4f6bdbab0a120bef8b4c220c0ccb9ccc1f628256429c0bb20c2fcc1b6c7dfbdc0b4cfb4d92e",
+      "target": "%04d.obs的序列%d引用了不存在的图像（%d）。",
+      "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
+    },
+    {
+      "offset": 897864,
+      "expected_hex": "536176652046696c65c0cc20bcd5bbf3b5c7befab0c5b3aa20c1b6c0dbb5c7befabdc0b4cfb4d921",
+      "target": "存档文件已损坏或被修改！",
+      "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
+    },
+    {
+      "offset": 903760,
+      "expected_hex": "536176652046696c6520b9f6c1afc0cc20b4d9b8a8b4cfb4d92e2028c7f6c0e7b9f6c1af3a25642c20c6c4c0cfb9f6c1af3a256429",
+      "target": "存档版本不同。（当前版本：%d，文件版本：%d）",
+      "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
+    },
+    {
+      "offset": 903932,
+      "expected_hex": "536176652046696c6520b9f6c1afc0cc20b4d9b8a8b4cfb4d92e2028c7f6c0e7b9f6c1af3a25642c20c6c4c0cfb9f6c1af3a256429",
+      "target": "存档版本不同。（当前版本：%d，文件版本：%d）",
+      "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
+    },
+    {
+      "offset": 926112,
+      "expected_hex": "257320b4c220c6c4c6bcb5a5c0ccc5b8bfa120bef8b4d92e",
+      "target": "队伍数据中不存在%s。",
+      "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
+    },
+    {
+      "offset": 957516,
+      "expected_hex": "466f6c6c6f772043616d657261b0a120bcb3c4a1b5c7c1f620becabec620c0d3c0c7b7ce20c7d1b4eb20bcb3c4a1c7cfbfb4bdc0b4cfb4d92e",
+      "target": "未设置跟随摄像机，已自动创建一个。",
+      "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
+    }
+  ],
+  "envelopes": [
+    {
+      "source": "다음과 같은 치명적인 오류로 인해 프로그램을 종료합니다! ( Error Level 1 )\n\n",
+      "target": "发生以下致命错误，程序将退出！（错误级别1）\n\n"
+    }
+  ],
+  "captions": [
+    {
+      "source": "Critical - Magna Carta",
+      "target": "严重错误 - Magna Carta"
+    }
+  ]
+}

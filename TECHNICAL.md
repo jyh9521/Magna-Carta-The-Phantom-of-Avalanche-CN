@@ -88,3 +88,5 @@ MCBeta版本/资源显示保护组件性质，不将其假定为第二套游戏�
 ## 媒体显示域验证
 
 game_native_font、UTF-16 RT_DIALOG与MessageBoxA分别处理。13处原生字段的私有字槽按完整1,898字形映射编码/逆解码；9处ANSI系统诊断保持原字节，尚未提供Unicode适配。MCAlpha源大小和全SHA-256锁定，数据槽和资源Size之外的字节不改；可执行节进一步逐字节比较。未载入或执行商业DLL。图片tile布局只取得静态证据，不能当作运行时绘制路径证明。见MEDIA_LOCALIZATION.md。
+
+系统提示Unicode候选新增9字段6消息、默认关闭的版本锁定MessageBoxA导入适配及自建无窗口回归；详见docs/SYSTEM_MESSAGES.md。未启动游戏、未部署到安装目录；完整候选结合及动态私有字槽参数仍待处理。

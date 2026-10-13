@@ -176,3 +176,7 @@ report.json 明确 `all_text_extracted=false`、`all_translated=false`；只有�
 新增170份单图248处文字及9组26个tile的15处文字；包含第二套开篇誓言六行。模块13条原生字库提示及设置对话框29处目标采用分离显示域。两段视频5,267帧离线回写，并保留原压缩音频。构建细节、复核修正及未完成范围见 [媒体汉化](MEDIA_LOCALIZATION.md)。4,137结构字段结果仍独立计数，不因媒体候选增量把整体状态改为100%。
 
 本批提交基线245项、修改后288项单元测试均通过，199份资源重复构建逐字节一致。18段原视频容器原样往返，两段候选音频解码PCM与原始完全一致，可执行节不变。199份独立回滚副本恢复原字节，中文候选保持改变；3,574项来源清单摘要不变。四份实际证据位于忽略的build/media-localization-evidence-verified/：MODIFIED_FILE.dll、DIFF_FILE.json、VERIFICATION.txt、可执行ROLLBACK.sh。低清英文和装饰书页/符号24份按直接用户决定保留，不计作译文。未部署、未启动游戏。
+
+系统提示Unicode候选新增9字段6消息、默认关闭的版本锁定MessageBoxA导入适配及自建无窗口回归；详见SYSTEM_MESSAGES.md。未启动游戏、未部署到安装目录；完整候选结合及动态私有字槽参数仍待处理。
+
+系统消息本轮：提交基线288项及修改后293项单元测试通过；9字段6规则重复生成一致。自建IAT基线10次ANSI，修改后9次Unicode与1次ANSI；追加字节版本反例退出125。隔离profile副本回滚原字节并恢复同输入基线行为，修改候选保留。证据在忽略的build/system-message-evidence/（MODIFIED_FILE.dll、DIFF_FILE.patch、VERIFICATION.txt、可执行ROLLBACK.sh），产物为自建样本，不是商业MCAlpha。未启动游戏、未部署。

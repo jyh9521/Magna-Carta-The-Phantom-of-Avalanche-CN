@@ -4,6 +4,7 @@
 #include "texture_lifetime.h"
 #include "focus_guard.h"
 #include "native_text_step.h"
+#include "system_messages.h"
 
 namespace {
 wchar_t session[512]{};
@@ -12,9 +13,14 @@ wchar_t captureHelper[32768]{};
 bool textureLifetime = false;
 bool focusGuard = false;
 bool nativeTextStep = false;
+bool systemMessages = false;
 wchar_t textureDriverPath[32768]{};
 using MessageFunction = int(WINAPI*)(HWND, LPCSTR, LPCSTR, UINT);
 MessageFunction originalExceptionMessage = MessageBoxA;
+MessageFunction originalSystemMessage = MessageBoxA;
+int WINAPI localizedSystemMessage(HWND owner,LPCSTR text,LPCSTR caption,UINT flags) {
+    return dispatchSystemMessage(owner,text,caption,flags,originalSystemMessage,MessageBoxW);
+}
 constexpr char gameKey[] = "SOFTWARE\\Softmax\\MagnaCarta";
 
 void trace(const wchar_t* message) {
@@ -148,9 +154,14 @@ void patch(HMODULE module) {
         }
         trace(L"NATIVE_TEXT_STEP_READY");
     }
+    bool localizedModule=systemMessages && !_wcsicmp(base,L"MCAlpha.dll");
+    if (localizedModule && !systemMessageModuleMatches(module)) {
+        trace(L"SYSTEM_MESSAGES_REJECTED");ExitProcess(125);
+    }
     auto dir = nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT];
     if (!dir.VirtualAddress || dir.VirtualAddress >= nt->OptionalHeader.SizeOfImage) return;
     unsigned changes = 0;
+    bool systemSlotPatched=false;
     auto desc = reinterpret_cast<IMAGE_IMPORT_DESCRIPTOR*>(bytes + dir.VirtualAddress);
     for (; desc->Name; ++desc) {
         if (!desc->OriginalFirstThunk) continue;
@@ -169,16 +180,23 @@ void patch(HMODULE module) {
             if (!strcmp(reinterpret_cast<char*>(name), "LoadLibraryW")) replacement = reinterpret_cast<void*>(&loadW);
             if (!strcmp(reinterpret_cast<char*>(name), "RegOpenKeyExA")) replacement = reinterpret_cast<void*>(&openKey);
             if (!strcmp(reinterpret_cast<char*>(name), "RegCreateKeyExA")) replacement = reinterpret_cast<void*>(&createKey);
+            bool messageSlot=localizedModule && !strcmp(reinterpret_cast<char*>(name),"MessageBoxA");
+            if (messageSlot) replacement=reinterpret_cast<void*>(&localizedSystemMessage);
+            if (messageSlot && slots->u1.Function==reinterpret_cast<DWORD>(replacement)) systemSlotPatched=true;
             if (!replacement || slots->u1.Function == reinterpret_cast<DWORD>(replacement)) continue;
             DWORD previous;
             if (!VirtualProtect(&slots->u1.Function, sizeof(DWORD), PAGE_READWRITE, &previous)) continue;
             if (exceptionModule) originalExceptionMessage = reinterpret_cast<MessageFunction>(slots->u1.Function);
+            if (messageSlot) originalSystemMessage=reinterpret_cast<MessageFunction>(slots->u1.Function);
             InterlockedExchange(reinterpret_cast<LONG*>(&slots->u1.Function), reinterpret_cast<LONG>(replacement));
+            if (messageSlot) systemSlotPatched=true;
             DWORD ignored;
             VirtualProtect(&slots->u1.Function, sizeof(DWORD), previous, &ignored);
             ++changes;
         }
     }
+    if (localizedModule && !systemSlotPatched) {trace(L"SYSTEM_MESSAGES_IMPORT_REJECTED");ExitProcess(125);}
+    if (localizedModule) trace(L"SYSTEM_MESSAGES_READY");
     if (changes) {
         wchar_t text[33000];
         swprintf_s(text, L"IAT_READY changes=%u module=%s", changes, path);
@@ -199,6 +217,7 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) {
         textureLifetime = GetEnvironmentVariableW(L"MC_TEXTURE_LIFETIME", option, 8) && !wcscmp(option, L"1");
         focusGuard = GetEnvironmentVariableW(L"MC_FOCUS_GUARD", option, 8) && !wcscmp(option, L"1");
         nativeTextStep = GetEnvironmentVariableW(L"MC_NATIVE_TEXT_STEP", option, 8) && !wcscmp(option, L"1");
+        systemMessages = GetEnvironmentVariableW(L"MC_SYSTEM_MESSAGES",option,8) && !wcscmp(option,L"1");
         GetEnvironmentVariableW(L"MC_TEXTURE_DRIVER", textureDriverPath, 32768);
         patch(GetModuleHandleW(nullptr));
         trace(L"PROFILE_ATTACHED");

@@ -42,3 +42,5 @@ Python依赖Pillow、fontTools、pefile；视频另需FFmpeg/ffprobe和显式提
 证据只证明记录中的输入和版本。候选及回滚副本不是完整发行包。
 
 艺术图采用透明叠加中文标题，不擦除原英文品牌、原文或复杂背景；文字之外的像素逐字节保留。该双语呈现方式与一般菜单的替换式回写分开记录。
+
+系统提示已有源绑定Unicode/IAT候选，9字段6消息及自建导入表拦截实测见[SYSTEM_MESSAGES.md](SYSTEM_MESSAGES.md)。当前版本仍绑定原MCAlpha，全文候选组装与私有字槽动态参数转换另计。
