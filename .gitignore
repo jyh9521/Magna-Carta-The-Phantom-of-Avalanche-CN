@@ -6,7 +6,7 @@ docs/LOCALIZATION_STANDARD.md
 build/
 dist/
 out/
-runtime/
+/runtime/
 
 # Temporary and working directories
 tmp/

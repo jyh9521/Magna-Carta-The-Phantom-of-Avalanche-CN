@@ -10,6 +10,11 @@ import prepare_shared_runtime as tool
 
 
 class SharedRuntimeTests(unittest.TestCase):
+    def test_ignore_generated_runtime_not_runtime_source(self):
+        rules=(Path(__file__).resolve().parents[1]/'.gitignore').read_text(encoding='utf8').splitlines()
+        self.assertIn('/runtime/',rules)
+        self.assertNotIn('runtime/',rules)
+
     def inputs(self,root):
         game=root/'game'; prior=game/'.advanced-runtime'; prior.mkdir(parents=True)
         locale=game/'.locale-runtime'; (locale/'session-owned').mkdir(parents=True)
