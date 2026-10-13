@@ -170,3 +170,9 @@ report.json 明确 `all_text_extracted=false`、`all_translated=false`；只有�
 427份资源、两套1,898字形字库与清单重复构建逐字节一致，4,137目标逐条逆解码或保留字节检查一致。提交基线230项通过，新增完整FPB和固定表回归后245项通过。独立0307 FPB恢复原始字节及54个tag；427份资源与两份字库共429个隔离副本进一步全部恢复原字节，中文候选保持改变。实际证据在忽略的`build/structured-completion-evidence/`，包括MODIFIED_FILE.fpb、DIFF_FILE.json、VERIFICATION.txt及可执行ROLLBACK.sh。
 
 默认完整catalog门禁已通过，不再为此构建使用`--allow-partial`。`catalog_complete=true`只指本结构目录；`all_game_text_complete=false`、`deployed=false`、`game_started=false`及`in_game_verified=false`继续保留。图片目录仍有24份可靠转录缺口及3份独立残片，图片回写、视频、用户可见硬编码与系统对话框仍需完成。完整清单和不足不会因结构资源完成而删除。
+
+## 媒体候选离线回建
+
+新增170份单图248处文字及9组26个tile的15处文字；包含第二套开篇誓言六行。模块13条原生字库提示及设置对话框29处目标采用分离显示域。两段视频5,267帧离线回写，并保留原压缩音频。构建细节、复核修正及未完成范围见 [媒体汉化](MEDIA_LOCALIZATION.md)。4,137结构字段结果仍独立计数，不因媒体候选增量把整体状态改为100%。
+
+本批提交基线245项、修改后288项单元测试均通过，199份资源重复构建逐字节一致。18段原视频容器原样往返，两段候选音频解码PCM与原始完全一致，可执行节不变。199份独立回滚副本恢复原字节，中文候选保持改变；3,574项来源清单摘要不变。四份实际证据位于忽略的build/media-localization-evidence-verified/：MODIFIED_FILE.dll、DIFF_FILE.json、VERIFICATION.txt、可执行ROLLBACK.sh。低清英文和装饰书页/符号24份按直接用户决定保留，不计作译文。未部署、未启动游戏。

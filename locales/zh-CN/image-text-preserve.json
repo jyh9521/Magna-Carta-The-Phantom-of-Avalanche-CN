@@ -1,0 +1,200 @@
+{
+  "schema": 1,
+  "authority": "direct_user_reply",
+  "request": "不做就行。",
+  "decision_context": "BGR 0019–0024 tiny English and partially legible TXRS book/symbol textures",
+  "resources": [
+    {
+      "resource": "BGR/0019.BGR",
+      "source_sha256": "5eacfdbbe8c28e769e9466d50d6e26220350bce2b99e27b94088d61be21236f6",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "BGR/0020.BGR",
+      "source_sha256": "e859d1253abfe6765f90689d2fdd114fed47c71f820762ded92733c3872c830b",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "BGR/0021.BGR",
+      "source_sha256": "26e1a873d1b0e0e7b1c20946d6ba3f73d604ed55b2adf4d7809feda2175cb8d3",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "BGR/0022.BGR",
+      "source_sha256": "ea61ba4876bf168728c37d9a6082247fe76755dc73647224d40d815a04c5bb17",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "BGR/0023.BGR",
+      "source_sha256": "95eca65f390585fd39f0c85603fdfca3906c6d0600557279a0b1639dee9f62eb",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "BGR/0024.BGR",
+      "source_sha256": "3653c19673b4dfb6c74ea867b189536ab519bd321909b4933cf29438c9cf44d5",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/1856.txr",
+      "source_sha256": "340fca00e981ecb4ada1d1f5ea213459014b53f2a3c20d074d5b17372dd79141",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/1857.txr",
+      "source_sha256": "fa8230180ba26cbf915648cd46df8ba1e844571d80016f27e13bbac2302335ce",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/3260.txr",
+      "source_sha256": "cf6645ba6ecaa0472a6049e0c637f9730b2bdaf88273689f219853ab542540cf",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/3600.txr",
+      "source_sha256": "1de1729b769d1ea85ed71ebbfe4ea39379cbb276a86b2980bea440f85ad4622a",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/3601.txr",
+      "source_sha256": "32445e112005f69c26a5f3f3e610ca2c707ced173135b409dfd223783812a830",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/3735.txr",
+      "source_sha256": "98d96f1d1c0e18f3a3416a2ea3ed3f7cc761fd2f7bf96af1c9a5400831bcc1b0",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/3736.txr",
+      "source_sha256": "2e2039005b1190e288c0b82af6e34242542f8739d9864e275a746bfdf74354c8",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/3737.txr",
+      "source_sha256": "129c7a3c5ab2d9c25ed0df569a6cf341e1c9be1b379344a0c40b88c956c4df39",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/3969.txr",
+      "source_sha256": "eec5fc069034d996de3eaa39e900d627af118f55885581fe15a0a12eb515e930",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/3970.txr",
+      "source_sha256": "d85537e04e964bf789faeadbb5416e3bea28c9b56bc2ff56ed6ac973dd4b4017",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/3974.txr",
+      "source_sha256": "544ebb96ad1b8cba75a6fac703c46180787bc8dc6f236920f925db6289f3641c",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/5060.txr",
+      "source_sha256": "10ddb3578693d3539e323c34ea260042e7fd22e10a7885007ae3cf416ab78d2d",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/5073.txr",
+      "source_sha256": "159fce5b60aad967f9ef1ad7c145d8fcc96871855b3b76e1c878d50d2b688c4b",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/5074.txr",
+      "source_sha256": "1ff219b6330e6429bb541b1211ed73a459adaebab8429ac58a3f49691ead0d68",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/5075.txr",
+      "source_sha256": "0920e7a0a3598d26aefa953e65564ed5312f50097ee476e3c8017961e808798a",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/5087.txr",
+      "source_sha256": "12022ac489d358b319bfd8c85abe589d0a902ca35ca6e08e5519b72eafa3ef21",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/5090.txr",
+      "source_sha256": "76feca11716d055f4535e86e3ac48729d7c27b5a3e270cb47c9defd8f3238934",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    },
+    {
+      "resource": "TXRS/5224.txr",
+      "source_sha256": "51438a753d3ece970a5dd3b3f5ad20c9c4e9b3f5ea0bfe371849c5c5b0906732",
+      "decision": "preserve_original",
+      "reason": "User explicitly excluded low-resolution tiny English and decorative book/symbol textures from modification.",
+      "source_text_status": "unresolved_exact",
+      "counts_as_translation": false
+    }
+  ]
+}

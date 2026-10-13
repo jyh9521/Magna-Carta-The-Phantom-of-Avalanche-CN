@@ -57,3 +57,7 @@ python tools/build_text_resources.py --source SOURCE_GAME --catalog CATALOG --co
 ```
 
 各占位路径指实际独立输入/输出。源游戏须匹配提取哈希，轮廓字体须匹配来源锁。输出目录必须不存在，字体包与资源输出分离。局部研究可显式追加`--allow-partial`，不得将该产物当作全文发布或直接覆盖运行副本。FPB控制标记、记录ID及数值属性不翻译；固定表回写追加`--fixed-decisions locales/zh-CN/fixed-field-decisions.json`，逐字段验证显示用途、源摘要、字段容量与格式化预算，支持ITM、ABI、SGI和CHA；图片写入仍未完成。详见[全文流程](docs/FULL_TRANSLATION_PIPELINE.md)。
+
+## 图片、模块与视频文字
+
+源绑定语言数据、独立候选重建命令和验证范围见 [媒体汉化](docs/MEDIA_LOCALIZATION.md)。图片与模块生成器保持通用，语言数据单独存放；不启动游戏。

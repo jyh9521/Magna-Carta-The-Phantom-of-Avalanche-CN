@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "videos": [
+    {
+      "id": "0010",
+      "resource": "MOV/0010.BMC",
+      "source_sha256": "921370d38cc8dd78f0c8fad63b75d9b0e9d603c0620ba372d78374706db8cb98",
+      "member_sha256": "921370d38cc8dd78f0c8fad63b75d9b0e9d603c0620ba372d78374706db8cb98",
+      "texts": [
+        {
+          "target": "羁绊 · affinity\n名词（复数 affinities）",
+          "start_frame": 96,
+          "end_frame": 167,
+          "font_size": 24,
+          "y": 393,
+          "source_text_evidence": "原视频逐秒与指定帧文字审阅；0010词典小字经原像素放大直接转录，非从外部词典猜写。"
+        },
+        {
+          "target": "不可数（常用 an affinity）：喜爱、彼此契合（for、to……）。\n可数：彼此契合的人或物。",
+          "start_frame": 168,
+          "end_frame": 287,
+          "font_size": 19,
+          "y": 405,
+          "source_text_evidence": "原视频逐秒与指定帧文字审阅；0010词典小字经原像素放大直接转录，非从外部词典猜写。"
+        },
+        {
+          "target": "真名法典：冰之魅影",
+          "start_frame": 4944,
+          "end_frame": 5039,
+          "font_size": 25,
+          "y": 424,
+          "source_text_evidence": "原视频逐秒与指定帧文字审阅；0010词典小字经原像素放大直接转录，非从外部词典猜写。"
+        }
+      ]
+    },
+    {
+      "id": "0024",
+      "resource": "MOV/0024.BMC",
+      "source_sha256": "dcf581271e8ab53ef960cfac3c949e1b5d9cbd74c554366b7ddaebdf3433371e",
+      "member_sha256": "dcf581271e8ab53ef960cfac3c949e1b5d9cbd74c554366b7ddaebdf3433371e",
+      "texts": [
+        {
+          "target": "游戏结束……",
+          "start_frame": 60,
+          "end_frame": 149,
+          "font_size": 28,
+          "y": 410,
+          "source_text_evidence": "原视频逐秒与指定帧文字审阅；0010词典小字经原像素放大直接转录，非从外部词典猜写。"
+        }
+      ]
+    }
+  ]
+}

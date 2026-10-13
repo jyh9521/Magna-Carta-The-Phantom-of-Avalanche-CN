@@ -1,0 +1,278 @@
+{
+  "schema": 1,
+  "source_sha256": "79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f",
+  "source_size": 1089536,
+  "native_fields": [
+    {
+      "offset": 901028,
+      "expected_hex": "257320bec6c0ccc5dbc0bb20c8b9b5e6c7cfbfb4bdc0b4cfb4d92e",
+      "target": "获得%s。",
+      "display_domain": "game_native_font",
+      "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
+    },
+    {
+      "offset": 901296,
+      "expected_hex": "257320c0cc28b0a12920c0d6beeebedf20bbf3c0dab8a620bfad20bcf620c0d6bdc0b4cfb4d92e",
+      "target": "需要%s才能打开宝箱。",
+      "display_domain": "game_native_font",
+      "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
+    },
+    {
+      "offset": 901448,
+      "expected_hex": "257320bec6c0ccc5dbc0bb20c8b9b5e6c7cfbfb4bdc0b4cfb4d92e246e257320bec6c0ccc5dbc0bb20bcd2b8f0c7cfbfb4bdc0b4cfb4d92e",
+      "target": "获得%s。$n消耗%s。",
+      "display_domain": "game_native_font",
+      "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
+    },
+    {
+      "offset": 901824,
+      "expected_hex": "257320bec6c0ccc5dbc0bb20c8b9b5e6c7cfbfb4bdc0b4cfb4d92e",
+      "target": "获得%s。",
+      "display_domain": "game_native_font",
+      "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
+    },
+    {
+      "offset": 923948,
+      "expected_hex": "2573202d20c4abb8a3c5b8b8a620bcb1c5c3c7cfbdc3bfc02e",
+      "target": "%s：请选择卡尔塔。",
+      "display_domain": "game_native_font",
+      "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
+    },
+    {
+      "offset": 924976,
+      "expected_hex": "f2a23cc1f63e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
+      "target": "地<地>卡尔塔亲和度增加%d。",
+      "display_domain": "game_native_font",
+      "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
+    },
+    {
+      "offset": 925020,
+      "expected_hex": "fbfd3cc8ad3e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
+      "target": "火<火>卡尔塔亲和度增加%d。",
+      "display_domain": "game_native_font",
+      "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
+    },
+    {
+      "offset": 925064,
+      "expected_hex": "f9a63cc7b33e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
+      "target": "风<风>卡尔塔亲和度增加%d。",
+      "display_domain": "game_native_font",
+      "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
+    },
+    {
+      "offset": 925108,
+      "expected_hex": "e4de3cbecf3e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
+      "target": "暗<暗>卡尔塔亲和度增加%d。",
+      "display_domain": "game_native_font",
+      "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
+    },
+    {
+      "offset": 925152,
+      "expected_hex": "e2a93cbcf63e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
+      "target": "水<水>卡尔塔亲和度增加%d。",
+      "display_domain": "game_native_font",
+      "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
+    },
+    {
+      "offset": 925196,
+      "expected_hex": "efb33cc0fc3e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
+      "target": "雷<雷>卡尔塔亲和度增加%d。",
+      "display_domain": "game_native_font",
+      "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
+    },
+    {
+      "offset": 925240,
+      "expected_hex": "cec33cb1a43e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
+      "target": "光<光>卡尔塔亲和度增加%d。",
+      "display_domain": "game_native_font",
+      "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
+    },
+    {
+      "offset": 925284,
+      "expected_hex": "2573246ec3bcb7c2c0cc20256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e246eb0f8b0ddb7c2c0cc20256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e246eb9e6beeeb7c2c0cc20256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e246ec1f6b7c2c0cc20256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e246eb9cec3b8bcbac0cc20256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e246e2573",
+      "target": "%s$n体力增加%d。$n攻击力增加%d。$n防御力增加%d。$n智力增加%d。$n敏捷增加%d。$n%s",
+      "display_domain": "game_native_font",
+      "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
+    }
+  ],
+  "dialogs": [
+    {
+      "resource_id": 101,
+      "language": 1042,
+      "source_sha256": "b94a3e60342810b8a7d56265eb69b2d5f3e0a186e978c39937642164d4d1c475",
+      "expected_title": "드라이버 셋업창",
+      "target_title": "图形驱动设置",
+      "controls": [
+        {
+          "ordinal": 0,
+          "identifier": 1,
+          "expected": "OK",
+          "target": "确定"
+        },
+        {
+          "ordinal": 1,
+          "identifier": 2,
+          "expected": "Cancel",
+          "target": "取消"
+        },
+        {
+          "ordinal": 3,
+          "identifier": 4294967295,
+          "expected": "스크린 모드를 선택하세요.",
+          "target": "请选择屏幕模式。"
+        },
+        {
+          "ordinal": 4,
+          "identifier": 201,
+          "expected": "전체화면 모드",
+          "target": "全屏模式"
+        },
+        {
+          "ordinal": 5,
+          "identifier": 202,
+          "expected": "윈도우 모드",
+          "target": "窗口模式"
+        },
+        {
+          "ordinal": 6,
+          "identifier": 4294967295,
+          "expected": "드라이버를 선택하세요.",
+          "target": "请选择图形驱动。"
+        },
+        {
+          "ordinal": 9,
+          "identifier": 4294967295,
+          "expected": "해상도를 선택하세요",
+          "target": "请选择分辨率。"
+        },
+        {
+          "ordinal": 11,
+          "identifier": 1001,
+          "expected": "2 Speaker",
+          "target": "双扬声器"
+        },
+        {
+          "ordinal": 12,
+          "identifier": 1002,
+          "expected": "Headphones",
+          "target": "耳机"
+        },
+        {
+          "ordinal": 13,
+          "identifier": 1003,
+          "expected": "4 Speaker",
+          "target": "四扬声器"
+        },
+        {
+          "ordinal": 14,
+          "identifier": 1004,
+          "expected": "Surround",
+          "target": "环绕声"
+        },
+        {
+          "ordinal": 15,
+          "identifier": 4294967295,
+          "expected": "스피커를 선택하세요.",
+          "target": "请选择扬声器。"
+        },
+        {
+          "ordinal": 16,
+          "identifier": 1005,
+          "expected": "On",
+          "target": "开"
+        },
+        {
+          "ordinal": 17,
+          "identifier": 1006,
+          "expected": "Off",
+          "target": "关"
+        },
+        {
+          "ordinal": 18,
+          "identifier": 4294967295,
+          "expected": "MipMap",
+          "target": "多级纹理"
+        },
+        {
+          "ordinal": 19,
+          "identifier": 1007,
+          "expected": "On",
+          "target": "开"
+        },
+        {
+          "ordinal": 20,
+          "identifier": 1008,
+          "expected": "Off",
+          "target": "关"
+        },
+        {
+          "ordinal": 21,
+          "identifier": 4294967295,
+          "expected": "Dynamic",
+          "target": "动态"
+        },
+        {
+          "ordinal": 22,
+          "identifier": 1009,
+          "expected": "High",
+          "target": "高"
+        },
+        {
+          "ordinal": 23,
+          "identifier": 1010,
+          "expected": "Mid",
+          "target": "中"
+        },
+        {
+          "ordinal": 24,
+          "identifier": 1011,
+          "expected": "Low",
+          "target": "低"
+        },
+        {
+          "ordinal": 25,
+          "identifier": 4294967295,
+          "expected": "Texture",
+          "target": "纹理"
+        },
+        {
+          "ordinal": 26,
+          "identifier": 1012,
+          "expected": "High",
+          "target": "高"
+        },
+        {
+          "ordinal": 27,
+          "identifier": 1013,
+          "expected": "Low",
+          "target": "低"
+        },
+        {
+          "ordinal": 28,
+          "identifier": 4294967295,
+          "expected": "Character",
+          "target": "角色"
+        },
+        {
+          "ordinal": 29,
+          "identifier": 1014,
+          "expected": "On",
+          "target": "开"
+        },
+        {
+          "ordinal": 30,
+          "identifier": 1015,
+          "expected": "Off",
+          "target": "关"
+        },
+        {
+          "ordinal": 31,
+          "identifier": 4294967295,
+          "expected": "Pos Sound",
+          "target": "空间音效"
+        }
+      ],
+      "evidence": "UTF-16扩展对话框结构、32控件及原始1498字节原样往返验证；原字体、样式、控件ID和数值资源键保留。"
+    }
+  ]
+}

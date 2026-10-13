@@ -61,3 +61,9 @@ python tools/resource_image.py --source ORIGINAL_WORKSPACE/BGR --report build/bg
 `tools/resource_fixed_text.py`复用已验证结构提取器，从原字节提取字段并核对catalog的ordinal、ID、offset、源字节与capacity，才写入独立候选。字段决策逐条保存源摘要、显示名称/说明/内部对象分类及依据；缺失、重复、漂移或内部对象误批准拒绝。
 
 ITM/SGI/CHA名称使用39字节保守上限，双名称合计最多78，低于原取得物品格式的79字节预算；ABI最多59字节加NUL，保留60字节提取范围之外的4字节；ITM说明最多99字节加NUL。仅更新原字符串跨度与新跨度的并集。扩长若碰到未知非零填充则拒绝；头、ID、属性、其他填充及记录长度保持一致。新私有码通过实际NUL边界逆解码，不使用CP949解码修改后的槽。这不是布局或旧存档名称适配的游戏验收。
+
+## Bink1容器及Unicode对话框
+
+Verified：本作18个视频成员为BIKi；文件头44字节起含每轨12字节参数，随后是带低位关键帧标志的N+1个u32帧偏移。每帧音频依轨保存u32长度和载荷，余部为视频。resource_bink.py经全部原成员逐字节往返验证；重建不改音频包。MOV.pak串接完整成员，长度/偏移不能仅因压缩变小而移动。分布式帧尾零填充只取得受控FFmpeg解码证据，未取得游戏解码器验收。
+
+Verified：设置资源为DLGTEMPLATEEX，控件起始DWORD对齐，标题/字体/控件文本为UTF-16LE，类和标题可为ordinal。resource_dialog.py完整原资源1,498字节往返一致，32控件元数据保留。回写只缩短原分配并更新资源目录Size，其他区段及可执行节不变。

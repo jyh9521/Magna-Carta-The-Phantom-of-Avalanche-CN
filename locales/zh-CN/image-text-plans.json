@@ -1,0 +1,6487 @@
+{
+  "schema": 1,
+  "resources": [
+    {
+      "resource": "BGR/0027.BGR",
+      "source_sha256": "d470b040f175930091658175c884c862673e7d3baa7a929262d4eda71331edc2",
+      "plans": [
+        {
+          "target": "状态",
+          "mask_xyxy": [
+            29,
+            120,
+            101,
+            137
+          ],
+          "background_anchor": [
+            28,
+            120
+          ],
+          "font_size": 14,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "卡尔塔",
+          "mask_xyxy": [
+            29,
+            160,
+            101,
+            177
+          ],
+          "background_anchor": [
+            28,
+            160
+          ],
+          "font_size": 14,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "物品",
+          "mask_xyxy": [
+            29,
+            200,
+            101,
+            217
+          ],
+          "background_anchor": [
+            28,
+            200
+          ],
+          "font_size": 14,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "装备",
+          "mask_xyxy": [
+            29,
+            240,
+            101,
+            256
+          ],
+          "background_anchor": [
+            28,
+            240
+          ],
+          "font_size": 14,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0030.BGR",
+      "source_sha256": "e718f532282db27e71535e7d3642691368dbc6f01d1688a12ec9c59b73eb9a50",
+      "plans": [
+        {
+          "target": "武器",
+          "mask_xyxy": [
+            19,
+            22,
+            97,
+            39
+          ],
+          "background_anchor": [
+            18,
+            22
+          ],
+          "font_size": 14,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "返回",
+          "mask_xyxy": [
+            20,
+            61,
+            98,
+            80
+          ],
+          "background_anchor": [
+            19,
+            61
+          ],
+          "font_size": 14,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0035.BGR",
+      "source_sha256": "8425504c33de358daab45a060415eb3514e5bfe2885a433597a807543c83a7b5",
+      "plans": [
+        {
+          "target": "阿多拉",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0036.BGR",
+      "source_sha256": "1538278734839f43666c571c2dec2108b6ecbe46a0c4d31aa0bf01a987e53f9c",
+      "plans": [
+        {
+          "target": "罗普玛",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0037.BGR",
+      "source_sha256": "0a369a238c9aee1b7bef4d783de30fb28dc674137a6357cb02b87ca78277a547",
+      "plans": [
+        {
+          "target": "吉尔伯特",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0038.BGR",
+      "source_sha256": "1ba0ad4a0aae542aba5e71c80aa7eb56f245b30e67a42868dcfc3b23260cbd2d",
+      "plans": [
+        {
+          "target": "未知",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0039.BGR",
+      "source_sha256": "2bc384f2507119ccff8c64edb9419474f5cc5922717fffc2c9f36f691c7d9f7d",
+      "plans": [
+        {
+          "target": "艾丝特尔",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0040.BGR",
+      "source_sha256": "44f5c6209664b9fceb3c689ce4456a0cf7f3a35f9dc2c3a3c7088013ac6e5382",
+      "plans": [
+        {
+          "target": "切尔西",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0041.BGR",
+      "source_sha256": "f51e9c2a9d5a2ad4ed55903a5ef1b1eda6eb9ec92518ad378700f306403952e3",
+      "plans": [
+        {
+          "target": "卡林兹",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0046.BGR",
+      "source_sha256": "31717f0eaa526a578fe095bf221d018b8dd26afb2e8ae764bc0d6863de567804",
+      "plans": [
+        {
+          "target": "朱克蕾西亚",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0047.BGR",
+      "source_sha256": "b7eae61b3898273c95183ca3229157f68715ab0d4fb94b536e087a1cfc8c1e1b",
+      "plans": [
+        {
+          "target": "温贝特",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0048.BGR",
+      "source_sha256": "05f2ed8cdabd56df5c8b80775a6ea40edd447e592d88f6238cdf53ffd833936d",
+      "plans": [
+        {
+          "target": "菲莉西亚",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0049.BGR",
+      "source_sha256": "0ea8aa4224490b62a68f6c2335b0efa998b97c465960286ec28785ae2aa5250f",
+      "plans": [
+        {
+          "target": "费尔南",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0050.BGR",
+      "source_sha256": "c971c00c9f61636927a7f8a3cea370334c27e88b476b762d65fead76a0efca17",
+      "plans": [
+        {
+          "target": "萝洁",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0051.BGR",
+      "source_sha256": "05ade38e869f18078b6bc218e432ae94219f1c768c60af7c207b6bef0219645e",
+      "plans": [
+        {
+          "target": "乔克",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0052.BGR",
+      "source_sha256": "c280c73d90a2e05136f8f9b144bc57c14dae77702a327056f5ccef320df6847f",
+      "plans": [
+        {
+          "target": "修伦罗德",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0053.BGR",
+      "source_sha256": "105046d32f6b0b6ea25c81b9fd8352263d226c34a609d525dd67fc001ef5c63f",
+      "plans": [
+        {
+          "target": "拉德琳娜",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0054.BGR",
+      "source_sha256": "66a1f69ec2826cb58c7dce1d6f120319be4290bffb776ccd5d16c707438c4fd8",
+      "plans": [
+        {
+          "target": "卡林兹",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0055.BGR",
+      "source_sha256": "4734fc4131a4029b73b4f9a49d6ba34d289fa7c94f66b04b2cda690a0075f9b8",
+      "plans": [
+        {
+          "target": "蕾欧娜",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0056.BGR",
+      "source_sha256": "8ffa515c0be32f120dcd9f9698ac2425a1371051238bc24c7c56a52ec81e1ea0",
+      "plans": [
+        {
+          "target": "赫利俄斯",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0057.BGR",
+      "source_sha256": "5a75152ef7afdcd6e7d9a9ec17ed07b07b6864d6dfa0ea146dbbfcde65e87a6b",
+      "plans": [
+        {
+          "target": "威尔莱特",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0078.BGR",
+      "source_sha256": "bdf503b49be1ef4caba63a8c225d5dade42359e70516f0f590161e290466189e",
+      "plans": [
+        {
+          "target": "泽恩德",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0079.BGR",
+      "source_sha256": "93cad4b27f0f7e0f83575ed7ff8127b067740454fc6ae014f6e4b04cbfe5ac4f",
+      "plans": [
+        {
+          "target": "拉泽尔",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0080.BGR",
+      "source_sha256": "db6bb1ed5ecbdb48a8913854b5b5ecf2670ad04d52e123e36748f2904ea216ad",
+      "plans": [
+        {
+          "target": "洛克利",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0081.BGR",
+      "source_sha256": "eb83d36ce79882aa3a1534fd397d0fb32aff90d175d1175936befd2af7481e15",
+      "plans": [
+        {
+          "target": "沃伦",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0082.BGR",
+      "source_sha256": "2d276b76915e04499635078cafa9231524593f549eb9bf1c5b8a2365ec989b25",
+      "plans": [
+        {
+          "target": "德雷克",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0083.BGR",
+      "source_sha256": "a6cd3f3cf35e7d843c97d2273d082a7054b7b4b3e80fdb33406fca12a927d5db",
+      "plans": [
+        {
+          "target": "威廉明娜",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0230.BGR",
+      "source_sha256": "a6731438c78ed135b4cd7ae1a1e02734a3c821021286a34b32679575acd96bdf",
+      "plans": [
+        {
+          "target": "克莱夫",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0293.BGR",
+      "source_sha256": "0146c2870ee4191901291ba115a84d2731498eb7fd735e3d70c5d66685e42a90",
+      "plans": [
+        {
+          "target": "阿多拉",
+          "mask_xyxy": [
+            153,
+            128,
+            255,
+            147
+          ],
+          "background_anchor": [
+            254,
+            128
+          ],
+          "font_size": 13,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0104.BGR",
+      "source_sha256": "531f0e2e362d7160cb55c9e6c71a6381aeb75ca1ef3a908dd86287a16e71e55b",
+      "plans": [
+        {
+          "target": "卡林兹",
+          "mask_xyxy": [
+            0,
+            0,
+            64,
+            15
+          ],
+          "background_anchor": [
+            63,
+            14
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0105.BGR",
+      "source_sha256": "f859e9eff028ad6abd0d7299911210af9a84591cfeb3b71061ae8753ba83330e",
+      "plans": [
+        {
+          "target": "阿多拉",
+          "mask_xyxy": [
+            0,
+            0,
+            64,
+            15
+          ],
+          "background_anchor": [
+            63,
+            14
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0106.BGR",
+      "source_sha256": "d59764f15ab04f795e30f722bd647298ff8b9c01860737ced32914e06e2958d9",
+      "plans": [
+        {
+          "target": "罗普玛",
+          "mask_xyxy": [
+            0,
+            0,
+            64,
+            15
+          ],
+          "background_anchor": [
+            63,
+            14
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0107.BGR",
+      "source_sha256": "9d7000478117b1b9f1c78ee9e580db145df3de745db20a5e7ab27490e36cd76a",
+      "plans": [
+        {
+          "target": "切尔西",
+          "mask_xyxy": [
+            0,
+            0,
+            64,
+            15
+          ],
+          "background_anchor": [
+            63,
+            14
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0108.BGR",
+      "source_sha256": "d4fb25aa3933655929b8c95b9618dbc337b00e2b03e7a978cc0ca6161b665661",
+      "plans": [
+        {
+          "target": "乔克",
+          "mask_xyxy": [
+            0,
+            0,
+            64,
+            15
+          ],
+          "background_anchor": [
+            63,
+            14
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0109.BGR",
+      "source_sha256": "c7f0b6487d87c9c1b30eee6e0c90140bb55d37b25c2d6cb7d0185926b7b0e853",
+      "plans": [
+        {
+          "target": "菲莉西亚",
+          "mask_xyxy": [
+            0,
+            0,
+            64,
+            15
+          ],
+          "background_anchor": [
+            63,
+            14
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0110.BGR",
+      "source_sha256": "05304d13f54f8778878f091a47169b16099190ba1d7d87985cb13a4e9b46b579",
+      "plans": [
+        {
+          "target": "费尔南",
+          "mask_xyxy": [
+            0,
+            0,
+            64,
+            15
+          ],
+          "background_anchor": [
+            63,
+            14
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0111.BGR",
+      "source_sha256": "af87f269d9a7fcff6a8fe881a5155fe697b8ed988c13fabfd53ca352123b4138",
+      "plans": [
+        {
+          "target": "萝洁",
+          "mask_xyxy": [
+            0,
+            0,
+            64,
+            15
+          ],
+          "background_anchor": [
+            63,
+            14
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0084.BGR",
+      "source_sha256": "f35eaa6b37527086b7187104c209481228d990e65cfc268ae3a2ebe2da4d014f",
+      "plans": [
+        {
+          "target": "特殊技能",
+          "mask_xyxy": [
+            0,
+            0,
+            149,
+            27
+          ],
+          "background_anchor": [
+            90,
+            0
+          ],
+          "font_size": 18,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "特殊技能",
+          "mask_xyxy": [
+            76,
+            27,
+            154,
+            46
+          ],
+          "background_anchor": [
+            150,
+            44
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0085.BGR",
+      "source_sha256": "67eedda92bf8c6518eb8d859606681eec4e738614f49642b9978c3ebed66373f",
+      "plans": [
+        {
+          "target": "特殊技能",
+          "mask_xyxy": [
+            0,
+            0,
+            149,
+            27
+          ],
+          "background_anchor": [
+            90,
+            0
+          ],
+          "font_size": 18,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "特殊技能",
+          "mask_xyxy": [
+            76,
+            27,
+            154,
+            46
+          ],
+          "background_anchor": [
+            150,
+            44
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0086.BGR",
+      "source_sha256": "ef0584bd0709781c1db367cdf39f691f5be687d7a4ce6d2c21bfa2cc6d9f84f0",
+      "plans": [
+        {
+          "target": "状态",
+          "mask_xyxy": [
+            0,
+            0,
+            149,
+            27
+          ],
+          "background_anchor": [
+            90,
+            0
+          ],
+          "font_size": 18,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "状态",
+          "mask_xyxy": [
+            76,
+            27,
+            154,
+            46
+          ],
+          "background_anchor": [
+            150,
+            44
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0087.BGR",
+      "source_sha256": "b938c01a7da301608232a3a5da30ccb29f90984622cd11571fe46befced40d6e",
+      "plans": [
+        {
+          "target": "状态",
+          "mask_xyxy": [
+            0,
+            0,
+            149,
+            27
+          ],
+          "background_anchor": [
+            90,
+            0
+          ],
+          "font_size": 18,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "状态",
+          "mask_xyxy": [
+            76,
+            27,
+            154,
+            46
+          ],
+          "background_anchor": [
+            150,
+            44
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0088.BGR",
+      "source_sha256": "223cc55042057d53b769e4c2f44471f109d3999ae6d801772e258531bbe40a9d",
+      "plans": [
+        {
+          "target": "启示",
+          "mask_xyxy": [
+            0,
+            0,
+            149,
+            27
+          ],
+          "background_anchor": [
+            90,
+            0
+          ],
+          "font_size": 18,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "启示",
+          "mask_xyxy": [
+            76,
+            27,
+            154,
+            46
+          ],
+          "background_anchor": [
+            150,
+            44
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0089.BGR",
+      "source_sha256": "371e41b06482d7ffe1e0362705062c82a2d09fc94b1071c6bc45a2b21518a8ac",
+      "plans": [
+        {
+          "target": "启示",
+          "mask_xyxy": [
+            0,
+            0,
+            149,
+            27
+          ],
+          "background_anchor": [
+            90,
+            0
+          ],
+          "font_size": 18,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "启示",
+          "mask_xyxy": [
+            76,
+            27,
+            154,
+            46
+          ],
+          "background_anchor": [
+            150,
+            44
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0090.BGR",
+      "source_sha256": "150a57d6147ebb453f8017f5ac2a97358d26a206b39b8ab354d84343df190149",
+      "plans": [
+        {
+          "target": "使用物品",
+          "mask_xyxy": [
+            0,
+            0,
+            149,
+            27
+          ],
+          "background_anchor": [
+            90,
+            0
+          ],
+          "font_size": 18,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "使用物品",
+          "mask_xyxy": [
+            76,
+            27,
+            154,
+            46
+          ],
+          "background_anchor": [
+            150,
+            44
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0091.BGR",
+      "source_sha256": "fee9c6587ae8c920bcce1da2dee4ec27c59519676ad74e9e474340b910dda884",
+      "plans": [
+        {
+          "target": "使用物品",
+          "mask_xyxy": [
+            0,
+            0,
+            149,
+            27
+          ],
+          "background_anchor": [
+            90,
+            0
+          ],
+          "font_size": 18,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "使用物品",
+          "mask_xyxy": [
+            76,
+            27,
+            154,
+            46
+          ],
+          "background_anchor": [
+            150,
+            44
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0092.BGR",
+      "source_sha256": "246e271e92a8652195a3fe6157638d8ce1e0c7ee8c11a0c984a6eb718b2e3055",
+      "plans": [
+        {
+          "target": "设置",
+          "mask_xyxy": [
+            0,
+            0,
+            149,
+            27
+          ],
+          "background_anchor": [
+            90,
+            0
+          ],
+          "font_size": 18,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "设置",
+          "mask_xyxy": [
+            76,
+            27,
+            154,
+            46
+          ],
+          "background_anchor": [
+            150,
+            44
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0093.BGR",
+      "source_sha256": "96aba5d5ab1e67fa65555df7763649b940a3a238ac21cc680d0f5eb7837d204c",
+      "plans": [
+        {
+          "target": "设置",
+          "mask_xyxy": [
+            0,
+            0,
+            149,
+            27
+          ],
+          "background_anchor": [
+            90,
+            0
+          ],
+          "font_size": 18,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "设置",
+          "mask_xyxy": [
+            76,
+            27,
+            154,
+            46
+          ],
+          "background_anchor": [
+            150,
+            44
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0094.BGR",
+      "source_sha256": "1e5c59dff23d52440132e132c68006581ab8548007fcb1ff08f43b8878e8ce4b",
+      "plans": [
+        {
+          "target": "结束回合",
+          "mask_xyxy": [
+            0,
+            0,
+            149,
+            27
+          ],
+          "background_anchor": [
+            90,
+            0
+          ],
+          "font_size": 18,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "结束回合",
+          "mask_xyxy": [
+            76,
+            27,
+            154,
+            46
+          ],
+          "background_anchor": [
+            150,
+            44
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0095.BGR",
+      "source_sha256": "cd8ea252942a00261c2c853e1c8c2b962d2b030fe3f360cde9196585479cb47a",
+      "plans": [
+        {
+          "target": "结束回合",
+          "mask_xyxy": [
+            0,
+            0,
+            149,
+            27
+          ],
+          "background_anchor": [
+            90,
+            0
+          ],
+          "font_size": 18,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "结束回合",
+          "mask_xyxy": [
+            76,
+            27,
+            154,
+            46
+          ],
+          "background_anchor": [
+            150,
+            44
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0155.BGR",
+      "source_sha256": "23af87bb932e9ad70db319c7ea5c3d871ae5ca2e8fcef62b85e5c2b774b8a1f3",
+      "plans": [
+        {
+          "target": "任务",
+          "mask_xyxy": [
+            0,
+            1,
+            256,
+            15
+          ],
+          "background_anchor": [
+            10,
+            14
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0156.BGR",
+      "source_sha256": "98baa354e6e60a270004af52f63e87b359fdb69f5c9ef9326ba378daa43f9e72",
+      "plans": [
+        {
+          "target": "问题",
+          "mask_xyxy": [
+            0,
+            1,
+            256,
+            15
+          ],
+          "background_anchor": [
+            10,
+            14
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0157.BGR",
+      "source_sha256": "21029033de99887a8db29c618ad7ea06c3ee58bcae28cf461eb51156b4b5e9a7",
+      "plans": [
+        {
+          "target": "答案",
+          "mask_xyxy": [
+            0,
+            1,
+            256,
+            15
+          ],
+          "background_anchor": [
+            10,
+            14
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0158.BGR",
+      "source_sha256": "2036a54cd0ad0b24359e51c9052b2d5117206257e44cd802f6b591a8d4052fef",
+      "plans": [
+        {
+          "target": "武器",
+          "mask_xyxy": [
+            0,
+            1,
+            256,
+            15
+          ],
+          "background_anchor": [
+            10,
+            14
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0160.BGR",
+      "source_sha256": "599f00fe8d862cd8ffc27f2b23733ec45a86ab19701275ddeecb96581256668c",
+      "plans": [
+        {
+          "target": "注意",
+          "mask_xyxy": [
+            0,
+            1,
+            256,
+            15
+          ],
+          "background_anchor": [
+            10,
+            14
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0161.BGR",
+      "source_sha256": "555b258e1013e3e2c074ca958436f00f26093ab824c1fb404310ca3db31d4808",
+      "plans": [
+        {
+          "target": "战斗",
+          "mask_xyxy": [
+            0,
+            1,
+            256,
+            15
+          ],
+          "background_anchor": [
+            10,
+            14
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0162.BGR",
+      "source_sha256": "833e14b422a6cbe9bf7a8dd553fcab44b403760dba3d35f13e11ba2865159d7f",
+      "plans": [
+        {
+          "target": "战斗警告",
+          "mask_xyxy": [
+            0,
+            1,
+            256,
+            15
+          ],
+          "background_anchor": [
+            10,
+            14
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0163.BGR",
+      "source_sha256": "43a3c2fa9c2ed10c556e89f798fb3620504306e41c937cfd91ac00df951013eb",
+      "plans": [
+        {
+          "target": "信息",
+          "mask_xyxy": [
+            0,
+            1,
+            256,
+            15
+          ],
+          "background_anchor": [
+            10,
+            14
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0164.BGR",
+      "source_sha256": "5038d8dfc5e1558bcfa1a299763c9f6432132771b6a59ede93ec2e343d98f847",
+      "plans": [
+        {
+          "target": "信息",
+          "mask_xyxy": [
+            0,
+            1,
+            256,
+            15
+          ],
+          "background_anchor": [
+            10,
+            14
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0172.BGR",
+      "source_sha256": "59458e49ae79cc1293a535b379c950af764a7a88d02ac76667df911406c4f41f",
+      "plans": [
+        {
+          "target": "确定",
+          "mask_xyxy": [
+            2,
+            1,
+            62,
+            18
+          ],
+          "background_anchor": [
+            2,
+            7
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0173.BGR",
+      "source_sha256": "67828eafe83854418139af1d129d9b790dca3620cedb2e963b5db422c228f1fc",
+      "plans": [
+        {
+          "target": "确定",
+          "mask_xyxy": [
+            2,
+            1,
+            62,
+            18
+          ],
+          "background_anchor": [
+            2,
+            7
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0174.BGR",
+      "source_sha256": "a9dee96309dd4d87cf751b773b9f920298d8a6e8969ca0fe5375711e4af06f2a",
+      "plans": [
+        {
+          "target": "取消",
+          "mask_xyxy": [
+            2,
+            1,
+            62,
+            18
+          ],
+          "background_anchor": [
+            2,
+            7
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0175.BGR",
+      "source_sha256": "240383e86bf922ab0864ef4f4f7792d20612f633a62990d2f40ff27a30d2dc1e",
+      "plans": [
+        {
+          "target": "取消",
+          "mask_xyxy": [
+            2,
+            1,
+            62,
+            18
+          ],
+          "background_anchor": [
+            2,
+            7
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0181.BGR",
+      "source_sha256": "d0803ffd3391acb755bca25050871275dcce516860b481cfa464bb6dd121b87f",
+      "plans": [
+        {
+          "target": "状态",
+          "mask_xyxy": [
+            65,
+            6,
+            192,
+            33
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0182.BGR",
+      "source_sha256": "69def89db6c086c4f19f3728dfc190ca15964a26413dc538b2219f4d83c88017",
+      "plans": [
+        {
+          "target": "状态",
+          "mask_xyxy": [
+            65,
+            6,
+            192,
+            33
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0183.BGR",
+      "source_sha256": "410754beffa275e2aca25d43b13957850d86f37964ee8c01395f596116da98cf",
+      "plans": [
+        {
+          "target": "保存",
+          "mask_xyxy": [
+            65,
+            6,
+            192,
+            33
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0184.BGR",
+      "source_sha256": "8d2dbfa1647d0d6a960de1e544202e05bcb5d505d7b96a61eb303fb58fe129d7",
+      "plans": [
+        {
+          "target": "保存",
+          "mask_xyxy": [
+            65,
+            6,
+            192,
+            33
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0185.BGR",
+      "source_sha256": "32a6c5edaf2eaa09ae05d5500492a625e9e7f886937df24b936d577f0f26ba44",
+      "plans": [
+        {
+          "target": "读取",
+          "mask_xyxy": [
+            65,
+            6,
+            192,
+            33
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0186.BGR",
+      "source_sha256": "bd544fb8aa476661fd9cd38e64f7f7131410e23c07080bf8af5c60e95154fc76",
+      "plans": [
+        {
+          "target": "读取",
+          "mask_xyxy": [
+            65,
+            6,
+            192,
+            33
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0187.BGR",
+      "source_sha256": "d0c4c19188baa9d78c3bd49a539308fd919e50848a28615807280fdf984d7d63",
+      "plans": [
+        {
+          "target": "音频",
+          "mask_xyxy": [
+            65,
+            6,
+            192,
+            33
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0188.BGR",
+      "source_sha256": "a2a46f131f8d4182c87645175fe51ab6ec96c72b5ad9bea39ea30e6b3e0d0786",
+      "plans": [
+        {
+          "target": "音频",
+          "mask_xyxy": [
+            65,
+            6,
+            192,
+            33
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0189.BGR",
+      "source_sha256": "6bc29d18def23cf008d5a58d7cd3b51cd9388893128739a9fb17eb6f8655b8f8",
+      "plans": [
+        {
+          "target": "返回标题",
+          "mask_xyxy": [
+            65,
+            6,
+            192,
+            33
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0190.BGR",
+      "source_sha256": "39de1d00694b31d1bef3de8fa1f87288483b6a9485117215f0c8dfebf53d882e",
+      "plans": [
+        {
+          "target": "返回标题",
+          "mask_xyxy": [
+            65,
+            6,
+            192,
+            33
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0219.BGR",
+      "source_sha256": "6e04a7f56682b184746f1b999c52e917ce6eca2c194c2f668ca44e17b6c2d880",
+      "plans": [
+        {
+          "target": "特殊技能",
+          "mask_xyxy": [
+            18,
+            0,
+            155,
+            18
+          ],
+          "background_anchor": [
+            170,
+            0
+          ],
+          "font_size": 14,
+          "minimum_font_size": 11,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "background_mode": "row_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "特殊技能",
+          "mask_xyxy": [
+            18,
+            18,
+            115,
+            38
+          ],
+          "background_anchor": [
+            150,
+            18
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0220.BGR",
+      "source_sha256": "fad942b91af5d675d7457b8e7d9b62df7b525e6052fe92b320bed9f0466d7f87",
+      "plans": [
+        {
+          "target": "特殊技能",
+          "mask_xyxy": [
+            18,
+            0,
+            155,
+            18
+          ],
+          "background_anchor": [
+            170,
+            0
+          ],
+          "font_size": 14,
+          "minimum_font_size": 11,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "background_mode": "row_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "特殊技能",
+          "mask_xyxy": [
+            18,
+            18,
+            115,
+            38
+          ],
+          "background_anchor": [
+            150,
+            18
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0221.BGR",
+      "source_sha256": "eaaa9d263a7406e96be937766efc6a539f3c77888a430334ddfd1f86383d710f",
+      "plans": [
+        {
+          "target": "状态",
+          "mask_xyxy": [
+            18,
+            0,
+            155,
+            18
+          ],
+          "background_anchor": [
+            170,
+            0
+          ],
+          "font_size": 14,
+          "minimum_font_size": 11,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "background_mode": "row_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "状态",
+          "mask_xyxy": [
+            18,
+            18,
+            115,
+            38
+          ],
+          "background_anchor": [
+            150,
+            18
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0222.BGR",
+      "source_sha256": "5fbb24c97efc6e98c51cde8c9fb8582e42a1b87ab09f4f1cde2deb4f6432ee60",
+      "plans": [
+        {
+          "target": "状态",
+          "mask_xyxy": [
+            18,
+            0,
+            155,
+            18
+          ],
+          "background_anchor": [
+            170,
+            0
+          ],
+          "font_size": 14,
+          "minimum_font_size": 11,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "background_mode": "row_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "状态",
+          "mask_xyxy": [
+            18,
+            18,
+            115,
+            38
+          ],
+          "background_anchor": [
+            150,
+            18
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0223.BGR",
+      "source_sha256": "de691300f2283b539c84d7aa6d5927b863897db0f86fb1a8f2186e38b10482d9",
+      "plans": [
+        {
+          "target": "暴走模式",
+          "mask_xyxy": [
+            18,
+            0,
+            155,
+            18
+          ],
+          "background_anchor": [
+            170,
+            0
+          ],
+          "font_size": 14,
+          "minimum_font_size": 11,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "background_mode": "row_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "暴走模式",
+          "mask_xyxy": [
+            18,
+            18,
+            115,
+            38
+          ],
+          "background_anchor": [
+            150,
+            18
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0224.BGR",
+      "source_sha256": "12f3536e10c75200800e6c1d9cc968f0b8c7c3f28175f9b603ddf54fd223a5a1",
+      "plans": [
+        {
+          "target": "暴走模式",
+          "mask_xyxy": [
+            18,
+            0,
+            155,
+            18
+          ],
+          "background_anchor": [
+            170,
+            0
+          ],
+          "font_size": 14,
+          "minimum_font_size": 11,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "background_mode": "row_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "暴走模式",
+          "mask_xyxy": [
+            18,
+            18,
+            115,
+            38
+          ],
+          "background_anchor": [
+            150,
+            18
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0225.BGR",
+      "source_sha256": "c7709405b9d55e65bdb02bbf6e56218dd4e31989e3e868db8ac2542fb2cf4b01",
+      "plans": [
+        {
+          "target": "物品",
+          "mask_xyxy": [
+            18,
+            0,
+            155,
+            18
+          ],
+          "background_anchor": [
+            170,
+            0
+          ],
+          "font_size": 14,
+          "minimum_font_size": 11,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "background_mode": "row_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "物品",
+          "mask_xyxy": [
+            18,
+            18,
+            115,
+            38
+          ],
+          "background_anchor": [
+            150,
+            18
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0226.BGR",
+      "source_sha256": "587e69f6867411cda20943a01d93cbc95a89c949aabc870cdd7e7a34660aeb51",
+      "plans": [
+        {
+          "target": "物品",
+          "mask_xyxy": [
+            18,
+            0,
+            155,
+            18
+          ],
+          "background_anchor": [
+            170,
+            0
+          ],
+          "font_size": 14,
+          "minimum_font_size": 11,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "background_mode": "row_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "物品",
+          "mask_xyxy": [
+            18,
+            18,
+            115,
+            38
+          ],
+          "background_anchor": [
+            150,
+            18
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0227.BGR",
+      "source_sha256": "60dc04123e989a9055dceefc503646e5525526029edd74484f194e4bb692a696",
+      "plans": [
+        {
+          "target": "结束回合",
+          "mask_xyxy": [
+            18,
+            0,
+            155,
+            18
+          ],
+          "background_anchor": [
+            170,
+            0
+          ],
+          "font_size": 14,
+          "minimum_font_size": 11,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "background_mode": "row_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "结束回合",
+          "mask_xyxy": [
+            18,
+            18,
+            115,
+            38
+          ],
+          "background_anchor": [
+            150,
+            18
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0228.BGR",
+      "source_sha256": "4a0f3e35ca9cbffcddfa068e15b015200def36a5efbb57f2cfbdba502141f4fe",
+      "plans": [
+        {
+          "target": "结束回合",
+          "mask_xyxy": [
+            18,
+            0,
+            155,
+            18
+          ],
+          "background_anchor": [
+            170,
+            0
+          ],
+          "font_size": 14,
+          "minimum_font_size": 11,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "background_mode": "row_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "结束回合",
+          "mask_xyxy": [
+            18,
+            18,
+            115,
+            38
+          ],
+          "background_anchor": [
+            150,
+            18
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0410.BGR",
+      "source_sha256": "682ae1d81554cafaff225332539e4c84abe690d317ccc1775b3dc351034ee413",
+      "plans": [
+        {
+          "target": "普通攻击",
+          "mask_xyxy": [
+            18,
+            0,
+            155,
+            18
+          ],
+          "background_anchor": [
+            170,
+            0
+          ],
+          "font_size": 14,
+          "minimum_font_size": 11,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "background_mode": "row_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "普通攻击",
+          "mask_xyxy": [
+            18,
+            18,
+            115,
+            38
+          ],
+          "background_anchor": [
+            150,
+            18
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0411.BGR",
+      "source_sha256": "4836d3aae847ae41bba088ac9dcab56c9bbb4cd14ba527a07f36f951a9e3f613",
+      "plans": [
+        {
+          "target": "普通攻击",
+          "mask_xyxy": [
+            18,
+            0,
+            155,
+            18
+          ],
+          "background_anchor": [
+            170,
+            0
+          ],
+          "font_size": 14,
+          "minimum_font_size": 11,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "background_mode": "row_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "普通攻击",
+          "mask_xyxy": [
+            18,
+            18,
+            115,
+            38
+          ],
+          "background_anchor": [
+            150,
+            18
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0265.BGR",
+      "source_sha256": "f9e2a2d6f0417fc55b838fd4888f0f9639345dae4dd3b441ebb604185164e72c",
+      "plans": [
+        {
+          "target": "状态",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0266.BGR",
+      "source_sha256": "1c06abaf3fc744bb336db9e3592913c9917772ee2d1bcdaedc7d095909d932af",
+      "plans": [
+        {
+          "target": "状态",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0267.BGR",
+      "source_sha256": "c665375727221a25651935a2d4dc70092c3d96fb4e3d6da0120b2a0e399560a4",
+      "plans": [
+        {
+          "target": "卡尔塔",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0268.BGR",
+      "source_sha256": "adb169ef37303457c6eebc2e2edd582e3fcace26eaea1dcc6d20b7859f32e7b4",
+      "plans": [
+        {
+          "target": "卡尔塔",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0269.BGR",
+      "source_sha256": "f3d7db05553e5ce93f0bd3b53cac8440c86702f59a945347e0d88cf4433e7513",
+      "plans": [
+        {
+          "target": "物品",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0270.BGR",
+      "source_sha256": "e91bf2fe96529e0c48614791c97c17f3e36eea4688f0a0900a98f007fb3bfba9",
+      "plans": [
+        {
+          "target": "物品",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0271.BGR",
+      "source_sha256": "06b52e0bfe499f8b437e92cc0ff5c136beb3d09eca52624e7d7e8e7d7265809c",
+      "plans": [
+        {
+          "target": "装备",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0272.BGR",
+      "source_sha256": "3357e0702a716b8e6bf06febcd42668171f9ba92d11bfd411a947af89708da53",
+      "plans": [
+        {
+          "target": "装备",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0273.BGR",
+      "source_sha256": "ee2e73ba03c3fab70fa92fff910a5a87fc7bcecb39b22457508e4f2bfb82f0ae",
+      "plans": [
+        {
+          "target": "武器",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0274.BGR",
+      "source_sha256": "d9029c89604d4b05da6799d8a7b2e49a657718e0ae26b35d196514ae6985a5fb",
+      "plans": [
+        {
+          "target": "武器",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0275.BGR",
+      "source_sha256": "de23e38c2257d4f2d1e482443dd00741ef96776f6e092fb3a7a3a405d988c258",
+      "plans": [
+        {
+          "target": "返回",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0276.BGR",
+      "source_sha256": "2c14b56e7aec4c17b2fc3428a213250fc28af6fd04519a5a440e721c3f7d19b9",
+      "plans": [
+        {
+          "target": "返回",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0294.BGR",
+      "source_sha256": "38083c7a98b844d0e9a871aa176e8bd47854c1da06e44f8298aa48f1d0e3a13b",
+      "plans": [
+        {
+          "target": "购买",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0295.BGR",
+      "source_sha256": "8c988f51bdaa143c2849c73e4148a9733985089c1e70de3f7f867ad4a67b477d",
+      "plans": [
+        {
+          "target": "购买",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0296.BGR",
+      "source_sha256": "81d931cfcb32ad43a0bd12badf0867d7d4b37e3f7ec0fc5da630d89bd5e2c155",
+      "plans": [
+        {
+          "target": "出售",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0297.BGR",
+      "source_sha256": "16753b6526f186586827b66b9df359665d880d91179b7a2f9a13a01c7d009218",
+      "plans": [
+        {
+          "target": "出售",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0393.BGR",
+      "source_sha256": "6d6f44d987af3cd8a38785e8af9497b7da9366cdded2e5977a7ab2885c2422b1",
+      "plans": [
+        {
+          "target": "队伍",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0394.BGR",
+      "source_sha256": "5e821eac2912fb4bc8ba40b50539783a488fb95664cf44360d8d5a7ad9d33f53",
+      "plans": [
+        {
+          "target": "队伍",
+          "mask_xyxy": [
+            24,
+            4,
+            125,
+            31
+          ],
+          "background_anchor": [
+            0,
+            7
+          ],
+          "font_size": 19,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "background_mode": "column_sample",
+          "color": [
+            90,
+            90,
+            90,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0278.BGR",
+      "source_sha256": "55950a08cb0dd0522f737235658e6837294a5bdea9dfb4911af84422fbca053e",
+      "plans": [
+        {
+          "target": "使用者",
+          "mask_xyxy": [
+            0,
+            23,
+            64,
+            46
+          ],
+          "background_anchor": [
+            63,
+            45
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0279.BGR",
+      "source_sha256": "d278ac8cd9a5f581b521e4a1021d425d662261196c0303c2ca8735ab34081d3a",
+      "plans": [
+        {
+          "target": "可使用",
+          "mask_xyxy": [
+            0,
+            23,
+            64,
+            46
+          ],
+          "background_anchor": [
+            63,
+            45
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0284.BGR",
+      "source_sha256": "c1bec17b46ed36ae1195e3cebef8b2bfdb1cc5aa8c605905f745ba07f8bfc797",
+      "plans": [
+        {
+          "target": "上一页",
+          "mask_xyxy": [
+            4,
+            1,
+            125,
+            28
+          ],
+          "background_anchor": [
+            3,
+            2
+          ],
+          "font_size": 16,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0285.BGR",
+      "source_sha256": "73739ae4601934f805b9e46f161269c66f176867d035900a00043275c9c39dd8",
+      "plans": [
+        {
+          "target": "下一页",
+          "mask_xyxy": [
+            4,
+            1,
+            125,
+            28
+          ],
+          "background_anchor": [
+            3,
+            2
+          ],
+          "font_size": 16,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0286.BGR",
+      "source_sha256": "1d94f974d64defee97fa23260124c3dece495b8d756c737c83e1e328c1b7cb1c",
+      "plans": [
+        {
+          "target": "按名称排序",
+          "mask_xyxy": [
+            4,
+            1,
+            125,
+            28
+          ],
+          "background_anchor": [
+            3,
+            2
+          ],
+          "font_size": 16,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0287.BGR",
+      "source_sha256": "8130577f92265dca1171d3e9b379bec2afbc2c43fcd8f6d92a0029440991020d",
+      "plans": [
+        {
+          "target": "按类型排序",
+          "mask_xyxy": [
+            4,
+            1,
+            125,
+            28
+          ],
+          "background_anchor": [
+            3,
+            2
+          ],
+          "font_size": 16,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0288.BGR",
+      "source_sha256": "bd352da2c57d461b300fb579ad05e9d52e3c5b2b0509accf8e991607daae8499",
+      "plans": [
+        {
+          "target": "全部最大",
+          "mask_xyxy": [
+            4,
+            1,
+            125,
+            28
+          ],
+          "background_anchor": [
+            3,
+            2
+          ],
+          "font_size": 16,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0289.BGR",
+      "source_sha256": "5a550ce280f8e1d2b3d9612e258070a8dd4f713d0cafd467de7f079105a6738b",
+      "plans": [
+        {
+          "target": "全部归零",
+          "mask_xyxy": [
+            4,
+            1,
+            125,
+            28
+          ],
+          "background_anchor": [
+            3,
+            2
+          ],
+          "font_size": 16,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0290.BGR",
+      "source_sha256": "db850ee057e8a21bc8d00ed65f30d6cf86876dda1de9a28dbae494a7bb705fc8",
+      "plans": [
+        {
+          "target": "技能列表",
+          "mask_xyxy": [
+            4,
+            1,
+            125,
+            28
+          ],
+          "background_anchor": [
+            3,
+            2
+          ],
+          "font_size": 16,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0423.BGR",
+      "source_sha256": "8fe256e4e92ab270adc104c838a43fd7f04744ddd663f8d65b5c5ce786650f73",
+      "plans": [
+        {
+          "target": "上一页",
+          "mask_xyxy": [
+            4,
+            1,
+            125,
+            28
+          ],
+          "background_anchor": [
+            3,
+            2
+          ],
+          "font_size": 16,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            70,
+            70,
+            70,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0424.BGR",
+      "source_sha256": "e81a3b525a2ec3058208ac7a661bb70524150a87955db79a415d8fd4f7ec7982",
+      "plans": [
+        {
+          "target": "下一页",
+          "mask_xyxy": [
+            4,
+            1,
+            125,
+            28
+          ],
+          "background_anchor": [
+            3,
+            2
+          ],
+          "font_size": 16,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            70,
+            70,
+            70,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0400.BGR",
+      "source_sha256": "929532392b82ea5233c25109341c2917a14608f19e46c5fb8ef32c4e15c92ab4",
+      "plans": [
+        {
+          "target": "开始游戏",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            27
+          ],
+          "background_anchor": [
+            127,
+            26
+          ],
+          "font_size": 18,
+          "minimum_font_size": 15,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0401.BGR",
+      "source_sha256": "b30a2849eae7e42015876311882c9c0023d16a6d3e9e9935835bc0c490c5544b",
+      "plans": [
+        {
+          "target": "开始游戏",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            27
+          ],
+          "background_anchor": [
+            127,
+            26
+          ],
+          "font_size": 18,
+          "minimum_font_size": 15,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            70,
+            70,
+            70,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0402.BGR",
+      "source_sha256": "f02c50ae119116ceb4d260deabbec8be2bb0aebcb171ee66aa8f5696e9838ef3",
+      "plans": [
+        {
+          "target": "读取存档",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            27
+          ],
+          "background_anchor": [
+            127,
+            26
+          ],
+          "font_size": 18,
+          "minimum_font_size": 15,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0403.BGR",
+      "source_sha256": "a114fd255c77cf2a3b3af629e3f9d62b36743c07cca74a979773415a5c958c53",
+      "plans": [
+        {
+          "target": "读取存档",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            27
+          ],
+          "background_anchor": [
+            127,
+            26
+          ],
+          "font_size": 18,
+          "minimum_font_size": 15,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            70,
+            70,
+            70,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0404.BGR",
+      "source_sha256": "40ee7971e5a1f34d3ba21e429d22bb0c03d62764a81f178c240f20732af7a32c",
+      "plans": [
+        {
+          "target": "继续游戏",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            27
+          ],
+          "background_anchor": [
+            127,
+            26
+          ],
+          "font_size": 18,
+          "minimum_font_size": 15,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0405.BGR",
+      "source_sha256": "28b7fc69a61eaea6e98e0270e126b97dc1224f260a9ffae0e15509e302e2b5aa",
+      "plans": [
+        {
+          "target": "继续游戏",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            27
+          ],
+          "background_anchor": [
+            127,
+            26
+          ],
+          "font_size": 18,
+          "minimum_font_size": 15,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            70,
+            70,
+            70,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0406.BGR",
+      "source_sha256": "e4befa9ca5d92817099355a14db45f8061829f69238c909ec162f42c8febb914",
+      "plans": [
+        {
+          "target": "退出",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            27
+          ],
+          "background_anchor": [
+            127,
+            26
+          ],
+          "font_size": 18,
+          "minimum_font_size": 15,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0407.BGR",
+      "source_sha256": "8a41e4eafb0dac304c376ac92c007e8a4cdb5bf13764119f1f058b7086355618",
+      "plans": [
+        {
+          "target": "退出",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            27
+          ],
+          "background_anchor": [
+            127,
+            26
+          ],
+          "font_size": 18,
+          "minimum_font_size": 15,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            70,
+            70,
+            70,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0214.BGR",
+      "source_sha256": "005f27d21e4af6f8dc95b8c1463ecd8525c7d7ebacf91203551339b0453d2802",
+      "plans": [
+        {
+          "target": "未命中",
+          "mask_xyxy": [
+            0,
+            0,
+            64,
+            28
+          ],
+          "background_anchor": [
+            63,
+            0
+          ],
+          "font_size": 17,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "background_mode": "row_sample",
+          "color": [
+            255,
+            220,
+            110,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0431.BGR",
+      "source_sha256": "cf2cf1910da85f81554eaadd28045f8aff901cee13c13cf810ea397a2db4d87d",
+      "plans": [
+        {
+          "target": "未命中",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            28
+          ],
+          "background_anchor": [
+            127,
+            0
+          ],
+          "font_size": 21,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "background_mode": "row_sample",
+          "color": [
+            255,
+            220,
+            110,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0432.BGR",
+      "source_sha256": "2ed14753bdea96af7c2a370ead52c33ecaaddaf47f1e2f5502a0e62bad26cbae",
+      "plans": [
+        {
+          "target": "较差",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            28
+          ],
+          "background_anchor": [
+            127,
+            0
+          ],
+          "font_size": 21,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "background_mode": "row_sample",
+          "color": [
+            255,
+            220,
+            110,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0433.BGR",
+      "source_sha256": "e769dc1f125dd800d56ec514b386b6b6ab040bc39c718f78b8641f0eb32da05d",
+      "plans": [
+        {
+          "target": "良好",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            28
+          ],
+          "background_anchor": [
+            127,
+            0
+          ],
+          "font_size": 21,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "background_mode": "row_sample",
+          "color": [
+            255,
+            220,
+            110,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0434.BGR",
+      "source_sha256": "6211b8d4c5bc86b9ac963e33c5eabd844332c7a254bf914674f949b9e677a3b8",
+      "plans": [
+        {
+          "target": "完美！",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            28
+          ],
+          "background_anchor": [
+            127,
+            0
+          ],
+          "font_size": 21,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "background_mode": "row_sample",
+          "color": [
+            255,
+            220,
+            110,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0435.BGR",
+      "source_sha256": "abf910e0c52e05cfd43fc4fdecac17923cf8144aa686ccdcf18c2b1f8868dcd7",
+      "plans": [
+        {
+          "target": "再来一次！",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            28
+          ],
+          "background_anchor": [
+            127,
+            0
+          ],
+          "font_size": 21,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "background_mode": "row_sample",
+          "color": [
+            255,
+            220,
+            110,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0215.BGR",
+      "source_sha256": "910b56a08f6af3607df329dc27cc55abb18d2b41fbecf8b4f954f65702a18894",
+      "plans": [
+        {
+          "target": "1 连击",
+          "mask_xyxy": [
+            0,
+            0,
+            126,
+            61
+          ],
+          "background_anchor": [
+            126,
+            0
+          ],
+          "font_size": 23,
+          "minimum_font_size": 18,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0216.BGR",
+      "source_sha256": "21136996aa5016e3f4846d21703942c7851ed33cb435e562fcd04bcd7fb2d7c9",
+      "plans": [
+        {
+          "target": "2 连击",
+          "mask_xyxy": [
+            0,
+            0,
+            126,
+            61
+          ],
+          "background_anchor": [
+            126,
+            0
+          ],
+          "font_size": 23,
+          "minimum_font_size": 18,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0217.BGR",
+      "source_sha256": "3403524bfa20594d6fccc5efb142ab032bc42bfb8fc6da74b61083f4d192586d",
+      "plans": [
+        {
+          "target": "3 连击",
+          "mask_xyxy": [
+            0,
+            0,
+            126,
+            61
+          ],
+          "background_anchor": [
+            126,
+            0
+          ],
+          "font_size": 23,
+          "minimum_font_size": 18,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0218.BGR",
+      "source_sha256": "eced94cbf7ed89d1f41b798334c4482a85048096d8139f6bc78593ea1d38ac43",
+      "plans": [
+        {
+          "target": "终结破击",
+          "mask_xyxy": [
+            0,
+            0,
+            126,
+            61
+          ],
+          "background_anchor": [
+            126,
+            0
+          ],
+          "font_size": 23,
+          "minimum_font_size": 18,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0427.BGR",
+      "source_sha256": "ad9fe6384b39e5b15365bf1898396184857c117066867c608f0450da85caf6cd",
+      "plans": [
+        {
+          "target": "0 破击蓄力",
+          "mask_xyxy": [
+            0,
+            18,
+            126,
+            34
+          ],
+          "background_anchor": [
+            126,
+            18
+          ],
+          "font_size": 12,
+          "minimum_font_size": 10,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0428.BGR",
+      "source_sha256": "50e299c7ecf1c58c8ecf84a85e0712a6f2694193b9bd6415e5d3741c284a0891",
+      "plans": [
+        {
+          "target": "1 破击蓄力",
+          "mask_xyxy": [
+            0,
+            18,
+            126,
+            34
+          ],
+          "background_anchor": [
+            126,
+            18
+          ],
+          "font_size": 12,
+          "minimum_font_size": 10,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0429.BGR",
+      "source_sha256": "ec9bdb84182308b8809e79e2eff34f49464eed526395546465995f5c247b508c",
+      "plans": [
+        {
+          "target": "2 破击蓄力",
+          "mask_xyxy": [
+            0,
+            18,
+            126,
+            34
+          ],
+          "background_anchor": [
+            126,
+            18
+          ],
+          "font_size": 12,
+          "minimum_font_size": 10,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0430.BGR",
+      "source_sha256": "87ec44e0bcfdaef308d68827745b9417b5e08cf8cd8fbf25a7f4a86b908a545e",
+      "plans": [
+        {
+          "target": "3 层就绪",
+          "mask_xyxy": [
+            0,
+            18,
+            126,
+            34
+          ],
+          "background_anchor": [
+            126,
+            18
+          ],
+          "font_size": 12,
+          "minimum_font_size": 10,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "超越破击",
+          "mask_xyxy": [
+            0,
+            34,
+            126,
+            54
+          ],
+          "background_anchor": [
+            126,
+            34
+          ],
+          "font_size": 17,
+          "minimum_font_size": 14,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0436.BGR",
+      "source_sha256": "0de16a281aa297fb20d5b41aeccd90c45a00f1b78e3aaa9bfa98486c720ca66b",
+      "plans": [
+        {
+          "target": "快速连按3次！",
+          "mask_xyxy": [
+            0,
+            0,
+            128,
+            71
+          ],
+          "background_anchor": [
+            127,
+            70
+          ],
+          "font_size": 16,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "background_mode": "row_sample",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0333.BGR",
+      "source_sha256": "30ed12098b2a76ac1d37c04bfac4d354e12fa679b0e174cb86c0490ba5428d5f",
+      "plans": [
+        {
+          "target": "卡林兹",
+          "mask_xyxy": [
+            41,
+            1,
+            111,
+            15
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0334.BGR",
+      "source_sha256": "a11647d177c1061221923467023a39cb4bd484712e26fbdb3d4e802d13df755b",
+      "plans": [
+        {
+          "target": "卡林兹",
+          "mask_xyxy": [
+            41,
+            23,
+            111,
+            38
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            128,
+            128,
+            128,
+            128
+          ],
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0335.BGR",
+      "source_sha256": "a2c1e8102de326da46b433f84970358a2aa970cb1bb129ad54838473a7cee569",
+      "plans": [
+        {
+          "target": "阿多拉",
+          "mask_xyxy": [
+            41,
+            1,
+            111,
+            15
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0336.BGR",
+      "source_sha256": "250142bc3b53665a5be390acbe1799a06bd4058d4fc94ab852f747fcfb5bbf2a",
+      "plans": [
+        {
+          "target": "阿多拉",
+          "mask_xyxy": [
+            41,
+            23,
+            111,
+            38
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            128,
+            128,
+            128,
+            128
+          ],
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0337.BGR",
+      "source_sha256": "a1b6a99af72be70680aab9f0667f22e44e193de10331b48d117691d5ae105bfc",
+      "plans": [
+        {
+          "target": "罗普玛",
+          "mask_xyxy": [
+            41,
+            1,
+            111,
+            15
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0338.BGR",
+      "source_sha256": "3faaff8be40090ec69a69b5fa359eff9e161fece34a86a1b1266b421dac2805d",
+      "plans": [
+        {
+          "target": "罗普玛",
+          "mask_xyxy": [
+            41,
+            23,
+            111,
+            38
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            128,
+            128,
+            128,
+            128
+          ],
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0339.BGR",
+      "source_sha256": "a92f280e1097190a7131faca34883d8ee681dc36ef056acd9a27ab80cc78c483",
+      "plans": [
+        {
+          "target": "切尔西",
+          "mask_xyxy": [
+            41,
+            1,
+            111,
+            15
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0340.BGR",
+      "source_sha256": "c33193b6be19378d329e91159e364ddddd2900607938870f1650cae07df9d4e6",
+      "plans": [
+        {
+          "target": "切尔西",
+          "mask_xyxy": [
+            41,
+            23,
+            111,
+            38
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            128,
+            128,
+            128,
+            128
+          ],
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0341.BGR",
+      "source_sha256": "7ede32587651a932f7db42a8d6b24b7d94c66f62f2ad88ab4f35e762dd39047a",
+      "plans": [
+        {
+          "target": "乔克",
+          "mask_xyxy": [
+            41,
+            1,
+            111,
+            15
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0342.BGR",
+      "source_sha256": "a5a1edd778cb47551d92b23b4e1e439ca32edf7f5386e774ad89537485d97aae",
+      "plans": [
+        {
+          "target": "乔克",
+          "mask_xyxy": [
+            41,
+            23,
+            111,
+            38
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            128,
+            128,
+            128,
+            128
+          ],
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0343.BGR",
+      "source_sha256": "dde6d02de6d979cd6dc884c52b5cf0e552481d506ead77a6070d9132df732d1c",
+      "plans": [
+        {
+          "target": "菲莉西亚",
+          "mask_xyxy": [
+            41,
+            1,
+            111,
+            15
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0344.BGR",
+      "source_sha256": "c34d0e3f843f489d69b1865f37962db95f53b8e4bb7882d6b627235cdf475f1d",
+      "plans": [
+        {
+          "target": "菲莉西亚",
+          "mask_xyxy": [
+            41,
+            23,
+            111,
+            38
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            128,
+            128,
+            128,
+            128
+          ],
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0345.BGR",
+      "source_sha256": "de902a9daa259f6336211d648f483a8e0ec1e8032610c2252bac1ccf9782d7ba",
+      "plans": [
+        {
+          "target": "费尔南",
+          "mask_xyxy": [
+            41,
+            1,
+            111,
+            15
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0346.BGR",
+      "source_sha256": "4cbb54391c7d249c669ed75ed02a097ef9bbc2c38c6025a9ae66267aa2e82aab",
+      "plans": [
+        {
+          "target": "费尔南",
+          "mask_xyxy": [
+            41,
+            23,
+            111,
+            38
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            128,
+            128,
+            128,
+            128
+          ],
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0347.BGR",
+      "source_sha256": "e57c36da0a61a84913e0a42da671717b25390ecbb3af2fb9a140249a4d0b9479",
+      "plans": [
+        {
+          "target": "萝洁",
+          "mask_xyxy": [
+            41,
+            1,
+            111,
+            15
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0348.BGR",
+      "source_sha256": "273e1a1934d8080bb21a76b298adc85c32bb70e6ea97b907a5dcf98cc79cff16",
+      "plans": [
+        {
+          "target": "萝洁",
+          "mask_xyxy": [
+            41,
+            23,
+            111,
+            38
+          ],
+          "background_anchor": [
+            40,
+            0
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            128,
+            128,
+            128,
+            128
+          ],
+          "erase_mode": "nontransparent",
+          "background_mode": "row_sample"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0167.BGR",
+      "source_sha256": "a6d494a06b75cf1e9f10d37cb7ae3cdca209f9a062f8af7c2422d6da5d83b6e7",
+      "plans": [
+        {
+          "target": "读取存档",
+          "mask_xyxy": [
+            130,
+            17,
+            237,
+            40
+          ],
+          "background_anchor": [
+            128,
+            20
+          ],
+          "font_size": 20,
+          "minimum_font_size": 18,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "请在此分类中选择存档",
+          "mask_xyxy": [
+            18,
+            46,
+            237,
+            58
+          ],
+          "background_anchor": [
+            20,
+            57
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "align": "left",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "自动",
+          "mask_xyxy": [
+            21,
+            70,
+            57,
+            89
+          ],
+          "background_anchor": [
+            20,
+            70
+          ],
+          "font_size": 12,
+          "minimum_font_size": 10,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "最新",
+          "mask_xyxy": [
+            195,
+            90,
+            237,
+            102
+          ],
+          "background_anchor": [
+            194,
+            91
+          ],
+          "font_size": 9,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "编号",
+          "mask_xyxy": [
+            27,
+            106,
+            52,
+            117
+          ],
+          "background_anchor": [
+            27,
+            116
+          ],
+          "font_size": 9,
+          "minimum_font_size": 7,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "章节",
+          "mask_xyxy": [
+            57,
+            106,
+            112,
+            117
+          ],
+          "background_anchor": [
+            57,
+            116
+          ],
+          "font_size": 9,
+          "minimum_font_size": 7,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "游戏时间",
+          "mask_xyxy": [
+            158,
+            106,
+            233,
+            117
+          ],
+          "background_anchor": [
+            158,
+            116
+          ],
+          "font_size": 9,
+          "minimum_font_size": 7,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0169.BGR",
+      "source_sha256": "a0203b94869eeaf385c8404d67796af94cb725910390079a1ffb9afeda5c6b2b",
+      "plans": [
+        {
+          "target": "保存存档",
+          "mask_xyxy": [
+            130,
+            17,
+            237,
+            40
+          ],
+          "background_anchor": [
+            128,
+            20
+          ],
+          "font_size": 20,
+          "minimum_font_size": 18,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "请在此分类中选择存档",
+          "mask_xyxy": [
+            18,
+            46,
+            237,
+            58
+          ],
+          "background_anchor": [
+            20,
+            57
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "align": "left",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "自动",
+          "mask_xyxy": [
+            21,
+            70,
+            57,
+            89
+          ],
+          "background_anchor": [
+            20,
+            70
+          ],
+          "font_size": 12,
+          "minimum_font_size": 10,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "最新",
+          "mask_xyxy": [
+            195,
+            90,
+            237,
+            102
+          ],
+          "background_anchor": [
+            194,
+            91
+          ],
+          "font_size": 9,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "编号",
+          "mask_xyxy": [
+            27,
+            106,
+            52,
+            117
+          ],
+          "background_anchor": [
+            27,
+            116
+          ],
+          "font_size": 9,
+          "minimum_font_size": 7,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "章节",
+          "mask_xyxy": [
+            57,
+            106,
+            112,
+            117
+          ],
+          "background_anchor": [
+            57,
+            116
+          ],
+          "font_size": 9,
+          "minimum_font_size": 7,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "游戏时间",
+          "mask_xyxy": [
+            158,
+            106,
+            233,
+            117
+          ],
+          "background_anchor": [
+            158,
+            116
+          ],
+          "font_size": 9,
+          "minimum_font_size": 7,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0168.BGR",
+      "source_sha256": "5e3f25f34949b80b7482fdcfb05f92dc861260d8596f15047e33f3299b952c67",
+      "plans": [
+        {
+          "target": "注意",
+          "mask_xyxy": [
+            85,
+            112,
+            169,
+            125
+          ],
+          "background_anchor": [
+            84,
+            115
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "选择存档后，请点击读取。",
+          "mask_xyxy": [
+            13,
+            126,
+            238,
+            146
+          ],
+          "background_anchor": [
+            12,
+            128
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0170.BGR",
+      "source_sha256": "a9b53ca506120b247b7cbfc3c372afb05d2d7eda0437cde020649501e06560d8",
+      "plans": [
+        {
+          "target": "注意",
+          "mask_xyxy": [
+            85,
+            112,
+            169,
+            125
+          ],
+          "background_anchor": [
+            84,
+            115
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "选择存档后，请点击保存。",
+          "mask_xyxy": [
+            13,
+            126,
+            238,
+            146
+          ],
+          "background_anchor": [
+            12,
+            128
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0171.BGR",
+      "source_sha256": "41eb5a99f81e34d84e4cabdbc10429607cdb952161c665c4fe42bf1c4001a1dc",
+      "plans": [
+        {
+          "target": "所选项目是否正确？",
+          "mask_xyxy": [
+            10,
+            24,
+            174,
+            45
+          ],
+          "background_anchor": [
+            7,
+            45
+          ],
+          "font_size": 12,
+          "minimum_font_size": 10,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent",
+          "align": "center"
+        },
+        {
+          "target": "确认",
+          "mask_xyxy": [
+            12,
+            6,
+            75,
+            17
+          ],
+          "background_anchor": [
+            85,
+            7
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "source_text_evidence": "CONFIRM",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0191.BGR",
+      "source_sha256": "9e344c566482201d0215795be78ed420df070cfeb2276aefc4033ab1fafb6409",
+      "plans": [
+        {
+          "target": "音频设置",
+          "mask_xyxy": [
+            91,
+            17,
+            237,
+            41
+          ],
+          "background_anchor": [
+            89,
+            21
+          ],
+          "font_size": 20,
+          "minimum_font_size": 18,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "调整音频设置",
+          "mask_xyxy": [
+            18,
+            46,
+            235,
+            58
+          ],
+          "background_anchor": [
+            20,
+            57
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "align": "left",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "音乐",
+          "mask_xyxy": [
+            21,
+            68,
+            99,
+            85
+          ],
+          "background_anchor": [
+            20,
+            68
+          ],
+          "font_size": 12,
+          "minimum_font_size": 10,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "音效",
+          "mask_xyxy": [
+            21,
+            94,
+            99,
+            111
+          ],
+          "background_anchor": [
+            20,
+            94
+          ],
+          "font_size": 12,
+          "minimum_font_size": 10,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "语音",
+          "mask_xyxy": [
+            21,
+            119,
+            99,
+            136
+          ],
+          "background_anchor": [
+            20,
+            119
+          ],
+          "font_size": 12,
+          "minimum_font_size": 10,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "请调整音量。",
+          "mask_xyxy": [
+            39,
+            151,
+            218,
+            174
+          ],
+          "background_anchor": [
+            37,
+            153
+          ],
+          "font_size": 16,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "注意",
+          "mask_xyxy": [
+            100,
+            137,
+            154,
+            148
+          ],
+          "background_anchor": [
+            98,
+            137
+          ],
+          "font_size": 10,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0257.BGR",
+      "source_sha256": "f4e70d547e3981dc97b9b3a98740702384c10f309a5b7238812fe28ffb222307",
+      "plans": [
+        {
+          "target": "能力参数",
+          "mask_xyxy": [
+            13,
+            5,
+            91,
+            19
+          ],
+          "background_anchor": [
+            12,
+            5
+          ],
+          "font_size": 11,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "胸部",
+          "mask_xyxy": [
+            12,
+            44,
+            50,
+            64
+          ],
+          "background_anchor": [
+            11,
+            44
+          ],
+          "font_size": 14,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "头部",
+          "mask_xyxy": [
+            12,
+            69,
+            50,
+            89
+          ],
+          "background_anchor": [
+            11,
+            69
+          ],
+          "font_size": 14,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "手臂",
+          "mask_xyxy": [
+            12,
+            94,
+            50,
+            114
+          ],
+          "background_anchor": [
+            11,
+            94
+          ],
+          "font_size": 14,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "腹部",
+          "mask_xyxy": [
+            12,
+            118,
+            50,
+            138
+          ],
+          "background_anchor": [
+            11,
+            118
+          ],
+          "font_size": 14,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "腿部",
+          "mask_xyxy": [
+            12,
+            142,
+            50,
+            162
+          ],
+          "background_anchor": [
+            11,
+            142
+          ],
+          "font_size": 14,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0258.BGR",
+      "source_sha256": "16df1a20ee221671d42c66b77ef0a8f834880444a1ec0f7ef94eebcdd4e8c9db",
+      "plans": [
+        {
+          "target": "装备",
+          "mask_xyxy": [
+            141,
+            5,
+            210,
+            19
+          ],
+          "background_anchor": [
+            140,
+            5
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "right",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "武器",
+          "mask_xyxy": [
+            10,
+            42,
+            58,
+            63
+          ],
+          "background_anchor": [
+            9,
+            42
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "防具",
+          "mask_xyxy": [
+            10,
+            66,
+            58,
+            87
+          ],
+          "background_anchor": [
+            9,
+            66
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "戒指",
+          "mask_xyxy": [
+            10,
+            90,
+            58,
+            111
+          ],
+          "background_anchor": [
+            9,
+            90
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "项链",
+          "mask_xyxy": [
+            10,
+            114,
+            58,
+            135
+          ],
+          "background_anchor": [
+            9,
+            114
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "其他",
+          "mask_xyxy": [
+            10,
+            138,
+            58,
+            159
+          ],
+          "background_anchor": [
+            9,
+            138
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0261.BGR",
+      "source_sha256": "bebec6bc93378dc81c358c13c4aaabff98d17097ef091037e39a9c3c0116e70c",
+      "plans": [
+        {
+          "target": "装备列表",
+          "mask_xyxy": [
+            13,
+            5,
+            112,
+            19
+          ],
+          "background_anchor": [
+            12,
+            5
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "武器",
+          "mask_xyxy": [
+            10,
+            35,
+            68,
+            56
+          ],
+          "background_anchor": [
+            9,
+            35
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "防具",
+          "mask_xyxy": [
+            10,
+            59,
+            68,
+            80
+          ],
+          "background_anchor": [
+            9,
+            59
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "戒指",
+          "mask_xyxy": [
+            10,
+            83,
+            68,
+            104
+          ],
+          "background_anchor": [
+            9,
+            83
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "项链",
+          "mask_xyxy": [
+            10,
+            107,
+            68,
+            128
+          ],
+          "background_anchor": [
+            9,
+            107
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "其他",
+          "mask_xyxy": [
+            10,
+            131,
+            68,
+            152
+          ],
+          "background_anchor": [
+            9,
+            131
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "金钥匙",
+          "mask_xyxy": [
+            8,
+            158,
+            71,
+            175
+          ],
+          "background_anchor": [
+            7,
+            158
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "银钥匙",
+          "mask_xyxy": [
+            128,
+            158,
+            209,
+            175
+          ],
+          "background_anchor": [
+            127,
+            158
+          ],
+          "font_size": 11,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0259.BGR",
+      "source_sha256": "6fa0b83bebe69358783a113d8c5432a7bcd6858d3bfefad4063ac4a5744ac7f4",
+      "plans": [
+        {
+          "target": "胸部",
+          "mask_xyxy": [
+            12,
+            12,
+            50,
+            32
+          ],
+          "background_anchor": [
+            11,
+            12
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "头部",
+          "mask_xyxy": [
+            12,
+            37,
+            50,
+            57
+          ],
+          "background_anchor": [
+            11,
+            37
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "手臂",
+          "mask_xyxy": [
+            12,
+            62,
+            50,
+            82
+          ],
+          "background_anchor": [
+            11,
+            62
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "腹部",
+          "mask_xyxy": [
+            12,
+            86,
+            50,
+            106
+          ],
+          "background_anchor": [
+            11,
+            86
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "腿部",
+          "mask_xyxy": [
+            12,
+            110,
+            50,
+            130
+          ],
+          "background_anchor": [
+            11,
+            110
+          ],
+          "font_size": 14,
+          "minimum_font_size": 12,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "点击更换卡尔塔",
+          "mask_xyxy": [
+            31,
+            132,
+            140,
+            153
+          ],
+          "background_anchor": [
+            30,
+            133
+          ],
+          "font_size": 12,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "卡尔塔",
+          "mask_xyxy": [
+            14,
+            168,
+            60,
+            182
+          ],
+          "background_anchor": [
+            13,
+            168
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0262.BGR",
+      "source_sha256": "2ad2e7d85045da3ba16581da4d15a10d4a02bf3eeb0120230af60b45b750a465",
+      "plans": [
+        {
+          "target": "物品状态",
+          "mask_xyxy": [
+            13,
+            5,
+            93,
+            18
+          ],
+          "background_anchor": [
+            12,
+            5
+          ],
+          "font_size": 11,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "物品状态",
+          "mask_xyxy": [
+            10,
+            50,
+            26,
+            144
+          ],
+          "background_anchor": [
+            8,
+            70
+          ],
+          "font_size": 11,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "rotation": 90,
+          "source_text_evidence": "ITEM STATUS",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0263.BGR",
+      "source_sha256": "a7f8facabba4a75339d4db6a6fbc9ef5de7084a40d40b571409ec34a4e931bb4",
+      "plans": [
+        {
+          "target": "物品列表",
+          "mask_xyxy": [
+            13,
+            5,
+            103,
+            18
+          ],
+          "background_anchor": [
+            12,
+            5
+          ],
+          "font_size": 11,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "物品",
+          "mask_xyxy": [
+            13,
+            35,
+            61,
+            58
+          ],
+          "background_anchor": [
+            12,
+            35
+          ],
+          "font_size": 14,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0291.BGR",
+      "source_sha256": "69b53a5f43ba557bfa1a29f872477d6a252623a171bddb554c358139979d78a4",
+      "plans": [
+        {
+          "target": "物品列表",
+          "mask_xyxy": [
+            12,
+            4,
+            88,
+            17
+          ],
+          "background_anchor": [
+            11,
+            4
+          ],
+          "font_size": 11,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0292.BGR",
+      "source_sha256": "492a25de9477509a997390c4284e6a1dc25a68b49881b1516dda86f7d3c52c7d",
+      "plans": [
+        {
+          "target": "价格",
+          "mask_xyxy": [
+            14,
+            5,
+            63,
+            22
+          ],
+          "background_anchor": [
+            13,
+            5
+          ],
+          "font_size": 12,
+          "minimum_font_size": 10,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": "持有",
+          "mask_xyxy": [
+            114,
+            5,
+            161,
+            22
+          ],
+          "background_anchor": [
+            113,
+            5
+          ],
+          "font_size": 12,
+          "minimum_font_size": 10,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0408.BGR",
+      "source_sha256": "96d4e1c2ec408d3ce38480f683af46d00b341dd8e5e43b22e33f9ebb4e858d20",
+      "plans": [
+        {
+          "target": "队伍·出战成员配置",
+          "mask_xyxy": [
+            10,
+            4,
+            256,
+            22
+          ],
+          "background_anchor": [
+            10,
+            5
+          ],
+          "font_size": 12,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent",
+          "group_id": "party-title"
+        },
+        {
+          "target": "请选择",
+          "mask_xyxy": [
+            136,
+            156,
+            256,
+            184
+          ],
+          "background_anchor": [
+            139,
+            158
+          ],
+          "font_size": 15,
+          "minimum_font_size": 8,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent",
+          "group_id": "party-caption"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0409.BGR",
+      "source_sha256": "686bae9398915fdb14d18192f7fcf4f2be0a205afa53868e6db366c39d2b0db5",
+      "plans": [
+        {
+          "target": "出战角色，最多4人。",
+          "mask_xyxy": [
+            0,
+            159,
+            215,
+            184
+          ],
+          "background_anchor": [
+            1,
+            182
+          ],
+          "font_size": 15,
+          "minimum_font_size": 13,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "align": "left",
+          "erase_mode": "nontransparent",
+          "group_id": "party-caption"
+        },
+        {
+          "target": "说明",
+          "mask_xyxy": [
+            165,
+            143,
+            211,
+            158
+          ],
+          "background_anchor": [
+            164,
+            144
+          ],
+          "font_size": 10,
+          "minimum_font_size": 9,
+          "stroke_width": 1,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "erase_mode": "nontransparent"
+        },
+        {
+          "target": null,
+          "erase_only": true,
+          "group_id": "party-title",
+          "mask_xyxy": [
+            0,
+            4,
+            9,
+            22
+          ],
+          "background_anchor": [
+            10,
+            4
+          ],
+          "background_mode": "solid",
+          "erase_mode": "all_pixels",
+          "source_text_evidence": "两纹理相邻完整英文标题的尾部字形；完整中文标题已在0408同组成员写入。"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0323.BGR",
+      "source_sha256": "6411669eac30b9d2ef32dd61b2934d51052dc82dc4b5f18da079b576761daa2c",
+      "plans": [
+        {
+          "target": "风",
+          "mask_xyxy": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "background_anchor": [
+            15,
+            15
+          ],
+          "font_size": 13,
+          "minimum_font_size": 11,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    },
+    {
+      "resource": "BGR/0324.BGR",
+      "source_sha256": "5867cbd7ad814136a65a92fb47bb863a9e080f6e3fe0da6969eaf1e69b20f87d",
+      "plans": [
+        {
+          "target": "风",
+          "mask_xyxy": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "background_anchor": [
+            15,
+            15
+          ],
+          "font_size": 13,
+          "minimum_font_size": 11,
+          "stroke_width": 0,
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "color": [
+            70,
+            70,
+            70,
+            255
+          ],
+          "erase_mode": "nontransparent"
+        }
+      ]
+    }
+  ]
+}
