@@ -17,6 +17,16 @@ class FeedbackContracts(unittest.TestCase):
         self.assertIn('wideUiCanvasWidth()', source)
         self.assertNotIn('originalPerspective', source)
         self.assertNotIn('setRenderWait', source)
+    def test_title_background_uses_final_decoration_vector(self):
+        source = (ROOT / 'src/runtime/title_layout.cpp').read_text('utf8')
+        self.assertIn('0x4e370', source)
+        self.assertIn('id==209||id==210', source)
+        self.assertIn('position[0]+=', source)
+        self.assertNotIn('bgPoint', source)
+        fixture = (ROOT / 'src/runtime/title_layout_fixture.cpp').read_text('utf8')
+        self.assertIn('--tile-baseline-check', fixture)
+        self.assertIn('tileX==x+107.f', fixture)
+
     def test_animation_library_version_lock(self):
         sha = render_candidate.SOURCE_INPUTS['Asura.dll']
         self.assertEqual(sha, 'f81e7c458d43b77210311499b39b9be2c4895e3a3b356d2e848b6e84210d2557')
