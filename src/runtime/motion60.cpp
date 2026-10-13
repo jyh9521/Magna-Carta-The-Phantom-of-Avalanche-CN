@@ -1,3 +1,4 @@
+#include "free_view.h"
 #include "motion60.h"
 #include "render_timeline.h"
 #include <intrin.h>
@@ -22,6 +23,10 @@ using LoadMatrix=void(__thiscall*)(void*,Matrix*);
 LoadMatrix originalLoad=nullptr,originalMultiply=nullptr;
 BYTE* driverBase=nullptr;
 motion::TransformTrack cameraTrack;
+camera::Orbit freeOrbit;bool freeView=false;DWORD freeTimestamp=0;uint64_t freeGeneration=0;
+#ifdef MOTION60_TEST
+bool freeFixture=false;camera::Input freeFixtureInput{};
+#endif
 struct CameraState {void* identity=nullptr;Matrix original{},applied{};bool valid=false;};
 thread_local CameraState cameraState;
 ULONG_PTR timerResume=0;
@@ -65,6 +70,24 @@ void cameraMatrix(void* driver,Matrix* matrix,LoadMatrix original){
  auto phase=renderPhase();if(!phase.valid){cameraTrack.reset();cameraState.valid=false;original(driver,matrix);return;}
  if(cameraState.identity!=camera){cameraTrack.reset();cameraState.identity=camera;}
  cameraState.original=*matrix;cameraState.applied=cameraTrack.sample(*matrix,phase,true);
+ if(freeView){
+  if(freeGeneration!=phase.generation){freeOrbit.reset();freeGeneration=phase.generation;}
+#ifdef MOTION60_TEST
+  if(freeFixture){cameraState.applied=freeOrbit.sample(cameraState.applied,reinterpret_cast<uintptr_t>(camera),freeFixtureInput);}
+  else
+#endif
+  {
+  DWORD now=GetTickCount();float dt=freeTimestamp?float(now-freeTimestamp)/1000:0;freeTimestamp=now;
+  DWORD foregroundPid=0;GetWindowThreadProcessId(GetForegroundWindow(),&foregroundPid);
+  if(foregroundPid!=GetCurrentProcessId()){freeOrbit.reset();}
+  else {
+   auto key=[](int k){return (GetAsyncKeyState(k)&0x8000)!=0;};bool chord=key(VK_CONTROL)&&key(VK_MENU);
+   camera::Input input{key(VK_F6),key(VK_F7),chord?float(key(VK_NUMPAD6))-float(key(VK_NUMPAD4)):0,
+    chord?float(key(VK_NUMPAD8))-float(key(VK_NUMPAD2)):0,chord?float(key(VK_ADD))-float(key(VK_SUBTRACT)):0,dt};
+   cameraState.applied=freeOrbit.sample(cameraState.applied,reinterpret_cast<uintptr_t>(camera),input);
+  }
+ }
+ }
  cameraState.valid=motion::rigid(cameraState.original)&&motion::rigid(cameraState.applied);
  Matrix copy=cameraState.applied;original(driver,&copy);
  static LONG applied=0;if(cameraState.valid&&InterlockedIncrement(&applied)==1&&trace)trace(L"MOTION60_CAMERA_APPLIED phase=engine_remainder original_camera=unchanged");
@@ -220,8 +243,9 @@ bool setDriver(BYTE* p,bool enabled,void(*logger)(const wchar_t*)){
 }
 }
 bool installMotion60Driver(HMODULE module,void(*logger)(const wchar_t*)){
+ wchar_t freeFlag[8]{};freeView=GetEnvironmentVariableW(L"MC_FREE_VIEW",freeFlag,8)==1&&freeFlag[0]==L'1';freeOrbit.reset();freeTimestamp=0;freeGeneration=0;
  wchar_t flag[8]{};if(GetEnvironmentVariableW(L"MC_MOTION60_COMPLETE",flag,8)!=1||flag[0]!=L'1')return true;
- return setDriver(reinterpret_cast<BYTE*>(module),true,logger);
+ bool ready=setDriver(reinterpret_cast<BYTE*>(module),true,logger);if(ready&&freeView&&logger)logger(L"FREE_VIEW_READY mode=orbit render_only=true initial=off F6_toggle=enabled F7_reset=enabled");return ready;
 }
 bool removeMotion60Driver(HMODULE module){return setDriver(reinterpret_cast<BYTE*>(module),false,nullptr);}
 #ifdef MOTION60_TEST
@@ -233,6 +257,7 @@ void motion60TestRender(void* o,int f){renderHook(o,nullptr,f,nullptr,0,0,0,0,0)
 void motion60TestAbsolute(void* b,unsigned r,MotionMatrix* p,MotionMatrix* parent){absoluteHook(b,r,reinterpret_cast<Matrix*>(p),reinterpret_cast<Matrix*>(parent));}
 void motion60TestBlend(const MotionMatrix& a,const MotionMatrix& b,float t,MotionMatrix& out){blend(reinterpret_cast<const Matrix&>(a),reinterpret_cast<const Matrix&>(b),t,reinterpret_cast<Matrix&>(out));}
 void motion60TestComplete(BYTE* p,bool enabled){engineBase=p;complete=enabled;timeline.reset();timelineThread=GetCurrentThreadId();cameraState={};cameraTrack.reset();caches.clear();}
+void motion60TestFreeView(bool enabled,bool toggle,bool reset,float yaw,float dt){freeView=enabled;freeFixture=true;freeFixtureInput={toggle,reset,yaw,0,0,dt};}
 void motion60TestTick(unsigned consumed,unsigned remainder,unsigned timestamp){timeline.observe(1,33,remainder,consumed,timestamp,true);cameraState.valid=false;}
 void motion60TestCamera(void* d,MotionMatrix* m,void(__thiscall* f)(void*,MotionMatrix*)){cameraMatrix(d,reinterpret_cast<Matrix*>(m),reinterpret_cast<LoadMatrix>(f));}
 bool motion60TestTimerPatch(BYTE* p,bool enabled){return timerPatch(p,enabled);}

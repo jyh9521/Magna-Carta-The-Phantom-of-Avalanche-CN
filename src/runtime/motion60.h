@@ -26,3 +26,7 @@ void motion60TestAbsolute(void*,unsigned,MotionMatrix*,MotionMatrix*);
 bool motion60TestSetMapped(BYTE*,size_t,MotionAbsoluteFn,bool);
 void motion60TestInitialize(BYTE*,MotionAbsoluteFn);
 #endif
+
+#ifdef MOTION60_TEST
+void motion60TestFreeView(bool enabled,bool toggle,bool reset,float yaw,float seconds);
+#endif

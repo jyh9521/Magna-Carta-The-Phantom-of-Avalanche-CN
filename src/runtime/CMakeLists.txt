@@ -135,3 +135,9 @@ add_executable(current_texture_lifetime_fixture current_texture_lifetime_fixture
 target_compile_definitions(current_texture_lifetime_fixture PRIVATE CURRENT_TEXTURE_TEST)
 set_property(TARGET current_texture_lifetime_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 target_compile_options(current_texture_lifetime_fixture PRIVATE /W4 /utf-8)
+
+target_sources(workspace_profile PRIVATE free_view.cpp)
+target_sources(motion60_fixture PRIVATE free_view.cpp)
+add_executable(free_view_fixture free_view_fixture.cpp free_view.cpp render_timeline.cpp)
+set_property(TARGET free_view_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+target_compile_options(free_view_fixture PRIVATE /W4 /utf-8)
