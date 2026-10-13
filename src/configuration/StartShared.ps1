@@ -1,0 +1,52 @@
+param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','texture','camera','maps')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='')
+$ErrorActionPreference='Stop'
+$runtimeRoot=$PSScriptRoot
+$manifest=Get-Content -LiteralPath (Join-Path $runtimeRoot 'runtime.json') -Raw | ConvertFrom-Json
+if($manifest.schema -ne 1){throw 'Unsupported shared runtime'}
+if($DataRoot -and -not $VerifyOnly){throw 'Data override is only supported for migration preflight'}
+if(-not $DataRoot){$DataRoot=Join-Path $runtimeRoot 'data'}
+$game=(Resolve-Path -LiteralPath $DataRoot).Path
+function Hash($p){$s=[IO.File]::OpenRead($p);$h=[Security.Cryptography.SHA256]::Create();try{([BitConverter]::ToString($h.ComputeHash($s))).Replace('-','').ToLowerInvariant()}finally{$h.Dispose();$s.Dispose()}}
+foreach($p in $manifest.data.PSObject.Properties){if((Hash (Join-Path $game $p.Name)) -ne $p.Value){throw ('Game input changed: '+$p.Name)}}
+foreach($p in $manifest.files.PSObject.Properties){if((Hash (Join-Path $runtimeRoot $p.Name)) -ne $p.Value){throw ('Runtime input changed: '+$p.Name)}}
+Import-Module (Join-Path $runtimeRoot 'config/EnhancementSettings.psm1') -Force
+$settings=Read-EnhancementSettings (Join-Path $runtimeRoot 'config/enhancements.json')
+$selected=$manifest.recipes.$Recipe
+if($selected.settings){$settings=Test-EnhancementSettings $selected.settings}
+$module=$selected.module
+if($module -eq 'configured'){$module=if($settings.motion60 -or $settings.native_gamepad){'modern'}else{'display'}}
+$ini=Join-Path $game 'DDrawCompat-MagnaCarta.ini'
+$known=@($manifest.profiles.PSObject.Properties.Value)
+if((Hash $ini) -notin $known){throw 'Unknown active display configuration'}
+$mutex=New-Object Threading.Mutex($false,('Local\MagnaCartaShared_'+(Hash (Join-Path $runtimeRoot 'runtime.json')).Substring(0,24)))
+if(-not $mutex.WaitOne(0)){throw 'Another shared runtime entry is active'}
+$environment=@{}
+foreach($key in @('MC_MOTION60_COMPLETE','MC_TITLE_BACKGROUND4K','MC_FREE_VIEW','MC_MAP_OVERLAY','MC_MAP_ASSETS')){$environment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
+try{
+ foreach($p in (Get-CimInstance Win32_Process -Filter "Name='MagnaCarta.exe'")){
+  if(-not $p.ExecutablePath -or [IO.Path]::GetFullPath($p.ExecutablePath) -eq (Join-Path $game 'MagnaCarta.exe')){throw 'Exit game before changing shared settings'}
+ }
+ $profile=[IO.File]::ReadAllBytes((Join-Path $runtimeRoot 'config/profile-base.bin'))
+ . (Join-Path $runtimeRoot 'config/PrepareProfile.ps1')
+ $profile=Convert-CompatibilityProfile $profile
+ $cache=Join-Path $runtimeRoot 'cache'
+ if(-not (Test-Path -LiteralPath $cache)){New-Item -ItemType Directory -Path $cache | Out-Null}
+ [IO.File]::WriteAllBytes((Join-Path $cache 'profile.bin'),$profile)
+ [IO.File]::WriteAllBytes($ini,[IO.File]::ReadAllBytes((Join-Path $runtimeRoot ('config/profiles/'+$settings.display_profile+'.ini'))))
+ $env:MC_MOTION60_COMPLETE=if($settings.motion60){'1'}else{'0'}
+ $env:MC_TITLE_BACKGROUND4K='1'
+ $env:MC_FREE_VIEW=if($selected.camera){'1'}else{'0'}
+ $env:MC_MAP_OVERLAY=if($selected.maps){'1'}else{'0'}
+ $env:MC_MAP_ASSETS=if($selected.maps){Join-Path $runtimeRoot 'maps'}else{''}
+ $args=@('--workspace',$game,'--shim',(Join-Path $runtimeRoot ('modules/'+$module+'.dll')),'--profile',(Join-Path $cache 'profile.bin'),'--log',(Join-Path $cache 'profile.log'),'--native-text-step','--system-messages','--focus-guard','--display-profile',$settings.display_profile)
+ if($settings.native_gamepad){$args+='--native-gamepad'}elseif($selected.maps){$args+='--input-passthrough'}
+ if($selected.texture){$args+='--texture-lifetime'}
+ if($VerifyOnly){$args+='--verify-only'}
+ & (Join-Path $runtimeRoot 'modules/workspace_launcher.exe') @args 1>(Join-Path $cache 'launcher.stdout.txt') 2>(Join-Path $cache 'launcher.stderr.txt')
+ $code=$LASTEXITCODE
+ if($code -ne 0){throw ('Shared launcher exit='+$code+'; see runtime/cache')}
+ Write-Output ('SHARED_RUNTIME PASS recipe='+$Recipe+' module='+$module+' verify_only='+[bool]$VerifyOnly+' data='+$game)
+}finally{
+ foreach($key in $environment.Keys){[Environment]::SetEnvironmentVariable($key,$environment[$key],'Process')}
+ $mutex.ReleaseMutex();$mutex.Dispose()
+}

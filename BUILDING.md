@@ -1,5 +1,11 @@
 # 构建说明
 
+## 当前运行布局（2026-10-14）
+
+功能更新采用[共享数据布局](docs/SHARED_RUNTIME_LAYOUT.md)：只更新运行模块与配置，不复制整套游戏。
+历史 `build/*-game` 和调试/回滚产物清理后不再存在；后文旧命令仅作为历史研究流程。
+当前原生重建命令、依赖位置和人工启动入口以共享布局文档为准。
+
 ## 高级显示第二轮运行工具
 
 既有Win32原生构建配置增加 `wide_ui_fixture`、`menu_visibility_fixture`、`motion60_fixture`；继续使用原字体覆盖与系统消息生成头文件，不重新生成或更改翻译资源。`workspace_profile`增加三个源文件；`workspace_launcher`及准备脚本增加Asura.dll全文件源锁。CMake配置和原有字体/系统消息生成流程仍按后文执行。

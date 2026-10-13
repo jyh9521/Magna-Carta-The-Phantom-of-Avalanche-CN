@@ -2,6 +2,9 @@
 
 初代 PC 版《Magna Carta: The Phantom of Avalanche》的简体中文汉化与现代 Windows 兼容性工程。
 
+当前本机运行布局为[单份游戏数据＋独立模块和配置](docs/SHARED_RUNTIME_LAYOUT.md)。
+统一入口是 `runtime/Play.cmd`，设置入口是 `runtime/Configure.cmd`；历史 `build/*-game` 测试入口已由新布局取代。
+
 ## 当前状态
 
 已补齐当前提取目录的 4,137 个结构字段：4,091 条译文、46 条明确保留的空值、测试或内部对象字段。427 份资源与两套字库已在独立目录完成重建、逆解码及重复构建验证。
