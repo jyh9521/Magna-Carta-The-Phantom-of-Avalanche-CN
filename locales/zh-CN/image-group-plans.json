@@ -460,7 +460,7 @@
     {
       "id": "title-small",
       "dimensions": [
-        512,
+        768,
         256
       ],
       "tiles": [
@@ -479,29 +479,48 @@
             256,
             0
           ]
-        }
-      ],
-      "plans": [
+        },
         {
-          "target": "真名法典：冰之魅影",
-          "mask_xyxy": [
-            80,
-            211,
-            510,
-            250
-          ],
-          "background_anchor": [
-            0,
+          "resource": "BGR/0359.BGR",
+          "source_sha256": "3fc989064e648a2520acda61e26772edfa00df6671f739d07349a35a9fe2e806",
+          "xy": [
+            512,
             0
-          ],
-          "erase_mode": "overlay",
-          "font_size": 24,
-          "minimum_font_size": 12,
-          "stroke_width": 1,
-          "source_text_evidence": "MAGNACARTA / The phantom of avalanche"
+          ]
         }
       ],
-      "layout_evidence": "Static adjacent tile edges and continuous artwork match the complete reviewed phrase. Retain the original logo/art; add a readable target-language caption. Runtime placement remains unverified."
+      "plans": [],
+      "layout_evidence": "Source tile edges and foreground bounds; Chinese two-line silver serif wordmark with horizontal rule replaces foreground English/logo caption. Changes restricted to declared masks; other artwork unchanged. Runtime positioning awaits observation.",
+      "artwork": {
+        "background_patch": {
+          "path": "art/title-small-background.lpd",
+          "sha256": "25bd1132bbc20c2f6fd8a6a2244416d423d60c939893dd867d0c5e31ab11093f",
+          "source_rgba_sha256": "29ba3c185a3b917917b8ea20c9703f2cd8560c703ca0417d09ab718799e59012",
+          "target_rgba_sha256": "80d18d58d3e77c8002216612ad1ad04a0394f5668bc36b466109948c3bbc42ce",
+          "mask_xyxy": [
+            114,
+            154,
+            532,
+            214
+          ]
+        },
+        "overlays": [
+          {
+            "path": "art/title-wordmark.png",
+            "sha256": "3d45f802af9a5405294d8ffa0a8a6a28f26012526990eeb6117c921068ee090f",
+            "mask_xyxy": [
+              140,
+              140,
+              500,
+              252
+            ],
+            "text_lines": [
+              "真名法典",
+              "冰之魅影"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "title-large",
@@ -535,27 +554,38 @@
           ]
         }
       ],
-      "plans": [
-        {
-          "target": "真名法典：冰之魅影",
+      "plans": [],
+      "layout_evidence": "Source tile edges and foreground bounds; Chinese two-line silver serif wordmark with horizontal rule replaces foreground English/logo caption. Changes restricted to declared masks; other artwork unchanged. Runtime positioning awaits observation.",
+      "artwork": {
+        "background_patch": {
+          "path": "art/title-large-background.lpd",
+          "sha256": "e60006b9b48162921138e95c8c9abe0e8a69ca3db85a921e982809330eb7c72c",
+          "source_rgba_sha256": "00f7b4e59473f4ef8f191dcce9c9f89f591fb681d456169129e6cd02193a6fcc",
+          "target_rgba_sha256": "2ee20056373a48b24c579d7857c92401c9670b2406fb6138c86717a4ffd60c5c",
           "mask_xyxy": [
-            180,
-            163,
-            665,
-            199
-          ],
-          "background_anchor": [
-            0,
-            0
-          ],
-          "erase_mode": "overlay",
-          "font_size": 25,
-          "minimum_font_size": 12,
-          "stroke_width": 1,
-          "source_text_evidence": "MAGNACARTA / The phantom of avalanche"
-        }
-      ],
-      "layout_evidence": "Static adjacent tile edges and continuous artwork match the complete reviewed phrase. Retain the original logo/art; add a readable target-language caption. Runtime placement remains unverified."
+            145,
+            198,
+            670,
+            256
+          ]
+        },
+        "overlays": [
+          {
+            "path": "art/title-wordmark.png",
+            "sha256": "3d45f802af9a5405294d8ffa0a8a6a28f26012526990eeb6117c921068ee090f",
+            "mask_xyxy": [
+              190,
+              130,
+              610,
+              252
+            ],
+            "text_lines": [
+              "真名法典",
+              "冰之魅影"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "loading-progress",

@@ -31,6 +31,36 @@ class ImageGroupTests(unittest.TestCase):
         for name,tile,box in tiles:
             self.assertEqual(tile.replace_rgba(combined.crop(box).tobytes()).to_bytes(),raw[name])
 
+    def test_locked_artwork_overlay_preserves_pixels_outside_mask(self):
+        from PIL import Image
+        overlay=Image.new('RGBA',(4,4));overlay.putpixel((1,1),(255,255,255,255))
+        path=self.root/'overlay.png';overlay.save(path)
+        row=dict(path='overlay.png',sha256=m.digest(path.read_bytes()),mask_xyxy=[10,10,20,20],text_lines=['owned'])
+        image=parse(self.raw);changed,records=m.apply_artwork(image,dict(overlays=[row]),self.root,{})
+        a,b=image.rgba(),changed.rgba()
+        self.assertNotEqual(a,b)
+        for y in range(40):
+            for x in range(40):
+                if not(10<=x<20 and 10<=y<20):
+                    at=(y*40+x)*4;self.assertEqual(a[at:at+4],b[at:at+4])
+        self.assertEqual(records[0]['text_lines'],['owned'])
+        row['sha256']='0'*64
+        with self.assertRaises(ValueError):m.apply_artwork(image,dict(overlays=[row]),self.root,{})
+
+    def test_background_delta_exceeding_mask_is_rejected(self):
+        from locale_package import delta
+        image=parse(self.raw);raw=image.rgba();after=bytearray(raw);after[0]^=1
+        path=self.root/'background.lpd';path.write_bytes(delta(raw,bytes(after)))
+        row=dict(path=path.name,sha256=m.digest(path.read_bytes()),source_rgba_sha256=m.digest(raw),
+                 target_rgba_sha256=m.digest(after),mask_xyxy=[10,10,20,20])
+        with self.assertRaisesRegex(ValueError,'exceeds reviewed'):m.apply_artwork(image,dict(background_patch=row),self.root,{})
+
+    def test_opaque_artwork_overlay_is_rejected(self):
+        from PIL import Image
+        path=self.root/'opaque.png';Image.new('RGBA',(4,4),(255,255,255,255)).save(path)
+        row=dict(path=path.name,sha256=m.digest(path.read_bytes()),mask_xyxy=[10,10,20,20],text_lines=['owned'])
+        with self.assertRaisesRegex(ValueError,'transparency'):m.apply_artwork(parse(self.raw),dict(overlays=[row]),self.root,{})
+
     def test_holes_overlaps_bad_dimensions_and_coordinates_are_rejected(self):
         for position in [[39,0],[41,0],[-1,0],[True,0]]:
             rows=copy.deepcopy(self.rows);rows[1]['xy']=position

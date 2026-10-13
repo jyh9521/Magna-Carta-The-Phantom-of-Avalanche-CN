@@ -72,3 +72,5 @@ SOFTMAX开头Logo、开发人员名单所在整份PAK、旧存档名字及24份�
 候选启动入口继承OpenGL导致PixelFormat失败的实际日志及修正见[START_PROFILE_FIX.md](START_PROFILE_FIX.md)。当前入口在独立会话使用Direct3D、默认FocusGuard，并预检已验收无边框/1080兼容层摘要；`-PrepareOnly`不启动游戏，真实启动及退出后桌面布局仍待回归。
 
 实际截图中的旧字描边残痕已按完整清理轮廓修正；202份图像复核、985→0像素对照、源保护和独立回滚见[IMAGE_RESIDUE_FIX.md](IMAGE_RESIDUE_FIX.md)。不将静态清理通过称作完整游戏内验收。
+
+主界面改为两行银白艺术字及横线，菜单提高对比度；前景英文撤换、尾字跨tile修复、源保护及可复现素材见[TITLE_ARTWORK.md](TITLE_ARTWORK.md)。当前图像203份、完整增量635资源，实际新标题显示待观察。

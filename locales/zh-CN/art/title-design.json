@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "text_lines": [
+    "真名法典",
+    "冰之魅影"
+  ],
+  "separator": "thin horizontal silver rule",
+  "style": "silver platinum beveled Song/Ming serif fantasy typography",
+  "reference": "Original horizontal foreground MAGNACARTA logo; opening SOFTMAX brand unaffected",
+  "wordmark_prompt": "Design a production-ready standalone Chinese title wordmark, with a genuinely transparent background (no scene, no panel, no checkerboard). Use the provided screenshot ONLY as visual style reference for its original MAGNACARTA silver serif fantasy title. Replace it with EXACT Simplified Chinese text arranged in precisely 3 centered tiers: first line 真名法典 ; second tier a thin long horizontal silver rule, NOT any literal word or character; third line 冰之魅影. There is NO English, NO colon, NO extra caption. Main title is larger, elegantly spaced, sharply drawn CJK Song/Ming serif letterforms with wedge-shaped serifs, strong thin/thick stroke contrast, subtly beveled silver/platinum highlights, dark charcoal extrusion/drop shadow. Subtitle slightly smaller with generous tracking. Refined early-2000s fantasy RPG metallic typography, understated, restrained and highly legible against a mottled dark teal/olive background. No brush calligraphy, no generic bold sans serif, no ornamental dragons, snowflakes, ice chunks, borders, icons or other elements. Clean horizontally balanced composition, title width about 80% of rule width, subtitle width about 60% of rule width; compact vertical spacing suited to a game title plaque with roughly 4:1 overall aspect ratio. Crisp simplified characters, exact spelling and coherent beveling. Keep all edges within canvas with transparent padding.",
+  "background_prompt": "Edit this exact game title background texture. Remove ONLY the horizontal foreground bright silver English title MAGNACARTA, the thin horizontal silver rule directly below it, and the small bright silver English subtitle The phantom of avalanche in the lower part of the image. Reconstruct the underlying dark teal/olive silky swirling painted background and dark ink motif naturally in that narrow former lettering band. Do NOT add any text, characters, logo, line, emblem or new design. Keep all existing background composition, fabric folds, colors, gradients, dark silhouette/ink shapes, and faint slanted dark background lettering exactly aligned and unchanged. This is a clean background plate, not a redesigned scene. Same framing and original aspect ratio as the input; no extra canvas, no zoom, no cropping. The only intended change is removing the bright foreground title lettering and rule, repairing the background that was behind it. No change to the faint slanted dark background decoration.",
+  "build_mode": "Fixed stored transparent wordmark and source-locked background deltas; no network generation during rebuild",
+  "game_started": false
+}

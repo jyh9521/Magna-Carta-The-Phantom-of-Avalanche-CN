@@ -30,3 +30,26 @@ class ImageUpgradeTests(unittest.TestCase):
             (w/'image.bgr').write_bytes(b'user edit')
             with self.assertRaises(ValueError):m.rollback(w,root/'backup')
             self.assertEqual((w/'image.bgr').read_bytes(),b'user edit')
+
+    def test_readonly_copy_is_updated_then_attributes_restored(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d);w,old,new=self.fixture(root);target=w/'image.bgr';target.chmod(0o444)
+            original_mode=target.stat().st_mode
+            with patch.object(m,'collect',side_effect=[{'image.bgr':old},{'image.bgr':new}]):m.apply(w,[],[],root/'backup')
+            self.assertEqual(target.read_bytes(),b'new pixels')
+            m.rollback(w,root/'backup');self.assertEqual(target.read_bytes(),b'old pixels')
+            self.assertEqual(target.stat().st_mode,original_mode)
+
+    def test_write_failure_restores_every_attempted_file(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=Path(d);w,old,new=self.fixture(root);(w/'second.bgr').write_bytes(b'old pixels')
+            original_write=Path.write_bytes;failed=[False]
+            def write(path,raw):
+                if path==w/'second.bgr' and not failed[0]:
+                    failed[0]=True;raise OSError('owned fixture write failure')
+                return original_write(path,raw)
+            with patch.object(m,'collect',side_effect=[{'image.bgr':old,'second.bgr':old},{'image.bgr':new,'second.bgr':new}]):
+                with patch.object(Path,'write_bytes',write):
+                    with self.assertRaises(OSError):m.apply(w,[],[],root/'backup')
+            self.assertEqual((w/'image.bgr').read_bytes(),b'old pixels')
+            self.assertEqual((w/'second.bgr').read_bytes(),b'old pixels')

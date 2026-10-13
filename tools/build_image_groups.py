@@ -6,6 +6,39 @@ import struct
 
 from build_image_text import digest, render, rectangle
 from resource_image import parse, TGA_FOOTER
+from locale_package import located,undelta
+
+def apply_artwork(image,artwork,root,snapshots):
+    from PIL import Image
+    raw=image.rgba();result=Image.frombytes('RGBA',(image.width,image.height),raw)
+    allowed=set();records=[]
+    if artwork.get('background_patch'):
+        row=artwork['background_patch'];path=located(root,row['path']);data=path.read_bytes();snapshots[path]=data
+        if digest(data)!=row['sha256'] or digest(raw)!=row['source_rgba_sha256']:raise ValueError('artwork background source/patch mismatch')
+        after=undelta(raw,data,len(raw))
+        if digest(after)!=row['target_rgba_sha256']:raise ValueError('artwork background target mismatch')
+        box=rectangle(row['mask_xyxy'],image.width,image.height)
+        for i in range(image.width*image.height):
+            x,y=i%image.width,i//image.width
+            if not (box[0]<=x<box[2] and box[1]<=y<box[3]) and raw[i*4:i*4+4]!=after[i*4:i*4+4]:raise ValueError('background delta exceeds reviewed mask')
+        result=Image.frombytes('RGBA',(image.width,image.height),after)
+        allowed.update((x,y) for y in range(box[1],box[3]) for x in range(box[0],box[2]))
+        records.append(dict(kind='source_locked_background_delta',mask_xyxy=list(box)))
+    for row in artwork.get('overlays',[]):
+        path=located(root,row['path']);data=path.read_bytes();snapshots[path]=data
+        if digest(data)!=row['sha256']:raise ValueError('artwork overlay digest mismatch')
+        box=rectangle(row['mask_xyxy'],image.width,image.height)
+        overlay=Image.open(path).convert('RGBA')
+        if overlay.getchannel('A').getextrema()[0]!=0:raise ValueError('artwork overlay must retain transparency')
+        overlay.thumbnail((box[2]-box[0],box[3]-box[1]),Image.Resampling.LANCZOS)
+        x=box[0]+(box[2]-box[0]-overlay.width)//2;y=box[1]+(box[3]-box[1]-overlay.height)//2
+        result.alpha_composite(overlay,(x,y))
+        allowed.update((x,y) for y in range(box[1],box[3]) for x in range(box[0],box[2]))
+        records.append(dict(kind='transparent_wordmark',mask_xyxy=list(box),text_lines=row['text_lines'],sha256=row['sha256']))
+    after=result.tobytes()
+    for i in range(image.width*image.height):
+        if (i%image.width,i//image.width) not in allowed and raw[i*4:i*4+4]!=after[i*4:i*4+4]:raise ValueError('artwork modifies outside reviewed masks')
+    return image.replace_rgba(after),records
 
 
 def compose(rows, source, dimensions):
@@ -65,8 +98,11 @@ def build(source,plans_path,font,font_sha,output):
         image,before,tiles=compose(group.get('tiles'),source,group.get('dimensions'))
         if set(before)&set(results):raise ValueError('tile belongs to multiple groups')
         plans=group.get('plans')
-        if not isinstance(plans,list) or not plans or any(not isinstance(p,dict) for p in plans):
+        if not isinstance(plans,list) or (not plans and not group.get('artwork')) or any(not isinstance(p,dict) for p in plans):
             raise ValueError('invalid group text plan list')
+        artwork_records=[]
+        if group.get('artwork'):
+            image,artwork_records=apply_artwork(image,group['artwork'],plans_path.parent,snapshots)
         _,texts,preview=render(image,plans,font)
         records=[]
         for name,tile,box in tiles:
@@ -77,7 +113,7 @@ def build(source,plans_path,font,font_sha,output):
             records.append(dict(resource=name,original_sha256=digest(before[name]),modified_sha256=digest(changed),
                                 xyxy=list(box),metadata_preserved=True))
         previews[label]=preview
-        reports.append(dict(id=label,texts=texts,tiles=records,outside_masks_preserved=True,
+        reports.append(dict(id=label,texts=texts,artwork=artwork_records,tiles=records,outside_masks_preserved=True,
                             runtime_placement_verified=False,layout_evidence=group['layout_evidence']))
     if any(p.read_bytes()!=b for p,b in {**snapshots,**originals}.items()):raise ValueError('group input drift')
     output.mkdir(parents=True)
