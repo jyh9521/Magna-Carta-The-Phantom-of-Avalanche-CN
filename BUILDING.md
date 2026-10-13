@@ -1,5 +1,19 @@
 # 构建说明
 
+## 高级显示第二轮运行工具
+
+既有Win32原生构建配置增加 `wide_ui_fixture`、`menu_visibility_fixture`、`motion60_fixture`；继续使用原字体覆盖与系统消息生成头文件，不重新生成或更改翻译资源。`workspace_profile`增加三个源文件；`workspace_launcher`及准备脚本增加Asura.dll全文件源锁。CMake配置和原有字体/系统消息生成流程仍按后文执行。
+
+在已配置的Win32构建目录中，构建 `workspace_profile workspace_launcher wide_ui_fixture menu_visibility_fixture motion60_fixture advanced_display_fixture`，逐个运行四个fixture后运行Python完整测试。所有夹具使用自有映像/调用桩，不启动商业游戏。
+
+首次副本仍使用 `tools/prepare_advanced_trial.py`。对现有、哈希匹配的独立验收副本更新自有运行工具：
+
+```powershell
+python tools/refresh_advanced_trial.py --workspace build/advanced-display-game --native build/advanced-display-native/Release
+```
+
+更新器持有与启动入口相同的互斥锁，拒绝正在运行的同目录游戏、未知哈希和改动的启动脚本。先备份四个旧运行文件及摘要，再更新DLL、launcher、清单和启动脚本。`Restore-previous.cmd`在退出游戏后恢复上一轮自有运行工具，未知状态拒绝，存档不覆盖；`Rollback.cmd`仅恢复基准INI。更新前后完整游戏模块磁盘字节及资源保持原样。
+
 字形构建的固定来源、依赖和确定性映射见 [NATIVE_GLYPH_MAPPING.md](docs/NATIVE_GLYPH_MAPPING.md)；文本框步长模块的版本、独立夹具和只读检查见 [TEXT_LAYOUT_COMPATIBILITY.md](docs/TEXT_LAYOUT_COMPATIBILITY.md)。全量回写尚未完成，不在此阶段提供游戏运行验收指令。
 
 已建立隔离复制、只读调查、输入比对和 FPB 原样往返工具；中文回写、字体生成及发布构建入口尚未完成，没有可安装汉化包。样本哈希见 docs/SAMPLE_AUDIT.md。

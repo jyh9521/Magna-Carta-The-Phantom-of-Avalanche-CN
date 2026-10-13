@@ -23,6 +23,7 @@ PROFILES['combined'] = PROFILES['wide4k'] + b'FpsLimiter = flipend(60)\n'
 GRAPHICS_INPUTS = graphics.VERSION_INPUTS['unpatched']
 # Supported installed localization + no-disc candidate, observed 2026-10-13.
 SOURCE_INPUTS = {**GRAPHICS_INPUTS,
+    'Asura.dll': 'f81e7c458d43b77210311499b39b9be2c4895e3a3b356d2e848b6e84210d2557',
     'MagnaCarta.exe': '6046b29600b5e009903b3495bd11df0b4d89fc3545adde028193ea9fbff8d4de',
     'MCAlpha.dll': '5c701de93af6267b959c49e6927bee525bc0f3c68c8c6f51413515d13809d427'}
 SOURCE_HASHES = {**SOURCE_INPUTS, 'ddraw.dll': graphics.DLL_SHA256,

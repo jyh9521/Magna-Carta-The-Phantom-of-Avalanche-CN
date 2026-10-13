@@ -8,6 +8,9 @@
 #include "system_messages.h"
 #include "modern_gamepad.h"
 #include "advanced_display.h"
+#include "wide_ui.h"
+#include "menu_visibility.h"
+#include "motion60.h"
 
 namespace {
 wchar_t session[512]{};
@@ -170,6 +173,15 @@ void patch(HMODULE module) {
     bool localizedModule=systemMessages && !_wcsicmp(base,L"MCAlpha.dll");
     if (localizedModule && !systemMessageModuleMatches(module)) {
         trace(L"SYSTEM_MESSAGES_REJECTED");ExitProcess(125);
+    }
+    if(localizedModule && !installMenuVisibility(module,trace)) {
+        trace(L"MENU_VISIBILITY_REJECTED");ExitProcess(125);
+    }
+    if(localizedModule && wideDisplay && !installWideUi(module,trace)) {
+        trace(L"WIDE_UI_REJECTED");ExitProcess(125);
+    }
+    if(localizedModule && render60 && !installMotion60(module,trace)) {
+        trace(L"MOTION60_REJECTED");ExitProcess(125);
     }
 #ifdef NATIVE_FONT_DATA_HEADER
     if (localizedModule && !installNativeFont(module)) {

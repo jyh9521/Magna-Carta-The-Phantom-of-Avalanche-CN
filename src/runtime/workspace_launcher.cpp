@@ -204,6 +204,7 @@ int wmain(int argc, wchar_t** argv) {
         require(!modernInput || !fixture,"Modern input requires a version-locked game workspace");
         if(!displayProfile.empty()) {
             require(!fixture&&!textureLifetime&&!modernInput,"Advanced display excludes other experiments");
+            require(sha256(workspace/L"Asura.dll")=="f81e7c458d43b77210311499b39b9be2c4895e3a3b356d2e848b6e84210d2557","Unsupported advanced animation library");
             require(sha256(workspace/L"Drv"/L"AsrD3DDrv.dll")=="00d443327abf56c94f9f088515ab29be63bab9650771a5cacdcef20ab85eff29","Unsupported advanced driver");
             require(sha256(workspace/L"ddraw.dll")=="f75f0ac48d2782f225c483dc2f1142303a513e8dd8a60793891ade89f64755ea","Unsupported advanced graphics layer");
             require(advancedConfigMatches(displayProfile,sha256(workspace/L"DDrawCompat-MagnaCarta.ini")),"Advanced mode/config mismatch");
