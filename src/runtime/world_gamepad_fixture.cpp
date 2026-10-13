@@ -1,11 +1,12 @@
 #include "modern_gamepad.h"
 #include "world_gamepad.h"
 #include "gamepad_ui.h"
+#include "camera_input_view.h"
 #include <Xinput.h>
 #include <cstdio>
 #include <cstring>
 #include <cmath>
-static BYTE* image=nullptr;static BYTE world[0x15c4],actor[0x340],gui[0x194],camera[0xc0];
+static BYTE* image=nullptr;static BYTE world[0x15c4],actor[0x340],gui[0x194],cameraData[0xc0];
 static bool connected=true,physical=false,rawUp=false;static SHORT axisX=0,axisY=0;static WORD buttons=0;static int checks=0,forwardCalls=0,turnCalls=0,interactions=0;static int observations=0;static bool observationControlled=false;
 void require(bool,const char*);
 int __fastcall interaction(void* s,void*,void* g,unsigned event){require(s==world&&g==gui&&event==0x11,"interaction uses native scene and GUI event");++interactions;if(*reinterpret_cast<int*>(world+0x15b8))*reinterpret_cast<int*>(world+0x15bc)=1;return 0;}
@@ -35,9 +36,9 @@ int main(){
  *reinterpret_cast<DWORD*>(image+0xc12c0)=reinterpret_cast<DWORD>(image+0x6b2d8);*reinterpret_cast<DWORD*>(image+0xc1258)=reinterpret_cast<DWORD>(image+0x652b4);*reinterpret_cast<DWORD*>(image+0xc12a0)=reinterpret_cast<DWORD>(image+0x65504);
  BYTE entry[]={0x55,0x8b,0xec,0x8b,0x11};memcpy(image+0x6e760,entry,5);memset(image+0x6e765,0x90,0x19);BYTE call[]={0xff,0x52,0x74,0x5d,0xc3};memcpy(image+0x6e77e,call,5);
  *reinterpret_cast<DWORD*>(world)=reinterpret_cast<DWORD>(image+0xc12bc);*reinterpret_cast<BYTE**>(world+0x1564)=actor;*reinterpret_cast<BYTE**>(world+0x10c8)=gui;*reinterpret_cast<int*>(gui+0x190)=1;
- *reinterpret_cast<DWORD*>(actor)=reinterpret_cast<DWORD>(image+0xc11e4);*reinterpret_cast<BYTE**>(actor+0x20)=world;*reinterpret_cast<BYTE**>(image+0xf2290)=camera;
+ *reinterpret_cast<DWORD*>(actor)=reinterpret_cast<DWORD>(image+0xc11e4);*reinterpret_cast<BYTE**>(actor+0x20)=world;*reinterpret_cast<BYTE**>(image+0xf2290)=cameraData;
  *reinterpret_cast<int*>(gui+4)=0x42;
- auto view=reinterpret_cast<float*>(camera+0x80);view[0]=view[5]=view[10]=view[15]=1;
+ auto view=reinterpret_cast<float*>(cameraData+0x80);view[0]=view[5]=view[10]=view[15]=1;
  require(installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"passive observer installer without XInput IAT");
  rawUp=true;*reinterpret_cast<float*>(actor+0x148)=1;reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(image+0xc12c0))(world);
  require(*reinterpret_cast<float*>(actor+0x16c)==30&&turnCalls==0&&*iat==oldIat,"passive observer preserves native keyboard movement and IAT");rawUp=false;
@@ -49,6 +50,11 @@ int main(){
  require((image[0xf1b94+VK_UP]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"native forward key without tank steering");
  axisX=18000;run();require(velocity[0]>0&&velocity[0]<30,"analog speed scales native velocity");
  view[0]=0;view[4]=1;view[1]=-1;view[5]=0;axisX=32767;run();require(velocity[1]>29.9f&&std::abs(velocity[0])<.001f,"camera-relative actual native callback");
+ float displayed[16]{};displayed[0]=displayed[5]=displayed[10]=displayed[15]=1;
+ render_input::inputView.publish(displayed,reinterpret_cast<uintptr_t>(cameraData),GetTickCount(),true);
+ run();require(velocity[0]>29.9f&&std::abs(velocity[1])<.001f,"orbit movement follows displayed view instead of unmodified engine view");
+ physical=true;run();require(velocity[0]<-29.9f&&!(image[0xf1b94+VK_LEFT]&0x80)&&(image[0xf1b94+VK_UP]&0x80),"physical arrows use displayed orbit direction without tank steering");physical=false;
+ render_input::inputView.reset();run();require(velocity[1]>29.9f&&std::abs(velocity[0])<.001f,"orbit off restores source camera movement");
  physical=true;run();require(velocity[0]==0&&velocity[1]==0&&(image[0xf1b94+VK_LEFT]&0x80),"physical keyboard wins");physical=false;
  connected=false;run();require(velocity[0]==0&&velocity[1]==0,"disconnect stops");connected=true;run();run();require(velocity[0]==0&&velocity[1]==0,"held reconnect cannot resume");axisX=0;run();axisY=32767;run();require(std::abs(velocity[0])>29.9f,"neutral rearm then continuous direction");
  *reinterpret_cast<int*>(world+0x15b8)=1;
@@ -78,6 +84,14 @@ int main(){
  buttons=0;require(removeModernGamepad(reinterpret_cast<HMODULE>(image)),"integrated rollback");require(*iat==oldIat&&*reinterpret_cast<DWORD*>(image+0xc12c0)==reinterpret_cast<DWORD>(image+0x6b2d8)&&*reinterpret_cast<DWORD*>(image+0xc1258)==reinterpret_cast<DWORD>(image+0x652b4),"all three original slots restored");
  image[0x6e77e]^=1;require(!installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"unknown movement callsite rejects");image[0x6e77e]^=1;
  image[0x6e6d8]^=1;require(!installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"unknown interaction handler rejects before installing hooks");image[0x6e6d8]^=1;
+ // Camera-only recipe must adapt keyboard movement without polling an Xbox.
+ image[0x2fd5]=0xc3;SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",nullptr);SetEnvironmentVariableW(L"MC_INPUT_PASSTHROUGH",L"1");
+ require(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr)&&installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"camera-only keyboard installer");
+ configureModernGamepadFixture(keyboard,nullptr,true);render_input::inputView.publish(displayed,reinterpret_cast<uintptr_t>(cameraData),GetTickCount(),true);
+ physical=true;run();require(velocity[0]<-29.9f&&!(image[0xf1b94+VK_LEFT]&0x80)&&(image[0xf1b94+VK_UP]&0x80),"camera-only keyboard follows orbit without XInput backend");
+ *reinterpret_cast<int*>(gui+0x190)=4;run();require(!modernGamepadMoveIntent().active&&(image[0xf1b94+VK_LEFT]&0x80),"camera keyboard adaptation excludes menus");*reinterpret_cast<int*>(gui+0x190)=1;
+ render_input::inputView.reset();run();require((image[0xf1b94+VK_LEFT]&0x80)&&!(image[0xf1b94+VK_UP]&0x80),"camera toggle off restores original keyboard semantics");physical=false;
+ require(removeWorldGamepad(reinterpret_cast<HMODULE>(image))&&removeModernGamepad(reinterpret_cast<HMODULE>(image)),"camera-only exact rollback");SetEnvironmentVariableW(L"MC_INPUT_PASSTHROUGH",nullptr);
  SetEnvironmentVariableW(L"MC_MAP_OVERLAY",nullptr);SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",nullptr);VirtualFree(image,0,MEM_RELEASE);
  printf("WORLD_GAMEPAD_FIXTURE PASS checks=%d camera_relative=true analog_speed=true native_movement=true keyboard_priority=true rollback=exact game_started=false\n",checks);
 }

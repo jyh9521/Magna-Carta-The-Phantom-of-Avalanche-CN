@@ -1,4 +1,5 @@
 #include "free_view.h"
+#include "camera_input_view.h"
 #include "motion60.h"
 #include "render_timeline.h"
 #include <intrin.h>
@@ -37,6 +38,7 @@ void __cdecl captureTimer(BYTE* manager,BYTE* info,unsigned consumed,unsigned el
  timeline.observe(*reinterpret_cast<ULONG_PTR*>(info+4),33,*reinterpret_cast<unsigned*>(info+0x10),consumed,
                   *reinterpret_cast<unsigned*>(manager+0x24),*reinterpret_cast<int*>(info+0x1c)==0&&elapsed<=250);
  cameraState.valid=false;
+ if(!timeline.phase().valid||timeline.phase().generation!=freeGeneration)render_input::inputView.reset();
  static LONG captured=0;if(timeline.phase().valid&&InterlockedIncrement(&captured)==1&&trace)trace(L"MOTION60_CLOCK_APPLIED interval_ms=33 phase=callback_remainder controller=source_locked");
 }
 __declspec(naked) void timerThunk(){__asm {
@@ -93,7 +95,7 @@ void cameraMatrix(void* driver,Matrix* matrix,LoadMatrix original){
     ||*reinterpret_cast<unsigned*>(static_cast<BYTE*>(driver)+0x58)!=0x1700){original(driver,matrix);return;}
  auto camera=*reinterpret_cast<BYTE**>(engineBase+0xf2290);
  if(!camera||matrix!=reinterpret_cast<Matrix*>(camera+0x80)){original(driver,matrix);return;}
- auto phase=renderPhase();if(!phase.valid){cameraTrack.reset();cameraState.valid=false;original(driver,matrix);return;}
+ auto phase=renderPhase();if(!phase.valid){cameraTrack.reset();cameraState.valid=false;render_input::inputView.reset();original(driver,matrix);return;}
  if(cameraState.identity!=camera){cameraTrack.reset();cameraState.identity=camera;}
  cameraState.original=*matrix;cameraState.applied=cameraTrack.sample(*matrix,phase,true);
  if(freeView){
@@ -116,6 +118,7 @@ void cameraMatrix(void* driver,Matrix* matrix,LoadMatrix original){
  }
  cameraState.valid=motion::rigid(cameraState.original)&&motion::rigid(cameraState.applied);
  Matrix copy=cameraState.applied;original(driver,&copy);
+ render_input::inputView.publish(cameraState.applied.v,reinterpret_cast<uintptr_t>(camera),GetTickCount(),cameraState.valid&&freeView&&freeOrbit.active());
  static LONG applied=0;if(cameraState.valid&&InterlockedIncrement(&applied)==1&&trace)trace(L"MOTION60_CAMERA_APPLIED phase=engine_remainder original_camera=unchanged");
 }
 void __fastcall loadHook(void* d,void*,Matrix* m){cameraMatrix(d,m,originalLoad);}
@@ -214,7 +217,7 @@ bool timerPatch(BYTE* p,bool enabled){
  timerResume=reinterpret_cast<ULONG_PTR>(p+0xcf67);memcpy(p+0xcf61,enabled?patched:timerOriginal,6);
  bool ok=FlushInstructionCache(GetCurrentProcess(),p+0xcf61,6)!=FALSE;DWORD ignored;
  if(!ok||!VirtualProtect(p+0xcf61,6,old,&ignored)){memcpy(p+0xcf61,before,6);FlushInstructionCache(GetCurrentProcess(),p+0xcf61,6);VirtualProtect(p+0xcf61,6,old,&ignored);return false;}
- timeline.reset();histories.clear();cameraTrack.reset();cameraState={};return true;
+ timeline.reset();histories.clear();cameraTrack.reset();cameraState={};render_input::inputView.reset();return true;
 }
 }
 namespace {
@@ -275,14 +278,14 @@ bool setDriver(BYTE* p,bool enabled,void(*logger)(const wchar_t*)){
  bool patched=*load==hookA&&*mul==hookB&&driverBase==p,clean=*load==originalA&&*mul==originalB;
  if(!patched&&!clean)return false;
  if(enabled&&patched)return true;if(!enabled&&clean)return true;
- if(!enabled){if(!write(load,originalA))return false;if(!write(mul,originalB)){write(load,hookA);return false;}cameraTrack.reset();cameraState={};return true;}
+ if(!enabled){if(!write(load,originalA))return false;if(!write(mul,originalB)){write(load,hookA);return false;}cameraTrack.reset();cameraState={};render_input::inputView.reset();return true;}
  originalLoad=reinterpret_cast<LoadMatrix>(originalA);originalMultiply=reinterpret_cast<LoadMatrix>(originalB);
  if(!write(load,hookA))return false;if(!write(mul,hookB)){write(load,originalA);return false;}
  driverBase=p;if(logger)logger(L"MOTION60_CAMERA_READY scope=active_camera_modelview load_multiply=guarded ui_projection=unchanged");return true;
 }
 }
 bool installMotion60Driver(HMODULE module,void(*logger)(const wchar_t*)){
- wchar_t freeFlag[8]{};freeView=GetEnvironmentVariableW(L"MC_FREE_VIEW",freeFlag,8)==1&&freeFlag[0]==L'1';freeOrbit.reset();freeTimestamp=0;freeGeneration=0;
+ wchar_t freeFlag[8]{};freeView=GetEnvironmentVariableW(L"MC_FREE_VIEW",freeFlag,8)==1&&freeFlag[0]==L'1';freeOrbit.reset();render_input::inputView.reset();freeTimestamp=0;freeGeneration=0;
  wchar_t flag[8]{};if(GetEnvironmentVariableW(L"MC_MOTION60_COMPLETE",flag,8)!=1||flag[0]!=L'1')return true;
  bool ready=setDriver(reinterpret_cast<BYTE*>(module),true,logger);if(ready&&freeView&&logger)logger(L"FREE_VIEW_READY mode=orbit render_only=true initial=off F6_toggle=enabled F7_reset=enabled");return ready;
 }

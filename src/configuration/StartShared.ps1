@@ -1,4 +1,4 @@
-param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','texture','camera','maps')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='')
+param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','texture','camera','camera-gamepad','maps')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='')
 $ErrorActionPreference='Stop'
 $runtimeRoot=$PSScriptRoot
 $manifest=Get-Content -LiteralPath (Join-Path $runtimeRoot 'runtime.json') -Raw | ConvertFrom-Json
@@ -42,7 +42,7 @@ try{
  $env:MC_MAP_OVERLAY=if($selected.maps){'1'}else{'0'}
  $env:MC_MAP_ASSETS=if($selected.maps){Join-Path $runtimeRoot 'maps'}else{''}
  $args=@('--workspace',$game,'--shim',(Join-Path $runtimeRoot ('modules/'+$module+'.dll')),'--profile',(Join-Path $cache 'profile.bin'),'--log',(Join-Path $cache 'profile.log'),'--native-text-step','--system-messages','--focus-guard','--display-profile',$settings.display_profile)
- if($settings.native_gamepad){$args+='--native-gamepad'}elseif($selected.maps){$args+='--input-passthrough'}
+ if($settings.native_gamepad){$args+='--native-gamepad'}elseif($selected.maps -or $selected.camera){$args+='--input-passthrough'}
  if($selected.texture){$args+='--texture-lifetime'}
  if($VerifyOnly){$args+='--verify-only'}
  & (Join-Path $runtimeRoot 'modules/workspace_launcher.exe') @args 1>(Join-Path $cache 'launcher.stdout.txt') 2>(Join-Path $cache 'launcher.stderr.txt')

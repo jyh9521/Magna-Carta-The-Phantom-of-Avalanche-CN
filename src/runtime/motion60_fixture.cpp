@@ -1,4 +1,5 @@
 #include "motion60.h"
+#include "camera_input_view.h"
 #include <cstring>
 #include <cstdio>
 #include <cmath>
@@ -82,8 +83,12 @@ int main(){
  motion60TestFreeView(true,false,false,1,.05f);appliedCamera();
  require(std::abs(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[0]-1)>.0001f,"free orbit applied through real driver slot");
  require(cameraMatrix->v[12]==-20&&cameraMatrix->v[0]==1,"free orbit source camera immutable");
+ float inputView[16]{};auto cameraIdentity=reinterpret_cast<uintptr_t>(*reinterpret_cast<void**>(image+0xf2290));
+ require(render_input::inputView.read(cameraIdentity,GetTickCount(),inputView),"real camera hook publishes movement view while orbit active");
+ require(std::abs(inputView[0]-reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[0])<.00001f,"published input view equals actually submitted driver view");
  renderSample(1);require(reinterpret_cast<MotionMatrix*>(object+0xc)->v[0]==1&&std::abs(reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]+10)<.002f,"free orbit draw restores original modelview not modified camera view");
  motion60TestFreeView(true,false,true,0,0);appliedCamera();require(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[0]==1,"free orbit reset restores original view orientation");
+ require(!render_input::inputView.read(cameraIdentity,GetTickCount(),inputView),"orbit reset removes input override immediately");
  motion60TestFreeView(false,false,false,0,0);appliedCamera();require(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[0]==1,"free orbit disabled leaves complete-motion camera unchanged");
  transitionHistory=true;history[0]=identity(0);*reinterpret_cast<MotionMatrix**>(object+0xf0)=history;
  *reinterpret_cast<unsigned*>(action+4)=100;*reinterpret_cast<unsigned*>(action+8)=100;

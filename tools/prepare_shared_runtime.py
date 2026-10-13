@@ -75,6 +75,7 @@ def prepare(source, modules, atlas, output):
     recipes['gamepad']=dict(module='modern',settings=settings(pad=True))
     recipes['texture']=dict(module='texture',settings=settings(),texture=True)
     recipes['camera']=dict(module='camera',settings=settings('combined',True),camera=True)
+    recipes['camera-gamepad']=dict(module='camera',settings=settings('combined',True,True),camera=True)
     recipes['maps']=dict(module='maps',settings=settings(),maps=True)
     atlas_manifest=json.loads((atlas/'manifest.json').read_text(encoding='utf8'))
     if atlas_manifest.get('schema')!=1 or atlas_manifest.get('navigation_verified') is not False:

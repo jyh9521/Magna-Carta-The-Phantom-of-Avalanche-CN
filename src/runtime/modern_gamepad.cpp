@@ -3,6 +3,7 @@
 #include "world_gamepad.h"
 #include "gamepad_cursor.h"
 #include "gamepad_ui.h"
+#include "camera_input_view.h"
 #include <Xinput.h>
 #include <intrin.h>
 #include <cstring>
@@ -38,13 +39,29 @@ bool readable(const void* a,size_t n){
  auto p=reinterpret_cast<ULONG_PTR>(a),end=p+n;if(!p||end<p)return false;
  while(p<end){MEMORY_BASIC_INFORMATION m{};if(!VirtualQuery(reinterpret_cast<void*>(p),&m,sizeof(m))||m.State!=MEM_COMMIT||(m.Protect&(PAGE_GUARD|PAGE_NOACCESS)))return false;auto next=reinterpret_cast<ULONG_PTR>(m.BaseAddress)+m.RegionSize;if(next<=p)return false;p=next;}return true;
 }
+bool orbitKeyboard(PBYTE keys,bool focused){
+ if(!focused||!worldScope||!engine||!keys||!(0x80&(keys[VK_UP]|keys[VK_DOWN]|keys[VK_LEFT]|keys[VK_RIGHT]))||(keys[VK_LBUTTON]&0x80))return false;
+ auto cam=*reinterpret_cast<BYTE**>(engine+0xf2290);float displayed[16];
+ if(!render_input::inputView.read(reinterpret_cast<uintptr_t>(cam),GetTickCount(),displayed))return false;
+ int x=int(bool(keys[VK_RIGHT]&0x80))-int(bool(keys[VK_LEFT]&0x80)),y=int(bool(keys[VK_UP]&0x80))-int(bool(keys[VK_DOWN]&0x80));
+ movement=modern_input::cameraRelative(static_cast<SHORT>(x*32767),static_cast<SHORT>(y*32767),0,displayed);
+ const int arrows[]={VK_UP,VK_DOWN,VK_LEFT,VK_RIGHT};for(int k:arrows)keys[k]&=0x7f;
+ if(movement.active)keys[VK_UP]|=0x80;
+ return true;
+}
 BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame) {
     BOOL ok=original(keys);
     if(returnAddress!=caller)return ok;
     InterlockedExchange(&mapPadButtons,0);
     if(mapReservedKeys&&!worldScope)notifyWorldTickObserver(nullptr,false);
     if(ok&&mapReservedKeys){keys[VK_F8]=keys[VK_F9]=0;}
-    if(passthroughOnly){movement={};navigation={};return ok;}
+    DWORD owner=0;HWND front=GetForegroundWindow();
+    if(front)GetWindowThreadProcessId(front,&owner);
+    bool focused=gameWindow && front==*gameWindow && owner==GetCurrentProcessId() && !IsIconic(front);
+#ifdef MODERN_INPUT_TEST
+    focused=fixtureForeground;
+#endif
+    if(passthroughOnly){movement={};navigation={};if(ok)orbitKeyboard(keys,focused);return ok;}
     AcquireSRWLockExclusive(&lock);
     // The profile attaches under the loader lock. Load XInput only at the verified
     // per-frame input call, not from DllMain or a LoadLibrary interception.
@@ -60,12 +77,6 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     movement={};
     navigation={};
     if(!poll){router.update({},false,false);ReleaseSRWLockExclusive(&lock);return ok;}
-    DWORD owner=0;HWND front=GetForegroundWindow();
-    if(front)GetWindowThreadProcessId(front,&owner);
-    bool focused=gameWindow && front==*gameWindow && owner==GetCurrentProcessId() && !IsIconic(front);
-#ifdef MODERN_INPUT_TEST
-    focused=fixtureForeground;
-#endif
     modern_input::Sample sample{};XINPUT_STATE state{};
     if(selected!=0xffffffff && poll(selected,&state)==ERROR_SUCCESS) {
         sample.connected=true;sample.device=selected;
@@ -100,9 +111,14 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
             // Confirm is a scene interaction request, not a global UI Space key.
             pendingInteraction=frame.armed&&focused&&(frame.pressed&modern_input::Confirm);
             frame.held&=~uint32_t(15);
-            if(frame.armed&&focused&&!keyboardDirection&&engine){
+            bool orbitKeys=orbitKeyboard(keys,focused);
+            if(!orbitKeys&&frame.armed&&focused&&!keyboardDirection&&engine){
                 auto camera=*reinterpret_cast<BYTE**>(engine+0xf2290);
-                if(camera&&readable(camera+0x80,64))movement=modern_input::cameraRelative(sample.x,sample.y,sample.buttons,reinterpret_cast<float*>(camera+0x80));
+                if(camera&&readable(camera+0x80,64)){
+                    float displayed[16];auto view=reinterpret_cast<float*>(camera+0x80);
+                    if(render_input::inputView.read(reinterpret_cast<uintptr_t>(camera),GetTickCount(),displayed))view=displayed;
+                    movement=modern_input::cameraRelative(sample.x,sample.y,sample.buttons,view);
+                }
             }
             if(movement.active)frame.held|=modern_input::Up;
         }else{
