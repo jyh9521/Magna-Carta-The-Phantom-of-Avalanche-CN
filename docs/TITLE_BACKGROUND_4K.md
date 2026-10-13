@@ -27,3 +27,13 @@ Verified（受控）：导出3840×2160、1920×1080、1280×720、640×480和80
 关闭游戏后Rollback-title.cmd恢复此独立候选12个原标题资源，关闭HD标志；原已验收目录和存档不动。完整资源摘要及同一回滚在另一副本上的结果见build/title-background4k-final/VERIFICATION.txt。
 
 离线准备时，Windows powershell.exe环境未加载Get-FileHash命令；入口已采用与既有StartAdvanced相同的.NET SHA256实现，而非依赖用户PowerShell模块自动加载。
+
+## 英韩装饰名称重绘与原入口替换
+
+检索交叉确认英文名称MagnaCarta: The Phantom of Avalanche（亦有Magna Carta分写）、韩文名称마그나카르타 ~눈사태의 망령~。资料：[英文条目](https://en.wikipedia.org/wiki/Magna_Carta%3A_The_Phantom_of_Avalanche)、[韩文GameMeca报道](https://www.gamemeca.com/view.php?gid=119517)、[概念设定集书目](https://www.aladin.co.kr/shop/wproduct.aspx?itemid=316586073)。本对象是2001年PC作品，不与后续진홍의 성흔或Tears of Blood混用。
+
+新绘背景将原画笔触理解为韩文书写，将斜排英文理解为名称装饰，而非随机墨迹。暗色衬线MAGNACARTA、THE PHANTOM OF AVALANCHE与韩文마그나카르타、눈사태의 망령按检索拼写绘制，保留深青/灰橄榄旋涡布纹和低对比装饰；前景透明中文标题与按钮、native缩放/裁切代码不改。字形经过图像目视复核，不将书法字形识别宣称为自动OCR证明。生成源仍由离线构建器重采样为3840×2160母图。
+
+`tools/refresh_title_background.py --workspace build/title-background4k-game --replacement build/title-names4k-game`验证旧/新12项资源、原资源来源一致、母图SHA和启动互斥锁后，仅更新标题资源及预览。上一版HD背景和清单逐项SHA备份；写入失败恢复已尝试文件。原已验收advanced-display-game以及商业引擎/字体/按钮/存档不改。
+
+同一title-background4k-game入口继续使用本次替换版。Restore-previous-background.cmd恢复上一张HD背景；Rollback-title.cmd则恢复最初标题背景。独立副本的上一版恢复结果与基准/修改/恢复源码测试见build/title-names4k-evidence/VERIFICATION.txt。背景PNG预览不代替商业游戏实际验收。

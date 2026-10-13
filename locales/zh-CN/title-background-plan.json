@@ -5,7 +5,7 @@
     2160
   ],
   "source": "art/title-background-source.png",
-  "source_sha256": "02b5350ea687f51f3df79e1a947949c4dd84a37e6533b145131df12f7e3db0e1",
+  "source_sha256": "6060b3f758819408faa366fdf66435fc50ad24b41a9ae6fa8d2e7ac580998bdf",
   "wordmark": "art/title-wordmark.png",
   "wordmark_sha256": "3d45f802af9a5405294d8ffa0a8a6a28f26012526990eeb6117c921068ee090f",
   "wordmark_box": [
@@ -37,5 +37,23 @@
     "BGR/0366.BGR": "07ed86b6aa3efb1e8d2e86469bac58ead78e1169f4b5da281722abe3d7566777",
     "BGR/0367.BGR": "272b953d71d5aba6b68e233f9d19182006ff1c6fe5107f5c16f1f0983c92fabb",
     "BGR/0368.BGR": "e1d9382c1ed253f8b8f51963c4c9620f5b40be38d93e509193fda136235dff17"
+  },
+  "background_names": {
+    "english": "MagnaCarta: The Phantom of Avalanche",
+    "korean": "마그나카르타 ~눈사태의 망령~",
+    "english_art_lines": [
+      "MAGNACARTA",
+      "THE PHANTOM OF AVALANCHE"
+    ],
+    "korean_art_lines": [
+      "마그나카르타",
+      "눈사태의 망령"
+    ],
+    "sources": [
+      "https://en.wikipedia.org/wiki/Magna_Carta%3A_The_Phantom_of_Avalanche",
+      "https://www.gamemeca.com/view.php?gid=119517",
+      "https://www.aladin.co.kr/shop/wproduct.aspx?itemid=316586073"
+    ],
+    "verification": "Web spelling cross-check and generated image visual review; stylized glyph recognition is not automated OCR proof."
   }
 }
