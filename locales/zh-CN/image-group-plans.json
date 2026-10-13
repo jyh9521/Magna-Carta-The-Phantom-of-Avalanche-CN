@@ -678,6 +678,210 @@
         }
       ],
       "layout_evidence": "Static adjacent tile edges and continuous artwork match the complete reviewed phrase. Retain the original logo/art; add a readable target-language caption. Runtime placement remains unverified."
+    },
+    {
+      "id": "opening-vow-first-layout",
+      "dimensions": [
+        768,
+        512
+      ],
+      "tiles": [
+        {
+          "resource": "BGR/0299.BGR",
+          "source_sha256": "36734eb11b89b0539fc230ac74f570d93b54abd7ecf8df259ebbe8729aedf14f",
+          "xy": [
+            0,
+            0
+          ]
+        },
+        {
+          "resource": "BGR/0300.BGR",
+          "source_sha256": "52c52767eed269245ae51aa0fc903c033f0befd48921912d4e82da8ae9e44119",
+          "xy": [
+            256,
+            0
+          ]
+        },
+        {
+          "resource": "BGR/0301.BGR",
+          "source_sha256": "3c3deb17a9c97418f5c3a18b2b80e79187d856933a8a9d299d3de2921f5c9c27",
+          "xy": [
+            512,
+            0
+          ]
+        },
+        {
+          "resource": "BGR/0303.BGR",
+          "source_sha256": "88ac068e286d7d2e859a666f526e0e6e7babb7297e2b48f1179df38e2253b099",
+          "xy": [
+            0,
+            256
+          ]
+        },
+        {
+          "resource": "BGR/0304.BGR",
+          "source_sha256": "3d7105a79b5afe9387689fb1843a6370e7c78c90940767c5c7ac00c684a6fe38",
+          "xy": [
+            256,
+            256
+          ]
+        },
+        {
+          "resource": "BGR/0305.BGR",
+          "source_sha256": "5ff0e9a10c01c6c0849d922139c3c0bafd7a40b6e56980879c5da74adf94e334",
+          "xy": [
+            512,
+            256
+          ]
+        }
+      ],
+      "plans": [
+        {
+          "target": "我要获得重生。",
+          "source_text_evidence": "난 다시 태어날 거야.",
+          "mask_xyxy": [
+            0,
+            130,
+            768,
+            186
+          ],
+          "background_anchor": [
+            0,
+            100
+          ],
+          "font_size": 21,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "color": [
+            255,
+            248,
+            219,
+            255
+          ],
+          "group_id": "opening-vow-first-layout"
+        },
+        {
+          "target": "抹去这悲惨的过去，连同我自身的存在……",
+          "source_text_evidence": "이 비참한 과거와 내 자신의 존재까지 모두 지우고......",
+          "mask_xyxy": [
+            0,
+            186,
+            768,
+            242
+          ],
+          "background_anchor": [
+            0,
+            100
+          ],
+          "font_size": 21,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "color": [
+            255,
+            248,
+            219,
+            255
+          ],
+          "group_id": "opening-vow-first-layout"
+        },
+        {
+          "target": "以全新的自我，获得重生。",
+          "source_text_evidence": "새로운 나로 다시 태어나겠어.",
+          "mask_xyxy": [
+            0,
+            242,
+            768,
+            298
+          ],
+          "background_anchor": [
+            0,
+            100
+          ],
+          "font_size": 21,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "color": [
+            255,
+            248,
+            219,
+            255
+          ],
+          "group_id": "opening-vow-first-layout"
+        },
+        {
+          "target": "将一切赌在这古代的希安上，以我的过去为抵押……",
+          "source_text_evidence": "이 고대의 시안에 모든 걸 걸고, 내 과거를 담보로 삼아......",
+          "mask_xyxy": [
+            0,
+            298,
+            768,
+            354
+          ],
+          "background_anchor": [
+            0,
+            100
+          ],
+          "font_size": 21,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "color": [
+            255,
+            248,
+            219,
+            255
+          ],
+          "group_id": "opening-vow-first-layout"
+        },
+        {
+          "target": "从这一刻起，变成一直梦寐以求的全新自我。",
+          "source_text_evidence": "지금 이 순간부터 늘 꿈꿔 왔던 새로운 자신의 모습으로.",
+          "mask_xyxy": [
+            0,
+            354,
+            768,
+            410
+          ],
+          "background_anchor": [
+            0,
+            100
+          ],
+          "font_size": 21,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "color": [
+            255,
+            248,
+            219,
+            255
+          ],
+          "group_id": "opening-vow-first-layout"
+        },
+        {
+          "target": "重生为人人憧憬的完美之人。",
+          "source_text_evidence": "모두가 동경하는 완벽한 인간으로 다시 태어날 거야.",
+          "mask_xyxy": [
+            0,
+            410,
+            768,
+            470
+          ],
+          "background_anchor": [
+            0,
+            100
+          ],
+          "font_size": 21,
+          "minimum_font_size": 12,
+          "stroke_width": 0,
+          "color": [
+            255,
+            248,
+            219,
+            255
+          ],
+          "group_id": "opening-vow-first-layout"
+        }
+      ],
+      "layout_evidence": "Original tile edges and six readable lines align as 299/300/301 then 303/304/305. 302 and 306 are blank, 307 contains only blurred background. Numeric enumeration was not a layout definition. Static phrase/crop evidence; runtime placement remains unverified."
     }
   ]
 }

@@ -153,7 +153,7 @@ int wmain(int argc, wchar_t** argv) {
             return 0;
         }
         fs::path workspace, shim, setting, log;
-        bool fixture = false, captureException = false, textureLifetime = false, focusGuard = false, nativeTextStep = false; DWORD seconds = 0;
+        bool fixture = false, captureException = false, textureLifetime = false, focusGuard = false, nativeTextStep = false, systemMessages = false, verifyOnly = false; DWORD seconds = 0;
         for (int i = 1; i < argc; ++i) {
             std::wstring arg = argv[i];
             if (arg == L"--fixture") fixture = true;
@@ -161,6 +161,8 @@ int wmain(int argc, wchar_t** argv) {
             else if (arg == L"--texture-lifetime") textureLifetime = true;
             else if (arg == L"--focus-guard") focusGuard = true;
             else if (arg == L"--native-text-step") nativeTextStep = true;
+            else if (arg == L"--system-messages") systemMessages = true;
+            else if (arg == L"--verify-only") verifyOnly = true;
             else if (i + 1 < argc && arg == L"--workspace") workspace = fs::canonical(argv[++i]);
             else if (i + 1 < argc && arg == L"--shim") shim = fs::canonical(argv[++i]);
             else if (i + 1 < argc && arg == L"--profile") setting = fs::canonical(argv[++i]);
@@ -168,14 +170,32 @@ int wmain(int argc, wchar_t** argv) {
             else if (i + 1 < argc && arg == L"--timeout") seconds = std::stoul(argv[++i]);
             else throw std::runtime_error("Unknown or incomplete argument");
         }
-        require(!workspace.empty() && !shim.empty() && !setting.empty() && !log.empty(), "Missing launch arguments");
+        require(!workspace.empty(),"Missing workspace");
+        if (verifyOnly) {
+            require(!fixture,"Verification requires a version-locked game workspace");
+            require(sha256(workspace/L"MagnaCarta.exe")=="be2ae107373835defc6ec33643eaf435dcc5c882ea0b6e3c47032cd013690651","Unsupported game executable");
+            auto engine=sha256(workspace/L"MCAlpha.dll");
+            bool accepted=engine=="79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f";
+#ifdef LOCALE_ENGINE_SHA256
+            accepted=accepted || engine==LOCALE_ENGINE_SHA256;
+#endif
+            require(accepted,"Unsupported engine module");
+            std::cout<<"WORKSPACE_VERIFY PASS engine="<<engine<<" game_started=false registry_changed=false"<<std::endl;
+            return 0;
+        }
+        require(!shim.empty() && !setting.empty() && !log.empty(), "Missing launch arguments");
         require(seconds <= 86400, "Timeout is out of range");
         require(!fs::exists(log), "Log path already exists");
         fs::path exe = workspace / (fixture ? L"registry_probe.exe" : L"MagnaCarta.exe");
         require(!nativeTextStep || !fixture, "Native text step requires a version-locked game workspace");
         if (!fixture) {
             require(sha256(exe) == "be2ae107373835defc6ec33643eaf435dcc5c882ea0b6e3c47032cd013690651", "Unsupported game executable");
-            require(sha256(workspace / L"MCAlpha.dll") == "79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f", "Unsupported engine module");
+            auto engine=sha256(workspace/L"MCAlpha.dll");
+            bool accepted=engine=="79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f";
+#ifdef LOCALE_ENGINE_SHA256
+            accepted=accepted || engine==LOCALE_ENGINE_SHA256;
+#endif
+            require(accepted,"Unsupported engine module");
         }
         HKEY installed = nullptr;
         require(RegOpenKeyExW(HKEY_LOCAL_MACHINE, sourceKey, 0, KEY_READ | KEY_WOW64_32KEY, &installed) == ERROR_SUCCESS, "Installed baseline missing");
@@ -211,6 +231,7 @@ int wmain(int argc, wchar_t** argv) {
         Session session(workspace, setting);
         SetEnvironmentVariableW(L"MC_WORKSPACE_SESSION", session.path.c_str());
         SetEnvironmentVariableW(L"MC_WORKSPACE_LOG", log.c_str());
+        SetEnvironmentVariableW(L"MC_SYSTEM_MESSAGES",systemMessages?L"1":L"0");
         SetEnvironmentVariableW(L"MC_CAPTURE_HELPER", captureException ? captureHelper.c_str() : nullptr);
         SetEnvironmentVariableW(L"MC_TEXTURE_LIFETIME", textureLifetime ? L"1" : nullptr);
         SetEnvironmentVariableW(L"MC_FOCUS_GUARD", focusGuard ? L"1" : nullptr);

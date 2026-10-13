@@ -7,6 +7,7 @@ param(
     [switch]$TextureLifetime,
     [switch]$FocusGuard,
     [switch]$NativeTextStep,
+    [switch]$SystemMessages,
     [string]$ObserverPython = ''
 )
 $ErrorActionPreference = 'Stop'
@@ -47,6 +48,7 @@ if ($CaptureException) { $arguments += '--capture-exception' }
 if ($TextureLifetime) { $arguments += '--texture-lifetime' }
 if ($FocusGuard) { $arguments += '--focus-guard' }
 if ($NativeTextStep) { $arguments += '--native-text-step' }
+if ($SystemMessages) { $arguments += '--system-messages' }
 $process = Start-Process -FilePath $launcher -ArgumentList ($arguments -join ' ') -WorkingDirectory $root `
     -WindowStyle Hidden -RedirectStandardOutput (Join-Path $output 'stdout.log') `
     -RedirectStandardError (Join-Path $output 'stderr.log') -PassThru

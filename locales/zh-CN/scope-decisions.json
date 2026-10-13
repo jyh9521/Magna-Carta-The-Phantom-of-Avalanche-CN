@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "old_save_name_adaptation": {
+    "decision": "excluded",
+    "authority": "direct_user_request",
+    "request": "旧存档名字不要管。其他的做了吧。",
+    "modify_saves": false
+  },
+  "game_start": {
+    "decision": "not_automatic",
+    "authority": "earlier_direct_user_request",
+    "request": "不要擅自启动游戏。"
+  },
+  "preserved_art_manifest": "image-text-preserve.json",
+  "staff_credits": {
+    "decision": "preserve_original",
+    "authority": "direct_user_request",
+    "request": "开发人员名单不要汉化。",
+    "translate_names": false,
+    "translate_roles": false,
+    "translate_voice_cast": false,
+    "resource": "MOV/MOV.pak",
+    "source_sha256": "48db286ca8b35995239d05707d8910008ba1d9ae0105ee89756c9e59d25342cf",
+    "whole_resource_preserved": true
+  },
+  "opening_brand_logo": {
+    "decision": "preserve_original",
+    "authority": "direct_user_request",
+    "request": "开头logo不要翻译吧，没用啊。",
+    "resource": "MOV/0023.BMC",
+    "source_sha256": "740018fa85644c7fd417fe357a9724128f14423a29fad863fc57d2fee09c5a4e",
+    "whole_resource_preserved": true
+  }
+}

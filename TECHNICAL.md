@@ -90,3 +90,7 @@ MCBeta版本/资源显示保护组件性质，不将其假定为第二套游戏�
 game_native_font、UTF-16 RT_DIALOG与MessageBoxA分别处理。13处原生字段的私有字槽按完整1,898字形映射编码/逆解码；9处ANSI系统诊断保持原字节，尚未提供Unicode适配。MCAlpha源大小和全SHA-256锁定，数据槽和资源Size之外的字节不改；可执行节进一步逐字节比较。未载入或执行商业DLL。图片tile布局只取得静态证据，不能当作运行时绘制路径证明。见MEDIA_LOCALIZATION.md。
 
 系统提示Unicode候选新增9字段6消息、默认关闭的版本锁定MessageBoxA导入适配及自建无窗口回归；详见docs/SYSTEM_MESSAGES.md。未启动游戏、未部署到安装目录；完整候选结合及动态私有字槽参数仍待处理。
+
+最新范围与全文结合：旧存档名字、开发人员名单明确不处理；名单PAK整份保护原字节。第一套誓言可读tile、候选模块和1,898字形系统参数转换已进入增量包；完整结合、安装/回滚及未执行的游戏QA见docs/LOCALE_PACKAGE.md。
+
+开头SOFTMAX Logo按直接用户决定整段原样保留，MOV/0023.BMC不进入补丁清单；曾含Logo译文的未发布候选已撤回。

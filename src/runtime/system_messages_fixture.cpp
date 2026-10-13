@@ -38,13 +38,25 @@ int main() {
         ++cases;
     }
     if (invoke(localeSystemFixtureCases[0].source,nullptr)!=29 || title!=L"<null>") return 3;
+    unsigned glyphs=0;
+    for (const auto& glyph:localeSystemGlyphs) {
+        if (!glyph.pair) continue;
+        const SystemRule* party=nullptr;
+        for (const auto& r:localeSystemRules) if (!wcsncmp(r.source,L"%s",2)) {party=&r;break;}
+        if (!party) return 11;
+        std::string bytes;bytes+=static_cast<char>(glyph.pair>>8);bytes+=static_cast<char>(glyph.pair&255);
+        bytes+=encode(std::wstring(party->source).substr(2));
+        std::wstring expected=party->target;auto pos=expected.find(L"%s");expected.replace(pos,2,glyph.text);
+        if (dispatchSystemMessage(reinterpret_cast<HWND>(0x1234),bytes.c_str(),nullptr,0x1010,sinkA,sinkW)!=29 || captured!=expected) return 12;
+        ++glyphs;
+    }
     int w=calledW;
     if (invoke(L"unrecognized text")!=17 || invoke(std::wstring(L"prefix")+localeSystemFixtureCases[0].source)!=17) return 4;
     if (invoke(std::wstring(2050,L'x'))!=17) return 5;
     if (dispatchSystemMessage(reinterpret_cast<HWND>(0x1234),"\x81",nullptr,0x1010,sinkA,sinkW)!=17) return 6;
     if (!argsGood || calledW!=w || calledA!=4) return 7;
     if (systemMessageModuleMatches(GetModuleHandleW(nullptr))) return 8;
-    printf("SYSTEM_MESSAGES_MODIFIED PASS fields=%u unicode_calls=%d unchanged_calls=%d owner_flags_returns=preserved unknown_version=rejected game_started=false\n",cases,calledW,calledA);
+    printf("SYSTEM_MESSAGES_MODIFIED PASS fields=%u native_glyphs=%u unicode_calls=%d unchanged_calls=%d owner_flags_returns=preserved unknown_version=rejected game_started=false\n",cases,glyphs,calledW,calledA);
     return 0;
 }
 #endif

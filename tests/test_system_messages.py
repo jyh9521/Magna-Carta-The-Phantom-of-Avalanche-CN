@@ -32,4 +32,18 @@ class SystemMessageBuildTests(unittest.TestCase):
         self.assertEqual(len({r['expected_hex'] for r in p['fields']}),6)
         for r in p['fields']:
             self.assertEqual(m.TOKENS.findall(bytes.fromhex(r['expected_hex']).decode('cp949')),m.TOKENS.findall(r['target']))
+    def test_candidate_requires_declared_patch_and_matching_font(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            p=Path(tmp);source=p/'module';source.write_bytes(self.raw);plans=p/'plans';plans.write_text(json.dumps(self.plan),encoding='utf8');candidate=p/'candidate';candidate.write_bytes(self.raw)
+            with self.assertRaisesRegex(ValueError,'requires verified'):m.build(source,plans,p/'out',candidate)
+            self.assertFalse((p/'out').exists())
+    def test_scope_excludes_old_names_and_staff_movie(self):
+        root=Path(__file__).resolve().parents[1]/'locales/zh-CN'
+        scope=json.loads((root/'scope-decisions.json').read_text(encoding='utf8'))
+        self.assertEqual(scope['old_save_name_adaptation']['decision'],'excluded')
+        self.assertTrue(scope['staff_credits']['whole_resource_preserved'])
+        self.assertTrue(scope['opening_brand_logo']['whole_resource_preserved'])
+        self.assertEqual(scope['opening_brand_logo']['resource'],'MOV/0023.BMC')
+        movies=json.loads((root/'video-text-plans.json').read_text(encoding='utf8'))['videos']
+        self.assertFalse(any(r['resource'] in ['MOV/MOV.pak','MOV/0023.BMC'] for r in movies))
 if __name__=='__main__':unittest.main()

@@ -81,8 +81,19 @@ int wmain(int argc,wchar_t** argv) {
         if (result!=(modified?29:17) || (modified && captured!=item.target)) return 8;
         ++cases;
     }
+    unsigned glyphs=0;
+    for (const auto& glyph:localeSystemGlyphs) {
+        if (!glyph.pair) continue;
+        const SystemRule* party=nullptr;
+        for (const auto& r:localeSystemRules) if (!wcsncmp(r.source,L"%s",2)) {party=&r;break;}
+        if (!party) return 11;
+        std::string bytes;bytes+=static_cast<char>(glyph.pair>>8);bytes+=static_cast<char>(glyph.pair&255);bytes+=encode(party->source+2);
+        std::wstring expected=party->target;auto pos=expected.find(L"%s");expected.replace(pos,2,glyph.text);
+        if (call(bytes.c_str())!=(modified?29:17) || (modified && captured!=expected)) return 12;
+        ++glyphs;
+    }
     if (call("unrecognized")!=17 || !good) return 9;
-    if ((modified && (callsW!=9 || callsA!=1)) || (!modified && (callsW || callsA!=10))) return 10;
-    printf("SYSTEM_MESSAGES_IAT_%s PASS fields=%u unicode_calls=%d unchanged_calls=%d owner_flags_returns=preserved game_started=false\n",modified?"MODIFIED":"BASELINE",cases,callsW,callsA);
+    if ((modified && (callsW!=static_cast<int>(9+glyphs) || callsA!=1)) || (!modified && (callsW || callsA!=static_cast<int>(10+glyphs)))) return 10;
+    printf("SYSTEM_MESSAGES_IAT_%s PASS fields=%u native_glyphs=%u unicode_calls=%d unchanged_calls=%d owner_flags_returns=preserved game_started=false\n",modified?"MODIFIED":"BASELINE",cases,glyphs,callsW,callsA);
     return 0;
 }

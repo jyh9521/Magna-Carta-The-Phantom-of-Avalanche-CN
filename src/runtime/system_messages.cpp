@@ -11,6 +11,7 @@ constexpr char localeSystemSourceSha[]="";
 const SystemRule localeSystemRules[]={{L"",L""}};
 const SystemRule localeSystemEnvelopes[]={{L"",L""}};
 const SystemRule localeSystemCaptions[]={{L"",L""}};
+const SystemGlyph localeSystemGlyphs[]={{0,L""}};
 #endif
 
 namespace {
@@ -19,10 +20,21 @@ bool convert(LPCSTR value,size_t limit,std::wstring& out) {
     size_t length=strnlen_s(value,limit+1);
     if (length>limit) return false;
     if (!length) {out.clear();return true;}
-    int n=MultiByteToWideChar(localeSystemCodePage,MB_ERR_INVALID_CHARS,value,static_cast<int>(length),nullptr,0);
-    if (!n) return false;
-    out.resize(n);
-    return MultiByteToWideChar(localeSystemCodePage,MB_ERR_INVALID_CHARS,value,static_cast<int>(length),out.data(),n)==n;
+    out.clear();
+    for (size_t i=0;i<length;) {
+        unsigned first=static_cast<unsigned char>(value[i]);
+        if (first<128) {out+=static_cast<wchar_t>(first);++i;continue;}
+        if (i+1>=length) return false;
+        unsigned pair=(first<<8)|static_cast<unsigned char>(value[i+1]);bool mapped=false;
+        for (const auto& glyph:localeSystemGlyphs) if (glyph.pair==pair) {out+=glyph.text;mapped=true;break;}
+        if (!mapped) {
+            wchar_t decoded[2];int n=MultiByteToWideChar(localeSystemCodePage,MB_ERR_INVALID_CHARS,value+i,2,decoded,2);
+            if (!n) return false;
+            out.append(decoded,n);
+        }
+        i+=2;
+    }
+    return true;
 }
 size_t token(const std::wstring& s,size_t pos) {
     if (s.compare(pos,4,L"%04d")==0) return 4;

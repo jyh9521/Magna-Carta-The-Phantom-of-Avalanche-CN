@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <string>
 struct SystemRule { const wchar_t* source; const wchar_t* target; };
+struct SystemGlyph { unsigned pair; const wchar_t* text; };
 using SystemMessageA = int(WINAPI*)(HWND,LPCSTR,LPCSTR,UINT);
 using SystemMessageW = int(WINAPI*)(HWND,LPCWSTR,LPCWSTR,UINT);
 bool translateSystemMessage(const std::wstring& input,std::wstring& output);

@@ -180,3 +180,7 @@ report.json 明确 `all_text_extracted=false`、`all_translated=false`；只有�
 系统提示Unicode候选新增9字段6消息、默认关闭的版本锁定MessageBoxA导入适配及自建无窗口回归；详见SYSTEM_MESSAGES.md。未启动游戏、未部署到安装目录；完整候选结合及动态私有字槽参数仍待处理。
 
 系统消息本轮：提交基线288项及修改后293项单元测试通过；9字段6规则重复生成一致。自建IAT基线10次ANSI，修改后9次Unicode与1次ANSI；追加字节版本反例退出125。隔离profile副本回滚原字节并恢复同输入基线行为，修改候选保留。证据在忽略的build/system-message-evidence/（MODIFIED_FILE.dll、DIFF_FILE.patch、VERIFICATION.txt、可执行ROLLBACK.sh），产物为自建样本，不是商业MCAlpha。未启动游戏、未部署。
+
+最新范围与全文结合：旧存档名字、开发人员名单明确不处理；名单PAK整份保护原字节。第一套誓言可读tile、候选模块和1,898字形系统参数转换已进入增量包；完整结合、安装/回滚及未执行的游戏QA见LOCALE_PACKAGE.md。
+
+开头SOFTMAX Logo按直接用户决定整段原样保留，MOV/0023.BMC不进入补丁清单；曾含Logo译文的未发布候选已撤回。
