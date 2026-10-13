@@ -1,0 +1,13 @@
+# 候选启动配置修正
+
+本次失败截图为Cannot Match PixelFormat。对应候选会话profile.bin长度52，renderer字段（偏移1）为1；日志加载Drv/AsrGlDrv.dll。已验收的Direct3D配置该字段为0，两个配置仅此一字节不同。日志同时记录了配置隔离、原生文本和系统消息适配加载，未启用FocusGuard。
+
+DDrawCompat DLL、render1080无边框配置及未更新Direct3D驱动摘要均与已验收输入一致，不更换驱动或图形层。本次问题属于候选启动入口直接继承OpenGL设置，并将FocusGuard错误设为可选；不能把图形初始化报错判作免CD标记检查失败。
+
+修正后的Start.ps1读取原设置但只在独立会话副本中将renderer字段设为Direct3D，默认启用FocusGuard；原登记和其他51字节不修改。PrepareProfile.ps1支持自动验证转换，未知长度/renderer拒绝。入口在启动前检查已验收图形DLL、render1080配置及Direct3D驱动完整摘要；缺少匹配图形层时停止，不静默退回可能改变桌面的旧显示路径。
+
+`-PrepareOnly`只生成配置与preparation.json，直接返回；不创建游戏进程或注册表会话。`tools/check_start_profile.py`只读检查已记录或准备的设置，区分实际日志和只准备配置。原失败记录保留作对照。
+
+PowerShell转换及准备检查通过，不代表真实PixelFormat错误或桌面窗口布局已完成游戏内回归。当前未重新启动游戏，下一次手动重试需要检查启动、实际加载AsrD3DDrv、FocusGuard以及退出后桌面/其他窗口是否保持。
+
+无盘包更新已有汉化副本的启动脚本，并保存先前脚本以供独立回滚；没有覆盖原安装、Logo、人员名单或存档。

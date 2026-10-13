@@ -16,3 +16,5 @@ python apply_locale.py rollback --package PACKAGE_DIR --source ORIGINAL_GAME --t
 ```
 
 回滚前验证全部目标摘要，存在额外修改则拒绝写入；恢复原始资源字节，保留自有工具及记录。用户存档不是补丁目标。完整QA要求见QA_CHECKLIST.md。`release_ready=false`和`in_game_verified=false`保持明确，不根据离线通过宣称已实机验收。
+
+手动入口默认采用独立Direct3D设置并启用FocusGuard，先核对已验收render1080图形层/配置/驱动。缺少匹配兼容层会在游戏启动前停止。`Start.ps1 -PrepareOnly`仅准备配置，不启动游戏；退出后桌面分辨率及其他窗口大小是否保持需要实际复核。

@@ -8,7 +8,9 @@ def build(launcher,output):
     if output.exists() or launcher.is_relative_to(output):raise ValueError('bundle output must be new')
     inputs={'workspace_launcher.exe':launcher,'disc-gate.json':root/'patches/disc-gate.json',
             'install_disc_gate.py':root/'tools/install_disc_gate.py','patch_binary_plan.py':root/'tools/patch_binary_plan.py',
-            'README.md':root/'docs/DISC_GATE.md','LICENSE':root/'LICENSE'}
+            'README.md':root/'docs/DISC_GATE.md','LICENSE':root/'LICENSE',
+            'Start.ps1':root/'assets/locale-package/Start.ps1',
+            'PrepareProfile.ps1':root/'assets/locale-package/PrepareProfile.ps1'}
     snapshots={n:p.read_bytes() for n,p in inputs.items()}
     output.mkdir(parents=True)
     for n,b in snapshots.items():(output/n).write_bytes(b)

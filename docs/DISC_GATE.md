@@ -49,3 +49,5 @@ python install_disc_gate.py rollback --target NEW_GAME_COPY
 来源为纯原版时，核对入口位于`.disc-gate/workspace_launcher.exe`。来源为汉化副本时，只更新该新副本的`.locale-runtime/workspace_launcher.exe`，系统消息/显示隔离模块不替换。回滚恢复EXE原字节及原入口，不改汉化资源、Logo、开发人员名单或存档。先撤销无盘候选，再按汉化包说明回滚汉化资源。
 
 实际无盘验收尚未执行；后续需要明确启动要求，并记录未挂载介质情况下的菜单、新游戏、读档、场景切换、音乐、语音和视频结果。
+
+候选启动入口继承OpenGL导致PixelFormat失败的实际日志及修正见[START_PROFILE_FIX.md](START_PROFILE_FIX.md)。当前入口在独立会话使用Direct3D、默认FocusGuard，并预检已验收无边框/1080兼容层摘要；`-PrepareOnly`不启动游戏，真实启动及退出后桌面布局仍待回归。

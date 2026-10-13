@@ -47,8 +47,11 @@ class BinaryPlanTests(unittest.TestCase):
             (source/'MCAlpha.dll').write_bytes(b'owned module');(source/'MC00.sav').write_bytes(b'owned save')
             (source/'.locale-runtime').mkdir();(source/'.locale-runtime/workspace_launcher.exe').write_bytes(b'old launcher')
             (package/'workspace_launcher.exe').write_bytes(b'new launcher')
+            (source/'.locale-runtime/Start.ps1').write_bytes(b'old start')
+            (package/'Start.ps1').write_bytes(b'new start')
+            (package/'PrepareProfile.ps1').write_bytes(b'profile helper')
             (package/'disc-gate.json').write_text(json.dumps(self.plan))
-            bundle=dict(files={n:m.digest((package/n).read_bytes()) for n in ['workspace_launcher.exe','disc-gate.json']},
+            bundle=dict(files={n:m.digest((package/n).read_bytes()) for n in ['workspace_launcher.exe','disc-gate.json','Start.ps1','PrepareProfile.ps1']},
                         engine_sha256=[m.digest(b'owned module')])
             (package/'bundle.json').write_text(json.dumps(bundle))
             install.install(source,package,target)
@@ -61,4 +64,6 @@ class BinaryPlanTests(unittest.TestCase):
             launcher.write_bytes(b'new launcher');install.restore(target)
             self.assertEqual((target/'MagnaCarta.exe').read_bytes(),self.raw)
             self.assertEqual(launcher.read_bytes(),b'old launcher')
+            self.assertEqual((target/'.locale-runtime/Start.ps1').read_bytes(),b'old start')
+            self.assertFalse((target/'.locale-runtime/PrepareProfile.ps1').exists())
             self.assertEqual((target/'MC00.sav').read_bytes(),b'owned save')

@@ -100,7 +100,7 @@ def build(source,packages,runtime,scope_path,output):
     owned={n:(runtime/n).read_bytes() for n in ['workspace_profile.dll','workspace_launcher.exe']}
     snapshots.update({runtime/n:b for n,b in owned.items()})
     templates=Path(__file__).resolve().parents[1]/'assets/locale-package'
-    for n in ['Start.ps1','QA_CHECKLIST.md','README.md']:
+    for n in ['Start.ps1','PrepareProfile.ps1','QA_CHECKLIST.md','README.md']:
         p=templates/n;snapshots[p]=p.read_bytes();owned[n]=snapshots[p]
     for p,b in snapshots.items():
         if p.read_bytes()!=b:raise ValueError('package input drift')

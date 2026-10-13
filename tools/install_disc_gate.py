@@ -30,9 +30,18 @@ def install(source, package, output):
         shutil.copyfile(package/'workspace_launcher.exe',launcher)
     else:
         shutil.copyfile(package/'workspace_launcher.exe',state/'workspace_launcher.exe')
+    updates={}
+    if (stage/'.locale-runtime').is_dir():
+        for name in ['Start.ps1','PrepareProfile.ps1']:
+            if name not in m['files']:continue
+            file=stage/'.locale-runtime'/name;before=file.read_bytes() if file.exists() else None
+            updates[name]=dict(prior_sha256=digest(before) if before is not None else None,
+                               target_sha256=m['files'][name])
+            if before is not None:(state/('original-'+name)).write_bytes(before)
+            shutil.copyfile(package/name,file)
     shutil.copyfile(package/'disc-gate.json',state/'plan.json')
     (state/'state.json').write_text(json.dumps(dict(state='candidate',prior_launcher_sha256=prior,
-        launcher_sha256=m['files']['workspace_launcher.exe'],game_started=False))+'\n',encoding='utf8')
+        launcher_sha256=m['files']['workspace_launcher.exe'],runtime_updates=updates,game_started=False))+'\n',encoding='utf8')
     if (source/'MagnaCarta.exe').read_bytes()!=raw or (stage/'MagnaCarta.exe').read_bytes()!=after:
         raise ValueError('source or output drift')
     stage.rename(output)
@@ -50,8 +59,18 @@ def restore(target):
     if m['prior_launcher_sha256']:
         prior=(state/'original-launcher.exe').read_bytes()
         if digest(prior)!=m['prior_launcher_sha256']:raise ValueError('rollback launcher mismatch')
+    originals={}
+    for name,row in m.get('runtime_updates',{}).items():
+        if name not in ['Start.ps1','PrepareProfile.ps1']:raise ValueError('unknown runtime update')
+        if digest((target/'.locale-runtime'/name).read_bytes())!=row['target_sha256']:raise ValueError('runtime drift; no writes')
+        originals[name]=(state/('original-'+name)).read_bytes() if row['prior_sha256'] is not None else None
+        if originals[name] is not None and digest(originals[name])!=row['prior_sha256']:raise ValueError('runtime backup mismatch')
     exe.write_bytes(original)
     if prior:launcher.write_bytes(prior)
+    for name,original_bytes in originals.items():
+        file=target/'.locale-runtime'/name
+        if original_bytes is None:file.unlink()
+        else:file.write_bytes(original_bytes)
     if exe.read_bytes()!=original or (prior and launcher.read_bytes()!=prior):raise ValueError('rollback readback mismatch')
     m['state']='rolled_back';(state/'state.json').write_text(json.dumps(m)+'\n',encoding='utf8')
 

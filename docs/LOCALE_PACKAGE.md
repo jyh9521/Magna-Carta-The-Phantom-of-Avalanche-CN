@@ -48,3 +48,5 @@ python PACKAGE/apply_locale.py rollback --package PACKAGE --source SOURCE --targ
 634资源清单全部重建、安装读回和独立副本回滚通过。基线293项测试和修改后303项测试均通过；自建系统消息模型覆盖1,898字形，实际自建IAT测试通过，未知模块退出125。`--verify-only`分别识别候选与回滚后原版摘要，均报告`game_started=false registry_changed=false`。
 
 增量包同时保护Logo、名单与24份指定保留资源的原始摘要；旧含Logo译文包已撤回。结果只证明文件与受控模型，不代替实际游戏内验收。
+
+候选启动入口继承OpenGL导致PixelFormat失败的实际日志及修正见[START_PROFILE_FIX.md](START_PROFILE_FIX.md)。当前入口在独立会话使用Direct3D、默认FocusGuard，并预检已验收无边框/1080兼容层摘要；`-PrepareOnly`不启动游戏，真实启动及退出后桌面布局仍待回归。
