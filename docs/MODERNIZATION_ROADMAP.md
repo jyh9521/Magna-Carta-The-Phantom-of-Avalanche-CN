@@ -1,6 +1,7 @@
 # 现代 Windows 与无盘运行技术路线
 
 更新：2026-10-12。目标平台：Windows 10 / Windows 11（64 位）。
+2026-10-13当前阶段覆盖：汉化内容按用户决定冻结，进入现代输入与引擎稳定性工作。首轮XInput输入边界候选及验证见[MODERN_INPUT.md](MODERN_INPUT.md)，缺陷证据与高级增强门槛见[MODERNIZATION_BUGS.md](MODERNIZATION_BUGS.md)。首轮候选不代表P2/P3已经完成。
 本文记录正式开发目标，不代表功能已实现。静态依据见 [运行环境调查](RUNTIME_RESEARCH.md)，验收见 [测试清单](RUNTIME_TESTING.md)。
 
 ## 当前状态与开发门槛

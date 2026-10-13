@@ -6,6 +6,7 @@
 #include "native_text_step.h"
 #include "native_font.h"
 #include "system_messages.h"
+#include "modern_gamepad.h"
 
 namespace {
 wchar_t session[512]{};
@@ -15,6 +16,7 @@ bool textureLifetime = false;
 bool focusGuard = false;
 bool nativeTextStep = false;
 bool systemMessages = false;
+bool modernInput = false;
 wchar_t textureDriverPath[32768]{};
 using MessageFunction = int(WINAPI*)(HWND, LPCSTR, LPCSTR, UINT);
 MessageFunction originalExceptionMessage = MessageBoxA;
@@ -148,6 +150,9 @@ void patch(HMODULE module) {
     if (nt->Signature != IMAGE_NT_SIGNATURE || nt->OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR32_MAGIC) return;
     if (focusGuard && !_wcsicmp(base, L"MCAlpha.dll"))
         trace(installFocusGuard(module, trace) ? L"FOCUS_GUARD_READY" : L"FOCUS_GUARD_REJECTED");
+    if (modernInput && !_wcsicmp(base,L"MCAlpha.dll") && !installModernGamepad(module,trace)) {
+        trace(L"MODERN_INPUT_REJECTED");ExitProcess(125);
+    }
     if (nativeTextStep && !_wcsicmp(base, L"MCAlpha.dll")) {
         if (!installNativeTextStep(module)) {
             trace(L"NATIVE_TEXT_STEP_REJECTED");
@@ -225,6 +230,7 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) {
         focusGuard = GetEnvironmentVariableW(L"MC_FOCUS_GUARD", option, 8) && !wcscmp(option, L"1");
         nativeTextStep = GetEnvironmentVariableW(L"MC_NATIVE_TEXT_STEP", option, 8) && !wcscmp(option, L"1");
         systemMessages = GetEnvironmentVariableW(L"MC_SYSTEM_MESSAGES",option,8) && !wcscmp(option,L"1");
+        modernInput = GetEnvironmentVariableW(L"MC_MODERN_INPUT",option,8) && !wcscmp(option,L"1");
         GetEnvironmentVariableW(L"MC_TEXTURE_DRIVER", textureDriverPath, 32768);
         patch(GetModuleHandleW(nullptr));
         trace(L"PROFILE_ATTACHED");

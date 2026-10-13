@@ -162,7 +162,7 @@ int wmain(int argc, wchar_t** argv) {
             return 0;
         }
         fs::path workspace, shim, setting, log;
-        bool fixture = false, captureException = false, textureLifetime = false, focusGuard = false, nativeTextStep = false, systemMessages = false, verifyOnly = false; DWORD seconds = 0;
+        bool fixture = false, captureException = false, textureLifetime = false, focusGuard = false, nativeTextStep = false, systemMessages = false, modernInput = false, verifyOnly = false; DWORD seconds = 0;
         for (int i = 1; i < argc; ++i) {
             std::wstring arg = argv[i];
             if (arg == L"--fixture") fixture = true;
@@ -171,6 +171,7 @@ int wmain(int argc, wchar_t** argv) {
             else if (arg == L"--focus-guard") focusGuard = true;
             else if (arg == L"--native-text-step") nativeTextStep = true;
             else if (arg == L"--system-messages") systemMessages = true;
+            else if (arg == L"--modern-input") modernInput = true;
             else if (arg == L"--verify-only") verifyOnly = true;
             else if (i + 1 < argc && arg == L"--workspace") workspace = fs::canonical(argv[++i]);
             else if (i + 1 < argc && arg == L"--shim") shim = fs::canonical(argv[++i]);
@@ -197,6 +198,7 @@ int wmain(int argc, wchar_t** argv) {
         require(!fs::exists(log), "Log path already exists");
         fs::path exe = workspace / (fixture ? L"registry_probe.exe" : L"MagnaCarta.exe");
         require(!nativeTextStep || !fixture, "Native text step requires a version-locked game workspace");
+        require(!modernInput || !fixture,"Modern input requires a version-locked game workspace");
         if (!fixture) {
             require(supportedExecutable(exe), "Unsupported game executable");
             auto engine=sha256(workspace/L"MCAlpha.dll");
@@ -241,6 +243,7 @@ int wmain(int argc, wchar_t** argv) {
         SetEnvironmentVariableW(L"MC_WORKSPACE_SESSION", session.path.c_str());
         SetEnvironmentVariableW(L"MC_WORKSPACE_LOG", log.c_str());
         SetEnvironmentVariableW(L"MC_SYSTEM_MESSAGES",systemMessages?L"1":L"0");
+        SetEnvironmentVariableW(L"MC_MODERN_INPUT",modernInput?L"1":L"0");
         SetEnvironmentVariableW(L"MC_CAPTURE_HELPER", captureException ? captureHelper.c_str() : nullptr);
         SetEnvironmentVariableW(L"MC_TEXTURE_LIFETIME", textureLifetime ? L"1" : nullptr);
         SetEnvironmentVariableW(L"MC_FOCUS_GUARD", focusGuard ? L"1" : nullptr);
