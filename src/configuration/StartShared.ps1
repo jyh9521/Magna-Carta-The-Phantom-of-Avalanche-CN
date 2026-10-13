@@ -14,7 +14,10 @@ $settings=Read-EnhancementSettings (Join-Path $runtimeRoot 'config/enhancements.
 $selected=$manifest.recipes.$Recipe
 if($selected.settings){$settings=Test-EnhancementSettings $selected.settings}
 $module=$selected.module
-if($module -eq 'configured'){$module=if($settings.motion60 -or $settings.native_gamepad){'modern'}else{'display'}}
+if($module -eq 'configured'){
+ $key=if($settings.motion60 -and $settings.native_gamepad){'combined'}elseif($settings.motion60){'motion'}elseif($settings.native_gamepad){'gamepad'}else{'display'}
+ if($manifest.PSObject.Properties['configured_modules']){$module=$manifest.configured_modules.$key}else{$module=if($key -eq 'display'){'display'}else{'modern'}}
+}
 $ini=Join-Path $game 'DDrawCompat-MagnaCarta.ini'
 $known=@($manifest.profiles.PSObject.Properties.Value)
 if((Hash $ini) -notin $known){throw 'Unknown active display configuration'}

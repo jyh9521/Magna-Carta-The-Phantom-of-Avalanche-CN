@@ -42,6 +42,7 @@ class SharedRuntimeTests(unittest.TestCase):
             self.assertEqual(before,tool.sha(game/'engine.dll'))
             self.assertFalse((out/'data').exists())
             self.assertEqual(m['data_root'],'data')
+            self.assertEqual(m['configured_modules']['motion'],'modern')
             self.assertEqual(len(m['recipes']),11)
             self.assertTrue(m['recipes']['camera']['camera'])
             self.assertTrue(m['recipes']['maps']['maps'])

@@ -19,6 +19,7 @@ using MotionAbsoluteFn=void(__cdecl*)(void*,unsigned,MotionMatrix*,MotionMatrix*
 void motion60TestConfigure(MotionRenderFn,MotionAbsoluteFn);
 void motion60TestSetTime(double milliseconds);
 void motion60TestRender(void*,int);
+void motion60TestRenderParent(void*,int,MotionMatrix*);
 void motion60TestAbsolute(void*,unsigned,MotionMatrix*,MotionMatrix*);
 #endif
 

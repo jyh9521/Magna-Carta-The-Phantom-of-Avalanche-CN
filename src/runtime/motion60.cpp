@@ -54,7 +54,7 @@ __declspec(naked) void timerThunk(){__asm {
  mov eax,dword ptr[ebp-14h]
  jmp dword ptr[timerResume]
 }}
-struct Cache{void* action=nullptr;void* bones=nullptr;Matrix* pose=nullptr;int frame=0;LONGLONG changed=0,last=0;motion::Phase phase{};motion::TransformTrack world;std::vector<Matrix> previous,current;};
+struct Cache{void* action=nullptr;void* bones=nullptr;Matrix* pose=nullptr;int frame=0;LONGLONG changed=0,last=0;motion::Phase phase{};motion::TransformTrack world,localWorld;std::vector<Matrix> previous,current;};
 std::map<void*,Cache> caches;SRWLOCK cacheLock=SRWLOCK_INIT;LONGLONG frequency=0;
 // The original renderer copies local pose into object+f0 on every draw.
 // Replaying the same fixed tick must start with the same transition history.
@@ -85,7 +85,7 @@ void prepareHistory(void* value,int frame){
 #ifdef MOTION60_TEST
 bool fixtureClock=false;LONGLONG fixtureTicks=0;
 #endif
-struct Context{void* object;int frame;Matrix* pose=nullptr;std::vector<Matrix> baseline;Context* parent;Matrix* world=nullptr;Matrix baselineWorld{};};
+struct Context{void* object;int frame;Matrix* pose=nullptr;std::vector<Matrix> baseline;Context* parent;Matrix* world=nullptr;Matrix baselineWorld{};bool hasParent=false;};
 thread_local Context* active=nullptr;volatile LONG changes=0;
 motion::Phase renderPhase(){return timelineThread==GetCurrentThreadId()?timeline.phase():motion::Phase{};}
 void cameraMatrix(void* driver,Matrix* matrix,LoadMatrix original){
@@ -157,14 +157,19 @@ auto& c=caches[active->object];bool reset=c.current.size()!=count||c.action!=act
  if(complete&&(c.phase.generation!=phase.generation||phase.tick<c.phase.tick||phase.tick>c.phase.tick+1))reset=true;
  if(!reset&&active->frame==c.frame&&memcmp(current.data(),c.current.data(),count*sizeof(Matrix)))reset=true;
  if(!reset&&active->frame!=c.frame&&active->frame!=c.frame+1)reset=true;
- if(reset){c.previous=current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;c.action=action;c.bones=bones;c.pose=poses;c.world.reset();}
+ if(reset){c.previous=current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;c.action=action;c.bones=bones;c.pose=poses;c.world.reset();c.localWorld.reset();}
  else if(active->frame!=c.frame||(complete&&phase.tick!=c.phase.tick)){c.previous=c.current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;}
  c.last=now.QuadPart;float alpha=frequency?static_cast<float>((now.QuadPart-c.changed)*1000.0/(frequency*33.0)):1;alpha=(std::max)(0.f,(std::min)(1.f,alpha));
  if(complete){alpha=phase.alpha;c.phase=phase;}
  for(unsigned i=0;i<count;++i)blend(c.previous[i],c.current[i],alpha,interpolated[i]);
  Matrix interpolatedWorld{};bool worldValid=false;
  auto world=reinterpret_cast<Matrix*>(object+0xc);
- if(complete&&cameraState.valid&&motion::rigid(*world)){
+ if(complete&&!active->hasParent&&motion::rigid(*world)){
+  // Original Render(NULL parent) copies local +4c into +c. No view matrix
+  // exists in this value: camera removal would corrupt both draw and restore.
+  interpolatedWorld=c.localWorld.sample(*world,phase);
+  active->world=world;active->baselineWorld=*world;worldValid=true;
+ }else if(complete&&cameraState.valid&&motion::rigid(*world)){
   // Asura matrices are column-major: modelview = view * actorWorld.
   auto actorWorld=motion::multiply(motion::inverseRigid(cameraState.applied),*world);
   if(motion::rigid(actorWorld)){
@@ -178,7 +183,9 @@ auto& c=caches[active->object];bool reset=c.current.size()!=count||c.action!=act
  active->baseline.resize(count);originalAbsolute(bones,root,poses,parent);memcpy(active->baseline.data(),poses,count*sizeof(Matrix));active->pose=poses;
  memcpy(poses,interpolated.data(),count*sizeof(Matrix));originalAbsolute(bones,root,poses,parent);
  if(worldValid)*world=interpolatedWorld;
- static LONG worldChanges=0;if(worldValid&&InterlockedIncrement(&worldChanges)==1&&trace)trace(L"MOTION60_WORLD_APPLIED phase=engine_remainder camera_removed_before_blend=true restore=original_modelview");
+ static LONG localChanges=0,composedChanges=0;
+ if(worldValid&&InterlockedIncrement(active->hasParent?&composedChanges:&localChanges)==1&&trace)
+  trace(active->hasParent?L"MOTION60_WORLD_APPLIED source_space=view_composed parent=non_null restore=original_modelview":L"MOTION60_WORLD_APPLIED source_space=local parent=null camera_conversion=false restore=exact_local");
  if(InterlockedIncrement(&changes)==1&&trace)trace(complete?L"MOTION60_POSE_APPLIED phase=engine_remainder world_camera=interpolated latency_ticks=1":L"MOTION60_POSE_APPLIED scope=skeletal_local_pose logic_interval_ms=33 world_camera=unchanged latency_ticks=1");
 }
 void renderScoped(Context* ctx,void* object,int frame,Matrix* world,int a,int b,int c,int d,int e){
@@ -187,7 +194,7 @@ void renderScoped(Context* ctx,void* object,int frame,Matrix* world,int a,int b,
 }
 void __fastcall renderHook(void* object,void*,int frame,Matrix* world,int a,int b,int c,int d,int e){
  prepareHistory(object,frame);
- Context ctx{object,frame,nullptr,{},active};renderScoped(&ctx,object,frame,world,a,b,c,d,e);
+ Context ctx{object,frame,nullptr,{},active};ctx.hasParent=world!=nullptr;renderScoped(&ctx,object,frame,world,a,b,c,d,e);
 }
 bool write(void* p,DWORD value){DWORD old;if(!VirtualProtect(p,4,PAGE_READWRITE,&old))return false;DWORD before=*static_cast<DWORD*>(p);*static_cast<DWORD*>(p)=value;DWORD unused;if(VirtualProtect(p,4,old,&unused))return true;*static_cast<DWORD*>(p)=before;VirtualProtect(p,4,old,&unused);return false;}
 bool timerMatches(BYTE* p){
@@ -281,6 +288,7 @@ void motion60TestInitialize(BYTE* p,MotionAbsoluteFn a){memset(p,0,0x10b000);aut
 void motion60TestConfigure(MotionRenderFn r,MotionAbsoluteFn a){originalRender=reinterpret_cast<Render>(r);originalAbsolute=reinterpret_cast<Absolute>(a);LARGE_INTEGER f{};QueryPerformanceFrequency(&f);frequency=f.QuadPart;caches.clear();}
 void motion60TestSetTime(double milliseconds){fixtureClock=true;fixtureTicks=static_cast<LONGLONG>(milliseconds*frequency/1000.0);}
 void motion60TestRender(void* o,int f){renderHook(o,nullptr,f,nullptr,0,0,0,0,0);}
+void motion60TestRenderParent(void* o,int f,MotionMatrix* p){renderHook(o,nullptr,f,reinterpret_cast<Matrix*>(p),0,0,0,0,0);}
 void motion60TestAbsolute(void* b,unsigned r,MotionMatrix* p,MotionMatrix* parent){absoluteHook(b,r,reinterpret_cast<Matrix*>(p),reinterpret_cast<Matrix*>(parent));}
 void motion60TestBlend(const MotionMatrix& a,const MotionMatrix& b,float t,MotionMatrix& out){blend(reinterpret_cast<const Matrix&>(a),reinterpret_cast<const Matrix&>(b),t,reinterpret_cast<Matrix&>(out));}
 void motion60TestComplete(BYTE* p,bool enabled){engineBase=p;complete=enabled;timeline.reset();timelineThread=GetCurrentThreadId();cameraState={};cameraTrack.reset();caches.clear();}

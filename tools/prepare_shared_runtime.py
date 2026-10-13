@@ -87,7 +87,8 @@ def prepare(source, modules, atlas, output):
             files['maps/'+name]=row[key]
     for name in ['manifest.json','label.txt']:
         files['maps/'+name]=sha(atlas/name)
-    manifest=dict(schema=1,data_root='data',data=data,files=files,profiles=original['profiles'],recipes=recipes)
+    manifest=dict(schema=1,data_root='data',data=data,files=files,profiles=original['profiles'],recipes=recipes,
+                  configured_modules=dict(display='display',motion='modern',gamepad='modern',combined='modern'))
     (output/'runtime.json').write_bytes((json.dumps(manifest,indent=2)+'\n').encode('utf8'))
     for recipe in recipes:
         entry='Play.cmd' if recipe=='configured' else 'Play-'+recipe+'.cmd'
