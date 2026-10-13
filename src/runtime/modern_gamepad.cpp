@@ -7,6 +7,7 @@
 #include <intrin.h>
 #include <cstring>
 #include <cmath>
+#include <cwchar>
 
 namespace {
 using Keyboard=BOOL(WINAPI*)(PBYTE);
@@ -27,6 +28,7 @@ thread_local modern_input::MoveIntent movement;
 modern_input::Cursor controllerCursor;DWORD cursorTime=0;
 GamepadNavigation navigation;DWORD inputSerial=0;unsigned navHeld=0;WORD lastButtons=0;
 bool realMouseKnown=false,navMouseBlocked=false;int realMouseX=0,realMouseY=0;unsigned triggerHeld=0;DWORD triggerTime=0;
+void(*inputTrace)(const wchar_t*)=nullptr;DWORD traceTime=0;
 #ifdef MODERN_INPUT_TEST
 bool fixtureForeground=false;
 #endif
@@ -52,6 +54,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
             poll=reinterpret_cast<Poll>(GetProcAddress(backend,"XInputGetState"));
             if(!poll)FreeLibrary(backend);
         }
+        if(!poll&&inputTrace)inputTrace(L"INPUT_BACKEND_UNAVAILABLE xinput1_4=true");
     }
     movement={};
     navigation={};
@@ -71,7 +74,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     }
     if(sample.connected){sample.buttons=state.Gamepad.wButtons;sample.x=state.Gamepad.sThumbLX;sample.y=state.Gamepad.sThumbLY;
         sample.rx=state.Gamepad.sThumbRX;sample.ry=state.Gamepad.sThumbRY;sample.lt=state.Gamepad.bLeftTrigger;sample.rt=state.Gamepad.bRightTrigger;}
-    auto frame=router.update(sample,ok!=FALSE,focused);
+    auto frame=router.update(sample,ok!=FALSE,focused);int titlePhase=-1;
     if(ok&&mapReservedKeys&&nativeRouting&&worldScope&&frame.armed&&focused)InterlockedExchange(&mapPadButtons,((sample.buttons&XINPUT_GAMEPAD_BACK)?1:0)|((sample.buttons&XINPUT_GAMEPAD_RIGHT_THUMB)?2:0));
     if(ok&&nativeRouting){
         bool clicksAllowed=true;
@@ -82,7 +85,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
             if(reinterpret_cast<ULONG_PTR>(parent)>0x38&&readable(parent-0x38,4)){
                 auto title=*reinterpret_cast<BYTE**>(parent-0x38);
                 if(readable(title,0x74)&&*reinterpret_cast<ULONG_PTR*>(title)==reinterpret_cast<ULONG_PTR>(engine+0xc22f0)){
-                    int phase=*reinterpret_cast<int*>(title+0x70);
+                    int phase=*reinterpret_cast<int*>(title+0x70);titlePhase=phase;
                     if(phase<4)nativeBindings[4]=VK_SPACE;
                     else if(phase!=4&&phase!=8){frame.held&=~uint32_t(modern_input::Confirm);clicksAllowed=false;}
                 }
@@ -126,6 +129,13 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
         }
         triggerHeld=triggers;
     }else if(ok)modern_input::mergeKeyboard(keys,frame,bindings);
+    DWORD traceNow=GetTickCount();
+    if(inputTrace&&(!traceTime||DWORD(traceNow-traceTime)>=1000)){
+        traceTime=traceNow;wchar_t message[256];
+        swprintf_s(message,L"INPUT_FRAME connected=%u slot=%u focused=%u armed=%u world=%u buttons=%04x actions=%02x native=%u title_phase=%d ui_active=%u mouse_blocked=%u",
+            unsigned(sample.connected),selected,unsigned(focused),unsigned(frame.armed),unsigned(worldScope),unsigned(sample.buttons),unsigned(frame.held),unsigned(nativeRouting),titlePhase,unsigned(navigation.active),unsigned(navMouseBlocked));
+        inputTrace(message);
+    }
     ReleaseSRWLockExclusive(&lock);
     return ok;
 }
@@ -176,7 +186,7 @@ bool installModernGamepad(HMODULE module,void(*logger)(const wchar_t*)) {
     if(!VirtualProtect(slot,sizeof(DWORD),PAGE_READWRITE,&previous))return false;
     original=systemKeyboard;caller=reinterpret_cast<ULONG_PTR>(bytes+0x2fd5);
     originalIat=reinterpret_cast<DWORD>(systemKeyboard);
-    engine=bytes;nativeRouting=native;
+    engine=bytes;nativeRouting=native;inputTrace=logger;traceTime=0;
     if(nativeRouting){modern_input::Config config;config.engage=12000;config.release=5500;router=modern_input::Router(config);}
     gameWindow=reinterpret_cast<HWND*>(bytes+0xf1b44);
     InterlockedExchange(reinterpret_cast<LONG*>(slot),reinterpret_cast<LONG>(&keyboardBridge));

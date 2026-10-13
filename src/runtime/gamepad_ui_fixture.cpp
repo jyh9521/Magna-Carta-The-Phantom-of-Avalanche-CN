@@ -12,7 +12,9 @@ int main(){
  *reinterpret_cast<DWORD*>(vt+0xc8)=reinterpret_cast<DWORD>(image+0x55b97);*reinterpret_cast<DWORD*>(vt+0xcc)=reinterpret_cast<DWORD>(image+0x55b8c);*reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x55b81);*reinterpret_cast<DWORD*>(vt+0xd4)=reinterpret_cast<DWORD>(image+0x55ba2);
  BYTE root[0x190]{},widgets[3][0x190]{},nodes[3][8]{},manager[0x40]{},exclusive[8]{};int rects[3][4]={{300,400,500,440},{300,450,500,490},{300,500,500,540}};
  auto init=[&](BYTE* g){*reinterpret_cast<BYTE**>(g)=vt;*reinterpret_cast<int*>(g+0xe8)=1;*reinterpret_cast<int*>(g+0x160)=1;*reinterpret_cast<BYTE**>(g+0x17c)=root;};init(root);*reinterpret_cast<BYTE**>(root+0x18)=widgets[0];
- for(int i=0;i<3;++i){init(widgets[i]);*reinterpret_cast<int**>(nodes[i])=rects[i];*reinterpret_cast<BYTE**>(widgets[i]+0xf8)=nodes[i];if(i<2)*reinterpret_cast<BYTE**>(widgets[i]+0x10)=widgets[i+1];}
+ // +f8 is the list object, not its head. The engine's GetFirst accessor
+ // reads list+8; a nonzero count must never be mistaken for a node pointer.
+ for(int i=0;i<3;++i){init(widgets[i]);*reinterpret_cast<int**>(nodes[i])=rects[i];*reinterpret_cast<int*>(widgets[i]+0xf8)=1;*reinterpret_cast<BYTE**>(widgets[i]+0x100)=nodes[i];if(i<2)*reinterpret_cast<BYTE**>(widgets[i]+0x10)=widgets[i+1];}
  *reinterpret_cast<int*>(image+0xf1b48)=800;*reinterpret_cast<int*>(image+0xf1b4c)=600;auto x=reinterpret_cast<int*>(image+0xf20b0),y=reinterpret_cast<int*>(image+0xf20a8);*x=400;*y=300;*reinterpret_cast<BYTE**>(image+0xf220c)=manager;
  require(installGamepadUi(reinterpret_cast<HMODULE>(image),nullptr),"install all known classes");require(installGamepadUi(reinterpret_cast<HMODULE>(image),nullptr),"idempotence");
  auto invoke=[&](GamepadNavigation n){configureModernNavigationFixture(image,n);return reinterpret_cast<int(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(vt+0x1c8))(root);};

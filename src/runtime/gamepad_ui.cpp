@@ -19,7 +19,9 @@ void collect(BYTE* p,std::vector<modern_input::FocusTarget>& out,std::set<BYTE*>
  auto child=*reinterpret_cast<BYTE**>(p+0x18);bool hasChild=false;std::set<BYTE*> chain;
  for(;child&&chain.size()<128&&readable(child,0x14)&&chain.insert(child).second;child=*reinterpret_cast<BYTE**>(child+0x10))if(gui(child)){hasChild=true;collect(child,out,visited,x,y,w,h,nativeArrowControl);}
  if(hasChild||!*reinterpret_cast<void**>(p+0x17c))return;
- auto node=*reinterpret_cast<BYTE**>(p+0xf8);float ox=*reinterpret_cast<float*>(p+0x24),oy=*reinterpret_cast<float*>(p+0x28);
+ // +f8 is the list object. GetFirst (RVA 02014) reads its +8 head;
+ // dereferencing the container itself mistakes its count for a pointer.
+ auto node=*reinterpret_cast<BYTE**>(p+0x100);float ox=*reinterpret_cast<float*>(p+0x24),oy=*reinterpret_cast<float*>(p+0x28);
  if(!std::isfinite(ox)||!std::isfinite(oy)||std::abs(ox)>100000||std::abs(oy)>100000)return;
  chain.clear();for(;node&&chain.size()<32&&readable(node,8)&&chain.insert(node).second;node=*reinterpret_cast<BYTE**>(node+4)){
   auto rect=*reinterpret_cast<int**>(node);if(!readable(rect,16))break;
