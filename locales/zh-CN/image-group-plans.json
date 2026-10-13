@@ -437,6 +437,22 @@
             300
           ],
           "source_text_evidence": "blurred duplicates of the same six narrative lines"
+        },
+        {
+          "target": null,
+          "erase_only": true,
+          "group_id": "opening-vow",
+          "mask_xyxy": [
+            0,
+            0,
+            768,
+            40
+          ],
+          "background_anchor": [
+            0,
+            300
+          ],
+          "source_text_evidence": "Same opening-vow blurred source glyph duplicates in the reviewed outer band; clear the full shadow band without touching the six translated lines."
         }
       ],
       "layout_evidence": "Static adjacent tile edges form the reviewed complete phrase/image. Runtime allocation and timing remain unverified."
@@ -879,6 +895,22 @@
             255
           ],
           "group_id": "opening-vow-first-layout"
+        },
+        {
+          "target": null,
+          "erase_only": true,
+          "group_id": "opening-vow-first-layout",
+          "mask_xyxy": [
+            0,
+            470,
+            768,
+            512
+          ],
+          "background_anchor": [
+            0,
+            100
+          ],
+          "source_text_evidence": "Same opening-vow blurred source glyph duplicates in the reviewed outer band; clear the full shadow band without touching the six translated lines."
         }
       ],
       "layout_evidence": "Original tile edges and six readable lines align as 299/300/301 then 303/304/305. 302 and 306 are blank, 307 contains only blurred background. Numeric enumeration was not a layout definition. Static phrase/crop evidence; runtime placement remains unverified."

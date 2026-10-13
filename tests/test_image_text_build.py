@@ -59,6 +59,22 @@ class ImageTextBuildTests(unittest.TestCase):
         self.data['resources'][0]['source_sha256']=m.digest(self.raw);self.font_hash='0'*64
         with self.assertRaisesRegex(ValueError,'font digest mismatch'):self.build()
 
+    def test_source_cleanup_can_cover_outline_outside_target_layout(self):
+        image=parse(self.raw)
+        raw=bytearray(image.rgba())
+        at=(3*80+10)*4;raw[at:at+4]=b'\xff\xff\xff\xff'
+        changed=image.replace_rgba(bytes(raw)).to_bytes()
+        self.plan['erase_rects_xyxy']=[[9,2,12,5],self.plan['mask_xyxy']]
+        result,_,_=m.render(parse(changed),[self.plan],self.font)
+        after=parse(result).rgba()
+        self.assertEqual(after[at:at+4],image.rgba()[:4])
+        self.assertEqual(after[:4],image.rgba()[:4])
+
+    def test_empty_or_invalid_cleanup_footprints_fail(self):
+        for rects in [[],[[0,0,81,4]],[[0,0,True,4]]]:
+            self.plan['erase_rects_xyxy']=rects
+            with self.assertRaises(ValueError):m.render(parse(self.raw),[self.plan],self.font)
+
     def test_missing_evidence_and_empty_target_refuse_output(self):
         for key,value in [('source_text_evidence',''),('target',''),('target','x\0')]:
             plan=copy.deepcopy(self.plan);plan[key]=value;self.data['resources'][0]['plans']=[plan]

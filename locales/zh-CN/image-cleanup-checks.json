@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "checks": [
+    {
+      "resource": "BGR/0257.BGR",
+      "expected_rgba": [255, 120, 0, 255],
+      "regions_xyxy": [[12, 41, 50, 44], [12, 66, 50, 69], [12, 91, 50, 94], [12, 115, 50, 118], [12, 139, 50, 142]],
+      "meaning": "Source glyph ascender/outline remnants above the five body labels; outside all target glyphs"
+    },
+    {
+      "resource": "BGR/0259.BGR",
+      "expected_rgba": [255, 120, 0, 255],
+      "regions_xyxy": [[12, 9, 50, 12], [12, 34, 50, 37], [12, 59, 50, 62], [12, 83, 50, 86], [12, 107, 50, 110]],
+      "meaning": "Matching Carta body labels"
+    },
+    {
+      "resource": "BGR/0170.BGR",
+      "expected_rgba": [255, 120, 0, 255],
+      "regions_xyxy": [[13, 123, 84, 126], [170, 123, 238, 126]],
+      "meaning": "Save footer old outline above the target instruction, excluding the new attention heading"
+    },
+    {
+      "resource": "BGR/0168.BGR",
+      "expected_rgba": [255, 120, 0, 255],
+      "regions_xyxy": [[13, 123, 84, 126], [170, 123, 238, 126]],
+      "meaning": "Matching load footer"
+    }
+  ]
+}

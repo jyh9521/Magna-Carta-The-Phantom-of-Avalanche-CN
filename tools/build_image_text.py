@@ -32,12 +32,37 @@ def render(image, plans, font_path):
     result = original.copy()
     covered = set()
     records = []
+    # Reviewed cleanup footprints are distinct from target layout rectangles.
+    # Erase every source footprint before drawing any target, so adjacent old
+    # glyph outlines cannot erase a target drawn by an earlier plan.
+    for plan in plans:
+        if 'erase_rects_xyxy' not in plan:
+            continue
+        regions = plan['erase_rects_xyxy']
+        if not isinstance(regions, list) or not regions:
+            raise ValueError('empty reviewed source cleanup footprint')
+        anchor = plan['background_anchor']
+        mode = plan.get('background_mode', 'solid')
+        if mode not in ('solid', 'row_sample', 'column_sample'):
+            raise ValueError('unsupported cleanup background mode')
+        if (not isinstance(anchor,list) or len(anchor)!=2 or any(type(v) is not int for v in anchor)
+                or not 0 <= anchor[0] < image.width or not 0 <= anchor[1] < image.height):
+            raise ValueError('invalid cleanup background anchor')
+        for region in regions:
+            rect = rectangle(region,image.width,image.height)
+            for y in range(rect[1],rect[3]):
+                for x in range(rect[0],rect[2]):
+                    point = tuple(anchor) if mode=='solid' else (anchor[0],y) if mode=='row_sample' else (x,anchor[1])
+                    result.putpixel((x,y),original.getpixel(point))
+                    covered.add((x,y))
+    layout_covered = set()
     for plan in plans:
         box = rectangle(plan['mask_xyxy'], image.width, image.height)
         pixels = {(x, y) for y in range(box[1], box[3]) for x in range(box[0], box[2])}
-        if covered & pixels:
+        if layout_covered & pixels:
             raise ValueError('image text masks overlap')
         covered.update(pixels)
+        layout_covered.update(pixels)
         text = plan.get('target')
         erase_only = plan.get('erase_only', False)
         if type(erase_only) is not bool:
@@ -67,7 +92,7 @@ def render(image, plans, font_path):
         for y in range(box[1], box[3]):
             for x in range(box[0], box[2]):
                 old = original.getpixel((x, y))
-                if erase == 'overlay':
+                if erase == 'overlay' or 'erase_rects_xyxy' in plan:
                     continue
                 if erase == 'nontransparent' and old[3] == 0:
                     continue
@@ -121,7 +146,7 @@ def render(image, plans, font_path):
         else:
             ImageDraw.Draw(result).text((x - bounds[0], y - bounds[1]), text, font=font,
                                         fill=tuple(fill), stroke_width=stroke, stroke_fill=tuple(edge))
-        records.append(dict(target=text, mask_xyxy=list(box), size=size,
+        records.append(dict(target=text, mask_xyxy=list(box), erase_rects_xyxy=plan.get('erase_rects_xyxy'), size=size,
                             measured_pixels=[w, h], rotation=rotation, fit=True))
     before, after = original.tobytes(), result.tobytes()
     for i in range(image.width * image.height):

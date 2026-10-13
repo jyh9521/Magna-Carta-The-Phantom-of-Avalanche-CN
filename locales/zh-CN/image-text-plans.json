@@ -20,8 +20,16 @@
           "font_size": 14,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              29,
+              120,
+              101,
+              137
+            ]
+          ]
         },
         {
           "target": "卡尔塔",
@@ -38,8 +46,16 @@
           "font_size": 14,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              29,
+              160,
+              101,
+              177
+            ]
+          ]
         },
         {
           "target": "物品",
@@ -56,8 +72,16 @@
           "font_size": 14,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              29,
+              200,
+              101,
+              217
+            ]
+          ]
         },
         {
           "target": "装备",
@@ -74,8 +98,16 @@
           "font_size": 14,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              29,
+              240,
+              101,
+              256
+            ]
+          ]
         }
       ]
     },
@@ -98,8 +130,22 @@
           "font_size": 14,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              19,
+              22,
+              97,
+              39
+            ],
+            [
+              22,
+              27,
+              98,
+              41
+            ]
+          ]
         },
         {
           "target": "返回",
@@ -116,8 +162,22 @@
           "font_size": 14,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              20,
+              61,
+              98,
+              80
+            ],
+            [
+              56,
+              67,
+              99,
+              81
+            ]
+          ]
         }
       ]
     },
@@ -140,9 +200,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -165,9 +233,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -190,9 +266,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -215,9 +299,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -240,9 +332,23 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ],
+            [
+              213,
+              144,
+              218,
+              149
+            ]
+          ]
         }
       ]
     },
@@ -265,9 +371,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -290,9 +404,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -315,9 +437,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -340,9 +470,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -365,9 +503,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -390,9 +536,23 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ],
+            [
+              152,
+              126,
+              156,
+              130
+            ]
+          ]
         }
       ]
     },
@@ -415,9 +575,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -440,9 +608,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -465,9 +641,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -490,9 +674,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -515,9 +707,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -540,9 +740,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -565,9 +773,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -590,9 +806,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -615,9 +839,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -640,9 +872,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -665,9 +905,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -690,9 +938,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -715,9 +971,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -740,9 +1004,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -765,9 +1037,17 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ]
+          ]
         }
       ]
     },
@@ -790,9 +1070,23 @@
           "font_size": 13,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              153,
+              128,
+              255,
+              147
+            ],
+            [
+              213,
+              144,
+              218,
+              149
+            ]
+          ]
         }
       ]
     },
@@ -839,8 +1133,16 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              64,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -863,8 +1165,16 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              64,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -887,8 +1197,16 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              64,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -911,8 +1229,16 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              64,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -935,8 +1261,16 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              64,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -959,8 +1293,16 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              64,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -983,8 +1325,16 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              64,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -1007,7 +1357,7 @@
           "font_size": 18,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
@@ -1015,7 +1365,15 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              149,
+              27
+            ]
+          ]
         },
         {
           "target": "特殊技能",
@@ -1032,14 +1390,22 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              76,
+              27,
+              154,
+              46
+            ]
+          ]
         }
       ]
     },
@@ -1062,7 +1428,7 @@
           "font_size": 18,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
@@ -1070,7 +1436,15 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              149,
+              27
+            ]
+          ]
         },
         {
           "target": "特殊技能",
@@ -1087,14 +1461,22 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              76,
+              27,
+              154,
+              46
+            ]
+          ]
         }
       ]
     },
@@ -1117,7 +1499,7 @@
           "font_size": 18,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
@@ -1125,7 +1507,15 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              149,
+              27
+            ]
+          ]
         },
         {
           "target": "状态",
@@ -1142,14 +1532,34 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              76,
+              27,
+              154,
+              46
+            ],
+            [
+              93,
+              31,
+              122,
+              47
+            ],
+            [
+              144,
+              31,
+              149,
+              47
+            ]
+          ]
         }
       ]
     },
@@ -1172,7 +1582,7 @@
           "font_size": 18,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
@@ -1180,7 +1590,15 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              149,
+              27
+            ]
+          ]
         },
         {
           "target": "状态",
@@ -1197,14 +1615,34 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              76,
+              27,
+              154,
+              46
+            ],
+            [
+              93,
+              31,
+              122,
+              47
+            ],
+            [
+              144,
+              31,
+              149,
+              47
+            ]
+          ]
         }
       ]
     },
@@ -1221,13 +1659,13 @@
             27
           ],
           "background_anchor": [
-            90,
+            87,
             0
           ],
           "font_size": 18,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
@@ -1235,7 +1673,15 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              149,
+              27
+            ]
+          ]
         },
         {
           "target": "启示",
@@ -1252,14 +1698,22 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              76,
+              27,
+              154,
+              46
+            ]
+          ]
         }
       ]
     },
@@ -1282,7 +1736,7 @@
           "font_size": 18,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
@@ -1290,7 +1744,15 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              149,
+              27
+            ]
+          ]
         },
         {
           "target": "启示",
@@ -1307,14 +1769,22 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              76,
+              27,
+              154,
+              46
+            ]
+          ]
         }
       ]
     },
@@ -1337,7 +1807,7 @@
           "font_size": 18,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
@@ -1345,7 +1815,15 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              149,
+              27
+            ]
+          ]
         },
         {
           "target": "使用物品",
@@ -1362,14 +1840,22 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              76,
+              27,
+              154,
+              46
+            ]
+          ]
         }
       ]
     },
@@ -1392,7 +1878,7 @@
           "font_size": 18,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
@@ -1400,7 +1886,15 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              149,
+              27
+            ]
+          ]
         },
         {
           "target": "使用物品",
@@ -1417,14 +1911,22 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              76,
+              27,
+              154,
+              46
+            ]
+          ]
         }
       ]
     },
@@ -1447,7 +1949,7 @@
           "font_size": 18,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
@@ -1455,7 +1957,15 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              149,
+              27
+            ]
+          ]
         },
         {
           "target": "设置",
@@ -1472,14 +1982,28 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              76,
+              27,
+              154,
+              46
+            ],
+            [
+              121,
+              32,
+              149,
+              48
+            ]
+          ]
         }
       ]
     },
@@ -1502,7 +2026,7 @@
           "font_size": 18,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
@@ -1510,7 +2034,15 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              149,
+              27
+            ]
+          ]
         },
         {
           "target": "设置",
@@ -1527,14 +2059,28 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              76,
+              27,
+              154,
+              46
+            ],
+            [
+              121,
+              32,
+              149,
+              48
+            ]
+          ]
         }
       ]
     },
@@ -1551,13 +2097,13 @@
             27
           ],
           "background_anchor": [
-            90,
+            82,
             0
           ],
           "font_size": 18,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
@@ -1565,7 +2111,15 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              149,
+              27
+            ]
+          ]
         },
         {
           "target": "结束回合",
@@ -1582,14 +2136,34 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              76,
+              27,
+              154,
+              46
+            ],
+            [
+              121,
+              31,
+              136,
+              47
+            ],
+            [
+              103,
+              31,
+              117,
+              47
+            ]
+          ]
         }
       ]
     },
@@ -1606,13 +2180,13 @@
             27
           ],
           "background_anchor": [
-            90,
+            87,
             0
           ],
           "font_size": 18,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
@@ -1620,7 +2194,15 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              149,
+              27
+            ]
+          ]
         },
         {
           "target": "结束回合",
@@ -1637,14 +2219,34 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              76,
+              27,
+              154,
+              46
+            ],
+            [
+              121,
+              31,
+              136,
+              47
+            ],
+            [
+              103,
+              31,
+              117,
+              47
+            ]
+          ]
         }
       ]
     },
@@ -1661,15 +2263,23 @@
             15
           ],
           "background_anchor": [
-            10,
-            14
+            8,
+            2
           ],
           "font_size": 10,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              1,
+              256,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -1686,15 +2296,23 @@
             15
           ],
           "background_anchor": [
-            10,
-            14
+            0,
+            2
           ],
           "font_size": 10,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              1,
+              256,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -1711,15 +2329,23 @@
             15
           ],
           "background_anchor": [
-            10,
-            14
+            8,
+            2
           ],
           "font_size": 10,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              1,
+              256,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -1736,15 +2362,23 @@
             15
           ],
           "background_anchor": [
-            10,
-            14
+            0,
+            2
           ],
           "font_size": 10,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              1,
+              256,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -1761,15 +2395,23 @@
             15
           ],
           "background_anchor": [
-            10,
-            14
+            0,
+            2
           ],
           "font_size": 10,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              1,
+              256,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -1786,15 +2428,23 @@
             15
           ],
           "background_anchor": [
-            10,
-            14
+            8,
+            2
           ],
           "font_size": 10,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              1,
+              256,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -1811,15 +2461,23 @@
             15
           ],
           "background_anchor": [
-            10,
-            14
+            0,
+            2
           ],
           "font_size": 10,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              1,
+              256,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -1836,15 +2494,23 @@
             15
           ],
           "background_anchor": [
-            10,
-            14
+            8,
+            2
           ],
           "font_size": 10,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              1,
+              256,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -1861,15 +2527,23 @@
             15
           ],
           "background_anchor": [
-            10,
-            14
+            0,
+            2
           ],
           "font_size": 10,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              1,
+              256,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -1892,14 +2566,22 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              2,
+              1,
+              62,
+              18
+            ]
+          ]
         }
       ]
     },
@@ -1922,14 +2604,22 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              2,
+              1,
+              62,
+              18
+            ]
+          ]
         }
       ]
     },
@@ -1952,14 +2642,22 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              2,
+              1,
+              62,
+              18
+            ]
+          ]
         }
       ]
     },
@@ -1982,14 +2680,22 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              2,
+              1,
+              62,
+              18
+            ]
+          ]
         }
       ]
     },
@@ -2012,7 +2718,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2021,7 +2727,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              65,
+              6,
+              192,
+              33
+            ]
+          ]
         }
       ]
     },
@@ -2044,7 +2758,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2053,7 +2767,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              65,
+              6,
+              192,
+              33
+            ]
+          ]
         }
       ]
     },
@@ -2076,7 +2798,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2085,7 +2807,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              65,
+              6,
+              192,
+              33
+            ]
+          ]
         }
       ]
     },
@@ -2108,7 +2838,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2117,7 +2847,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              65,
+              6,
+              192,
+              33
+            ]
+          ]
         }
       ]
     },
@@ -2140,7 +2878,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2149,7 +2887,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              65,
+              6,
+              192,
+              33
+            ]
+          ]
         }
       ]
     },
@@ -2172,7 +2918,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2181,7 +2927,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              65,
+              6,
+              192,
+              33
+            ]
+          ]
         }
       ]
     },
@@ -2204,7 +2958,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2213,7 +2967,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              65,
+              6,
+              192,
+              33
+            ]
+          ]
         }
       ]
     },
@@ -2236,7 +2998,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2245,7 +3007,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              65,
+              6,
+              192,
+              33
+            ]
+          ]
         }
       ]
     },
@@ -2268,7 +3038,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2277,7 +3047,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              65,
+              6,
+              192,
+              33
+            ]
+          ]
         }
       ]
     },
@@ -2300,7 +3078,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2309,7 +3087,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              65,
+              6,
+              192,
+              33
+            ]
+          ]
         }
       ]
     },
@@ -2332,7 +3118,7 @@
           "font_size": 14,
           "minimum_font_size": 11,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "background_mode": "row_sample",
           "color": [
@@ -2341,7 +3127,45 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              0,
+              155,
+              18
+            ],
+            [
+              59,
+              5,
+              79,
+              24
+            ],
+            [
+              18,
+              2,
+              45,
+              20
+            ],
+            [
+              48,
+              2,
+              57,
+              20
+            ],
+            [
+              43,
+              4,
+              51,
+              19
+            ],
+            [
+              53,
+              4,
+              62,
+              19
+            ]
+          ]
         },
         {
           "target": "特殊技能",
@@ -2358,7 +3182,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "color": [
             255,
@@ -2366,7 +3190,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              18,
+              115,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -2389,7 +3221,7 @@
           "font_size": 14,
           "minimum_font_size": 11,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "background_mode": "row_sample",
           "color": [
@@ -2398,7 +3230,51 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              0,
+              155,
+              18
+            ],
+            [
+              60,
+              5,
+              79,
+              23
+            ],
+            [
+              19,
+              3,
+              34,
+              19
+            ],
+            [
+              32,
+              3,
+              44,
+              19
+            ],
+            [
+              49,
+              3,
+              57,
+              19
+            ],
+            [
+              54,
+              8,
+              60,
+              19
+            ],
+            [
+              43,
+              8,
+              50,
+              19
+            ]
+          ]
         },
         {
           "target": "特殊技能",
@@ -2415,7 +3291,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "color": [
             90,
@@ -2423,7 +3299,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              18,
+              115,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -2446,7 +3330,7 @@
           "font_size": 14,
           "minimum_font_size": 11,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "background_mode": "row_sample",
           "color": [
@@ -2455,7 +3339,21 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              0,
+              155,
+              18
+            ],
+            [
+              18,
+              2,
+              78,
+              20
+            ]
+          ]
         },
         {
           "target": "状态",
@@ -2472,7 +3370,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "color": [
             255,
@@ -2480,7 +3378,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              18,
+              115,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -2503,7 +3409,7 @@
           "font_size": 14,
           "minimum_font_size": 11,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "background_mode": "row_sample",
           "color": [
@@ -2512,7 +3418,45 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              0,
+              155,
+              18
+            ],
+            [
+              49,
+              5,
+              68,
+              19
+            ],
+            [
+              65,
+              8,
+              77,
+              19
+            ],
+            [
+              31,
+              5,
+              40,
+              19
+            ],
+            [
+              19,
+              3,
+              33,
+              19
+            ],
+            [
+              37,
+              8,
+              50,
+              19
+            ]
+          ]
         },
         {
           "target": "状态",
@@ -2529,7 +3473,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "color": [
             90,
@@ -2537,7 +3481,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              18,
+              115,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -2560,7 +3512,7 @@
           "font_size": 14,
           "minimum_font_size": 11,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "background_mode": "row_sample",
           "color": [
@@ -2569,7 +3521,27 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              0,
+              155,
+              18
+            ],
+            [
+              70,
+              2,
+              125,
+              20
+            ],
+            [
+              20,
+              2,
+              69,
+              24
+            ]
+          ]
         },
         {
           "target": "暴走模式",
@@ -2586,7 +3558,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "color": [
             255,
@@ -2594,7 +3566,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              18,
+              115,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -2617,7 +3597,7 @@
           "font_size": 14,
           "minimum_font_size": 11,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "background_mode": "row_sample",
           "color": [
@@ -2626,7 +3606,69 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              0,
+              155,
+              18
+            ],
+            [
+              100,
+              3,
+              115,
+              19
+            ],
+            [
+              88,
+              7,
+              101,
+              19
+            ],
+            [
+              71,
+              3,
+              90,
+              19
+            ],
+            [
+              56,
+              8,
+              68,
+              23
+            ],
+            [
+              111,
+              8,
+              124,
+              19
+            ],
+            [
+              21,
+              3,
+              34,
+              19
+            ],
+            [
+              30,
+              7,
+              39,
+              19
+            ],
+            [
+              36,
+              8,
+              49,
+              19
+            ],
+            [
+              47,
+              8,
+              58,
+              19
+            ]
+          ]
         },
         {
           "target": "暴走模式",
@@ -2643,7 +3685,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "color": [
             90,
@@ -2651,7 +3693,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              18,
+              115,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -2674,7 +3724,7 @@
           "font_size": 14,
           "minimum_font_size": 11,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "background_mode": "row_sample",
           "color": [
@@ -2683,7 +3733,27 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              0,
+              155,
+              18
+            ],
+            [
+              24,
+              5,
+              60,
+              20
+            ],
+            [
+              19,
+              2,
+              28,
+              20
+            ]
+          ]
         },
         {
           "target": "物品",
@@ -2700,7 +3770,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "color": [
             255,
@@ -2708,7 +3778,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              18,
+              115,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -2731,7 +3809,7 @@
           "font_size": 14,
           "minimum_font_size": 11,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "background_mode": "row_sample",
           "color": [
@@ -2740,7 +3818,33 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              0,
+              155,
+              18
+            ],
+            [
+              19,
+              3,
+              27,
+              19
+            ],
+            [
+              25,
+              5,
+              44,
+              19
+            ],
+            [
+              43,
+              8,
+              60,
+              19
+            ]
+          ]
         },
         {
           "target": "物品",
@@ -2757,7 +3861,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "color": [
             90,
@@ -2765,7 +3869,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              18,
+              115,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -2788,7 +3900,7 @@
           "font_size": 14,
           "minimum_font_size": 11,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "background_mode": "row_sample",
           "color": [
@@ -2797,7 +3909,33 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              0,
+              155,
+              18
+            ],
+            [
+              21,
+              2,
+              34,
+              20
+            ],
+            [
+              61,
+              3,
+              98,
+              20
+            ],
+            [
+              29,
+              7,
+              58,
+              20
+            ]
+          ]
         },
         {
           "target": "结束回合",
@@ -2814,7 +3952,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "color": [
             255,
@@ -2822,7 +3960,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              18,
+              115,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -2845,7 +3991,7 @@
           "font_size": 14,
           "minimum_font_size": 11,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "background_mode": "row_sample",
           "color": [
@@ -2854,7 +4000,57 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              0,
+              155,
+              18
+            ],
+            [
+              22,
+              3,
+              33,
+              19
+            ],
+            [
+              83,
+              3,
+              97,
+              19
+            ],
+            [
+              39,
+              7,
+              48,
+              19
+            ],
+            [
+              45,
+              7,
+              57,
+              19
+            ],
+            [
+              62,
+              3,
+              75,
+              19
+            ],
+            [
+              29,
+              8,
+              41,
+              19
+            ],
+            [
+              72,
+              7,
+              84,
+              19
+            ]
+          ]
         },
         {
           "target": "结束回合",
@@ -2871,7 +4067,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "color": [
             90,
@@ -2879,7 +4075,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              18,
+              115,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -2902,7 +4106,7 @@
           "font_size": 14,
           "minimum_font_size": 11,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "background_mode": "row_sample",
           "color": [
@@ -2911,7 +4115,21 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              0,
+              155,
+              18
+            ],
+            [
+              18,
+              2,
+              78,
+              20
+            ]
+          ]
         },
         {
           "target": "普通攻击",
@@ -2928,7 +4146,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "color": [
             255,
@@ -2936,7 +4154,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              18,
+              115,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -2959,7 +4185,7 @@
           "font_size": 14,
           "minimum_font_size": 11,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "background_mode": "row_sample",
           "color": [
@@ -2968,7 +4194,45 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              0,
+              155,
+              18
+            ],
+            [
+              19,
+              3,
+              34,
+              19
+            ],
+            [
+              57,
+              3,
+              76,
+              19
+            ],
+            [
+              46,
+              8,
+              58,
+              19
+            ],
+            [
+              32,
+              5,
+              41,
+              19
+            ],
+            [
+              39,
+              5,
+              48,
+              19
+            ]
+          ]
         },
         {
           "target": "普通攻击",
@@ -2985,7 +4249,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "color": [
             90,
@@ -2993,7 +4257,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              18,
+              115,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -3016,7 +4288,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3025,7 +4297,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3048,7 +4328,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3057,7 +4337,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3080,7 +4368,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3089,7 +4377,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3112,7 +4408,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3121,7 +4417,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3144,7 +4448,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3153,7 +4457,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3176,7 +4488,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3185,7 +4497,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3208,7 +4528,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3217,7 +4537,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3240,7 +4568,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3249,7 +4577,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3272,7 +4608,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3281,7 +4617,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3304,7 +4648,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3313,7 +4657,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3336,7 +4688,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3345,7 +4697,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3368,7 +4728,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3377,7 +4737,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3400,7 +4768,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3409,7 +4777,21 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ],
+            [
+              85,
+              13,
+              121,
+              35
+            ]
+          ]
         }
       ]
     },
@@ -3432,7 +4814,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3441,7 +4823,21 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ],
+            [
+              85,
+              13,
+              117,
+              35
+            ]
+          ]
         }
       ]
     },
@@ -3464,7 +4860,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3473,7 +4869,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3496,7 +4900,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3505,7 +4909,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3528,7 +4940,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3537,7 +4949,15 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3560,7 +4980,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3569,7 +4989,15 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              24,
+              4,
+              125,
+              31
+            ]
+          ]
         }
       ]
     },
@@ -3592,8 +5020,16 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              23,
+              64,
+              46
+            ]
+          ]
         }
       ]
     },
@@ -3616,8 +5052,16 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              23,
+              64,
+              46
+            ]
+          ]
         }
       ]
     },
@@ -3634,20 +5078,28 @@
             28
           ],
           "background_anchor": [
-            3,
-            2
+            89,
+            1
           ],
           "font_size": 16,
           "minimum_font_size": 12,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              4,
+              1,
+              125,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -3664,20 +5116,28 @@
             28
           ],
           "background_anchor": [
-            3,
-            2
+            89,
+            1
           ],
           "font_size": 16,
           "minimum_font_size": 12,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              4,
+              1,
+              125,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -3694,20 +5154,28 @@
             28
           ],
           "background_anchor": [
-            3,
-            2
+            89,
+            1
           ],
           "font_size": 16,
           "minimum_font_size": 12,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              4,
+              1,
+              125,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -3724,20 +5192,28 @@
             28
           ],
           "background_anchor": [
-            3,
-            2
+            89,
+            1
           ],
           "font_size": 16,
           "minimum_font_size": 12,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              4,
+              1,
+              125,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -3754,20 +5230,28 @@
             28
           ],
           "background_anchor": [
-            3,
-            2
+            89,
+            1
           ],
           "font_size": 16,
           "minimum_font_size": 12,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              4,
+              1,
+              125,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -3784,20 +5268,28 @@
             28
           ],
           "background_anchor": [
-            3,
-            2
+            89,
+            1
           ],
           "font_size": 16,
           "minimum_font_size": 12,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              4,
+              1,
+              125,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -3814,20 +5306,28 @@
             28
           ],
           "background_anchor": [
-            3,
-            2
+            89,
+            1
           ],
           "font_size": 16,
           "minimum_font_size": 12,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              4,
+              1,
+              125,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -3844,20 +5344,28 @@
             28
           ],
           "background_anchor": [
-            3,
-            2
+            89,
+            1
           ],
           "font_size": 16,
           "minimum_font_size": 12,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             70,
             70,
             70,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              4,
+              1,
+              125,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -3874,20 +5382,28 @@
             28
           ],
           "background_anchor": [
-            3,
-            2
+            89,
+            1
           ],
           "font_size": 16,
           "minimum_font_size": 12,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             70,
             70,
             70,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              4,
+              1,
+              125,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -3910,14 +5426,22 @@
           "font_size": 18,
           "minimum_font_size": 15,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              27
+            ]
+          ]
         }
       ]
     },
@@ -3940,14 +5464,22 @@
           "font_size": 18,
           "minimum_font_size": 15,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             70,
             70,
             70,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              27
+            ]
+          ]
         }
       ]
     },
@@ -3970,14 +5502,22 @@
           "font_size": 18,
           "minimum_font_size": 15,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              27
+            ]
+          ]
         }
       ]
     },
@@ -4000,14 +5540,22 @@
           "font_size": 18,
           "minimum_font_size": 15,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             70,
             70,
             70,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              27
+            ]
+          ]
         }
       ]
     },
@@ -4030,14 +5578,22 @@
           "font_size": 18,
           "minimum_font_size": 15,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              27
+            ]
+          ]
         }
       ]
     },
@@ -4060,14 +5616,22 @@
           "font_size": 18,
           "minimum_font_size": 15,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             70,
             70,
             70,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              27
+            ]
+          ]
         }
       ]
     },
@@ -4090,14 +5654,22 @@
           "font_size": 18,
           "minimum_font_size": 15,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              27
+            ]
+          ]
         }
       ]
     },
@@ -4120,14 +5692,22 @@
           "font_size": 18,
           "minimum_font_size": 15,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             70,
             70,
             70,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              27
+            ]
+          ]
         }
       ]
     },
@@ -4150,7 +5730,7 @@
           "font_size": 17,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "background_mode": "row_sample",
           "color": [
             255,
@@ -4158,7 +5738,15 @@
             110,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              64,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -4181,7 +5769,7 @@
           "font_size": 21,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "background_mode": "row_sample",
           "color": [
             255,
@@ -4189,7 +5777,15 @@
             110,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -4212,7 +5808,7 @@
           "font_size": 21,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "background_mode": "row_sample",
           "color": [
             255,
@@ -4220,7 +5816,15 @@
             110,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -4243,7 +5847,7 @@
           "font_size": 21,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "background_mode": "row_sample",
           "color": [
             255,
@@ -4251,7 +5855,15 @@
             110,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -4274,7 +5886,7 @@
           "font_size": 21,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "background_mode": "row_sample",
           "color": [
             255,
@@ -4282,7 +5894,15 @@
             110,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -4299,13 +5919,13 @@
             28
           ],
           "background_anchor": [
-            127,
+            43,
             0
           ],
           "font_size": 21,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "background_mode": "row_sample",
           "color": [
             255,
@@ -4313,7 +5933,15 @@
             110,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -4330,15 +5958,23 @@
             61
           ],
           "background_anchor": [
-            126,
+            89,
             0
           ],
           "font_size": 23,
           "minimum_font_size": 18,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              126,
+              61
+            ]
+          ]
         }
       ]
     },
@@ -4355,15 +5991,23 @@
             61
           ],
           "background_anchor": [
-            126,
+            89,
             0
           ],
           "font_size": 23,
           "minimum_font_size": 18,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              126,
+              61
+            ]
+          ]
         }
       ]
     },
@@ -4380,15 +6024,23 @@
             61
           ],
           "background_anchor": [
-            126,
+            88,
             0
           ],
           "font_size": 23,
           "minimum_font_size": 18,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              126,
+              61
+            ]
+          ]
         }
       ]
     },
@@ -4405,15 +6057,23 @@
             61
           ],
           "background_anchor": [
-            126,
+            42,
             0
           ],
           "font_size": 23,
           "minimum_font_size": 18,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              126,
+              61
+            ]
+          ]
         }
       ]
     },
@@ -4436,8 +6096,16 @@
           "font_size": 12,
           "minimum_font_size": 10,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              18,
+              126,
+              34
+            ]
+          ]
         }
       ]
     },
@@ -4460,8 +6128,22 @@
           "font_size": 12,
           "minimum_font_size": 10,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              18,
+              126,
+              34
+            ],
+            [
+              4,
+              13,
+              94,
+              28
+            ]
+          ]
         }
       ]
     },
@@ -4484,8 +6166,16 @@
           "font_size": 12,
           "minimum_font_size": 10,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              18,
+              126,
+              34
+            ]
+          ]
         }
       ]
     },
@@ -4508,8 +6198,34 @@
           "font_size": 12,
           "minimum_font_size": 10,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              18,
+              126,
+              34
+            ],
+            [
+              0,
+              28,
+              44,
+              40
+            ],
+            [
+              64,
+              28,
+              97,
+              40
+            ],
+            [
+              43,
+              28,
+              65,
+              40
+            ]
+          ]
         },
         {
           "target": "超越破击",
@@ -4526,8 +6242,34 @@
           "font_size": 17,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              34,
+              126,
+              54
+            ],
+            [
+              0,
+              28,
+              44,
+              40
+            ],
+            [
+              64,
+              28,
+              97,
+              40
+            ],
+            [
+              43,
+              28,
+              65,
+              40
+            ]
+          ]
         }
       ]
     },
@@ -4550,9 +6292,17 @@
           "font_size": 16,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              128,
+              71
+            ]
+          ]
         }
       ]
     },
@@ -4569,15 +6319,23 @@
             15
           ],
           "background_anchor": [
-            40,
+            2,
             0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              1,
+              111,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -4600,7 +6358,7 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
             128,
@@ -4608,7 +6366,15 @@
             128
           ],
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              23,
+              111,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -4625,15 +6391,23 @@
             15
           ],
           "background_anchor": [
-            40,
+            1,
             0
           ],
           "font_size": 11,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              1,
+              111,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -4656,7 +6430,7 @@
           "font_size": 11,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
             128,
@@ -4664,7 +6438,15 @@
             128
           ],
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              23,
+              111,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -4681,15 +6463,23 @@
             15
           ],
           "background_anchor": [
-            40,
+            2,
             0
           ],
           "font_size": 11,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              1,
+              111,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -4712,7 +6502,7 @@
           "font_size": 11,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
             128,
@@ -4720,7 +6510,15 @@
             128
           ],
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              23,
+              111,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -4737,15 +6535,23 @@
             15
           ],
           "background_anchor": [
-            40,
+            2,
             0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              1,
+              111,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -4768,7 +6574,7 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
             128,
@@ -4776,7 +6582,15 @@
             128
           ],
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              23,
+              111,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -4793,15 +6607,23 @@
             15
           ],
           "background_anchor": [
-            40,
+            1,
             0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              1,
+              111,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -4824,7 +6646,7 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
             128,
@@ -4832,7 +6654,15 @@
             128
           ],
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              23,
+              111,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -4849,15 +6679,23 @@
             15
           ],
           "background_anchor": [
-            40,
+            2,
             0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              1,
+              111,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -4880,7 +6718,7 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
             128,
@@ -4888,7 +6726,15 @@
             128
           ],
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              23,
+              111,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -4905,15 +6751,29 @@
             15
           ],
           "background_anchor": [
-            40,
+            2,
             0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              1,
+              111,
+              15
+            ],
+            [
+              39,
+              3,
+              76,
+              12
+            ]
+          ]
         }
       ]
     },
@@ -4930,13 +6790,13 @@
             38
           ],
           "background_anchor": [
-            40,
+            39,
             0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
             128,
@@ -4944,7 +6804,21 @@
             128
           ],
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              23,
+              111,
+              38
+            ],
+            [
+              40,
+              26,
+              107,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -4967,9 +6841,17 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              1,
+              111,
+              15
+            ]
+          ]
         }
       ]
     },
@@ -4992,7 +6874,7 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
             128,
@@ -5000,7 +6882,15 @@
             128
           ],
           "erase_mode": "nontransparent",
-          "background_mode": "row_sample"
+          "background_mode": "row_sample",
+          "erase_rects_xyxy": [
+            [
+              41,
+              23,
+              111,
+              38
+            ]
+          ]
         }
       ]
     },
@@ -5023,14 +6913,22 @@
           "font_size": 20,
           "minimum_font_size": 18,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              130,
+              17,
+              237,
+              40
+            ]
+          ]
         },
         {
           "target": "请在此分类中选择存档",
@@ -5047,7 +6945,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
@@ -5055,7 +6953,15 @@
             255
           ],
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              46,
+              237,
+              58
+            ]
+          ]
         },
         {
           "target": "自动",
@@ -5072,9 +6978,17 @@
           "font_size": 12,
           "minimum_font_size": 10,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              21,
+              70,
+              57,
+              89
+            ]
+          ]
         },
         {
           "target": "最新",
@@ -5091,14 +7005,22 @@
           "font_size": 9,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              195,
+              90,
+              237,
+              102
+            ]
+          ]
         },
         {
           "target": "编号",
@@ -5115,14 +7037,22 @@
           "font_size": 9,
           "minimum_font_size": 7,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              27,
+              106,
+              52,
+              117
+            ]
+          ]
         },
         {
           "target": "章节",
@@ -5139,14 +7069,22 @@
           "font_size": 9,
           "minimum_font_size": 7,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              57,
+              106,
+              112,
+              117
+            ]
+          ]
         },
         {
           "target": "游戏时间",
@@ -5163,14 +7101,22 @@
           "font_size": 9,
           "minimum_font_size": 7,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              158,
+              106,
+              233,
+              117
+            ]
+          ]
         }
       ]
     },
@@ -5193,14 +7139,22 @@
           "font_size": 20,
           "minimum_font_size": 18,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              130,
+              17,
+              237,
+              40
+            ]
+          ]
         },
         {
           "target": "请在此分类中选择存档",
@@ -5217,7 +7171,7 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
@@ -5225,7 +7179,15 @@
             255
           ],
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              46,
+              237,
+              58
+            ]
+          ]
         },
         {
           "target": "自动",
@@ -5242,9 +7204,17 @@
           "font_size": 12,
           "minimum_font_size": 10,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              21,
+              70,
+              57,
+              89
+            ]
+          ]
         },
         {
           "target": "最新",
@@ -5261,14 +7231,22 @@
           "font_size": 9,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              195,
+              90,
+              237,
+              102
+            ]
+          ]
         },
         {
           "target": "编号",
@@ -5285,14 +7263,22 @@
           "font_size": 9,
           "minimum_font_size": 7,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              27,
+              106,
+              52,
+              117
+            ]
+          ]
         },
         {
           "target": "章节",
@@ -5309,14 +7295,22 @@
           "font_size": 9,
           "minimum_font_size": 7,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              57,
+              106,
+              112,
+              117
+            ]
+          ]
         },
         {
           "target": "游戏时间",
@@ -5333,14 +7327,22 @@
           "font_size": 9,
           "minimum_font_size": 7,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              158,
+              106,
+              233,
+              117
+            ]
+          ]
         }
       ]
     },
@@ -5363,14 +7365,22 @@
           "font_size": 10,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              85,
+              112,
+              169,
+              125
+            ]
+          ]
         },
         {
           "target": "选择存档后，请点击读取。",
@@ -5387,8 +7397,16 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              122,
+              240,
+              146
+            ]
+          ]
         }
       ]
     },
@@ -5411,14 +7429,22 @@
           "font_size": 10,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              85,
+              112,
+              169,
+              125
+            ]
+          ]
         },
         {
           "target": "选择存档后，请点击保存。",
@@ -5435,8 +7461,16 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              122,
+              240,
+              146
+            ]
+          ]
         }
       ]
     },
@@ -5459,9 +7493,17 @@
           "font_size": 12,
           "minimum_font_size": 10,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
-          "align": "center"
+          "align": "center",
+          "erase_rects_xyxy": [
+            [
+              10,
+              24,
+              174,
+              45
+            ]
+          ]
         },
         {
           "target": "确认",
@@ -5484,8 +7526,16 @@
             0,
             255
           ],
-          "source_text_evidence": "CONFIRM",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "CONFIRM 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              6,
+              75,
+              17
+            ]
+          ]
         }
       ]
     },
@@ -5508,14 +7558,22 @@
           "font_size": 20,
           "minimum_font_size": 18,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              91,
+              17,
+              237,
+              41
+            ]
+          ]
         },
         {
           "target": "调整音频设置",
@@ -5532,7 +7590,7 @@
           "font_size": 10,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
@@ -5540,7 +7598,15 @@
             255
           ],
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              18,
+              46,
+              235,
+              58
+            ]
+          ]
         },
         {
           "target": "音乐",
@@ -5557,9 +7623,17 @@
           "font_size": 12,
           "minimum_font_size": 10,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              21,
+              68,
+              99,
+              85
+            ]
+          ]
         },
         {
           "target": "音效",
@@ -5576,9 +7650,17 @@
           "font_size": 12,
           "minimum_font_size": 10,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              21,
+              94,
+              99,
+              111
+            ]
+          ]
         },
         {
           "target": "语音",
@@ -5595,9 +7677,17 @@
           "font_size": 12,
           "minimum_font_size": 10,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              21,
+              119,
+              99,
+              136
+            ]
+          ]
         },
         {
           "target": "请调整音量。",
@@ -5614,8 +7704,46 @@
           "font_size": 16,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              39,
+              151,
+              218,
+              174
+            ],
+            [
+              141,
+              148,
+              148,
+              154
+            ],
+            [
+              138,
+              148,
+              141,
+              154
+            ],
+            [
+              134,
+              148,
+              137,
+              154
+            ],
+            [
+              152,
+              148,
+              155,
+              154
+            ],
+            [
+              148,
+              148,
+              151,
+              154
+            ]
+          ]
         },
         {
           "target": "注意",
@@ -5662,9 +7790,23 @@
           "font_size": 11,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              13,
+              5,
+              91,
+              19
+            ],
+            [
+              11,
+              8,
+              85,
+              19
+            ]
+          ]
         },
         {
           "target": "胸部",
@@ -5681,8 +7823,22 @@
           "font_size": 14,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              44,
+              50,
+              64
+            ],
+            [
+              14,
+              42,
+              42,
+              59
+            ]
+          ]
         },
         {
           "target": "头部",
@@ -5699,8 +7855,22 @@
           "font_size": 14,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              69,
+              50,
+              89
+            ],
+            [
+              15,
+              66,
+              41,
+              83
+            ]
+          ]
         },
         {
           "target": "手臂",
@@ -5717,8 +7887,22 @@
           "font_size": 14,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              94,
+              50,
+              114
+            ],
+            [
+              20,
+              90,
+              36,
+              107
+            ]
+          ]
         },
         {
           "target": "腹部",
@@ -5735,8 +7919,22 @@
           "font_size": 14,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              118,
+              50,
+              138
+            ],
+            [
+              20,
+              114,
+              36,
+              131
+            ]
+          ]
         },
         {
           "target": "腿部",
@@ -5753,8 +7951,22 @@
           "font_size": 14,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              142,
+              50,
+              162
+            ],
+            [
+              15,
+              138,
+              41,
+              155
+            ]
+          ]
         }
       ]
     },
@@ -5777,9 +7989,23 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "right",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              141,
+              5,
+              210,
+              19
+            ],
+            [
+              141,
+              8,
+              212,
+              19
+            ]
+          ]
         },
         {
           "target": "武器",
@@ -5796,8 +8022,16 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              10,
+              42,
+              58,
+              63
+            ]
+          ]
         },
         {
           "target": "防具",
@@ -5814,8 +8048,16 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              10,
+              66,
+              58,
+              87
+            ]
+          ]
         },
         {
           "target": "戒指",
@@ -5832,8 +8074,16 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              10,
+              90,
+              58,
+              111
+            ]
+          ]
         },
         {
           "target": "项链",
@@ -5850,8 +8100,16 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              10,
+              114,
+              58,
+              135
+            ]
+          ]
         },
         {
           "target": "其他",
@@ -5868,8 +8126,16 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              10,
+              138,
+              58,
+              159
+            ]
+          ]
         }
       ]
     },
@@ -5892,9 +8158,17 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              13,
+              5,
+              112,
+              19
+            ]
+          ]
         },
         {
           "target": "武器",
@@ -5911,8 +8185,16 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              10,
+              35,
+              68,
+              56
+            ]
+          ]
         },
         {
           "target": "防具",
@@ -5929,8 +8211,16 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              10,
+              59,
+              68,
+              80
+            ]
+          ]
         },
         {
           "target": "戒指",
@@ -5947,8 +8237,16 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              10,
+              83,
+              68,
+              104
+            ]
+          ]
         },
         {
           "target": "项链",
@@ -5965,8 +8263,16 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              10,
+              107,
+              68,
+              128
+            ]
+          ]
         },
         {
           "target": "其他",
@@ -5983,8 +8289,16 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              10,
+              131,
+              68,
+              152
+            ]
+          ]
         },
         {
           "target": "金钥匙",
@@ -6001,8 +8315,22 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              8,
+              158,
+              71,
+              175
+            ],
+            [
+              45,
+              160,
+              73,
+              172
+            ]
+          ]
         },
         {
           "target": "银钥匙",
@@ -6019,8 +8347,16 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              128,
+              158,
+              209,
+              175
+            ]
+          ]
         }
       ]
     },
@@ -6043,8 +8379,22 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              12,
+              50,
+              32
+            ],
+            [
+              20,
+              13,
+              51,
+              31
+            ]
+          ]
         },
         {
           "target": "头部",
@@ -6061,8 +8411,16 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              37,
+              50,
+              57
+            ]
+          ]
         },
         {
           "target": "手臂",
@@ -6079,8 +8437,22 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              62,
+              50,
+              82
+            ],
+            [
+              26,
+              61,
+              44,
+              79
+            ]
+          ]
         },
         {
           "target": "腹部",
@@ -6097,8 +8469,22 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              86,
+              50,
+              106
+            ],
+            [
+              27,
+              85,
+              43,
+              103
+            ]
+          ]
         },
         {
           "target": "腿部",
@@ -6115,8 +8501,22 @@
           "font_size": 14,
           "minimum_font_size": 12,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              110,
+              50,
+              130
+            ],
+            [
+              20,
+              109,
+              50,
+              127
+            ]
+          ]
         },
         {
           "target": "点击更换卡尔塔",
@@ -6133,14 +8533,22 @@
           "font_size": 12,
           "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             0,
             0,
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              31,
+              132,
+              140,
+              153
+            ]
+          ]
         },
         {
           "target": "卡尔塔",
@@ -6157,8 +8565,16 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              14,
+              168,
+              60,
+              182
+            ]
+          ]
         }
       ]
     },
@@ -6201,8 +8617,16 @@
           "minimum_font_size": 8,
           "stroke_width": 0,
           "rotation": 90,
-          "source_text_evidence": "ITEM STATUS",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "ITEM STATUS 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              10,
+              50,
+              26,
+              144
+            ]
+          ]
         }
       ]
     },
@@ -6225,9 +8649,29 @@
           "font_size": 11,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              13,
+              5,
+              103,
+              18
+            ],
+            [
+              14,
+              8,
+              44,
+              19
+            ],
+            [
+              45,
+              8,
+              73,
+              19
+            ]
+          ]
         },
         {
           "target": "物品",
@@ -6244,8 +8688,22 @@
           "font_size": 14,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              13,
+              35,
+              61,
+              58
+            ],
+            [
+              19,
+              35,
+              63,
+              53
+            ]
+          ]
         }
       ]
     },
@@ -6268,9 +8726,29 @@
           "font_size": 11,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              12,
+              4,
+              88,
+              17
+            ],
+            [
+              14,
+              9,
+              45,
+              20
+            ],
+            [
+              45,
+              9,
+              73,
+              20
+            ]
+          ]
         }
       ]
     },
@@ -6293,8 +8771,16 @@
           "font_size": 12,
           "minimum_font_size": 10,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              14,
+              5,
+              63,
+              22
+            ]
+          ]
         },
         {
           "target": "持有",
@@ -6311,8 +8797,16 @@
           "font_size": 12,
           "minimum_font_size": 10,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              114,
+              5,
+              161,
+              22
+            ]
+          ]
         }
       ]
     },
@@ -6335,10 +8829,18 @@
           "font_size": 12,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "erase_mode": "nontransparent",
-          "group_id": "party-title"
+          "group_id": "party-title",
+          "erase_rects_xyxy": [
+            [
+              10,
+              4,
+              256,
+              22
+            ]
+          ]
         },
         {
           "target": "请选择",
@@ -6355,9 +8857,17 @@
           "font_size": 15,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
-          "group_id": "party-caption"
+          "group_id": "party-caption",
+          "erase_rects_xyxy": [
+            [
+              136,
+              156,
+              256,
+              184
+            ]
+          ]
         }
       ]
     },
@@ -6380,10 +8890,18 @@
           "font_size": 15,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "erase_mode": "nontransparent",
-          "group_id": "party-caption"
+          "group_id": "party-caption",
+          "erase_rects_xyxy": [
+            [
+              0,
+              159,
+              215,
+              184
+            ]
+          ]
         },
         {
           "target": "说明",
@@ -6400,8 +8918,22 @@
           "font_size": 10,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
-          "erase_mode": "nontransparent"
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              165,
+              143,
+              211,
+              158
+            ],
+            [
+              168,
+              147,
+              212,
+              158
+            ]
+          ]
         },
         {
           "target": null,
@@ -6442,14 +8974,22 @@
           "font_size": 13,
           "minimum_font_size": 11,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              16,
+              16
+            ]
+          ]
         }
       ]
     },
@@ -6472,14 +9012,22 @@
           "font_size": 13,
           "minimum_font_size": 11,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             70,
             70,
             70,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              0,
+              0,
+              16,
+              16
+            ]
+          ]
         }
       ]
     }

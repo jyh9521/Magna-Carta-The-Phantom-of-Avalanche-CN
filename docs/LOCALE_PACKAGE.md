@@ -50,3 +50,5 @@ python PACKAGE/apply_locale.py rollback --package PACKAGE --source SOURCE --targ
 增量包同时保护Logo、名单与24份指定保留资源的原始摘要；旧含Logo译文包已撤回。结果只证明文件与受控模型，不代替实际游戏内验收。
 
 候选启动入口继承OpenGL导致PixelFormat失败的实际日志及修正见[START_PROFILE_FIX.md](START_PROFILE_FIX.md)。当前入口在独立会话使用Direct3D、默认FocusGuard，并预检已验收无边框/1080兼容层摘要；`-PrepareOnly`不启动游戏，真实启动及退出后桌面布局仍待回归。
+
+实际截图中的旧字描边残痕已按完整清理轮廓修正；202份图像复核、985→0像素对照、源保护和独立回滚见[IMAGE_RESIDUE_FIX.md](IMAGE_RESIDUE_FIX.md)。不将静态清理通过称作完整游戏内验收。
