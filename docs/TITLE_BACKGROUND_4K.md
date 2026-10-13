@@ -37,3 +37,11 @@ Verified（受控）：导出3840×2160、1920×1080、1280×720、640×480和80
 `tools/refresh_title_background.py --workspace build/title-background4k-game --replacement build/title-names4k-game`验证旧/新12项资源、原资源来源一致、母图SHA和启动互斥锁后，仅更新标题资源及预览。上一版HD背景和清单逐项SHA备份；写入失败恢复已尝试文件。原已验收advanced-display-game以及商业引擎/字体/按钮/存档不改。
 
 同一title-background4k-game入口继续使用本次替换版。Restore-previous-background.cmd恢复上一张HD背景；Rollback-title.cmd则恢复最初标题背景。独立副本的上一版恢复结果与基准/修改/恢复源码测试见build/title-names4k-evidence/VERIFICATION.txt。背景PNG预览不代替商业游戏实际验收。
+
+## 按原图纠正英韩名称相对位置
+
+玩家标注原图指出上一版韩文被错误放到左侧。此次仅修改背景源及布局意图数据：英文仍在右后方上层，韩文从MAGNACARTA的N附近下方起笔并顺同一斜向向右展开；移除左半幅韩文，恢复布纹。上方英文副标题与下方韩文副标题继续保留检索确认拼写，前景中文标题、按钮及全部native代码保持不变。
+
+layout_intent是可复核的设计约束，不是测得的引擎字段。新增测试只验证约束数据保存正确，最终空间关系以生成图和合成4K图的目视复核、玩家复测为准；不把该测试描述成图像识别或像素定位证明。
+
+仍通过build_title_background生成3840×2160母图及12个纹理，用refresh_title_background替换同一title-background4k-game。上一张错位背景摘要和18个文件备份保留，独立副本恢复上一版的结果见build/title-name-alignment-evidence/VERIFICATION.txt。

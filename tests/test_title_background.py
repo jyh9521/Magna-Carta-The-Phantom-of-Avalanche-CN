@@ -101,6 +101,13 @@ class BackgroundRefreshTests(unittest.TestCase):
             self.assertEqual((a/name).read_bytes(),b'owned drift')
             self.assertFalse(list((a/'.advanced-runtime').glob('previous-title-*')))
 
+    def test_layout_intent_matches_player_reference(self):
+        plan=json.loads((ROOT/'locales/zh-CN/title-background-plan.json').read_text('utf8'))
+        layout=plan['background_names']['layout_intent']
+        self.assertEqual(layout['arrangement'],'english_upper_right_korean_below_N')
+        self.assertEqual(layout['korean_origin_under_english_letter'],'N')
+        self.assertFalse(layout['left_half_lettering'])
+
     def test_names_are_source_backed_and_exact(self):
         plan=json.loads((ROOT/'locales/zh-CN/title-background-plan.json').read_text('utf8'))
         names=plan['background_names']

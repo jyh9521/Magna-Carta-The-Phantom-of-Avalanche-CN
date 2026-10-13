@@ -5,7 +5,7 @@
     2160
   ],
   "source": "art/title-background-source.png",
-  "source_sha256": "6060b3f758819408faa366fdf66435fc50ad24b41a9ae6fa8d2e7ac580998bdf",
+  "source_sha256": "a7519b2606e72ae02d7ad56a1a560d4154f8d7ae36446131c45f16f756a95c33",
   "wordmark": "art/title-wordmark.png",
   "wordmark_sha256": "3d45f802af9a5405294d8ffa0a8a6a28f26012526990eeb6117c921068ee090f",
   "wordmark_box": [
@@ -54,6 +54,13 @@
       "https://www.gamemeca.com/view.php?gid=119517",
       "https://www.aladin.co.kr/shop/wproduct.aspx?itemid=316586073"
     ],
-    "verification": "Web spelling cross-check and generated image visual review; stylized glyph recognition is not automated OCR proof."
+    "verification": "Web spelling cross-check and generated image visual review; stylized glyph recognition is not automated OCR proof.",
+    "layout_intent": {
+      "arrangement": "english_upper_right_korean_below_N",
+      "korean_origin_under_english_letter": "N",
+      "left_half_lettering": false,
+      "reference": "player annotated original title screenshot",
+      "review": "visual review; not automated pixel registration"
+    }
   }
 }
