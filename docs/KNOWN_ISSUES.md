@@ -76,3 +76,5 @@ SOFTMAX开头Logo、开发人员名单所在整份PAK、旧存档名字及24份�
 主界面改为两行银白艺术字及横线，菜单提高对比度；前景英文撤换、尾字跨tile修复、源保护及可复现素材见[TITLE_ARTWORK.md](TITLE_ARTWORK.md)。当前图像203份、完整增量635资源，实际新标题显示待观察。
 
 最新对话字形、誓言居中、音量标签与残字、保存地点修正见[UI_READABILITY_FIX.md](UI_READABILITY_FIX.md)。旧存档人物名字及文件不编辑；地点标签通过显示和测宽适配呈现中文。修正后游戏内验收仍待实际观察。
+
+后续EA、翻页、侧标题、音效残列与字幕统一基线修正见[UI_ALIGNMENT_FIX.md](UI_ALIGNMENT_FIX.md)。

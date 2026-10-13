@@ -26,21 +26,36 @@ def validate_module(raw,contract):
     return entries
 
 
-def coverage(char, font, height, weight=500, cache=None, variations=()):
-    from PIL import Image,ImageDraw,ImageFont
+def raster_layout(font,height,characters,cache=None,variations=()):
+    """One face size and typographic baseline for the complete native font set."""
+    from PIL import ImageFont
     cache={} if cache is None else cache
     for size in range(height,1,-1):
         key=(size,tuple(variations))
         if key not in cache:
             cache[key]=ImageFont.truetype(str(font),size)
             if variations:cache[key].set_variation_by_axes(list(variations))
-        face=cache[key];box=face.getbbox(char); w,h=box[2]-box[0],box[3]-box[1]
-        # Foreground is drawn at native y=1 into a height-row buffer. Reserve
-        # the last source row instead of losing the glyph's bottom stroke.
-        if w<=height and h<=height-1:break
+        face=cache[key];boxes=[face.getbbox(c,anchor='ls') for c in characters]
+        top=min(b[1] for b in boxes);bottom=max(b[3] for b in boxes)
+        if max(b[2]-b[0] for b in boxes)<=height and bottom-top<=height-1:break
     else:raise ValueError('coverage exceeds fixed native cell')
+    baseline=(height-1-(bottom-top))//2-top
+    return dict(size=size,baseline=baseline,anchor='ls',source_top=top,source_bottom=bottom)
+
+
+def coverage(char, font, height, weight=500, cache=None, variations=(),layout=None):
+    from PIL import Image,ImageDraw,ImageFont
+    cache={} if cache is None else cache
+    if layout is None:layout=raster_layout(font,height,[char],cache,variations)
+    key=(layout['size'],tuple(variations))
+    if key not in cache:
+        cache[key]=ImageFont.truetype(str(font),layout['size'])
+        if variations:cache[key].set_variation_by_axes(list(variations))
+    face=cache[key];box=face.getbbox(char,anchor='ls');w=box[2]-box[0]
+    if w>height or layout['baseline']+box[1]<0 or layout['baseline']+box[3]>height-1:
+        raise ValueError('glyph exceeds uniform native baseline')
     result=Image.new('L',(height,height))
-    ImageDraw.Draw(result).text(((height-w)//2-box[0],(height-1-h)//2-box[1]),char,font=face,fill=255)
+    ImageDraw.Draw(result).text(((height-w)//2-box[0],layout['baseline']),char,font=face,fill=255,anchor='ls')
     if not result.getbbox():raise ValueError('empty coverage glyph')
     return result.tobytes()
 
@@ -72,8 +87,10 @@ def build(font,expected_sha,font_package,labels,module,module_sha,output):
     pairs=[];planes=[];rows=[]
     for char,item in sorted(mapping.items(),key=lambda p:int(p[1]['encoded_hex'],16)):
         pairs.append(int(item['encoded_hex'],16));rows.append(char)
-    cache={}
-    for height in [14,22]:planes.append(b''.join(coverage(char,font,height,cache=cache,variations=variations) for char in rows))
+    cache={};layouts=[]
+    for height in [14,22]:
+        layout=raster_layout(font,height,rows,cache,variations);layouts.append(layout)
+        planes.append(b''.join(coverage(char,font,height,cache=cache,variations=variations,layout=layout) for char in rows))
     lines=['// Reproducible fixed-mapping grayscale coverage; no runtime font dependency.']
     for key,raw in entries.items():lines.append('#define EXPECTED_'+key+'_BYTES '+','.join(hex(v) for v in raw))
     lines += [
@@ -93,7 +110,7 @@ def build(font,expected_sha,font_package,labels,module,module_sha,output):
     for i,b in enumerate(planes):(output/f'coverage{i}.bin').write_bytes(b)
     report=dict(schema=1,mapping_sha256=sha(snapshots[font_package/'overlay.json']),source_font_sha256=expected_sha,
                 glyphs=len(pairs),pairs=pairs,heights=[14,22],labels=len(unique),weight=500,
-                coverage_sha256=list(map(sha,planes)),header_sha256=sha(header),
+                coverage_sha256=list(map(sha,planes)),header_sha256=sha(header),raster_layouts=layouts,
                 metrics_unchanged=True,mapping_unchanged=True,module_sha256=module_sha,
                 engine_contract_sha256=sha(snapshots[contract_path]),derived_font_name='Locale Glyph Coverage',
                 source_font_notices=overlay['source_font_notices'],game_started=False)

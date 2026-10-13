@@ -5072,19 +5072,19 @@
         {
           "target": "上一页",
           "mask_xyxy": [
-            4,
+            5,
             1,
-            125,
-            28
+            88,
+            18
           ],
           "background_anchor": [
-            89,
-            1
+            127,
+            127
           ],
-          "font_size": 16,
-          "minimum_font_size": 12,
+          "font_size": 12,
+          "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Original source drawable label is91x21 with Latin lettering centered nearx45;128 is padded texture storage. Remove the entire obsolete label background/outline and center within the original visible span.",
           "color": [
             255,
             255,
@@ -5094,10 +5094,10 @@
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              4,
-              1,
-              125,
-              28
+              0,
+              0,
+              91,
+              21
             ]
           ]
         }
@@ -5110,19 +5110,19 @@
         {
           "target": "下一页",
           "mask_xyxy": [
-            4,
+            5,
             1,
-            125,
-            28
+            88,
+            18
           ],
           "background_anchor": [
-            89,
-            1
+            127,
+            127
           ],
-          "font_size": 16,
-          "minimum_font_size": 12,
+          "font_size": 12,
+          "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Original source drawable label is91x21 with Latin lettering centered nearx45;128 is padded texture storage. Remove the entire obsolete label background/outline and center within the original visible span.",
           "color": [
             255,
             255,
@@ -5132,10 +5132,10 @@
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              4,
-              1,
-              125,
-              28
+              0,
+              0,
+              91,
+              21
             ]
           ]
         }
@@ -5338,19 +5338,19 @@
         {
           "target": "上一页",
           "mask_xyxy": [
-            4,
+            5,
             1,
-            125,
-            28
+            88,
+            18
           ],
           "background_anchor": [
-            89,
-            1
+            127,
+            127
           ],
-          "font_size": 16,
-          "minimum_font_size": 12,
+          "font_size": 12,
+          "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Original source drawable label is91x21 with Latin lettering centered nearx45;128 is padded texture storage. Remove the entire obsolete label background/outline and center within the original visible span.",
           "color": [
             70,
             70,
@@ -5360,10 +5360,10 @@
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              4,
-              1,
-              125,
-              28
+              0,
+              0,
+              91,
+              21
             ]
           ]
         }
@@ -5376,19 +5376,19 @@
         {
           "target": "下一页",
           "mask_xyxy": [
-            4,
+            5,
             1,
-            125,
-            28
+            88,
+            18
           ],
           "background_anchor": [
-            89,
-            1
+            127,
+            127
           ],
-          "font_size": 16,
-          "minimum_font_size": 12,
+          "font_size": 12,
+          "minimum_font_size": 10,
           "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Original source drawable label is91x21 with Latin lettering centered nearx45;128 is padded texture storage. Remove the entire obsolete label background/outline and center within the original visible span.",
           "color": [
             70,
             70,
@@ -5398,10 +5398,10 @@
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              4,
-              1,
-              125,
-              28
+              0,
+              0,
+              91,
+              21
             ]
           ]
         }
@@ -7628,7 +7628,7 @@
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              25,
+              20,
               66,
               99,
               83
@@ -7661,7 +7661,7 @@
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              25,
+              20,
               91,
               99,
               108
@@ -7694,7 +7694,7 @@
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              25,
+              20,
               116,
               99,
               133
@@ -8339,7 +8339,7 @@
           "mask_xyxy": [
             128,
             158,
-            209,
+            205,
             175
           ],
           "background_anchor": [
@@ -8349,13 +8349,13 @@
           "font_size": 11,
           "minimum_font_size": 9,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 EA badge starts outside x205; preserve complete badge rather than erase its left outline.",
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
               128,
               158,
-              209,
+              205,
               175
             ]
           ]
@@ -8618,8 +8618,8 @@
           "font_size": 11,
           "minimum_font_size": 8,
           "stroke_width": 0,
-          "rotation": 90,
-          "source_text_evidence": "ITEM STATUS 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "rotation": 0,
+          "source_text_evidence": "ITEM STATUS 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Chinese characters are upright and stacked top-to-bottom; do not rotate a Chinese sentence as the original Latin caption.",
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
@@ -8628,7 +8628,9 @@
               26,
               144
             ]
-          ]
+          ],
+          "flow": "vertical",
+          "glyph_gap": 3
         }
       ]
     },

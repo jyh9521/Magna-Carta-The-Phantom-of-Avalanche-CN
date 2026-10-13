@@ -3,23 +3,34 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
-from build_font_coverage import coverage,validate_module
+from build_font_coverage import coverage,validate_module,raster_layout
 
 
 class Face:
     def __init__(self,size):self.size=size
-    def getbbox(self,character):return (0,0,self.size,self.size)
+    def getbbox(self,character,anchor=None):
+        top=3 if character=='Y' else 0
+        return (0,top-self.size if anchor=='ls' else top,self.size,0 if anchor=='ls' else self.size)
 
 
 class Drawer:
     def __init__(self,image):self.image=image
-    def text(self,origin,character,font,fill):
-        for y in range(font.size):
+    calls=[]
+    def text(self,origin,character,font,fill,anchor=None):
+        self.calls.append((character,origin,font.size,anchor));b=font.getbbox(character,anchor)
+        for y in range(b[3]-b[1]):
             for x in range(font.size):
-                self.image.putpixel((origin[0]+x,origin[1]+y),128)
+                self.image.putpixel((origin[0]+x,origin[1]+b[1]+y),128)
 
 
 class CoverageTests(unittest.TestCase):
+    def test_uniform_face_and_baseline_despite_different_ink_heights(self):
+        with patch('PIL.ImageFont.truetype',side_effect=lambda path,size:Face(size)),patch('PIL.ImageDraw.Draw',Drawer):
+            cache={};layout=raster_layout('controlled-outline',14,['X','Y'],cache);Drawer.calls=[]
+            for char in ['X','Y']:coverage(char,'controlled-outline',14,cache=cache,layout=layout)
+            self.assertEqual(Drawer.calls[0][1][1],Drawer.calls[1][1][1])
+            self.assertEqual(Drawer.calls[0][2],Drawer.calls[1][2])
+            self.assertEqual(Drawer.calls[0][3],'ls')
     def test_module_contract_rejects_unknown_code_and_entries(self):
         from types import SimpleNamespace
         from hashlib import sha256

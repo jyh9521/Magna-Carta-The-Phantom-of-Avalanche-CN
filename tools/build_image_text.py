@@ -116,6 +116,11 @@ def render(image, plans, font_path):
                 raise ValueError('invalid RGBA text color')
         chosen = None
         rotation=plan.get('rotation',0)
+        flow=plan.get('flow','horizontal')
+        if flow not in ('horizontal','vertical') or (flow=='vertical' and rotation):
+            raise ValueError('invalid image text flow/rotation combination')
+        gap=plan.get('glyph_gap',2)
+        if type(gap) is not int or not 0<=gap<=32:raise ValueError('invalid vertical glyph gap')
         if type(rotation) is not int or rotation not in (0,90,270):
             raise ValueError('invalid image text rotation')
         for size in range(maximum, minimum - 1, -1):
@@ -125,6 +130,10 @@ def render(image, plans, font_path):
                 font.set_variation_by_axes([min(a['maximum'], max(a['minimum'], 600)) for a in axes])
             bounds = font.getbbox(text, stroke_width=stroke)
             w, h = bounds[2] - bounds[0], bounds[3] - bounds[1]
+            if flow=='vertical':
+                glyph_bounds=[font.getbbox(c,stroke_width=stroke) for c in text]
+                w=max(b[2]-b[0] for b in glyph_bounds)
+                h=sum(b[3]-b[1] for b in glyph_bounds)+gap*(len(text)-1)
             if rotation:w,h=h,w
             if w <= box[2] - box[0] - 2 and h <= box[3] - box[1] - 2:
                 chosen = size, font, bounds, w, h
@@ -137,7 +146,14 @@ def render(image, plans, font_path):
             raise ValueError('invalid text alignment')
         x = box[0] + (1 if align == 'left' else box[2] - box[0] - w - 1 if align == 'right' else (box[2] - box[0] - w) // 2)
         y = box[1] + (box[3] - box[1] - h) // 2
-        if rotation:
+        if flow=='vertical':
+            draw=ImageDraw.Draw(result);cursor=y
+            for character in text:
+                b=font.getbbox(character,stroke_width=stroke);gw=b[2]-b[0];gh=b[3]-b[1]
+                gx=box[0]+(box[2]-box[0]-gw)//2
+                draw.text((gx-b[0],cursor-b[1]),character,font=font,fill=tuple(fill),stroke_width=stroke,stroke_fill=tuple(edge))
+                cursor+=gh+gap
+        elif rotation:
             layer=Image.new('RGBA',(bounds[2]-bounds[0],bounds[3]-bounds[1]))
             ImageDraw.Draw(layer).text((-bounds[0],-bounds[1]),text,font=font,
                                      fill=tuple(fill),stroke_width=stroke,stroke_fill=tuple(edge))
@@ -147,7 +163,7 @@ def render(image, plans, font_path):
             ImageDraw.Draw(result).text((x - bounds[0], y - bounds[1]), text, font=font,
                                         fill=tuple(fill), stroke_width=stroke, stroke_fill=tuple(edge))
         records.append(dict(target=text, mask_xyxy=list(box), erase_rects_xyxy=plan.get('erase_rects_xyxy'), size=size,
-                            measured_pixels=[w, h], rotation=rotation, fit=True))
+                            measured_pixels=[w, h], rotation=rotation, flow=flow, fit=True))
     before, after = original.tobytes(), result.tobytes()
     for i in range(image.width * image.height):
         if (i % image.width, i // image.width) not in covered and before[i*4:i*4+4] != after[i*4:i*4+4]:

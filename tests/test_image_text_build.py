@@ -52,6 +52,18 @@ class ImageTextBuildTests(unittest.TestCase):
         self.assertFalse(r['deployed']);self.assertFalse(r['game_started'])
         self.assertEqual((self.source/'fixture.bgr').read_bytes(),self.raw)
 
+    def test_vertical_flow_stacks_upright_glyphs_and_preserves_outside(self):
+        p=dict(self.plan,target='AB',mask_xyxy=[25,5,45,35],flow='vertical',glyph_gap=3)
+        raw,records,_=m.render(parse(self.raw),[p],self.font)
+        self.assertEqual(records[0]['flow'],'vertical');self.assertEqual(records[0]['rotation'],0)
+        self.assertGreater(records[0]['measured_pixels'][1],records[0]['measured_pixels'][0])
+        a,b=parse(self.raw).rgba(),parse(raw).rgba()
+        for y in range(40):
+            for x in range(80):
+                if not(25<=x<45 and 5<=y<35):
+                    at=(y*80+x)*4;self.assertEqual(a[at:at+4],b[at:at+4])
+        with self.assertRaises(ValueError):m.render(parse(self.raw),[dict(p,rotation=90)],self.font)
+
     def test_stale_source_and_font_lock_refuse_output(self):
         self.data['resources'][0]['source_sha256']='0'*64
         with self.assertRaisesRegex(ValueError,'digest mismatch'):self.build()

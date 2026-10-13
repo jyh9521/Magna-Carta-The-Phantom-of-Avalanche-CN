@@ -71,3 +71,5 @@ python tools/build_text_resources.py --source SOURCE_GAME --catalog CATALOG --co
 无盘启动候选：5字节源摘要锁定补丁、光驱检查模型、隔离入口及独立副本回滚见[DISC_GATE.md](docs/DISC_GATE.md)。游戏未启动，完整无盘游玩尚未验收；未挂载镜像或修改保护驱动。
 
 灰度覆盖和存档地点的可复现构建、原生模块参数及受控测试见[显示反馈修正](docs/UI_READABILITY_FIX.md)。完整字体映射保持既有版本，新增Field包进入完整增量候选列表。
+
+图片正立竖排与原生字形统一字号/基线构建见[UI_ALIGNMENT_FIX.md](docs/UI_ALIGNMENT_FIX.md)，改动灰度头后须重新编译profile。
