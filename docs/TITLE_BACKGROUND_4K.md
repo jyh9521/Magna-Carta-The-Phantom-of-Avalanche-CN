@@ -57,3 +57,17 @@ layout_intent是可复核的设计约束，不是测得的引擎字段。新增�
 `python tools/refresh_title_background.py --workspace build/title-background4k-game --replacement build/title-vortex-assets`
 
 assets-only输出不含游戏入口或商业执行文件，只含12个标题纹理、母图、预览及摘要清单。原版来源和标题源摘要仍先校验。完整新副本构建保留原--native参数路径。输出为3840×2160，native显示/裁切与按钮未改。上一版背景及18文件摘要恢复测试见build/title-vortex-evidence/VERIFICATION.txt；实机视觉仍由玩家复测。
+
+## 游戏内模糊：上传前纹理质量限制
+
+玩家实际截图显示整张背景和前景字标像素化，与离线PNG不一致，上一轮PNG尺寸检查未覆盖游戏纹理加载，不是4K实机清晰度验收。本轮背景与字标图像不再重绘。
+
+Verified（静态）：固定Asura.dll SHA f81e7c458d43b77210311499b39b9be2c4895e3a3b356d2e848b6e84210d2557。ASRLoadTexture(CImage*) RVA53341在5338f调用51dd2选尺寸，质量表74fd0为512/256/128；引擎BGR调用326e6固定quality=1。2048×2048因此在设备处理前变成256×256，随后重采样像素，像素预算降为1/64。未更新驱动虚表1a5a8的+5d0函数9665仍按设备能力限制尺寸。
+
+新增title_texture仅在HD标题标志开启时安装；只对BGR加载返回地址MCAlpha+326ec、2048方形输入和quality1的组合请求2048。其他调用、尺寸及质量级别调用原选择函数。原质量表不改。驱动GetSuitableTextureSize和设备上限不绕过。PE尺寸、原调用指令、BGR导入槽引用与质量表全部预检，重复安装识别本模块补丁；失败回滚已写位置，受控禁用恢复原指令。
+
+Verified（受控）：新增自有x86回放在旧选择路径输出TITLE_TEXTURE_BASELINE FAIL source=2048 selected=256 pixel_budget=1/64，退出1；修改20项检查通过，选择2048，512设备上限仍降至512，其他纹理保持原值，回滚再得到256。夹具不执行商业DLL，不证明实际GPU上传或最终像素。
+
+实机日志新增TITLE_TEXTURE_REQUEST及TITLE_TEXTURE_DEVICE。后者selected是驱动能力选择后的实际尺寸，期待2048；小于2048须继续诊断设备路径。这里仍不是GPU纹理读回证据。请用同一title-background4k-game的宽屏/组合入口，对照PNG检查文字边缘，必要时提供最新session/profile.log。修改前owned运行库及完整验证见build/title-texture-resolution-evidence。
+
+REA ASRLoadTexture静态记录：ev_4109dfcafcfd4da775ac8fd7cd7c9a861759268766a4ede8abb198cf2bc1745c；完整记录保存在本轮rea-evidence.json。源质量表和驱动尺寸算法的补充反汇编为静态原字节观察，不是实机GPU读回。

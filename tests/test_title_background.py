@@ -108,6 +108,15 @@ class BackgroundRefreshTests(unittest.TestCase):
         self.assertEqual(layout['korean_origin_under_english_letter'],'N')
         self.assertFalse(layout['left_half_lettering'])
 
+    def test_title_texture_resolution_is_scoped_and_hardware_bounded(self):
+        source=(ROOT/'src/runtime/title_texture.cpp').read_text('utf8')
+        self.assertIn('caller==allowedCaller&&w==2048&&h==2048&&quality==1',source)
+        self.assertIn('unsigned legacy=original(w,h,quality)',source)
+        self.assertIn('TITLE_TEXTURE_DEVICE requested=2048 selected=%u',source)
+        layout=(ROOT/'src/runtime/title_layout.cpp').read_text('utf8')
+        self.assertIn('if(hdBackground&&!installTitleTexture',layout)
+        self.assertIn('add_executable(title_texture_fixture', (ROOT/'src/runtime/CMakeLists.txt').read_text('utf8'))
+
     def test_typography_is_surface_warped_not_flat(self):
         plan=json.loads((ROOT/'locales/zh-CN/title-background-plan.json').read_text('utf8'))
         layout=plan['background_names']['layout_intent']

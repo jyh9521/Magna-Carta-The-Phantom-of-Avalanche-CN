@@ -13,7 +13,7 @@ target_link_libraries(modern_gamepad_fixture PRIVATE user32)
 set_property(TARGET modern_gamepad_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 target_compile_options(modern_gamepad_fixture PRIVATE /W4 /utf-8)
 add_compile_definitions(UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX _WIN32_WINNT=0x0601)
-add_library(workspace_profile SHARED workspace_profile.cpp texture_lifetime.cpp focus_guard.cpp native_text_step.cpp system_messages.cpp native_font.cpp modern_input.cpp modern_gamepad.cpp advanced_display.cpp wide_ui.cpp menu_visibility.cpp motion60.cpp title_layout.cpp)
+add_library(workspace_profile SHARED workspace_profile.cpp texture_lifetime.cpp focus_guard.cpp native_text_step.cpp system_messages.cpp native_font.cpp modern_input.cpp modern_gamepad.cpp advanced_display.cpp wide_ui.cpp menu_visibility.cpp motion60.cpp title_layout.cpp title_texture.cpp)
 
 add_executable(title_layout_fixture title_layout_fixture.cpp title_layout.cpp wide_ui.cpp)
 target_compile_definitions(title_layout_fixture PRIVATE TITLE_LAYOUT_TEST)
@@ -100,3 +100,7 @@ foreach(target workspace_profile workspace_launcher registry_probe graphics_prob
   set_property(TARGET ${target} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
   target_compile_options(${target} PRIVATE /W4 /utf-8)
 endforeach()
+
+add_executable(title_texture_fixture title_texture_fixture.cpp title_texture.cpp)
+set_property(TARGET title_texture_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+target_compile_options(title_texture_fixture PRIVATE /W4 /utf-8)

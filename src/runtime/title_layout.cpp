@@ -1,6 +1,9 @@
 #include "title_layout.h"
 #include "wide_ui.h"
 #include <cstring>
+#ifndef TITLE_LAYOUT_TEST
+#include "title_texture.h"
+#endif
 namespace {
 bool hdBackground=false;BYTE* titleEngine=nullptr;
 ULONG_PTR bgCompareResume=0,menuCompareResume=0,buttonResume=0,tileResume=0,tileSetter=0;
@@ -90,7 +93,11 @@ bool setTitleLayout(BYTE* p,size_t n,bool enabled){
  for(unsigned i=0;i<4;++i){auto& s=sites[i];patch(s,p,desired);if(!write(p+s.rva,enabled?desired:s.original,s.count)){for(unsigned j=0;j<=i;++j)write(p+sites[j].rva,before[j],sites[j].count);return false;}}
  return true;
 }
-bool installTitleLayout(HMODULE module,void(*log)(const wchar_t*)){titleEngine=reinterpret_cast<BYTE*>(module);wchar_t mode[8]{};hdBackground=GetEnvironmentVariableW(L"MC_TITLE_BACKGROUND4K",mode,8)&&!wcscmp(mode,L"1");bool ok=setTitleLayout(reinterpret_cast<BYTE*>(module),0x10b000,true);if(ok&&log)log(L"TITLE_LAYOUT_READY art_size=physical_layout title_tile_vectors=centered game_canvas=unchanged");return ok;}
+bool installTitleLayout(HMODULE module,void(*log)(const wchar_t*)){titleEngine=reinterpret_cast<BYTE*>(module);wchar_t mode[8]{};hdBackground=GetEnvironmentVariableW(L"MC_TITLE_BACKGROUND4K",mode,8)&&!wcscmp(mode,L"1");
+#ifndef TITLE_LAYOUT_TEST
+if(hdBackground&&!installTitleTexture(module,GetModuleHandleW(L"Asura.dll"),log))return false;
+#endif
+bool ok=setTitleLayout(reinterpret_cast<BYTE*>(module),0x10b000,true);if(ok&&log)log(L"TITLE_LAYOUT_READY art_size=physical_layout title_tile_vectors=centered game_canvas=unchanged");return ok;}
 #ifdef TITLE_LAYOUT_TEST
 void initializeTitleLayoutFixture(BYTE* p){memset(p,0,0x10b000);auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);d->e_magic=IMAGE_DOS_SIGNATURE;d->e_lfanew=0x80;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+0x80);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;expected(p);for(auto& s:sites)memcpy(p+s.rva,s.original,s.count);}
 void configureTitleLayoutFixture(int p,int c){fixturePhysical=p;fixtureCanvas=c;}
