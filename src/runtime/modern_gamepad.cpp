@@ -25,6 +25,7 @@ bool nativeRouting=false;bool passthroughOnly=false,mapReservedKeys=false;volati
 BYTE* engine=nullptr;
 thread_local bool worldScope=false;
 thread_local modern_input::MoveIntent movement;
+thread_local bool pendingInteraction=false;
 modern_input::Cursor controllerCursor;DWORD cursorTime=0;
 GamepadNavigation navigation;DWORD inputSerial=0;unsigned navHeld=0;WORD lastButtons=0;
 bool realMouseKnown=false,navMouseBlocked=false;int realMouseX=0,realMouseY=0;unsigned triggerHeld=0;DWORD triggerTime=0;
@@ -78,7 +79,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     if(ok&&mapReservedKeys&&nativeRouting&&worldScope&&frame.armed&&focused)InterlockedExchange(&mapPadButtons,((sample.buttons&XINPUT_GAMEPAD_BACK)?1:0)|((sample.buttons&XINPUT_GAMEPAD_RIGHT_THUMB)?2:0));
     if(ok&&nativeRouting){
         bool clicksAllowed=true;
-        uint8_t nativeBindings[7]={VK_UP,VK_DOWN,VK_LEFT,VK_RIGHT,static_cast<uint8_t>(worldScope?VK_SPACE:VK_LBUTTON),VK_RBUTTON,VK_RBUTTON};
+        uint8_t nativeBindings[7]={VK_UP,VK_DOWN,VK_LEFT,VK_RIGHT,static_cast<uint8_t>(worldScope?0:VK_LBUTTON),VK_RBUTTON,VK_RBUTTON};
         // Title update tests key 0x1b and sets +64 for logo/opening skip.
         // Preserve the native Esc path; Space does not set that skip request.
         if(readable(nativeFrame,8)&&reinterpret_cast<BYTE**>(nativeFrame)[1]==engine+0xb71d1){
@@ -96,6 +97,8 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
         bool keyboardDirection=(keys[VK_UP]|keys[VK_DOWN]|keys[VK_LEFT]|keys[VK_RIGHT]|keys[VK_LBUTTON])&0x80;
         bool physicalArrows=(keys[VK_UP]|keys[VK_DOWN]|keys[VK_LEFT]|keys[VK_RIGHT])&0x80;
         if(worldScope){
+            // Confirm is a scene interaction request, not a global UI Space key.
+            pendingInteraction=frame.armed&&focused&&(frame.pressed&modern_input::Confirm);
             frame.held&=~uint32_t(15);
             if(frame.armed&&focused&&!keyboardDirection&&engine){
                 auto camera=*reinterpret_cast<BYTE**>(engine+0xf2290);
@@ -109,7 +112,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
         }
         modern_input::mergeKeyboard(keys,frame,nativeBindings);
         if(frame.armed&&focused){
-            if(clicksAllowed&&(sample.buttons&XINPUT_GAMEPAD_X))keys[VK_LBUTTON]|=0x80;
+            if(clicksAllowed&&!worldScope&&(sample.buttons&XINPUT_GAMEPAD_X))keys[VK_LBUTTON]|=0x80;
             if(sample.buttons&XINPUT_GAMEPAD_Y)keys[VK_TAB]|=0x80;
         }
         DWORD now=GetTickCount();unsigned elapsed=cursorTime?now-cursorTime:0;cursorTime=now;
@@ -154,7 +157,8 @@ __declspec(naked) BOOL WINAPI keyboardBridge(PBYTE){__asm {
  ret 4
 }}
 }
-void modernGamepadWorldScope(bool enabled){worldScope=enabled;movement={};}
+void modernGamepadWorldScope(bool enabled){worldScope=enabled;movement={};pendingInteraction=false;}
+bool modernGamepadConsumeInteraction(){bool value=worldScope&&pendingInteraction;pendingInteraction=false;return value;}
 modern_input::MoveIntent modernGamepadMoveIntent(){return worldScope?movement:modern_input::MoveIntent{};}
 unsigned modernGamepadMapButtons(){return static_cast<unsigned>(InterlockedCompareExchange(&mapPadButtons,0,0));}
 GamepadNavigation modernGamepadNavigation(){return navigation;}

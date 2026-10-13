@@ -6,7 +6,9 @@
 #include <cstring>
 #include <cmath>
 static BYTE* image=nullptr;static BYTE world[0x15c4],actor[0x340],gui[0x194],camera[0xc0];
-static bool connected=true,physical=false,rawUp=false;static SHORT axisX=0,axisY=0;static WORD buttons=0;static int checks=0,forwardCalls=0,turnCalls=0;static int observations=0;static bool observationControlled=false;
+static bool connected=true,physical=false,rawUp=false;static SHORT axisX=0,axisY=0;static WORD buttons=0;static int checks=0,forwardCalls=0,turnCalls=0,interactions=0;static int observations=0;static bool observationControlled=false;
+void require(bool,const char*);
+int __fastcall interaction(void* s,void*,void* g,unsigned event){require(s==world&&g==gui&&event==0x11,"interaction uses native scene and GUI event");++interactions;if(*reinterpret_cast<int*>(world+0x15b8))*reinterpret_cast<int*>(world+0x15bc)=1;return 0;}
 void observe(BYTE* s,bool controlled){if(s==world){++observations;observationControlled=controlled;}}
 void require(bool v,const char* s){++checks;if(!v){fprintf(stderr,"FAIL %s\n",s);ExitProcess(1);}}
 BOOL WINAPI keyboard(PBYTE keys){memset(keys,0,256);keys[VK_SPACE]=1;if(rawUp)keys[VK_UP]=0x80;if(physical)keys[VK_LEFT]=0x80;return TRUE;}
@@ -29,10 +31,12 @@ int main(){
  auto iat=reinterpret_cast<DWORD*>(image+0xbd3dc);DWORD oldIat=reinterpret_cast<DWORD>(GetProcAddress(GetModuleHandleW(L"user32.dll"),"GetKeyboardState"));*iat=oldIat;
  BYTE t[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc},f[]={0x55,0x8b,0xec,0x83,0xec,0x54,0x89,0x4d,0xac},d[]={0x55,0x8b,0xec,0x83,0xec,0x1c,0x89,0x4d,0xec};
  stub(0x6b2d8,t,sizeof(t),reinterpret_cast<void*>(&tick));stub(0x652b4,f,sizeof(f),reinterpret_cast<void*>(&forward));stub(0x65504,d,sizeof(d),reinterpret_cast<void*>(&heading));
+ BYTE eventPrefix[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xfc};stub(0x6e6d8,eventPrefix,sizeof(eventPrefix),reinterpret_cast<void*>(&interaction));
  *reinterpret_cast<DWORD*>(image+0xc12c0)=reinterpret_cast<DWORD>(image+0x6b2d8);*reinterpret_cast<DWORD*>(image+0xc1258)=reinterpret_cast<DWORD>(image+0x652b4);*reinterpret_cast<DWORD*>(image+0xc12a0)=reinterpret_cast<DWORD>(image+0x65504);
  BYTE entry[]={0x55,0x8b,0xec,0x8b,0x11};memcpy(image+0x6e760,entry,5);memset(image+0x6e765,0x90,0x19);BYTE call[]={0xff,0x52,0x74,0x5d,0xc3};memcpy(image+0x6e77e,call,5);
  *reinterpret_cast<DWORD*>(world)=reinterpret_cast<DWORD>(image+0xc12bc);*reinterpret_cast<BYTE**>(world+0x1564)=actor;*reinterpret_cast<BYTE**>(world+0x10c8)=gui;*reinterpret_cast<int*>(gui+0x190)=1;
  *reinterpret_cast<DWORD*>(actor)=reinterpret_cast<DWORD>(image+0xc11e4);*reinterpret_cast<BYTE**>(actor+0x20)=world;*reinterpret_cast<BYTE**>(image+0xf2290)=camera;
+ *reinterpret_cast<int*>(gui+4)=0x42;
  auto view=reinterpret_cast<float*>(camera+0x80);view[0]=view[5]=view[10]=view[15]=1;
  require(installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"passive observer installer without XInput IAT");
  rawUp=true;*reinterpret_cast<float*>(actor+0x148)=1;reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(image+0xc12c0))(world);
@@ -47,7 +51,15 @@ int main(){
  view[0]=0;view[4]=1;view[1]=-1;view[5]=0;axisX=32767;run();require(velocity[1]>29.9f&&std::abs(velocity[0])<.001f,"camera-relative actual native callback");
  physical=true;run();require(velocity[0]==0&&velocity[1]==0&&(image[0xf1b94+VK_LEFT]&0x80),"physical keyboard wins");physical=false;
  connected=false;run();require(velocity[0]==0&&velocity[1]==0,"disconnect stops");connected=true;run();run();require(velocity[0]==0&&velocity[1]==0,"held reconnect cannot resume");axisX=0;run();axisY=32767;run();require(std::abs(velocity[0])>29.9f,"neutral rearm then continuous direction");
- axisY=0;buttons=XINPUT_GAMEPAD_A;run();require(image[0xf1b94+VK_SPACE]==0x81,"exploration confirm uses native space and keeps toggle");
+ *reinterpret_cast<int*>(world+0x15b8)=1;
+ axisY=0;buttons=XINPUT_GAMEPAD_A;run();require(image[0xf1b94+VK_SPACE]==1&&interactions==1,"exploration A dispatches interaction without injecting menu Space");
+ require(*reinterpret_cast<int*>(world+0x15bc)==1,"nearby interaction request comes from native handler");
+ run();require(interactions==1,"held A cannot dispatch interaction twice");
+ *reinterpret_cast<int*>(world+0x15b8)=0;*reinterpret_cast<int*>(world+0x15bc)=0;
+ buttons=0;run();buttons=XINPUT_GAMEPAD_A;run();require(interactions==2&&!*reinterpret_cast<int*>(world+0x15bc),"native proximity gate prevents remote interaction");
+ buttons=0;run();*reinterpret_cast<int*>(gui+0x190)=4;buttons=XINPUT_GAMEPAD_A;run();require(interactions==2&&(image[0xf1b94+VK_LBUTTON]&0x80),"menu confirm clicks without exploration interaction");
+ *reinterpret_cast<int*>(gui+0x190)=1;
+ buttons=0;run();buttons=XINPUT_GAMEPAD_X;run();require(!(image[0xf1b94+VK_LBUTTON]&0x80)&&!velocity[0]&&!velocity[1],"exploration X cannot issue cursor-directed walking");
  buttons=XINPUT_GAMEPAD_START;run();require(image[0xf1b94+VK_RBUTTON]&0x80,"menu maps native right button");
  buttons=0;run();buttons=XINPUT_GAMEPAD_BACK;run();require(modernGamepadMapButtons()==1&&image[0xf1b94+VK_F8]==0,"View button routes only to map observer, never native F8");
  buttons=0;run();buttons=XINPUT_GAMEPAD_RIGHT_THUMB;run();require(modernGamepadMapButtons()==2&&image[0xf1b94+VK_F9]==0,"R3 routes only to minimap observer");
@@ -65,6 +77,7 @@ int main(){
  titleRun(5,0);titleRun(5,XINPUT_GAMEPAD_A);require(!(image[0xf1b94+VK_LBUTTON]&0x80)&&!(image[0xf1b94+VK_ESCAPE]&0x80),"title transition does not receive confirm clicks or skip");
  buttons=0;require(removeModernGamepad(reinterpret_cast<HMODULE>(image)),"integrated rollback");require(*iat==oldIat&&*reinterpret_cast<DWORD*>(image+0xc12c0)==reinterpret_cast<DWORD>(image+0x6b2d8)&&*reinterpret_cast<DWORD*>(image+0xc1258)==reinterpret_cast<DWORD>(image+0x652b4),"all three original slots restored");
  image[0x6e77e]^=1;require(!installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"unknown movement callsite rejects");image[0x6e77e]^=1;
+ image[0x6e6d8]^=1;require(!installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"unknown interaction handler rejects before installing hooks");image[0x6e6d8]^=1;
  SetEnvironmentVariableW(L"MC_MAP_OVERLAY",nullptr);SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",nullptr);VirtualFree(image,0,MEM_RELEASE);
  printf("WORLD_GAMEPAD_FIXTURE PASS checks=%d camera_relative=true analog_speed=true native_movement=true keyboard_priority=true rollback=exact game_started=false\n",checks);
 }

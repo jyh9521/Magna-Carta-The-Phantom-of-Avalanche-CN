@@ -6,6 +6,7 @@
 #include <cmath>
 namespace {
 using Tick=void(__thiscall*)(void*);
+using SceneEvent=int(__thiscall*)(void*,void*,unsigned);
 struct Vector {float x,y,z;};
 using Direction=void(__thiscall*)(void*,Vector);
 BYTE* engine=nullptr;Tick originalTick=nullptr,originalForward=nullptr;Direction originalDirection=nullptr;
@@ -25,7 +26,19 @@ bool controllable(BYTE* s){
 }
 void __fastcall tickHook(void* value,void*){
  BYTE* previous=scene;scene=static_cast<BYTE*>(value);modernGamepadWorldScope(controllable(scene));
- __try {originalTick(value);notifyWorldTickObserver(scene,controllable(scene));}
+ __try {
+  originalTick(value);
+  if(modernGamepadConsumeInteraction()&&controllable(scene)){
+   auto gui=*reinterpret_cast<BYTE**>(scene+0x10c8);
+   if(*reinterpret_cast<int*>(gui+4)==0x42){
+    // Original world handler receives the same exploration GUI/event pair.
+    // Its own proximity/request checks remain authoritative; no scripted action is forced.
+    reinterpret_cast<SceneEvent>(engine+0x6e6d8)(scene,gui,0x11);
+    static LONG used=0;if(InterlockedIncrement(&used)==1&&trace)trace(L"WORLD_GAMEPAD_INTERACTION_APPLIED event=0x11 edge_only=true native_proximity=retained keyboard_space=not_injected");
+   }
+  }
+  notifyWorldTickObserver(scene,controllable(scene));
+ }
  __finally {scene=previous;modernGamepadWorldScope(scene&&controllable(scene));}
 }
 void __fastcall forwardHook(void* actor,void*){
@@ -50,6 +63,8 @@ bool set(BYTE* p,bool enabled,void(*logger)(const wchar_t*),bool dry=false){
  auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+dos->e_lfanew);if(nt->Signature!=IMAGE_NT_SIGNATURE||nt->FileHeader.Machine!=IMAGE_FILE_MACHINE_I386||nt->OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR32_MAGIC||nt->OptionalHeader.SizeOfImage!=0x10b000)return false;
  BYTE tickBytes[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc},forwardBytes[]={0x55,0x8b,0xec,0x83,0xec,0x54,0x89,0x4d,0xac},directionBytes[]={0x55,0x8b,0xec,0x83,0xec,0x1c,0x89,0x4d,0xec};
  if(memcmp(p+0x6b2d8,tickBytes,sizeof(tickBytes))||memcmp(p+0x652b4,forwardBytes,sizeof(forwardBytes))||memcmp(p+0x65504,directionBytes,sizeof(directionBytes)))return false;
+ BYTE eventBytes[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xfc};
+ if(memcmp(p+0x6e6d8,eventBytes,sizeof(eventBytes)))return false;
  BYTE call[]={0xff,0x52,0x74};if(memcmp(p+0x6e77e,call,3))return false;
  auto t=reinterpret_cast<DWORD*>(p+0xc12c0),f=reinterpret_cast<DWORD*>(p+0xc1258),d=reinterpret_cast<DWORD*>(p+0xc12a0);
  DWORD oldT=reinterpret_cast<DWORD>(p+0x6b2d8),oldF=reinterpret_cast<DWORD>(p+0x652b4),newT=reinterpret_cast<DWORD>(&tickHook),newF=reinterpret_cast<DWORD>(&forwardHook);
