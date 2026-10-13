@@ -51,6 +51,18 @@ int main(){
  buttons=XINPUT_GAMEPAD_START;run();require(image[0xf1b94+VK_RBUTTON]&0x80,"menu maps native right button");
  buttons=0;run();buttons=XINPUT_GAMEPAD_BACK;run();require(modernGamepadMapButtons()==1&&image[0xf1b94+VK_F8]==0,"View button routes only to map observer, never native F8");
  buttons=0;run();buttons=XINPUT_GAMEPAD_RIGHT_THUMB;run();require(modernGamepadMapButtons()==2&&image[0xf1b94+VK_F9]==0,"R3 routes only to minimap observer");
+ // Source-shaped title -> input -> real IAT bridge stack. No commercial code runs.
+ memset(image+0x2f95,0x90,0x35);BYTE inputPrologue[]={0x55,0x8b,0xec,0x83,0xec,0x08};memcpy(image+0x2f95,inputPrologue,sizeof(inputPrologue));
+ BYTE epilogue[]={0x8b,0xe5,0x5d,0xc3};memcpy(image+0x2fd5,epilogue,sizeof(epilogue));
+ memset(image+0xb71a6,0x90,0x26);BYTE titlePrologue[]={0x55,0x8b,0xec,0x83,0xec,0x38,0x89,0x4d,0xc8};memcpy(image+0xb71a6,titlePrologue,sizeof(titlePrologue));
+ image[0xb71cc]=0xe8;*reinterpret_cast<int32_t*>(image+0xb71cd)=0x2f95-0xb71d1;memcpy(image+0xb71d1,epilogue,sizeof(epilogue));
+ BYTE title[0x74]{};*reinterpret_cast<DWORD*>(title)=reinterpret_cast<DWORD>(image+0xc22f0);
+ auto titleRun=[&](int phase,WORD pressed){*reinterpret_cast<int*>(title+0x70)=phase;buttons=pressed;reinterpret_cast<void(__thiscall*)(void*)>(image+0xb71a6)(title);};
+ titleRun(1,0);titleRun(1,XINPUT_GAMEPAD_A);
+ require((image[0xf1b94+VK_ESCAPE]&0x80)&&!(image[0xf1b94+VK_SPACE]&0x80),"logo skip uses source Esc not Space through IAT bridge");
+ titleRun(3,0);titleRun(3,XINPUT_GAMEPAD_A);require(image[0xf1b94+VK_ESCAPE]&0x80,"opening skip uses source Esc");
+ titleRun(4,0);titleRun(4,XINPUT_GAMEPAD_A);require(image[0xf1b94+VK_LBUTTON]&0x80,"visible title confirm remains native mouse click");
+ titleRun(5,0);titleRun(5,XINPUT_GAMEPAD_A);require(!(image[0xf1b94+VK_LBUTTON]&0x80)&&!(image[0xf1b94+VK_ESCAPE]&0x80),"title transition does not receive confirm clicks or skip");
  buttons=0;require(removeModernGamepad(reinterpret_cast<HMODULE>(image)),"integrated rollback");require(*iat==oldIat&&*reinterpret_cast<DWORD*>(image+0xc12c0)==reinterpret_cast<DWORD>(image+0x6b2d8)&&*reinterpret_cast<DWORD*>(image+0xc1258)==reinterpret_cast<DWORD>(image+0x652b4),"all three original slots restored");
  image[0x6e77e]^=1;require(!installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"unknown movement callsite rejects");image[0x6e77e]^=1;
  SetEnvironmentVariableW(L"MC_MAP_OVERLAY",nullptr);SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",nullptr);VirtualFree(image,0,MEM_RELEASE);

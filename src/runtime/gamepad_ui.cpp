@@ -13,7 +13,15 @@ using Dispatch=int(__thiscall*)(void*);Dispatch original=nullptr;BYTE* engine=nu
 thread_local unsigned depth=0;DWORD consumed=0,lastRepeat=0;unsigned previousHeld=0;void(*trace)(const wchar_t*)=nullptr;
 bool readable(const void* a,size_t n){auto p=reinterpret_cast<ULONG_PTR>(a),end=p+n;if(!p||end<p)return false;while(p<end){MEMORY_BASIC_INFORMATION m{};if(!VirtualQuery(reinterpret_cast<void*>(p),&m,sizeof(m))||m.State!=MEM_COMMIT||(m.Protect&(PAGE_GUARD|PAGE_NOACCESS)))return false;auto next=reinterpret_cast<ULONG_PTR>(m.BaseAddress)+m.RegionSize;if(next<=p)return false;p=next;}return true;}
 bool gui(BYTE* p){if(!readable(p,0x190))return false;auto vt=*reinterpret_cast<ULONG_PTR*>(p);for(auto slot:slots)if(vt==reinterpret_cast<ULONG_PTR>(engine+slot-0x1c8))return true;return false;}
-bool defaultArrows(BYTE* p){auto vt=*reinterpret_cast<BYTE**>(p);return *reinterpret_cast<ULONG_PTR*>(vt+0xc8)==reinterpret_cast<ULONG_PTR>(engine+0x55b97)&&*reinterpret_cast<ULONG_PTR*>(vt+0xcc)==reinterpret_cast<ULONG_PTR>(engine+0x55b8c)&&*reinterpret_cast<ULONG_PTR*>(vt+0xd0)==reinterpret_cast<ULONG_PTR>(engine+0x55b81)&&*reinterpret_cast<ULONG_PTR*>(vt+0xd4)==reinterpret_cast<ULONG_PTR>(engine+0x55ba2);}
+bool defaultArrows(BYTE* p){
+ auto vt=*reinterpret_cast<BYTE**>(p);
+ // Base GUI pressed-arrow methods forward generic events 3/7/11/15.
+ // The older fixture confused them with unrelated no-op virtual methods.
+ constexpr unsigned forward[]={0x55f0a,0x55f23,0x55f3c,0x55f55};
+ constexpr unsigned noop[]={0x55b97,0x55b8c,0x55b81,0x55ba2};
+ bool generic=true,empty=true;for(unsigned i=0;i<4;++i){auto f=*reinterpret_cast<ULONG_PTR*>(vt+0xc8+i*4);generic&=f==reinterpret_cast<ULONG_PTR>(engine+forward[i]);empty&=f==reinterpret_cast<ULONG_PTR>(engine+noop[i]);}
+ return generic||empty;
+}
 void collect(BYTE* p,std::vector<modern_input::FocusTarget>& out,std::set<BYTE*>& visited,float x,float y,int w,int h,bool& nativeArrowControl){
  if(!gui(p)||visited.size()>=256||!visited.insert(p).second||!*reinterpret_cast<int*>(p+0xe8)||!*reinterpret_cast<int*>(p+0x160))return;
  auto child=*reinterpret_cast<BYTE**>(p+0x18);bool hasChild=false;std::set<BYTE*> chain;

@@ -79,14 +79,16 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     if(ok&&nativeRouting){
         bool clicksAllowed=true;
         uint8_t nativeBindings[7]={VK_UP,VK_DOWN,VK_LEFT,VK_RIGHT,static_cast<uint8_t>(worldScope?VK_SPACE:VK_LBUTTON),VK_RBUTTON,VK_RBUTTON};
-        // Source-bound title frame: use Space for intro skip, clicks for visible menus.
+        // Title update tests key 0x1b and sets +64 for logo/opening skip.
+        // Preserve the native Esc path; Space does not set that skip request.
         if(readable(nativeFrame,8)&&reinterpret_cast<BYTE**>(nativeFrame)[1]==engine+0xb71d1){
             auto parent=*reinterpret_cast<BYTE**>(nativeFrame);
             if(reinterpret_cast<ULONG_PTR>(parent)>0x38&&readable(parent-0x38,4)){
                 auto title=*reinterpret_cast<BYTE**>(parent-0x38);
                 if(readable(title,0x74)&&*reinterpret_cast<ULONG_PTR*>(title)==reinterpret_cast<ULONG_PTR>(engine+0xc22f0)){
                     int phase=*reinterpret_cast<int*>(title+0x70);titlePhase=phase;
-                    if(phase<4)nativeBindings[4]=VK_SPACE;
+                    if(phase==1||phase==3)nativeBindings[4]=VK_ESCAPE;
+                    else if(phase<4){frame.held&=~uint32_t(modern_input::Confirm);clicksAllowed=false;}
                     else if(phase!=4&&phase!=8){frame.held&=~uint32_t(modern_input::Confirm);clicksAllowed=false;}
                 }
             }
