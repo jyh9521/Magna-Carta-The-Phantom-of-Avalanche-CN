@@ -27,7 +27,8 @@ Frame Router::update(const Sample& s,bool on,bool front) {
     bool transition=s.connected!=connected || (s.connected&&s.device!=device) || on!=enabled || front!=foreground;
     connected=s.connected;device=s.device;enabled=on;foreground=front;
     if(transition || !on || !front || !s.connected) {ready=false;axisX=axisY=0;held=0;}
-    bool neutral=s.buttons==0 && s.x>=-config.release && s.x<=config.release && s.y>=-config.release && s.y<=config.release;
+    bool neutral=s.buttons==0 && s.x>=-config.release && s.x<=config.release && s.y>=-config.release && s.y<=config.release
+        && s.rx>=-config.release && s.rx<=config.release && s.ry>=-config.release && s.ry<=config.release && s.lt<=30 && s.rt<=30;
     if(on && front && s.connected && !transition) {
         if(!ready && neutral)ready=true;
         if(ready) {

@@ -8,6 +8,8 @@ struct Sample {
     uint32_t device=0;
     uint16_t buttons=0;
     int16_t x=0,y=0;
+    int16_t rx=0,ry=0;
+    uint8_t lt=0,rt=0;
 };
 struct Config {
     int engage=16000,release=10000;

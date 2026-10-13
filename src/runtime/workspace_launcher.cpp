@@ -164,7 +164,7 @@ int wmain(int argc, wchar_t** argv) {
         }
         fs::path workspace, shim, setting, log;
         std::wstring displayProfile;
-        bool fixture = false, captureException = false, textureLifetime = false, focusGuard = false, nativeTextStep = false, systemMessages = false, modernInput = false, verifyOnly = false; DWORD seconds = 0;
+        bool fixture = false, captureException = false, textureLifetime = false, focusGuard = false, nativeTextStep = false, systemMessages = false, modernInput = false, nativeGamepad = false, verifyOnly = false; DWORD seconds = 0;
         for (int i = 1; i < argc; ++i) {
             std::wstring arg = argv[i];
             if (arg == L"--fixture") fixture = true;
@@ -174,6 +174,7 @@ int wmain(int argc, wchar_t** argv) {
             else if (arg == L"--native-text-step") nativeTextStep = true;
             else if (arg == L"--system-messages") systemMessages = true;
             else if (arg == L"--modern-input") modernInput = true;
+            else if (arg == L"--native-gamepad") {modernInput = true;nativeGamepad = true;}
             else if (i+1<argc&&arg==L"--display-profile") displayProfile=argv[++i];
             else if (arg == L"--verify-only") verifyOnly = true;
             else if (i + 1 < argc && arg == L"--workspace") workspace = fs::canonical(argv[++i]);
@@ -203,7 +204,7 @@ int wmain(int argc, wchar_t** argv) {
         require(!nativeTextStep || !fixture, "Native text step requires a version-locked game workspace");
         require(!modernInput || !fixture,"Modern input requires a version-locked game workspace");
         if(!displayProfile.empty()) {
-            require(!fixture&&!textureLifetime&&!modernInput,"Advanced display excludes other experiments");
+            require(!fixture&&!textureLifetime&&(!modernInput||nativeGamepad),"Advanced display excludes legacy input experiments");
             require(sha256(workspace/L"Asura.dll")=="f81e7c458d43b77210311499b39b9be2c4895e3a3b356d2e848b6e84210d2557","Unsupported advanced animation library");
             require(sha256(workspace/L"Drv"/L"AsrD3DDrv.dll")=="00d443327abf56c94f9f088515ab29be63bab9650771a5cacdcef20ab85eff29","Unsupported advanced driver");
             require(sha256(workspace/L"ddraw.dll")=="f75f0ac48d2782f225c483dc2f1142303a513e8dd8a60793891ade89f64755ea","Unsupported advanced graphics layer");
@@ -254,6 +255,7 @@ int wmain(int argc, wchar_t** argv) {
         SetEnvironmentVariableW(L"MC_WORKSPACE_LOG", log.c_str());
         SetEnvironmentVariableW(L"MC_SYSTEM_MESSAGES",systemMessages?L"1":L"0");
         SetEnvironmentVariableW(L"MC_MODERN_INPUT",modernInput?L"1":L"0");
+        SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",nativeGamepad?L"1":L"0");
         SetEnvironmentVariableW(L"MC_WIDE_DISPLAY",displayProfile==L"wide4k"||displayProfile==L"combined"?L"1":L"0");
         SetEnvironmentVariableW(L"MC_RENDER60",displayProfile==L"fps60"||displayProfile==L"combined"?L"1":L"0");
         SetEnvironmentVariableW(L"MC_CAPTURE_HELPER", captureException ? captureHelper.c_str() : nullptr);

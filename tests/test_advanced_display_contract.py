@@ -11,7 +11,8 @@ class AdvancedDisplayContract(unittest.TestCase):
 
     def test_modes_explicitly_clear_legacy_experiments(self):
         s=(ROOT/'src/runtime/workspace_launcher.cpp').read_text('utf8')
-        self.assertIn('!textureLifetime&&!modernInput',s)
+        self.assertIn('!textureLifetime&&(!modernInput||nativeGamepad)',s)
+        self.assertIn('MC_GAMEPAD_NATIVE',s)
         for flag in ('MC_WIDE_DISPLAY','MC_RENDER60'):
             self.assertIn(flag,s)
         self.assertIn('Advanced mode/config mismatch',s)
