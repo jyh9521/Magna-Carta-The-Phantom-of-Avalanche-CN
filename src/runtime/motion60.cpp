@@ -1,4 +1,5 @@
 #include "motion60.h"
+#include "render_timeline.h"
 #include <intrin.h>
 #include <array>
 #include <vector>
@@ -7,44 +8,69 @@
 #include <algorithm>
 #include <cstring>
 namespace {
-struct Matrix {float v[16];};
-struct Q {float x,y,z,w;};
-Q quaternion(const Matrix& m){
- Q q{};float t=m.v[0]+m.v[5]+m.v[10];
- if(t>0){float s=std::sqrt(t+1)*2;q.w=s/4;q.x=(m.v[9]-m.v[6])/s;q.y=(m.v[2]-m.v[8])/s;q.z=(m.v[4]-m.v[1])/s;}
- else if(m.v[0]>m.v[5]&&m.v[0]>m.v[10]){float s=std::sqrt(1+m.v[0]-m.v[5]-m.v[10])*2;q.w=(m.v[9]-m.v[6])/s;q.x=s/4;q.y=(m.v[1]+m.v[4])/s;q.z=(m.v[2]+m.v[8])/s;}
- else if(m.v[5]>m.v[10]){float s=std::sqrt(1+m.v[5]-m.v[0]-m.v[10])*2;q.w=(m.v[2]-m.v[8])/s;q.x=(m.v[1]+m.v[4])/s;q.y=s/4;q.z=(m.v[6]+m.v[9])/s;}
- else {float s=std::sqrt(1+m.v[10]-m.v[0]-m.v[5])*2;q.w=(m.v[4]-m.v[1])/s;q.x=(m.v[2]+m.v[8])/s;q.y=(m.v[6]+m.v[9])/s;q.z=s/4;}return q;
-}
-bool rigid(const Matrix& m){
- for(float x:m.v)if(!std::isfinite(x))return false;
- for(int r=0;r<3;++r){float n=0;for(int c=0;c<3;++c)n+=m.v[r*4+c]*m.v[r*4+c];if(std::abs(n-1)>0.03f)return false;
- for(int s=0;s<r;++s){float d=0;for(int c=0;c<3;++c)d+=m.v[r*4+c]*m.v[s*4+c];if(std::abs(d)>0.03f)return false;}}
- float det=m.v[0]*(m.v[5]*m.v[10]-m.v[6]*m.v[9])-m.v[1]*(m.v[4]*m.v[10]-m.v[6]*m.v[8])+m.v[2]*(m.v[4]*m.v[9]-m.v[5]*m.v[8]);
- return det>0.97f&&det<1.03f&&std::abs(m.v[3])+std::abs(m.v[7])+std::abs(m.v[11])<0.001f&&std::abs(m.v[15]-1)<0.001f;
-}
-void blend(const Matrix& a,const Matrix& b,float t,Matrix& out){
- out=b;if(t>=1)return;if(t<=0){out=a;return;}if(!rigid(a)||!rigid(b))return;
- Q x=quaternion(a),y=quaternion(b);float dot=x.x*y.x+x.y*y.y+x.z*y.z+x.w*y.w;
- if(dot<0){y.x=-y.x;y.y=-y.y;y.z=-y.z;y.w=-y.w;}
- Q q{x.x+(y.x-x.x)*t,x.y+(y.y-x.y)*t,x.z+(y.z-x.z)*t,x.w+(y.w-x.w)*t};
- float n=std::sqrt(q.x*q.x+q.y*q.y+q.z*q.z+q.w*q.w);if(n<0.001f)return;q.x/=n;q.y/=n;q.z/=n;q.w/=n;
- out.v[0]=1-2*(q.y*q.y+q.z*q.z);out.v[1]=2*(q.x*q.y-q.z*q.w);out.v[2]=2*(q.x*q.z+q.y*q.w);
- out.v[4]=2*(q.x*q.y+q.z*q.w);out.v[5]=1-2*(q.x*q.x+q.z*q.z);out.v[6]=2*(q.y*q.z-q.x*q.w);
- out.v[8]=2*(q.x*q.z-q.y*q.w);out.v[9]=2*(q.y*q.z+q.x*q.w);out.v[10]=1-2*(q.x*q.x+q.y*q.y);
- for(int i=12;i<15;++i)out.v[i]=a.v[i]+(b.v[i]-a.v[i])*t;
-}
+using Matrix=motion::Matrix;
+using motion::blend;
 using Render=void(__thiscall*)(void*,int,Matrix*,int,int,int,int,int);
 using Absolute=void(__cdecl*)(void*,unsigned,Matrix*,Matrix*);
 Render originalRender=nullptr;Absolute originalAbsolute=nullptr;BYTE* engineBase=nullptr;
 void(*trace)(const wchar_t*)=nullptr;
-struct Cache{void* action=nullptr;void* bones=nullptr;Matrix* pose=nullptr;int frame=0;LONGLONG changed=0,last=0;std::vector<Matrix> previous,current;};
+bool complete=false;
+bool readable(const void*,size_t);
+DWORD timelineThread=0;
+motion::Timeline timeline;
+using LoadMatrix=void(__thiscall*)(void*,Matrix*);
+LoadMatrix originalLoad=nullptr,originalMultiply=nullptr;
+BYTE* driverBase=nullptr;
+motion::TransformTrack cameraTrack;
+struct CameraState {void* identity=nullptr;Matrix original{},applied{};bool valid=false;};
+thread_local CameraState cameraState;
+ULONG_PTR timerResume=0;
+constexpr BYTE timerOriginal[]={0x8b,0x55,0xf8,0x8b,0x45,0xec};
+void __cdecl captureTimer(BYTE* manager,BYTE* info,unsigned consumed,unsigned elapsed){
+ if(manager!=engineBase+0xf2250||!readable(info,0x24)||*reinterpret_cast<unsigned*>(info+8)!=33)return;
+ timelineThread=GetCurrentThreadId();
+ timeline.observe(*reinterpret_cast<ULONG_PTR*>(info+4),33,*reinterpret_cast<unsigned*>(info+0x10),consumed,
+                  *reinterpret_cast<unsigned*>(manager+0x24),*reinterpret_cast<int*>(info+0x1c)==0&&elapsed<=250);
+ cameraState.valid=false;
+ static LONG captured=0;if(timeline.phase().valid&&InterlockedIncrement(&captured)==1&&trace)trace(L"MOTION60_CLOCK_APPLIED interval_ms=33 phase=callback_remainder controller=source_locked");
+}
+__declspec(naked) void timerThunk(){__asm {
+ pushfd
+ pushad
+ push dword ptr[ebp-10h]
+ push dword ptr[ebp-4]
+ push dword ptr[ebp-8]
+ push dword ptr[ebp-14h]
+ call captureTimer
+ add esp,16
+ popad
+ popfd
+ mov edx,dword ptr[ebp-8]
+ mov eax,dword ptr[ebp-14h]
+ jmp dword ptr[timerResume]
+}}
+struct Cache{void* action=nullptr;void* bones=nullptr;Matrix* pose=nullptr;int frame=0;LONGLONG changed=0,last=0;motion::Phase phase{};motion::TransformTrack world;std::vector<Matrix> previous,current;};
 std::map<void*,Cache> caches;SRWLOCK cacheLock=SRWLOCK_INIT;LONGLONG frequency=0;
 #ifdef MOTION60_TEST
 bool fixtureClock=false;LONGLONG fixtureTicks=0;
 #endif
-struct Context{void* object;int frame;Matrix* pose=nullptr;std::vector<Matrix> baseline;Context* parent;};
+struct Context{void* object;int frame;Matrix* pose=nullptr;std::vector<Matrix> baseline;Context* parent;Matrix* world=nullptr;Matrix baselineWorld{};};
 thread_local Context* active=nullptr;volatile LONG changes=0;
+motion::Phase renderPhase(){return timelineThread==GetCurrentThreadId()?timeline.phase():motion::Phase{};}
+void cameraMatrix(void* driver,Matrix* matrix,LoadMatrix original){
+ if(!complete||!engineBase||!readable(matrix,sizeof(Matrix))||!readable(driver,0x60)
+    ||*reinterpret_cast<unsigned*>(static_cast<BYTE*>(driver)+0x58)!=0x1700){original(driver,matrix);return;}
+ auto camera=*reinterpret_cast<BYTE**>(engineBase+0xf2290);
+ if(!camera||matrix!=reinterpret_cast<Matrix*>(camera+0x80)){original(driver,matrix);return;}
+ auto phase=renderPhase();if(!phase.valid){cameraTrack.reset();cameraState.valid=false;original(driver,matrix);return;}
+ if(cameraState.identity!=camera){cameraTrack.reset();cameraState.identity=camera;}
+ cameraState.original=*matrix;cameraState.applied=cameraTrack.sample(*matrix,phase,true);
+ cameraState.valid=motion::rigid(cameraState.original)&&motion::rigid(cameraState.applied);
+ Matrix copy=cameraState.applied;original(driver,&copy);
+ static LONG applied=0;if(cameraState.valid&&InterlockedIncrement(&applied)==1&&trace)trace(L"MOTION60_CAMERA_APPLIED phase=engine_remainder original_camera=unchanged");
+}
+void __fastcall loadHook(void* d,void*,Matrix* m){cameraMatrix(d,m,originalLoad);}
+void __fastcall multiplyHook(void* d,void*,Matrix* m){cameraMatrix(d,m,originalMultiply);}
 bool readable(const void* address,size_t length){
  if(!address||!length)return false;auto p=reinterpret_cast<ULONG_PTR>(address);if(p+length<p)return false;auto end=p+length;
  while(p<end){MEMORY_BASIC_INFORMATION m{};if(!VirtualQuery(reinterpret_cast<void*>(p),&m,sizeof(m))||m.State!=MEM_COMMIT||(m.Protect&(PAGE_GUARD|PAGE_NOACCESS)))return false;auto next=reinterpret_cast<ULONG_PTR>(m.BaseAddress)+m.RegionSize;if(next<=p)return false;p=next;}return true;
@@ -57,6 +83,8 @@ return reinterpret_cast<BYTE*>(caller)==engineBase+0x3b801;
 #endif
 }
 void __cdecl absoluteHook(void* bones,unsigned root,Matrix* poses,Matrix* parent){
+ auto phase=renderPhase();
+ if(complete&&!phase.valid){originalAbsolute(bones,root,poses,parent);return;}
  if(!active||!sourceCall(_ReturnAddress())||root||parent||!readable(active->object,0x100)){originalAbsolute(bones,root,poses,parent);return;}
  BYTE* object=static_cast<BYTE*>(active->object);void* action=*reinterpret_cast<void**>(object+0xa0);
  if(!readable(action,0x20)||*reinterpret_cast<Matrix**>(object+0x8c)!=poses){originalAbsolute(bones,root,poses,parent);return;}
@@ -77,30 +105,66 @@ for(auto i=caches.begin();i!=caches.end();)if(now.QuadPart-i->second.last>freque
 if(caches.size()>=128){lock.release();originalAbsolute(bones,root,poses,parent);return;}
 }
 auto& c=caches[active->object];bool reset=c.current.size()!=count||c.action!=action||c.bones!=bones||c.pose!=poses||now.QuadPart-c.last>frequency/4;
+ if(complete&&(c.phase.generation!=phase.generation||phase.tick<c.phase.tick||phase.tick>c.phase.tick+1))reset=true;
  if(!reset&&active->frame==c.frame&&memcmp(current.data(),c.current.data(),count*sizeof(Matrix)))reset=true;
  if(!reset&&active->frame!=c.frame&&active->frame!=c.frame+1)reset=true;
- if(reset){c.previous=current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;c.action=action;c.bones=bones;c.pose=poses;}
- else if(active->frame!=c.frame){c.previous=c.current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;}
+ if(reset){c.previous=current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;c.action=action;c.bones=bones;c.pose=poses;c.world.reset();}
+ else if(active->frame!=c.frame||(complete&&phase.tick!=c.phase.tick)){c.previous=c.current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;}
  c.last=now.QuadPart;float alpha=frequency?static_cast<float>((now.QuadPart-c.changed)*1000.0/(frequency*33.0)):1;alpha=(std::max)(0.f,(std::min)(1.f,alpha));
+ if(complete){alpha=phase.alpha;c.phase=phase;}
  for(unsigned i=0;i<count;++i)blend(c.previous[i],c.current[i],alpha,interpolated[i]);
+ Matrix interpolatedWorld{};bool worldValid=false;
+ auto world=reinterpret_cast<Matrix*>(object+0xc);
+ if(complete&&cameraState.valid&&motion::rigid(*world)){
+  // Asura matrices are column-major: modelview = view * actorWorld.
+  auto actorWorld=motion::multiply(motion::inverseRigid(cameraState.applied),*world);
+  if(motion::rigid(actorWorld)){
+   interpolatedWorld=motion::multiply(cameraState.applied,c.world.sample(actorWorld,phase));
+   active->world=world;active->baselineWorld=motion::multiply(cameraState.original,actorWorld);worldValid=true;
+  }
+ }
  if(caches.size()>128)for(auto i=caches.begin();i!=caches.end();)if(i->first!=active->object&&now.QuadPart-i->second.last>frequency/4)i=caches.erase(i);else ++i;
  lock.release();
  // Obtain the exact unmodified absolute output first; restore it after drawing.
  active->baseline.resize(count);originalAbsolute(bones,root,poses,parent);memcpy(active->baseline.data(),poses,count*sizeof(Matrix));active->pose=poses;
  memcpy(poses,interpolated.data(),count*sizeof(Matrix));originalAbsolute(bones,root,poses,parent);
- if(InterlockedIncrement(&changes)==1&&trace)trace(L"MOTION60_POSE_APPLIED scope=skeletal_local_pose logic_interval_ms=33 world_camera=unchanged latency_ticks=1");
+ if(worldValid)*world=interpolatedWorld;
+ static LONG worldChanges=0;if(worldValid&&InterlockedIncrement(&worldChanges)==1&&trace)trace(L"MOTION60_WORLD_APPLIED phase=engine_remainder camera_removed_before_blend=true restore=original_modelview");
+ if(InterlockedIncrement(&changes)==1&&trace)trace(complete?L"MOTION60_POSE_APPLIED phase=engine_remainder world_camera=interpolated latency_ticks=1":L"MOTION60_POSE_APPLIED scope=skeletal_local_pose logic_interval_ms=33 world_camera=unchanged latency_ticks=1");
 }
 void renderScoped(Context* ctx,void* object,int frame,Matrix* world,int a,int b,int c,int d,int e){
  __try {active=ctx;originalRender(object,frame,world,a,b,c,d,e);}
- __finally {if(ctx->pose&&!ctx->baseline.empty())memcpy(ctx->pose,ctx->baseline.data(),ctx->baseline.size()*sizeof(Matrix));active=ctx->parent;}
+ __finally {if(ctx->pose&&!ctx->baseline.empty())memcpy(ctx->pose,ctx->baseline.data(),ctx->baseline.size()*sizeof(Matrix));if(ctx->world)*ctx->world=ctx->baselineWorld;active=ctx->parent;}
 }
 void __fastcall renderHook(void* object,void*,int frame,Matrix* world,int a,int b,int c,int d,int e){
  Context ctx{object,frame,nullptr,{},active};renderScoped(&ctx,object,frame,world,a,b,c,d,e);
 }
 bool write(void* p,DWORD value){DWORD old;if(!VirtualProtect(p,4,PAGE_READWRITE,&old))return false;DWORD before=*static_cast<DWORD*>(p);*static_cast<DWORD*>(p)=value;DWORD unused;if(VirtualProtect(p,4,old,&unused))return true;*static_cast<DWORD*>(p)=before;VirtualProtect(p,4,old,&unused);return false;}
+bool timerMatches(BYTE* p){
+ if(!readable(p+0xcf61,6))return false;
+ BYTE patched[]={0xe9,0,0,0,0,0x90};*reinterpret_cast<int32_t*>(patched+1)=static_cast<int32_t>(reinterpret_cast<ULONG_PTR>(&timerThunk)-reinterpret_cast<ULONG_PTR>(p+0xcf66));
+ return !memcmp(p+0xcf61,timerOriginal,6)||!memcmp(p+0xcf61,patched,6);
+}
+bool timerPatch(BYTE* p,bool enabled){
+ BYTE patched[]={0xe9,0,0,0,0,0x90};*reinterpret_cast<int32_t*>(patched+1)=static_cast<int32_t>(reinterpret_cast<ULONG_PTR>(&timerThunk)-reinterpret_cast<ULONG_PTR>(p+0xcf66));
+ if(memcmp(p+0xcf61,timerOriginal,6)&&memcmp(p+0xcf61,patched,6))return false;
+ BYTE before[6];memcpy(before,p+0xcf61,6);DWORD old;if(!VirtualProtect(p+0xcf61,6,PAGE_EXECUTE_READWRITE,&old))return false;
+ timerResume=reinterpret_cast<ULONG_PTR>(p+0xcf67);memcpy(p+0xcf61,enabled?patched:timerOriginal,6);
+ bool ok=FlushInstructionCache(GetCurrentProcess(),p+0xcf61,6)!=FALSE;DWORD ignored;
+ if(!ok||!VirtualProtect(p+0xcf61,6,old,&ignored)){memcpy(p+0xcf61,before,6);FlushInstructionCache(GetCurrentProcess(),p+0xcf61,6);VirtualProtect(p+0xcf61,6,old,&ignored);return false;}
+ timeline.reset();cameraTrack.reset();cameraState={};return true;
+}
 }
 namespace {
 bool headerMatches(BYTE* p,size_t n){if(!readable(p,n)||n<0x10b000)return false;auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);if(d->e_magic!=IMAGE_DOS_SIGNATURE||d->e_lfanew<=0||d->e_lfanew>4096)return false;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+d->e_lfanew);return nt->Signature==IMAGE_NT_SIGNATURE&&nt->FileHeader.Machine==IMAGE_FILE_MACHINE_I386&&nt->OptionalHeader.Magic==IMAGE_NT_OPTIONAL_HDR32_MAGIC&&nt->OptionalHeader.SizeOfImage==0x10b000;}
+bool mappedMatches(BYTE* p,size_t n,Absolute absolute){
+ if(!headerMatches(p,n)||!absolute)return false;
+ BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0x04,0x03,0x00,0x00,0x56,0x57},call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);
+ if(memcmp(p+0x3b0c0,prefix,sizeof(prefix))||memcmp(p+0x3b7fb,call,sizeof(call)))return false;
+ DWORD slot=*reinterpret_cast<DWORD*>(p+0xbd9f8),iat=*reinterpret_cast<DWORD*>(p+0xbd0a4);
+ return (slot==reinterpret_cast<DWORD>(p+0x3b0c0)&&iat==reinterpret_cast<DWORD>(absolute))||
+ (slot==reinterpret_cast<DWORD>(&renderHook)&&iat==reinterpret_cast<DWORD>(&absoluteHook)&&engineBase==p&&originalAbsolute==absolute);
+}
 bool setMapped(BYTE* p,size_t n,Absolute absolute,bool enabled,void(*logger)(const wchar_t*)){
  if(!headerMatches(p,n)||!absolute)return false;
  BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0x04,0x03,0x00,0x00,0x56,0x57};BYTE call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);
@@ -123,9 +187,43 @@ bool installMotion60(HMODULE engine,void(*logger)(const wchar_t*)){
  HMODULE asura=GetModuleHandleW(L"Asura.dll");if(!asura)return false;auto p=reinterpret_cast<BYTE*>(asura);
  auto absolute=GetProcAddress(asura,"?MakeAbsoluteMatrix@@YAXPAUASRBone@@IPAVASRMatrix@@1@Z");BYTE prefix[]={0x55,0x8b,0xec,0x83,0xec,0x44,0x56,0x57};
  if(absolute!=reinterpret_cast<FARPROC>(p+0x44f0d)||!readable(p+0x44f0d,sizeof(prefix))||memcmp(p+0x44f0d,prefix,sizeof(prefix)))return false;
- return setMapped(reinterpret_cast<BYTE*>(engine),0x10b000,reinterpret_cast<Absolute>(absolute),true,logger);
+ auto base=reinterpret_cast<BYTE*>(engine);wchar_t flag[8]{};complete=GetEnvironmentVariableW(L"MC_MOTION60_COMPLETE",flag,8)==1&&flag[0]==L'1';
+ if(!headerMatches(base,0x10b000)||(complete&&!timerMatches(base)))return false;
+ if(!setMapped(base,0x10b000,reinterpret_cast<Absolute>(absolute),true,logger))return false;
+ if(complete&&!timerPatch(base,true)){setMapped(base,0x10b000,reinterpret_cast<Absolute>(absolute),false,nullptr);return false;}
+ if(complete&&logger)logger(L"MOTION60_COMPLETE_READY clock=engine_fixed_step world=source_locked camera=source_locked logic_events=unchanged");return true;
 }
-bool removeMotion60(HMODULE engine){return engineBase==reinterpret_cast<BYTE*>(engine)&&setMapped(engineBase,0x10b000,originalAbsolute,false,nullptr);}
+bool removeMotion60(HMODULE engine){
+ if(engineBase!=reinterpret_cast<BYTE*>(engine))return false;
+ if(!mappedMatches(engineBase,0x10b000,originalAbsolute)||(complete&&!timerMatches(engineBase)))return false;
+ if(complete&&!timerPatch(engineBase,false))return false;
+ return setMapped(engineBase,0x10b000,originalAbsolute,false,nullptr);
+}
+namespace {
+bool setDriver(BYTE* p,bool enabled,void(*logger)(const wchar_t*)){
+ if(!readable(p,0x2c000))return false;
+ auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(p);if(dos->e_magic!=IMAGE_DOS_SIGNATURE||dos->e_lfanew<=0||dos->e_lfanew>4096)return false;
+ auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+dos->e_lfanew);if(nt->Signature!=IMAGE_NT_SIGNATURE||nt->FileHeader.Machine!=IMAGE_FILE_MACHINE_I386||nt->OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR32_MAGIC||nt->OptionalHeader.SizeOfImage!=0x2c000)return false;
+ BYTE loadPrefix[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xfc};
+ BYTE multiplyPrefix[]={0x55,0x8b,0xec,0x81,0xec,0x48,0x02,0x00,0x00,0x56,0x57};
+ if(memcmp(p+0x356a,loadPrefix,sizeof(loadPrefix))||memcmp(p+0x7036,multiplyPrefix,sizeof(multiplyPrefix)))return false;
+ auto load=reinterpret_cast<DWORD*>(p+0x1a838),mul=reinterpret_cast<DWORD*>(p+0x1a878);
+ DWORD originalA=reinterpret_cast<DWORD>(p+0x356a),originalB=reinterpret_cast<DWORD>(p+0x7036);
+ DWORD hookA=reinterpret_cast<DWORD>(&loadHook),hookB=reinterpret_cast<DWORD>(&multiplyHook);
+ bool patched=*load==hookA&&*mul==hookB&&driverBase==p,clean=*load==originalA&&*mul==originalB;
+ if(!patched&&!clean)return false;
+ if(enabled&&patched)return true;if(!enabled&&clean)return true;
+ if(!enabled){if(!write(load,originalA))return false;if(!write(mul,originalB)){write(load,hookA);return false;}cameraTrack.reset();cameraState={};return true;}
+ originalLoad=reinterpret_cast<LoadMatrix>(originalA);originalMultiply=reinterpret_cast<LoadMatrix>(originalB);
+ if(!write(load,hookA))return false;if(!write(mul,hookB)){write(load,originalA);return false;}
+ driverBase=p;if(logger)logger(L"MOTION60_CAMERA_READY scope=active_camera_modelview load_multiply=guarded ui_projection=unchanged");return true;
+}
+}
+bool installMotion60Driver(HMODULE module,void(*logger)(const wchar_t*)){
+ wchar_t flag[8]{};if(GetEnvironmentVariableW(L"MC_MOTION60_COMPLETE",flag,8)!=1||flag[0]!=L'1')return true;
+ return setDriver(reinterpret_cast<BYTE*>(module),true,logger);
+}
+bool removeMotion60Driver(HMODULE module){return setDriver(reinterpret_cast<BYTE*>(module),false,nullptr);}
 #ifdef MOTION60_TEST
 bool motion60TestSetMapped(BYTE* p,size_t n,MotionAbsoluteFn a,bool enabled){return setMapped(p,n,reinterpret_cast<Absolute>(a),enabled,nullptr);}
 void motion60TestInitialize(BYTE* p,MotionAbsoluteFn a){memset(p,0,0x10b000);auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);d->e_magic=IMAGE_DOS_SIGNATURE;d->e_lfanew=0x100;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+0x100);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0x04,0x03,0x00,0x00,0x56,0x57};memcpy(p+0x3b0c0,prefix,sizeof(prefix));BYTE call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);memcpy(p+0x3b7fb,call,sizeof(call));*reinterpret_cast<DWORD*>(p+0xbd9f8)=reinterpret_cast<DWORD>(p+0x3b0c0);*reinterpret_cast<DWORD*>(p+0xbd0a4)=reinterpret_cast<DWORD>(a);}
@@ -134,4 +232,9 @@ void motion60TestSetTime(double milliseconds){fixtureClock=true;fixtureTicks=sta
 void motion60TestRender(void* o,int f){renderHook(o,nullptr,f,nullptr,0,0,0,0,0);}
 void motion60TestAbsolute(void* b,unsigned r,MotionMatrix* p,MotionMatrix* parent){absoluteHook(b,r,reinterpret_cast<Matrix*>(p),reinterpret_cast<Matrix*>(parent));}
 void motion60TestBlend(const MotionMatrix& a,const MotionMatrix& b,float t,MotionMatrix& out){blend(reinterpret_cast<const Matrix&>(a),reinterpret_cast<const Matrix&>(b),t,reinterpret_cast<Matrix&>(out));}
+void motion60TestComplete(BYTE* p,bool enabled){engineBase=p;complete=enabled;timeline.reset();timelineThread=GetCurrentThreadId();cameraState={};cameraTrack.reset();caches.clear();}
+void motion60TestTick(unsigned consumed,unsigned remainder,unsigned timestamp){timeline.observe(1,33,remainder,consumed,timestamp,true);cameraState.valid=false;}
+void motion60TestCamera(void* d,MotionMatrix* m,void(__thiscall* f)(void*,MotionMatrix*)){cameraMatrix(d,reinterpret_cast<Matrix*>(m),reinterpret_cast<LoadMatrix>(f));}
+bool motion60TestTimerPatch(BYTE* p,bool enabled){return timerPatch(p,enabled);}
+bool motion60TestDriverSet(BYTE* p,bool enabled){return setDriver(p,enabled,nullptr);}
 #endif

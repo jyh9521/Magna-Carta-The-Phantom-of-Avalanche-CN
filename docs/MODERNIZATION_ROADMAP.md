@@ -1,5 +1,7 @@
 # 现代 Windows 与无盘运行技术路线
 
+最新玩家确认与任务顺序见[现代化推进顺序](MODERNIZATION_SEQUENCE.md)。宽屏、4K及高清标题已收到正常反馈；完整动作60FPS候选见[共享相位插值](ANIMATION_60_COMPLETION.md)。以下早期状态保留历史依据，不能代替最新阶段记录。
+
 更新：2026-10-12。目标平台：Windows 10 / Windows 11（64 位）。
 2026-10-13当前阶段覆盖：汉化内容按用户决定冻结，进入现代输入与引擎稳定性工作。首轮XInput输入边界候选及验证见[MODERN_INPUT.md](MODERN_INPUT.md)，缺陷证据与高级增强门槛见[MODERNIZATION_BUGS.md](MODERNIZATION_BUGS.md)。首轮候选不代表P2/P3已经完成。
 后续用户反馈摇杆仍为坦克操作、其他按钮不好用；P2挂起。P3首轮已提供2160行、摄像机/投影16:9以及保留33ms逻辑的60Hz呈现候选，见[实现与证据](ADVANCED_DISPLAY_IMPLEMENTATION.md)和[五入口验收](ADVANCED_DISPLAY_ACCEPTANCE.md)。用户选择手动验收；全流程宽屏UI、裁剪与动画插值尚未验收，不将首轮候选计为P3全部完成。

@@ -141,6 +141,7 @@ void patch(HMODULE module) {
     base = base ? base + 1 : path;
     if((wideDisplay||render60)&&!_wcsicmp(base,L"AsrD3DDrv.dll")) {
         if(!installAdvancedDriver(module,wideDisplay,render60,trace)){trace(L"ADVANCED_DRIVER_REJECTED");ExitProcess(125);}
+        if(render60&&!installMotion60Driver(module,trace)){trace(L"MOTION60_CAMERA_REJECTED");ExitProcess(125);}
         return;
     }
     if (textureLifetime && !_wcsicmp(base, L"AsrD3DDrv.dll")) {

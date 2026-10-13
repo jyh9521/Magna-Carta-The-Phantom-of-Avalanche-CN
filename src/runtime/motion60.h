@@ -2,9 +2,16 @@
 #include <windows.h>
 bool removeMotion60(HMODULE engine);
 bool installMotion60(HMODULE engine, void(*logger)(const wchar_t*));
+bool installMotion60Driver(HMODULE driver,void(*logger)(const wchar_t*));
+bool removeMotion60Driver(HMODULE driver);
 #ifdef MOTION60_TEST
 struct MotionMatrix { float v[16]; };
 void motion60TestBlend(const MotionMatrix&,const MotionMatrix&,float,MotionMatrix&);
+void motion60TestComplete(BYTE* engine,bool enabled);
+void motion60TestTick(unsigned consumed,unsigned remainder,unsigned timestamp);
+void motion60TestCamera(void* driver,MotionMatrix*,void(__thiscall*)(void*,MotionMatrix*));
+bool motion60TestTimerPatch(BYTE*,bool);
+bool motion60TestDriverSet(BYTE*,bool);
 #endif
 #ifdef MOTION60_TEST
 using MotionRenderFn=void(__thiscall*)(void*,int,MotionMatrix*,int,int,int,int,int);
