@@ -54,3 +54,5 @@ python PACKAGE/apply_locale.py rollback --package PACKAGE --source SOURCE --targ
 实际截图中的旧字描边残痕已按完整清理轮廓修正；202份图像复核、985→0像素对照、源保护和独立回滚见[IMAGE_RESIDUE_FIX.md](IMAGE_RESIDUE_FIX.md)。不将静态清理通过称作完整游戏内验收。
 
 主界面改为两行银白艺术字及横线，菜单提高对比度；前景英文撤换、尾字跨tile修复、源保护及可复现素材见[TITLE_ARTWORK.md](TITLE_ARTWORK.md)。当前图像203份、完整增量635资源，实际新标题显示待观察。
+
+2026-10-13显示反馈修正：灰度字体覆盖、首套誓言以640可见域居中、音量黑条与注意提示清理、178份Field保存地点及21旧地点显示规则，见[UI_READABILITY_FIX.md](UI_READABILITY_FIX.md)。资源增量813份，原保存文件及人物名称不改写。

@@ -4,6 +4,7 @@
 #include "texture_lifetime.h"
 #include "focus_guard.h"
 #include "native_text_step.h"
+#include "native_font.h"
 #include "system_messages.h"
 
 namespace {
@@ -158,6 +159,12 @@ void patch(HMODULE module) {
     if (localizedModule && !systemMessageModuleMatches(module)) {
         trace(L"SYSTEM_MESSAGES_REJECTED");ExitProcess(125);
     }
+#ifdef NATIVE_FONT_DATA_HEADER
+    if (localizedModule && !installNativeFont(module)) {
+        trace(L"NATIVE_FONT_REJECTED");ExitProcess(125);
+    }
+    if (localizedModule) trace(L"NATIVE_FONT_READY");
+#endif
     auto dir = nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT];
     if (!dir.VirtualAddress || dir.VirtualAddress >= nt->OptionalHeader.SizeOfImage) return;
     unsigned changes = 0;

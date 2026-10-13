@@ -1,0 +1,1613 @@
+{
+  "schema": 1,
+  "kind": "fixed_field_display_labels",
+  "evidence": "MCAlpha 0x52065f90 reads 18 bytes at file offset252 into object+0x110; save/load 0x520844b9 and 0x520b8572 read 18-byte saved labels. Numeric field IDs and remaining bytes stay exact.",
+  "preserved_test_labels": [
+    "찬영이필드",
+    "마그나카르타장소"
+  ],
+  "resources": [
+    {
+      "resource": "Field/0468.fld",
+      "source_sha256": "78ea55e756f920b023945f3ad4dfe4daf785133ea85a1796a2242d22f3ce1b5d",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0469.fld",
+      "source_sha256": "fca89059ae618451384a70784b1e839f3fd947378fc70967763fc124a929404a",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0470.fld",
+      "source_sha256": "f7595ab693601b91e9df1c92a512cff9170e54849d5ec7a7e17ef90d1d5f1283",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0471.fld",
+      "source_sha256": "15bff31dbcb1af62da2c0c1b8d1fe297ce95f76f0f5d3ea9ed7026df9ae906ab",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0472.fld",
+      "source_sha256": "bbb01138b75e7a8981ce2bc738f31660dfabc1d20a565f9c14ed6b2e9952dc58",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0473.fld",
+      "source_sha256": "3dd2867aeef9c4cb87115a60dc878002ea0fb99f2351d9bcf6cf1f407aac9997",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0474.fld",
+      "source_sha256": "b5198ce5195681c9919d241b74f088043114a964df19de33ad0dee56e4f50ff9",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0475.fld",
+      "source_sha256": "c1330978683da14ad5c30bffc800d0c8ebda5551c41d19755c37d33ea7f9a4ef",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0502.fld",
+      "source_sha256": "653fd67f2156558f872afd0c541196f4ff334988291ced0a56c45629083260d0",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0503.fld",
+      "source_sha256": "2a34d75dac77e7ea5a11b9df1f4abcaff2e064e93ca7e0a4332caffe7a8cb9bf",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0504.fld",
+      "source_sha256": "b600cb31f415e81cc695f1d63721d7b018a31a0fa713dffd247e3c4ea6411b85",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0505.fld",
+      "source_sha256": "b8b43b96610b75e67e2d738573dc19e60ea83ad18706945a47e4a15d0230cf00",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0506.fld",
+      "source_sha256": "104a547b0abc47447e38df91dcda485c7277ddfe4eea4a05a433789fda8d4ff3",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0507.fld",
+      "source_sha256": "8e2f79dd94e8b67f6bde24b0c27375cce75a99fe3a96aa8e2add0379f7eab37d",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0508.fld",
+      "source_sha256": "1e4a6c1a519c16b1a81860b89dcdc03bae902c24e8f59af11ef8cc0002d52a0b",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0509.fld",
+      "source_sha256": "3c3c1db5c6f07713848b2ec595fb33d7e0bf93393c63f9f4672255a82fd8debc",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0523.fld",
+      "source_sha256": "fd9c44aaf7e39b71b11d1b4f3c0ecb10854376dd817ff33c5955bb993ac451b1",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cebfa3b5e5b8aeb0a1b5b5000000000000",
+      "source": "로엔드리가도",
+      "target": "罗恩德里大道"
+    },
+    {
+      "resource": "Field/0524.fld",
+      "source_sha256": "119f8c6141eabac76afff370feb3c3ddf5690644793605348f986e1bcd80c3c0",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cebfa3b5e5b8aeb0a1b5b5000000000000",
+      "source": "로엔드리가도",
+      "target": "罗恩德里大道"
+    },
+    {
+      "resource": "Field/0525.fld",
+      "source_sha256": "1fd481f35a0ca664a54abdc0b6fe584ef6c16dca551171c655a82ed68591109a",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cebfa3b5e5b8aeb0a1b5b5000000000000",
+      "source": "로엔드리가도",
+      "target": "罗恩德里大道"
+    },
+    {
+      "resource": "Field/0526.fld",
+      "source_sha256": "1c9dea24e99b29dde77af866a24ddcf706d47a3501a33116e5dd1ef8985802f8",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cebfa3b5e5b8aeb0a1b5b5000000000000",
+      "source": "로엔드리가도",
+      "target": "罗恩德里大道"
+    },
+    {
+      "resource": "Field/0527.fld",
+      "source_sha256": "a722d7ae25b4e689a5c1a0aaf1f5d8dc85428aa0d06c3ce575d23d029db42a12",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cec0a3bda3000000000000000000000000",
+      "source": "로웰숲",
+      "target": "罗韦尔森林"
+    },
+    {
+      "resource": "Field/0528.fld",
+      "source_sha256": "82475e7331d6f8425a91febd9d069dc691bb503bf60728d4d8c162b5c150edee",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cec0a3bda3000000000000000000000000",
+      "source": "로웰숲",
+      "target": "罗韦尔森林"
+    },
+    {
+      "resource": "Field/0529.fld",
+      "source_sha256": "81cd2e565ab3d20b9ffcd6ba9c78d3adfd1ee380a1e9561aa1ef723834b0226a",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cec0a3bda3000000000000000000000000",
+      "source": "로웰숲",
+      "target": "罗韦尔森林"
+    },
+    {
+      "resource": "Field/0530.fld",
+      "source_sha256": "506f8893b113587bd1ce26c196de42f828e16199bd8781c206a436a84109b37a",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cec0a3bda3000000000000000000000000",
+      "source": "로웰숲",
+      "target": "罗韦尔森林"
+    },
+    {
+      "resource": "Field/0531.fld",
+      "source_sha256": "489fbcbdbdcf7e152082ba352130a5e360947ceb0cbaeae0fda98368c08f0c68",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cec0a3bda3000000000000000000000000",
+      "source": "로웰숲",
+      "target": "罗韦尔森林"
+    },
+    {
+      "resource": "Field/0532.fld",
+      "source_sha256": "ad3c405743aff1eb79dc3dacd485083cbf31f5727b2a647ec51433a844a40af6",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cec0a3bda3000000000000000000000000",
+      "source": "로웰숲",
+      "target": "罗韦尔森林"
+    },
+    {
+      "resource": "Field/0537.fld",
+      "source_sha256": "6343261036ce5553cc1771e145c7db4800985151374081b63e22b226076fc66a",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3c6f2bff800000000000000000000",
+      "source": "론웰평원",
+      "target": "隆韦尔平原"
+    },
+    {
+      "resource": "Field/0538.fld",
+      "source_sha256": "3d1392595e152199d53e9b474d175d7e08c12ba537980484e3d2df66be0af341",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3c6f2bff800000000000000000000",
+      "source": "론웰평원",
+      "target": "隆韦尔平原"
+    },
+    {
+      "resource": "Field/0539.fld",
+      "source_sha256": "8584977220a214e2be9368b9f00b328834d31e7dfb16e05f2b86045b8dde0cc0",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3c6f2bff800000000000000000000",
+      "source": "론웰평원",
+      "target": "隆韦尔平原"
+    },
+    {
+      "resource": "Field/0540.fld",
+      "source_sha256": "1823982adb47cbad5f1446c484629ca6a968ccf1943406d37e59a449187bf3e9",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3c6f2bff800000000000000000000",
+      "source": "론웰평원",
+      "target": "隆韦尔平原"
+    },
+    {
+      "resource": "Field/0544.fld",
+      "source_sha256": "2c5d9d0a1439490f3a11e4d7bd4ab4ebe5c017bef4dc89d6c8859022626f09f3",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3b4f8c1af00000000000000000000",
+      "source": "론웰던젼",
+      "target": "隆韦尔地下城"
+    },
+    {
+      "resource": "Field/0545.fld",
+      "source_sha256": "1111d15295c09ef303dff426f677cb1f3af3e833590f44b143ef09f79c1da494",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3b4f8c1af00000000000000000000",
+      "source": "론웰던젼",
+      "target": "隆韦尔地下城"
+    },
+    {
+      "resource": "Field/0546.fld",
+      "source_sha256": "d24eaff38d2aefe6a9fa1942638d31280e9f9419bb0d87cb369ce7c163a674d4",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3b4f8c1af00000000000000000000",
+      "source": "론웰던젼",
+      "target": "隆韦尔地下城"
+    },
+    {
+      "resource": "Field/0547.fld",
+      "source_sha256": "643e5426cb013f415cd99551a9fcca09b995632682a6262872631846ccb52437",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3b4f8c1af00000000000000000000",
+      "source": "론웰던젼",
+      "target": "隆韦尔地下城"
+    },
+    {
+      "resource": "Field/0548.fld",
+      "source_sha256": "1d0edb607efe4128bf1a826bc60fe1fc2a7877a1e83bfb22847914067e818293",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3b4f8c1af00000000000000000000",
+      "source": "론웰던젼",
+      "target": "隆韦尔地下城"
+    },
+    {
+      "resource": "Field/0549.fld",
+      "source_sha256": "f8b5c4cff71cc0f145ce1c089b730755ec7d62cd447d4187a2b8a4b760b00bfc",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20b3b2bace0000000000",
+      "source": "지하수로 남부",
+      "target": "地下水道南部"
+    },
+    {
+      "resource": "Field/0550.fld",
+      "source_sha256": "836df496fb101606032e61db59cf1378345584dd06cd34fd8a133ed0f9863fa0",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20b3b2bace0000000000",
+      "source": "지하수로 남부",
+      "target": "地下水道南部"
+    },
+    {
+      "resource": "Field/0551.fld",
+      "source_sha256": "20002ac72bbb2d14a01528f2ff9308f3a7b425187f782c77ab7888064e83a0d2",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20b3b2bace0000000000",
+      "source": "지하수로 남부",
+      "target": "地下水道南部"
+    },
+    {
+      "resource": "Field/0552.fld",
+      "source_sha256": "d1e55a7f5ce050bf31b0d1a03be79c8fe42df5239ac3c1cf3864df6a1133c22d",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20b3b2bace0000000000",
+      "source": "지하수로 남부",
+      "target": "地下水道南部"
+    },
+    {
+      "resource": "Field/0553.fld",
+      "source_sha256": "e80b6617943a6c57ca466a9f5fa6aa27bc0520b873da33aac4be4134345f44d9",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20b3b2bace0000000000",
+      "source": "지하수로 남부",
+      "target": "地下水道南部"
+    },
+    {
+      "resource": "Field/0554.fld",
+      "source_sha256": "77ff00f742d0382dac0c6b5497475efa2128a5cbe12587e87be7e03556dfa32b",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20bacfbace0000000000",
+      "source": "지하수로 북부",
+      "target": "地下水道北部"
+    },
+    {
+      "resource": "Field/0555.fld",
+      "source_sha256": "9c68ace0baf19b949f327d945cd92d182a4d422d5b6183a105214761e3204c17",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20bacfbace0000000000",
+      "source": "지하수로 북부",
+      "target": "地下水道北部"
+    },
+    {
+      "resource": "Field/0556.fld",
+      "source_sha256": "91a96211ee4425303e52fc7227c9af61f057949a4fba3ff9d18eee4c9f748c92",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20bacfbace0000000000",
+      "source": "지하수로 북부",
+      "target": "地下水道北部"
+    },
+    {
+      "resource": "Field/0557.fld",
+      "source_sha256": "8ed4ef898ce1efc303f1ec1886f271011f0d6dce9c27d8a2d05e38653636c171",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20bacfbace0000000000",
+      "source": "지하수로 북부",
+      "target": "地下水道北部"
+    },
+    {
+      "resource": "Field/0558.fld",
+      "source_sha256": "e29b88a8cf8756def0dddd44a20255f6ad75d69502200e47bce4a378fff16d6b",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdc3c7cfb6f3c6f2bff80000000000000000",
+      "source": "시하라평원",
+      "target": "席哈拉平原"
+    },
+    {
+      "resource": "Field/0559.fld",
+      "source_sha256": "3818f1fbd32115d7cb226520a2fff85554c003149ec0a645c87b81cc41f25611",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdc3c7cfb6f3c6f2bff80000000000000000",
+      "source": "시하라평원",
+      "target": "席哈拉平原"
+    },
+    {
+      "resource": "Field/0560.fld",
+      "source_sha256": "a5c4c4a1f68c7ae7a1e041fffd7f6f04c4cf9aa054f716616cad1acd2a8234ca",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdc3c7cfb6f3c6f2bff80000000000000000",
+      "source": "시하라평원",
+      "target": "席哈拉平原"
+    },
+    {
+      "resource": "Field/0561.fld",
+      "source_sha256": "e57eba65145c1dec39c400535f3427d2cb4b435d722d44cc8f8eac3442cdadee",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdc3c7cfb6f3c6f2bff80000000000000000",
+      "source": "시하라평원",
+      "target": "席哈拉平原"
+    },
+    {
+      "resource": "Field/0562.fld",
+      "source_sha256": "3c23cf15df7ad845e58caa10ef8faf0c892e42550772e63a57b95965c4c1a2f5",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c8a3bec6c6b0b5bfb1bc0000000000000000",
+      "source": "호아튼동굴",
+      "target": "霍阿顿洞窟"
+    },
+    {
+      "resource": "Field/0563.fld",
+      "source_sha256": "f54153babc781b4adb8faf72aa49bd1bc0b40d96e9edae41f5ba275fcf05faef",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c8a3bec6c6b0b5bfb1bc0000000000000000",
+      "source": "호아튼동굴",
+      "target": "霍阿顿洞窟"
+    },
+    {
+      "resource": "Field/0564.fld",
+      "source_sha256": "3b16d1ec63e993ca8f4fe8f7a58545ff921fd43cf4ca32c1e4e47f2defc5bdff",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c8a3bec6c6b0b5bfb1bc0000000000000000",
+      "source": "호아튼동굴",
+      "target": "霍阿顿洞窟"
+    },
+    {
+      "resource": "Field/0565.fld",
+      "source_sha256": "e51eaaef9738eeb942479b43ab02d2c0423cce1e5aedb1a415eb59fc4716cd38",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c8a3bec6c6b0b5bfb1bc0000000000000000",
+      "source": "호아튼동굴",
+      "target": "霍阿顿洞窟"
+    },
+    {
+      "resource": "Field/0567.fld",
+      "source_sha256": "ff5bcd7e9f1706f7cad0dee43de24216021a3b93bda2cf7fe28aa1501d74db88",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0a3b5e5b8b2c6f2bff80000000000000000",
+      "source": "웰드림평원",
+      "target": "韦尔德里姆平原"
+    },
+    {
+      "resource": "Field/0568.fld",
+      "source_sha256": "a9a20fcb7bee897ae8fe0e0fa4cb05af442d2e3a1a2bf404d022067292e8a63e",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0a3b5e5b8b2c6f2bff80000000000000000",
+      "source": "웰드림평원",
+      "target": "韦尔德里姆平原"
+    },
+    {
+      "resource": "Field/0569.fld",
+      "source_sha256": "c24101c68aeaf7829462a2135efb320dca740372b9f33ad6e786e650d3ad4d2f",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0a3b5e5b8b2c6f2bff80000000000000000",
+      "source": "웰드림평원",
+      "target": "韦尔德里姆平原"
+    },
+    {
+      "resource": "Field/0570.fld",
+      "source_sha256": "309a52c60d6ccf9965eace3dd494d99fef6d49bba03d86fbb25aa6da99e551a5",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0a3b5e5b8b2c6f2bff80000000000000000",
+      "source": "웰드림평원",
+      "target": "韦尔德里姆平原"
+    },
+    {
+      "resource": "Field/0571.fld",
+      "source_sha256": "c989bede343ac8e129f8be683e63317c5b4f455af30a09c1cbd056219ea0eeb5",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b6f3c6bcbfa3b4c0bda30000000000000000",
+      "source": "라티엔느숲",
+      "target": "拉蒂耶娜森林"
+    },
+    {
+      "resource": "Field/0572.fld",
+      "source_sha256": "47b4854a05bc15cd46646ac1ad5fd9cf05406218709355c9878ab2dba227b4df",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b6f3c6bcbfa3b4c0bda30000000000000000",
+      "source": "라티엔느숲",
+      "target": "拉蒂耶娜森林"
+    },
+    {
+      "resource": "Field/0573.fld",
+      "source_sha256": "d6971c51bff6b7510819b3a91f630aa36b187fce301350ea36c4a965073dc8b8",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b6f3c6bcbfa3b4c0bda30000000000000000",
+      "source": "라티엔느숲",
+      "target": "拉蒂耶娜森林"
+    },
+    {
+      "resource": "Field/0574.fld",
+      "source_sha256": "6313d739e754e746b771628fb270db1d131dd89aec3a5251dc9988adf64b7545",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b6f3c6bcbfa3b4c0bda30000000000000000",
+      "source": "라티엔느숲",
+      "target": "拉蒂耶娜森林"
+    },
+    {
+      "resource": "Field/0575.fld",
+      "source_sha256": "ca230b8f98afa9c1975e48cffa229d8511b4ec1d0e574bf99020934d235c511b",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b6f3c6bcbfa3b4c0bda30000000000000000",
+      "source": "라티엔느숲",
+      "target": "拉蒂耶娜森林"
+    },
+    {
+      "resource": "Field/0576.fld",
+      "source_sha256": "307cc60ef0cfb0b09db8d7d262e021956787c24f1c40009d219050ca44350910",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bad2c0c7b4f8c1af00000000000000000000",
+      "source": "불의던젼",
+      "target": "火之地下城"
+    },
+    {
+      "resource": "Field/0577.fld",
+      "source_sha256": "c592bd5ad72f5e1f08b1a89e86ebc3db5156e935e52c95a8eadb1adba2e2918e",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bad2c0c7b4f8c1af00000000000000000000",
+      "source": "불의던젼",
+      "target": "火之地下城"
+    },
+    {
+      "resource": "Field/0578.fld",
+      "source_sha256": "3304601a635b6bfdf779f2c5a02eab510555b529f5dffa86a8f62c1555db835a",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bad2c0c7b4f8c1af00000000000000000000",
+      "source": "불의던젼",
+      "target": "火之地下城"
+    },
+    {
+      "resource": "Field/0579.fld",
+      "source_sha256": "a610c5437327c53de804f0b2678632c425a8b3481a26271e1eebce9ad55ebfe4",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bad2c0c7b4f8c1af00000000000000000000",
+      "source": "불의던젼",
+      "target": "火之地下城"
+    },
+    {
+      "resource": "Field/0580.fld",
+      "source_sha256": "65708a6863470b21d16dc3d35f125acac7647d48b12b5b45dcb24b4e8dea9f77",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bad2c0c7b4f8c1af00000000000000000000",
+      "source": "불의던젼",
+      "target": "火之地下城"
+    },
+    {
+      "resource": "Field/0581.fld",
+      "source_sha256": "3a888ec551f52e345105a9f7c2e2d758a348768978d8d516f5538dd3d074e363",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdc3c7cfb6f3bda300000000000000000000",
+      "source": "시하라숲",
+      "target": "席哈拉森林"
+    },
+    {
+      "resource": "Field/0582.fld",
+      "source_sha256": "7e87b1ac02223067c74a8e3cb857c011458e8cda6bf53854ba9fd79a469736d1",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdc3c7cfb6f3bda300000000000000000000",
+      "source": "시하라숲",
+      "target": "席哈拉森林"
+    },
+    {
+      "resource": "Field/0583.fld",
+      "source_sha256": "3eee6ef577e5b749292aa929295032e9060acbb9379facf100fa2c86e1af3369",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdc3c7cfb6f3bda300000000000000000000",
+      "source": "시하라숲",
+      "target": "席哈拉森林"
+    },
+    {
+      "resource": "Field/0584.fld",
+      "source_sha256": "b9f7143939ff494282b571fc54cff802153e34860f91c9b1db35ebd3ffb6631c",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdc3c7cfb6f3bda300000000000000000000",
+      "source": "시하라숲",
+      "target": "席哈拉森林"
+    },
+    {
+      "resource": "Field/0585.fld",
+      "source_sha256": "6325cf4a90a707a9b8a77cb64f3eed4655f0b3cf71d3d90b59b0a622144c449d",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bfc0c6c4b3dab5bfb1bc0000000000000000",
+      "source": "오파넬동굴",
+      "target": "奥帕内尔洞窟"
+    },
+    {
+      "resource": "Field/0586.fld",
+      "source_sha256": "94d1b4d768302d6c8fb5ab83e529a787a03d93aafe418b4298acf363cf485f4b",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bfc0c6c4b3dab5bfb1bc0000000000000000",
+      "source": "오파넬동굴",
+      "target": "奥帕内尔洞窟"
+    },
+    {
+      "resource": "Field/0588.fld",
+      "source_sha256": "33c389c4671d475adebdcc4fb41cb1e2d0c6a8a259519b923fbf3ca78e8cdbbd",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bfc0c6c4b3dab5bfb1bc0000000000000000",
+      "source": "오파넬동굴",
+      "target": "奥帕内尔洞窟"
+    },
+    {
+      "resource": "Field/0592.fld",
+      "source_sha256": "8163c36b662837281757224de68c0e53e176a274c0b43a3d24ce88af65e4a835",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdb4b5a8b9ccb8a320bdc3b0a1c1f6000000",
+      "source": "슈델미르 시가지",
+      "target": "修德尔米尔市区"
+    },
+    {
+      "resource": "Field/0593.fld",
+      "source_sha256": "8d178ff5ab142e9a7c1cb3967cadc2e6f7274fd174c0a82434769e603475c235",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdb4b5a8b9ccb8a320bdc3b0a1c1f6000000",
+      "source": "슈델미르 시가지",
+      "target": "修德尔米尔市区"
+    },
+    {
+      "resource": "Field/0594.fld",
+      "source_sha256": "4710dc3930339b952c7dbd65b90d882b389ad03b0dfa8dbb6923ad517bf90f91",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdb4b5a8b9ccb8a320bdc3b0a1c1f6000000",
+      "source": "슈델미르 시가지",
+      "target": "修德尔米尔市区"
+    },
+    {
+      "resource": "Field/0596.fld",
+      "source_sha256": "a72b5d90ae8490c23d9ff3e8d7764e4b220cc951f88859ad957ecc62058956db",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bfc0c6c4b3dab5bfb1bc0000000000000000",
+      "source": "오파넬동굴",
+      "target": "奥帕内尔洞窟"
+    },
+    {
+      "resource": "Field/0614.fld",
+      "source_sha256": "69446315ce1b30c68f6b3dbed960f349f2238e93cbd059d670c69298d265fa14",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b9b0c0c7bdc5c0fc00000000000000000000",
+      "source": "물의신전",
+      "target": "水之神殿"
+    },
+    {
+      "resource": "Field/0615.fld",
+      "source_sha256": "f58c87c3cb5f091bdcbc5e781667be4e04b73736843b7ede7efcfcf106d88c8b",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b9b0c0c7bdc5c0fc00000000000000000000",
+      "source": "물의신전",
+      "target": "水之神殿"
+    },
+    {
+      "resource": "Field/0616.fld",
+      "source_sha256": "52681c6ffde82627c5adcf87aeec7bd90b6c7a3d323fda2427424f80cbe3cae0",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b9b0c0c7bdc5c0fc00000000000000000000",
+      "source": "물의신전",
+      "target": "水之神殿"
+    },
+    {
+      "resource": "Field/0617.fld",
+      "source_sha256": "4bc34548b74372919aff349def53e06a3677ee9612d83d38161602cccf49990d",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b9b0c0c7bdc5c0fc00000000000000000000",
+      "source": "물의신전",
+      "target": "水之神殿"
+    },
+    {
+      "resource": "Field/0618.fld",
+      "source_sha256": "715af0e1bc8e4116bf5e6c4fb140b68fa39b5aa01a0e66bfd66a380ab5fcda99",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bcbac1f60000000000000000000000000000",
+      "source": "성지",
+      "target": "圣地"
+    },
+    {
+      "resource": "Field/0619.fld",
+      "source_sha256": "0cf0d97410ad0302fff8d002f9979969c93e415875a0c44ed6c05d2b7ca3cf29",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bcbac1f60000000000000000000000000000",
+      "source": "성지",
+      "target": "圣地"
+    },
+    {
+      "resource": "Field/0620.fld",
+      "source_sha256": "9fe422c09ecf29b5b1337c3ed07e4b011e03e0cc352c1b92c54d950d99d0ce70",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bcbac1f60000000000000000000000000000",
+      "source": "성지",
+      "target": "圣地"
+    },
+    {
+      "resource": "Field/0621.fld",
+      "source_sha256": "cc099f9bda99f307bec75b636c316a3badb711ae440375adc1f52f8f1d4025cf",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bcbac1f60000000000000000000000000000",
+      "source": "성지",
+      "target": "圣地"
+    },
+    {
+      "resource": "Field/0622.fld",
+      "source_sha256": "f04a568a4d3a608252c5288494947fd1b626a8d6cdb061f4bad5113850aafa86",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bcbac1f60000000000000000000000000000",
+      "source": "성지",
+      "target": "圣地"
+    },
+    {
+      "resource": "Field/0623.fld",
+      "source_sha256": "82266e24ed95b6abd72c45afc012b01d8f145df10fc9b50dedfae171fcafca86",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bcbac1f60000000000000000000000000000",
+      "source": "성지",
+      "target": "圣地"
+    },
+    {
+      "resource": "Field/0624.fld",
+      "source_sha256": "2103e008e9406a64abb2f06353c65a721817e032f53ecb883a9b37dd6a3d06a4",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bcbac1f60000000000000000000000000000",
+      "source": "성지",
+      "target": "圣地"
+    },
+    {
+      "resource": "Field/0627.fld",
+      "source_sha256": "7ea296afc257668cf01a8acedbd5f6054dcccb9df3d59e65f137a179d5820c45",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3c6f2bff800000000000000000000",
+      "source": "론웰평원",
+      "target": "隆韦尔平原"
+    },
+    {
+      "resource": "Field/0628.fld",
+      "source_sha256": "5c23e1843d0e9aa73215d94c61596dfbdbaf95d4aa45c4b3adb5590e8ad624b5",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3c6f2bff800000000000000000000",
+      "source": "론웰평원",
+      "target": "隆韦尔平原"
+    },
+    {
+      "resource": "Field/0629.fld",
+      "source_sha256": "447e9800858e70954c233be2cf8271c43bc92ce06c2f403695bfa275f5278e8d",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3c6f2bff800000000000000000000",
+      "source": "론웰평원",
+      "target": "隆韦尔平原"
+    },
+    {
+      "resource": "Field/0630.fld",
+      "source_sha256": "4ef67427beb9a1983a1aa44ef78bce31a0050d46784c6c71de6e60338d0ce8b5",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3c6f2bff800000000000000000000",
+      "source": "론웰평원",
+      "target": "隆韦尔平原"
+    },
+    {
+      "resource": "Field/0631.fld",
+      "source_sha256": "dc523ac0d73e7e7ecf5465e200bb5b2a7dbf161017983b2dc5ef829089f13cae",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cec0a3bda3000000000000000000000000",
+      "source": "로웰숲",
+      "target": "罗韦尔森林"
+    },
+    {
+      "resource": "Field/0632.fld",
+      "source_sha256": "05fccca380fc147506fabf57b2feefdabbdc8b9a5a4339c2222b59ca7c05a7e8",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cec0a3bda3000000000000000000000000",
+      "source": "로웰숲",
+      "target": "罗韦尔森林"
+    },
+    {
+      "resource": "Field/0633.fld",
+      "source_sha256": "7fe72f7129600cc28bed6b55bdf1e937e42b04393913f17992e6464f5f750544",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cec0a3bda3000000000000000000000000",
+      "source": "로웰숲",
+      "target": "罗韦尔森林"
+    },
+    {
+      "resource": "Field/0634.fld",
+      "source_sha256": "5ae7b4d8a6a8bd497c65d4aac31b020e47a4879a8fc47f1442c53c0e26501bb6",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cec0a3bda3000000000000000000000000",
+      "source": "로웰숲",
+      "target": "罗韦尔森林"
+    },
+    {
+      "resource": "Field/0635.fld",
+      "source_sha256": "e76559d6cf7ffbf2fa8d7cd4523842abdd99fe6b3528942019606ed084d7149a",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cec0a3bda3000000000000000000000000",
+      "source": "로웰숲",
+      "target": "罗韦尔森林"
+    },
+    {
+      "resource": "Field/0636.fld",
+      "source_sha256": "4c8475e5e0782dae198a2cc3ba544d1a549429ccaf719d7263f50084d04760c1",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7cec0a3bda3000000000000000000000000",
+      "source": "로웰숲",
+      "target": "罗韦尔森林"
+    },
+    {
+      "resource": "Field/0637.fld",
+      "source_sha256": "8f6cada0205dccc7d6e7c9cd4013d868c2a98b5683e452c7bc8313f2beba5b08",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3b4f8c1af00000000000000000000",
+      "source": "론웰던젼",
+      "target": "隆韦尔地下城"
+    },
+    {
+      "resource": "Field/0638.fld",
+      "source_sha256": "061f8e2a4cfa0739ddb09cca3486cd6d6c95f2d62f397d9ad48c48b8803155f7",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3b4f8c1af00000000000000000000",
+      "source": "론웰던젼",
+      "target": "隆韦尔地下城"
+    },
+    {
+      "resource": "Field/0639.fld",
+      "source_sha256": "0d76db1363e686be8ecbce0d4fa03fc8339fa09ea1cdff0f144166a57ae5bf9e",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3b4f8c1af00000000000000000000",
+      "source": "론웰던젼",
+      "target": "隆韦尔地下城"
+    },
+    {
+      "resource": "Field/0640.fld",
+      "source_sha256": "a537946b21ce5947d9dc79911207ffafcc1e1f92c546e64979a0f7a0fe0c6f8b",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3b4f8c1af00000000000000000000",
+      "source": "론웰던젼",
+      "target": "隆韦尔地下城"
+    },
+    {
+      "resource": "Field/0641.fld",
+      "source_sha256": "50362f9efa622e58c95b0bc7352fc4e2b421c0c1cf34eedf7ff918d5b39760ac",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b7d0c0a3b4f8c1af00000000000000000000",
+      "source": "론웰던젼",
+      "target": "隆韦尔地下城"
+    },
+    {
+      "resource": "Field/0642.fld",
+      "source_sha256": "006a3ec003441b33297bf78e6853e508f209eb025fd42f11362b0fd32494cd15",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0a3b5e5b8b2c6f2bff80000000000000000",
+      "source": "웰드림평원",
+      "target": "韦尔德里姆平原"
+    },
+    {
+      "resource": "Field/0643.fld",
+      "source_sha256": "71c7adf6c37e1f23546b021d6fa23a294b3189ca60f8e119564836f2bcb68f10",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0a3b5e5b8b2c6f2bff80000000000000000",
+      "source": "웰드림평원",
+      "target": "韦尔德里姆平原"
+    },
+    {
+      "resource": "Field/0644.fld",
+      "source_sha256": "316d0d1a322d02726cab63a322fd836767a58245a56db565cc2539db2a39e349",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0a3b5e5b8b2c6f2bff80000000000000000",
+      "source": "웰드림평원",
+      "target": "韦尔德里姆平原"
+    },
+    {
+      "resource": "Field/0645.fld",
+      "source_sha256": "60dbca1a5ba45a975e173705cd2ccd2a39331bdd300e553413d78bf3181d218c",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0a3b5e5b8b2c6f2bff80000000000000000",
+      "source": "웰드림평원",
+      "target": "韦尔德里姆平原"
+    },
+    {
+      "resource": "Field/0646.fld",
+      "source_sha256": "b011101b203e1c943eec316180126f808c9cb715b54acbdbcda8d7788003dfd4",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c8a3bec6c6b0b5bfb1bc0000000000000000",
+      "source": "호아튼동굴",
+      "target": "霍阿顿洞窟"
+    },
+    {
+      "resource": "Field/0647.fld",
+      "source_sha256": "813ad8ee435f94c926ad499d5255697ad73c0b7d45a414bdee14e5ed1f827368",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c8a3bec6c6b0b5bfb1bc0000000000000000",
+      "source": "호아튼동굴",
+      "target": "霍阿顿洞窟"
+    },
+    {
+      "resource": "Field/0648.fld",
+      "source_sha256": "ae28d116990c4a664d009aed5e1bdc114c8104d203c14f7e6c43c0d2c856e68a",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c8a3bec6c6b0b5bfb1bc0000000000000000",
+      "source": "호아튼동굴",
+      "target": "霍阿顿洞窟"
+    },
+    {
+      "resource": "Field/0649.fld",
+      "source_sha256": "0bcf5fe570fcee2eb1067d87dc9582b726b7b795e271e6551815236f6f62359e",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c8a3bec6c6b0b5bfb1bc0000000000000000",
+      "source": "호아튼동굴",
+      "target": "霍阿顿洞窟"
+    },
+    {
+      "resource": "Field/0670.fld",
+      "source_sha256": "b02b3ca5dd3c38d13e67118cd47d1df89989e15dfc100df8e3d43177cba7c65f",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0a3b5e5b8b2c6f2bff80000000000000000",
+      "source": "웰드림평원",
+      "target": "韦尔德里姆平原"
+    },
+    {
+      "resource": "Field/0671.fld",
+      "source_sha256": "4cd7e912dc664c5a476789a28c8ac544b66ba3888267187033345ba714155a33",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0a3b5e5b8b2c6f2bff80000000000000000",
+      "source": "웰드림평원",
+      "target": "韦尔德里姆平原"
+    },
+    {
+      "resource": "Field/0672.fld",
+      "source_sha256": "49adcfc135889d465a5fc59e35d2080c143c0043b790f39281c1ecc3177319bb",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0a3b5e5b8b2c6f2bff80000000000000000",
+      "source": "웰드림평원",
+      "target": "韦尔德里姆平原"
+    },
+    {
+      "resource": "Field/0673.fld",
+      "source_sha256": "e25544087d4b828de08a96e10668d8d6ce788dab3b05cd050ee0b90190037e02",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0a3b5e5b8b2c6f2bff80000000000000000",
+      "source": "웰드림평원",
+      "target": "韦尔德里姆平原"
+    },
+    {
+      "resource": "Field/0678.fld",
+      "source_sha256": "3c9c305ddce145d89ae6e01b798962431ff0dba02b6715151e94139970c0780d",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20b3b2bace0000000000",
+      "source": "지하수로 남부",
+      "target": "地下水道南部"
+    },
+    {
+      "resource": "Field/0679.fld",
+      "source_sha256": "57e75f019c95d9f7b40f504d3e761ed3315915072552c887b5d23aa8e2570c11",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20b3b2bace0000000000",
+      "source": "지하수로 남부",
+      "target": "地下水道南部"
+    },
+    {
+      "resource": "Field/0680.fld",
+      "source_sha256": "f410e048e917783d582531d0f6e07c88a622cbc41fff318e6d1f1e5442593854",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20b3b2bace0000000000",
+      "source": "지하수로 남부",
+      "target": "地下水道南部"
+    },
+    {
+      "resource": "Field/0681.fld",
+      "source_sha256": "3e3ba75e9846b357e160163304b25960f3a639dc94454cd359eed9e7a5511d27",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20b3b2bace0000000000",
+      "source": "지하수로 남부",
+      "target": "地下水道南部"
+    },
+    {
+      "resource": "Field/0682.fld",
+      "source_sha256": "bc333d70d244ecf4996f504b803baa9d78fba0878d0ea5be1c45cd8b12104eea",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20b3b2bace0000000000",
+      "source": "지하수로 남부",
+      "target": "地下水道南部"
+    },
+    {
+      "resource": "Field/0688.fld",
+      "source_sha256": "a2743379df8d4a9b60c21bbdb75e6e2aeedf01f06c1c66515b4407a19c65ee98",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20bacfbace0000000000",
+      "source": "지하수로 북부",
+      "target": "地下水道北部"
+    },
+    {
+      "resource": "Field/0689.fld",
+      "source_sha256": "fc8294252b5854323907b309b62859897cd0ec380eafd4c2e2e520601282424a",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20bacfbace0000000000",
+      "source": "지하수로 북부",
+      "target": "地下水道北部"
+    },
+    {
+      "resource": "Field/0690.fld",
+      "source_sha256": "5660ecaa8a27b02ca0bc9bc2c81d61445825cad38351a6a1121afa4ed5f87c6c",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20bacfbace0000000000",
+      "source": "지하수로 북부",
+      "target": "地下水道北部"
+    },
+    {
+      "resource": "Field/0691.fld",
+      "source_sha256": "244b51bf1bed6e513d8bce1687d3ce703d1f94cf86dfae096a235cf5dbf142b4",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c1f6c7cfbcf6b7ce20bacfbace0000000000",
+      "source": "지하수로 북부",
+      "target": "地下水道北部"
+    },
+    {
+      "resource": "Field/0700.fld",
+      "source_sha256": "7f1fb5f15237ea0e2489e1c39f7b0732c2bd93cee505cff1b3f7339b4a77cd02",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bfc0c6c4b3dab5bfb1bc0000000000000000",
+      "source": "오파넬동굴",
+      "target": "奥帕内尔洞窟"
+    },
+    {
+      "resource": "Field/0701.fld",
+      "source_sha256": "5e2a544186b8b69a1903cbd8be2b30af6bff2fe1a8b41c42878dfbdc96a3bb12",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bfc0c6c4b3dab5bfb1bc0000000000000000",
+      "source": "오파넬동굴",
+      "target": "奥帕内尔洞窟"
+    },
+    {
+      "resource": "Field/0702.fld",
+      "source_sha256": "dd1728e9e11704690475fbe0bace67b896de8ea134936bb96c6e20d293c5ced4",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bfc0c6c4b3dab5bfb1bc0000000000000000",
+      "source": "오파넬동굴",
+      "target": "奥帕内尔洞窟"
+    },
+    {
+      "resource": "Field/0703.fld",
+      "source_sha256": "8088b1926f52e4685469fd20e9932bd0320311a9ea916cb9f7c694ab375fc658",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bfc0c6c4b3dab5bfb1bc0000000000000000",
+      "source": "오파넬동굴",
+      "target": "奥帕内尔洞窟"
+    },
+    {
+      "resource": "Field/0704.fld",
+      "source_sha256": "6eedc96b2e32798ea62fbb78c56d3d092f440b9c80c7e82606a30ba13e6e7e64",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bfc0c6c4b3dab5bfb1bc0000000000000000",
+      "source": "오파넬동굴",
+      "target": "奥帕内尔洞窟"
+    },
+    {
+      "resource": "Field/0705.fld",
+      "source_sha256": "64a2e463cd8d279bae58bba55deb951303f467acbd30686c6dff6a64312a7176",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bad2c0c7b4f8c1af00000000000000000000",
+      "source": "불의던젼",
+      "target": "火之地下城"
+    },
+    {
+      "resource": "Field/0706.fld",
+      "source_sha256": "6bc51133161958fbbfcba6ffab46f63e4c301acad7aa5c28c7ae89042d3d4abc",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bad2c0c7b4f8c1af00000000000000000000",
+      "source": "불의던젼",
+      "target": "火之地下城"
+    },
+    {
+      "resource": "Field/0707.fld",
+      "source_sha256": "339eab3f7e8c3d4db454a1093e512560c453a3c937523c727352aa036b55c847",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdc3c7cfb6f3bda300000000000000000000",
+      "source": "시하라숲",
+      "target": "席哈拉森林"
+    },
+    {
+      "resource": "Field/0708.fld",
+      "source_sha256": "236241cab4e6e7fd9f9dd116ed322af507eca66500cffa222fff10e3a544469f",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdc3c7cfb6f3bda300000000000000000000",
+      "source": "시하라숲",
+      "target": "席哈拉森林"
+    },
+    {
+      "resource": "Field/0709.fld",
+      "source_sha256": "3168fb03890cfdf2dc70f696e59d4e7cdd6903f416e9826f6518c7dadfd30445",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdc3c7cfb6f3bda300000000000000000000",
+      "source": "시하라숲",
+      "target": "席哈拉森林"
+    },
+    {
+      "resource": "Field/0710.fld",
+      "source_sha256": "162adf491e714b9d42162465a45fda474b04b9217f32cbcb12e2c2f6b3adba29",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdc3c7cfb6f3bda300000000000000000000",
+      "source": "시하라숲",
+      "target": "席哈拉森林"
+    },
+    {
+      "resource": "Field/0711.fld",
+      "source_sha256": "f68d2476eefa5aeafd5b387ff8afcab10c426cb453de0af414cdd67a7951a672",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0712.fld",
+      "source_sha256": "a7f311ad7f45b6da569631d6d5580a66825beeaa95435cf97f2df68557e50d5c",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0714.fld",
+      "source_sha256": "11ac1bf2e83a754fa49a9cdfd534bdf46edbe9e3e6bc47767a4a5e0cb9615db5",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0715.fld",
+      "source_sha256": "aa9ed2f46ce0bd8d9aa147cc51fa5aea8a0e3606f9a2aa396a8db38bf3b7a4a7",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0716.fld",
+      "source_sha256": "d25a78607e43deed59032dea8ec387ebe632b4fed11f5a90be4d24adbaa2c6eb",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0717.fld",
+      "source_sha256": "936be2d6b25b1a95d73da5e4ec40d2f7bbf63ddaf62dfd4b7ddff2f4540510c1",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0718.fld",
+      "source_sha256": "22850aeb0807cb529eb185e2118659a867d2bd3260f3033078a9eec717e63fbb",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0719.fld",
+      "source_sha256": "9cf2e1c7feade659b12467608d06f7c79e27cdd86509df0313471340be36db77",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdbac4abb6f3b9abbdb4b4f8c1af00000000",
+      "source": "스카라무슈던젼",
+      "target": "斯卡拉姆修地下城"
+    },
+    {
+      "resource": "Field/0724.fld",
+      "source_sha256": "952fd32061146ef4fd3ca484645e4c2c740850e179e08a3cc08df98f15ada580",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bad2c0c7b4f8c1af00000000000000000000",
+      "source": "불의던젼",
+      "target": "火之地下城"
+    },
+    {
+      "resource": "Field/0725.fld",
+      "source_sha256": "a2384e6e7ccddedce49ec6bcde2a02c1f8cae5d3ef8da8afea32902082d5d8c6",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bad2c0c7b4f8c1af00000000000000000000",
+      "source": "불의던젼",
+      "target": "火之地下城"
+    },
+    {
+      "resource": "Field/0726.fld",
+      "source_sha256": "eb8cbfbbc3749d854457c42afa5fac4b6f60152abbc6e8f9778085a78fdc6d5a",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bad2c0c7b4f8c1af00000000000000000000",
+      "source": "불의던젼",
+      "target": "火之地下城"
+    },
+    {
+      "resource": "Field/0727.fld",
+      "source_sha256": "254b1a7ffe66a8fdb8a82fa73c3448d6022fe16b45be9212f20c87275cbfc991",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0728.fld",
+      "source_sha256": "b2b49545c594792d8e08cf731dc80a676f0217c4580e4c30ca5c1ca48a96328c",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0729.fld",
+      "source_sha256": "7251c581991dc4cc80687cab7af2f98533ce32e7ced5ef1a8f431a03237b083b",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0730.fld",
+      "source_sha256": "d65a392c065b1651fac6efcadeaaf02dee4eb7b71a3a2a87b9e771c17cffe8c2",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0731.fld",
+      "source_sha256": "bbdeb117c7e9ea7a7b75444a4a0dce939aeba13080d1482e442f80bc1e9b6c8e",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0732.fld",
+      "source_sha256": "5c386df68826aab9d82f2a690872e7b5515604142fa7b4779f912e5254191a28",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0733.fld",
+      "source_sha256": "5e00079013e800869b3fb1dcb8b29c7afc4b2d6fa66905b9eaff997adb6ae21b",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0734.fld",
+      "source_sha256": "02832d6d41b2dd1bae2325403e3b71384dfd652612260ffed483988cdfab5c8d",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "c0e7c5acb8b0b5e5bda30000000000000000",
+      "source": "재클린드숲",
+      "target": "杰克林德森林"
+    },
+    {
+      "resource": "Field/0736.fld",
+      "source_sha256": "3c80a42658801c34231e3909e0513cb8e09d11377489c8b5f707cac5a186f200",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b9b0c0c7bdc5c0fc00000000000000000000",
+      "source": "물의신전",
+      "target": "水之神殿"
+    },
+    {
+      "resource": "Field/0737.fld",
+      "source_sha256": "3c010c847d4f00f46329de2a9417396afcdbfd97668d5de3b1ef1c9d7b00ee4c",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b9b0c0c7bdc5c0fc00000000000000000000",
+      "source": "물의신전",
+      "target": "水之神殿"
+    },
+    {
+      "resource": "Field/0738.fld",
+      "source_sha256": "07bad4bfe44f465647aa2a681e4d3fc66fe33f281f67a42b91a9c1a94864e968",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b9b0c0c7bdc5c0fc00000000000000000000",
+      "source": "물의신전",
+      "target": "水之神殿"
+    },
+    {
+      "resource": "Field/0739.fld",
+      "source_sha256": "0630c8a29593f848c52614c4ca8cb2ceacaeaa3567bedd77d3c78da7e6e0b64a",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b9b0c0c7bdc5c0fc00000000000000000000",
+      "source": "물의신전",
+      "target": "水之神殿"
+    },
+    {
+      "resource": "Field/0750.fld",
+      "source_sha256": "4bf0c8017c0d6c1bdeadf3f54c2175854fed1289d8523e9d9e45255926f735b4",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdb4b9dfc3f7bdb4c6aeb8a7babbbace0000",
+      "source": "슈발츠슈트름본부",
+      "target": "施瓦茨总部"
+    },
+    {
+      "resource": "Field/0751.fld",
+      "source_sha256": "72b7727a81c6a9caf34d0d56c2224ef664a598d169639dada78bc402be246441",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdb4b9dfc3f7bdb4c6aeb8a7babbbace0000",
+      "source": "슈발츠슈트름본부",
+      "target": "施瓦茨总部"
+    },
+    {
+      "resource": "Field/0752.fld",
+      "source_sha256": "6c38bb1ec8f91cb878d43dc7b039548aac5a446ef0e9a56614e9e96de86540fd",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdb4b9dfc3f7bdb4c6aeb8a7babbbace0000",
+      "source": "슈발츠슈트름본부",
+      "target": "施瓦茨总部"
+    },
+    {
+      "resource": "Field/0753.fld",
+      "source_sha256": "d473958dcfb7b2acd2c229b437417c9bc4c4e89321d71333316b31e789f28de7",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdb4b9dfc3f7bdb4c6aeb8a7babbbace0000",
+      "source": "슈발츠슈트름본부",
+      "target": "施瓦茨总部"
+    },
+    {
+      "resource": "Field/0754.fld",
+      "source_sha256": "44039571addbae52f68982dbb8b4d948416b08f94e262ac1cb1a4dd76ae05e03",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdb4b9dfc3f7bdb4c6aeb8a7babbbace0000",
+      "source": "슈발츠슈트름본부",
+      "target": "施瓦茨总部"
+    },
+    {
+      "resource": "Field/0755.fld",
+      "source_sha256": "80a6dce5a6145b7066558ac4a3dcf2c4c562076449a456a0b96678cbebc00a57",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdb4b9dfc3f7bdb4c6aeb8a7babbbace0000",
+      "source": "슈발츠슈트름본부",
+      "target": "施瓦茨总部"
+    },
+    {
+      "resource": "Field/0757.fld",
+      "source_sha256": "7b92ac0c7fe82aa2d63761c6442ff40f43c0b947644e4f03ea3b48e868b91a87",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "bdb4b9dfc3f7bdb4c6aeb8a7babbbace0000",
+      "source": "슈발츠슈트름본부",
+      "target": "施瓦茨总部"
+    },
+    {
+      "resource": "Field/0761.fld",
+      "source_sha256": "2e56bdc89a65670f5fcde59078bf66a8f6d5a61c755525cf57568a3428b8b1c5",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b5a8b9ccb8a3000000000000000000000000",
+      "source": "델미르",
+      "target": "德尔米尔"
+    },
+    {
+      "resource": "Field/0510.fld",
+      "source_sha256": "54c360e09d5474f3a8f33f1bb46b2d945e1595cf1a9cf839f650066d464140b8",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b8aebdbac5cfc1f6b9e60000000000000000",
+      "source": "리스턴지방",
+      "target": "利斯顿地区"
+    },
+    {
+      "resource": "Field/0511.fld",
+      "source_sha256": "5a209b49700ddd570990ce358e80d779ca7d3b939d6b8b40642ac6a58a9e706a",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b8aebdbac5cfc1f6b9e60000000000000000",
+      "source": "리스턴지방",
+      "target": "利斯顿地区"
+    },
+    {
+      "resource": "Field/0512.fld",
+      "source_sha256": "011985145f81300fbf443ead14420c53d5e3b3f9fb9ec78ffacfbc50897530cb",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b8aebdbac5cfc1f6b9e60000000000000000",
+      "source": "리스턴지방",
+      "target": "利斯顿地区"
+    },
+    {
+      "resource": "Field/0513.fld",
+      "source_sha256": "4530b3074d7c1e72c798f21b930a726e66118a6b9459be88e12c8d6b1a3f5122",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b8aebdbac5cfc1f6b9e60000000000000000",
+      "source": "리스턴지방",
+      "target": "利斯顿地区"
+    },
+    {
+      "resource": "Field/0514.fld",
+      "source_sha256": "42975f822ff660727dc9cdbd317880bfed86bb7529bdddcaf6b661e4096f8af0",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b8aebdbac5cfc1f6b9e60000000000000000",
+      "source": "리스턴지방",
+      "target": "利斯顿地区"
+    },
+    {
+      "resource": "Field/0515.fld",
+      "source_sha256": "86f5763c8ca18bf8afda205aa782fee4a0f3a8f4e0e41c998bcbbfa1ac3cb785",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b8aebdbac5cfc1f6b9e60000000000000000",
+      "source": "리스턴지방",
+      "target": "利斯顿地区"
+    },
+    {
+      "resource": "Field/0692.fld",
+      "source_sha256": "f7ad962a06544f1a4be052e7653453f933246755d48b61298b445475f8f7d891",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b8aebdbac5cfc1f6b9e60000000000000000",
+      "source": "리스턴지방",
+      "target": "利斯顿地区"
+    },
+    {
+      "resource": "Field/0693.fld",
+      "source_sha256": "854030b2b2f3a8e93b41a93ffaa6f8840c5c25aa4beb0903a82d12685383689e",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b8aebdbac5cfc1f6b9e60000000000000000",
+      "source": "리스턴지방",
+      "target": "利斯顿地区"
+    },
+    {
+      "resource": "Field/0694.fld",
+      "source_sha256": "ea4131acb23dfb72aac3f3fff4d6ce49cff48e351a98a8532f29d7f1788b3480",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b8aebdbac5cfc1f6b9e60000000000000000",
+      "source": "리스턴지방",
+      "target": "利斯顿地区"
+    },
+    {
+      "resource": "Field/0695.fld",
+      "source_sha256": "2e0e842695e08a6d3c67dcb6d43a138a5b5905b7735d47d7d68c193073dacebc",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b8aebdbac5cfc1f6b9e60000000000000000",
+      "source": "리스턴지방",
+      "target": "利斯顿地区"
+    },
+    {
+      "resource": "Field/0696.fld",
+      "source_sha256": "48e6044dc8b581934f0e29af1de4712b3fdc1ab17b7045343c4c8b7974884eab",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b8aebdbac5cfc1f6b9e60000000000000000",
+      "source": "리스턴지방",
+      "target": "利斯顿地区"
+    },
+    {
+      "resource": "Field/0697.fld",
+      "source_sha256": "5b5a93133471495017446367cc466aba230cff409aa3a1ea56344a221817174a",
+      "offset": 252,
+      "capacity": 18,
+      "expected_hex": "b8aebdbac5cfc1f6b9e60000000000000000",
+      "source": "리스턴지방",
+      "target": "利斯顿地区"
+    }
+  ]
+}

@@ -71,3 +71,5 @@ Verified：设置资源为DLGTEMPLATEEX，控件起始DWORD对齐，标题/字�
 ## LPD1原型增量
 
 Verified：LPD1魔数后是zlib流；解压数据含u64目标长度、u32操作数。操作0为u64原文件偏移和u64长度的源引用，操作1为u64长度及变更literal。64字节比较块合并连续同类操作。解码限制目标512MiB，验证压缩结束/尾部、操作边界、源范围、目标长度以及整体SHA-256；来源和目标完整摘要位于外部manifest.json。格式不包含原始游戏整包，生成内容不提交仓库。
+
+Field当前版本的显示标签：offset252、容量18字节含NUL，对应FieldInfo+0x110，Level+0x10cc+0x110=0x11dc；新保存版本4后18字节为同一标签。其余Field布局未全面重解释，构建只锁定该槽及整份源SHA，见[UI_READABILITY_FIX.md](UI_READABILITY_FIX.md)。

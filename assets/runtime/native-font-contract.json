@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "source_sha256": "79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f",
+  "machine": 332,
+  "optional_magic": 267,
+  "image_size": 1093632,
+  "text_sha256": "1902718249d9783d5035c6640c101916030029cdd62930f03be5261fdaa07928",
+  "entries": [
+    {
+      "name": "GLYPH",
+      "rva": 129849,
+      "expected_hex": "558bec83ec34894dcc8b451033c98a0881f9b00000007d388b5510528b4dcce8"
+    },
+    {
+      "name": "MEASURE",
+      "rva": 128429,
+      "expected_hex": "558bec83ec20894de0c745f8000000008b450850e8a095090083c4048945f48b"
+    },
+    {
+      "name": "TEXT",
+      "rva": 129135,
+      "expected_hex": "558bec83ec20894de0c745f8000000008b450850e8de92090083c4048945ec8b"
+    }
+  ]
+}

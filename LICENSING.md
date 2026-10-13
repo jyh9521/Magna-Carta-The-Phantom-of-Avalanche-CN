@@ -18,3 +18,5 @@ dgVoodoo2 不作为开源组件描述，其作者条款单独适用；未经具�
 Bink1离线压缩研究使用RAD官方RADTools.7z（https://www.radgametools.com/bnkdown.htm），归档SHA1 dace86bb00b755fea8a0002538fad79e3faebdd6，1,101,490字节；2026.09工具签名为Epic Games Inc.且验证有效，radvideo64.exe SHA256 b405986b11fdc214033bcf385f4c7c3d126a9899815391b96af955618139a1ce。只从归档提取本地压缩器，未运行安装器，不捆绑或再分发工具及商业视频。命令参数依据官方帮助与FAQ（https://www.radgametools.com/binkhlp2.htm，https://www.radgametools.com/binkfaq.htm），/V100选择Bink1、/#不等待Done窗口。第三方工具不属于项目MIT。字幕字体实例改名Locale Video Overlay，并保留来源版权/OFL记录。
 
 主界面中文艺术字标单独保存为原创透明RGBA素材；背景修复仅提交源摘要锁定的增量，不提交完整原游戏背景。游戏原画、品牌、版权字卡和名称的原有权利不因标题回写转移；设计与可复现构建见docs/TITLE_ARTWORK.md。
+
+原生灰度覆盖与单色字形采用相同锁定Noto Sans SC来源和OFL许可，衍生覆盖名为Locale Glyph Coverage；覆盖嵌入自有profile，不分发完整轮廓字体。原游戏Font文件及Field文件只以来源绑定增量交付。

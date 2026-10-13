@@ -69,3 +69,5 @@ python tools/build_text_resources.py --source SOURCE_GAME --catalog CATALOG --co
 开头SOFTMAX Logo按直接用户决定整段原样保留，MOV/0023.BMC不进入补丁清单；曾含Logo译文的未发布候选已撤回。
 
 无盘启动候选：5字节源摘要锁定补丁、光驱检查模型、隔离入口及独立副本回滚见[DISC_GATE.md](docs/DISC_GATE.md)。游戏未启动，完整无盘游玩尚未验收；未挂载镜像或修改保护驱动。
+
+灰度覆盖和存档地点的可复现构建、原生模块参数及受控测试见[显示反馈修正](docs/UI_READABILITY_FIX.md)。完整字体映射保持既有版本，新增Field包进入完整增量候选列表。

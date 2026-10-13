@@ -7611,91 +7611,109 @@
         {
           "target": "音乐",
           "mask_xyxy": [
-            21,
-            68,
-            99,
-            85
+            25,
+            65,
+            98,
+            83
           ],
           "background_anchor": [
-            20,
-            68
+            100,
+            69
           ],
           "font_size": 12,
           "minimum_font_size": 10,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              21,
-              68,
+              25,
+              66,
               99,
-              85
+              83
             ]
+          ],
+          "color": [
+            255,
+            255,
+            255,
+            255
           ]
         },
         {
           "target": "音效",
           "mask_xyxy": [
-            21,
-            94,
-            99,
-            111
+            25,
+            90,
+            98,
+            108
           ],
           "background_anchor": [
-            20,
+            100,
             94
           ],
           "font_size": 12,
           "minimum_font_size": 10,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              21,
-              94,
+              25,
+              91,
               99,
-              111
+              108
             ]
+          ],
+          "color": [
+            255,
+            255,
+            255,
+            255
           ]
         },
         {
           "target": "语音",
           "mask_xyxy": [
-            21,
-            119,
-            99,
-            136
+            25,
+            115,
+            98,
+            133
           ],
           "background_anchor": [
-            20,
+            100,
             119
           ],
           "font_size": 12,
           "minimum_font_size": 10,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              21,
-              119,
+              25,
+              116,
               99,
-              136
+              133
             ]
+          ],
+          "color": [
+            255,
+            255,
+            255,
+            255
           ]
         },
         {
           "target": "请调整音量。",
           "mask_xyxy": [
             39,
-            151,
+            157,
             218,
-            174
+            180
           ],
           "background_anchor": [
             37,
@@ -7708,40 +7726,16 @@
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              39,
-              151,
+              38,
+              154,
               218,
-              174
+              173
             ],
             [
-              141,
-              148,
-              148,
-              154
-            ],
-            [
-              138,
-              148,
-              141,
-              154
-            ],
-            [
-              134,
-              148,
-              137,
-              154
-            ],
-            [
-              152,
-              148,
-              155,
-              154
-            ],
-            [
-              148,
-              148,
-              151,
-              154
+              90,
+              144,
+              166,
+              157
             ]
           ]
         },
@@ -7749,9 +7743,9 @@
           "target": "注意",
           "mask_xyxy": [
             100,
-            137,
+            144,
             154,
-            148
+            155
           ],
           "background_anchor": [
             98,
@@ -7767,7 +7761,15 @@
             0,
             255
           ],
-          "erase_mode": "nontransparent"
+          "erase_mode": "nontransparent",
+          "erase_rects_xyxy": [
+            [
+              100,
+              144,
+              154,
+              155
+            ]
+          ]
         }
       ]
     },
