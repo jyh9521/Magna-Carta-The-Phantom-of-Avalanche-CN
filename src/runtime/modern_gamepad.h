@@ -13,3 +13,5 @@ void modernGamepadFocusCursor(float x,float y);
 void configureModernGamepadFixture(BOOL(WINAPI*)(PBYTE),DWORD(WINAPI*)(DWORD,XINPUT_STATE*),bool);
 void configureModernNavigationFixture(BYTE*,GamepadNavigation);
 #endif
+
+unsigned modernGamepadMapButtons();

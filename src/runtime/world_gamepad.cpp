@@ -10,6 +10,7 @@ struct Vector {float x,y,z;};
 using Direction=void(__thiscall*)(void*,Vector);
 BYTE* engine=nullptr;Tick originalTick=nullptr,originalForward=nullptr;Direction originalDirection=nullptr;
 thread_local BYTE* scene=nullptr;
+WorldTickObserver observer=nullptr;
 void(*trace)(const wchar_t*)=nullptr;
 bool readable(const void* a,size_t n){
  auto p=reinterpret_cast<ULONG_PTR>(a),end=p+n;if(!p||end<p)return false;
@@ -24,7 +25,7 @@ bool controllable(BYTE* s){
 }
 void __fastcall tickHook(void* value,void*){
  BYTE* previous=scene;scene=static_cast<BYTE*>(value);modernGamepadWorldScope(controllable(scene));
- __try {originalTick(value);}
+ __try {originalTick(value);notifyWorldTickObserver(scene,controllable(scene));}
  __finally {scene=previous;modernGamepadWorldScope(scene&&controllable(scene));}
 }
 void __fastcall forwardHook(void* actor,void*){
@@ -65,3 +66,6 @@ bool set(BYTE* p,bool enabled,void(*logger)(const wchar_t*),bool dry=false){
 bool installWorldGamepad(HMODULE m,void(*logger)(const wchar_t*)){return set(reinterpret_cast<BYTE*>(m),true,logger);}
 bool removeWorldGamepad(HMODULE m){return set(reinterpret_cast<BYTE*>(m),false,nullptr);}
 bool canSetWorldGamepad(HMODULE m,bool enabled){return set(reinterpret_cast<BYTE*>(m),enabled,nullptr,true);}
+
+void setWorldTickObserver(WorldTickObserver callback){InterlockedExchangePointer(reinterpret_cast<PVOID volatile*>(&observer),reinterpret_cast<PVOID>(callback));}
+void notifyWorldTickObserver(BYTE* value,bool controlled){auto callback=reinterpret_cast<WorldTickObserver>(InterlockedCompareExchangePointer(reinterpret_cast<PVOID volatile*>(&observer),nullptr,nullptr));if(callback)callback(value,controlled);}

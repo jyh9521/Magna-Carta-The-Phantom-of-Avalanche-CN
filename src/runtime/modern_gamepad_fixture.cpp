@@ -2,10 +2,10 @@
 #include <cstring>
 #include <iostream>
 #include <stdexcept>
-static bool connected=true,keyboardOK=true;
+static bool connected=true,keyboardOK=true,reserved=false;static int polls=0;
 static WORD buttons=0;
-static BOOL WINAPI keyboard(PBYTE keys){if(!keyboardOK)return FALSE;memset(keys,0,256);keys[32]=1;keys[65]=0x80;return TRUE;}
-static DWORD WINAPI poll(DWORD slot,XINPUT_STATE* state){if(slot||!connected)return ERROR_DEVICE_NOT_CONNECTED;*state={};state->Gamepad.wButtons=buttons;return ERROR_SUCCESS;}
+static BOOL WINAPI keyboard(PBYTE keys){if(!keyboardOK)return FALSE;memset(keys,0,256);keys[32]=1;keys[65]=0x80;if(reserved)keys[VK_F8]=keys[VK_F9]=0x80;return TRUE;}
+static DWORD WINAPI poll(DWORD slot,XINPUT_STATE* state){++polls;if(slot||!connected)return ERROR_DEVICE_NOT_CONNECTED;*state={};state->Gamepad.wButtons=buttons;return ERROR_SUCCESS;}
 static void check(bool b){if(!b)throw std::runtime_error("gamepad IAT fixture failed");}
 int main(){
     try {
@@ -30,6 +30,11 @@ int main(){
         buttons=0;check(call());buttons=0x1000;check(call());check(keys[32]==0x81);
         connected=false;check(call());check(keys[32]==1);connected=true;check(call());check(keys[32]==1);
         keyboardOK=false;check(!call());check(keys[32]==1);keyboardOK=true;
+        check(removeModernGamepad(reinterpret_cast<HMODULE>(image)));
+        SetEnvironmentVariableW(L"MC_INPUT_PASSTHROUGH",L"1");SetEnvironmentVariableW(L"MC_MAP_OVERLAY",L"1");
+        check(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr));configureModernGamepadFixture(keyboard,poll,true);reserved=true;int oldPolls=polls;
+        check(call());check(keys[VK_F8]==0&&keys[VK_F9]==0&&keys[32]==1&&keys[65]==0x80&&polls==oldPolls);
+        check(removeModernGamepad(reinterpret_cast<HMODULE>(image)));check(*slot==system);SetEnvironmentVariableW(L"MC_INPUT_PASSTHROUGH",nullptr);SetEnvironmentVariableW(L"MC_MAP_OVERLAY",nullptr);
         check(VirtualProtect(slot,sizeof(DWORD),PAGE_READWRITE,&previous)!=FALSE);*slot=system;DWORD ignored;check(VirtualProtect(slot,sizeof(DWORD),previous,&ignored)!=FALSE);check(*slot==system);
         VirtualFree(image,0,MEM_RELEASE);
         std::cout<<"MODERN_GAMEPAD_IAT PASS synthetic_image=true installed=true mismatch_rejected=true idempotent=true physical_keys=preserved focus_rearm=true failure_passthrough=true page_protection=restored rollback=exact game_started=false\n";

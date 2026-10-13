@@ -6,14 +6,15 @@
 #include <cstring>
 #include <cmath>
 static BYTE* image=nullptr;static BYTE world[0x15c4],actor[0x340],gui[0x194],camera[0xc0];
-static bool connected=true,physical=false;static SHORT axisX=0,axisY=0;static WORD buttons=0;static int checks=0,forwardCalls=0,turnCalls=0;
+static bool connected=true,physical=false,rawUp=false;static SHORT axisX=0,axisY=0;static WORD buttons=0;static int checks=0,forwardCalls=0,turnCalls=0;static int observations=0;static bool observationControlled=false;
+void observe(BYTE* s,bool controlled){if(s==world){++observations;observationControlled=controlled;}}
 void require(bool v,const char* s){++checks;if(!v){fprintf(stderr,"FAIL %s\n",s);ExitProcess(1);}}
-BOOL WINAPI keyboard(PBYTE keys){memset(keys,0,256);keys[VK_SPACE]=1;if(physical)keys[VK_LEFT]=0x80;return TRUE;}
+BOOL WINAPI keyboard(PBYTE keys){memset(keys,0,256);keys[VK_SPACE]=1;if(rawUp)keys[VK_UP]=0x80;if(physical)keys[VK_LEFT]=0x80;return TRUE;}
 DWORD WINAPI poll(DWORD slot,XINPUT_STATE* s){if(slot||!connected)return ERROR_DEVICE_NOT_CONNECTED;*s={};s->Gamepad.sThumbLX=axisX;s->Gamepad.sThumbLY=axisY;s->Gamepad.wButtons=buttons;return ERROR_SUCCESS;}
 void __fastcall heading(void* p,void*,float x,float y,float z){++turnCalls;auto d=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x148);d[0]=x;d[1]=y;d[2]=z;}
 void __fastcall forward(void* p,void*){++forwardCalls;auto d=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x148),v=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x16c);for(int i=0;i<3;++i)v[i]=30*d[i];}
 void __fastcall tick(void*,void*){
- reinterpret_cast<BOOL(__cdecl*)()>(image+0x2fca)();auto keys=image+0xf1b94;
+ reinterpret_cast<BOOL(__cdecl*)()>(image+0x2fca)();auto keys=image+0xf1b94;if(rawUp)keyboard(keys); // owned raw-key buffer; no OS input injection
  if(keys[VK_UP]&0x80)reinterpret_cast<void(__thiscall*)(void*)>(image+0x6e760)(actor);
  else memset(actor+0x16c,0,12);
 }
@@ -33,9 +34,13 @@ int main(){
  *reinterpret_cast<DWORD*>(world)=reinterpret_cast<DWORD>(image+0xc12bc);*reinterpret_cast<BYTE**>(world+0x1564)=actor;*reinterpret_cast<BYTE**>(world+0x10c8)=gui;*reinterpret_cast<int*>(gui+0x190)=1;
  *reinterpret_cast<DWORD*>(actor)=reinterpret_cast<DWORD>(image+0xc11e4);*reinterpret_cast<BYTE**>(actor+0x20)=world;*reinterpret_cast<BYTE**>(image+0xf2290)=camera;
  auto view=reinterpret_cast<float*>(camera+0x80);view[0]=view[5]=view[10]=view[15]=1;
- SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",L"1");require(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr),"integrated installer");require(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr),"idempotence");configureModernGamepadFixture(keyboard,poll,true);
+ require(installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"passive observer installer without XInput IAT");
+ rawUp=true;*reinterpret_cast<float*>(actor+0x148)=1;reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(image+0xc12c0))(world);
+ require(*reinterpret_cast<float*>(actor+0x16c)==30&&turnCalls==0&&*iat==oldIat,"passive observer preserves native keyboard movement and IAT");rawUp=false;
+ require(removeWorldGamepad(reinterpret_cast<HMODULE>(image)),"passive observer exact hook rollback");
+ SetEnvironmentVariableW(L"MC_MAP_OVERLAY",L"1");SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",L"1");require(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr),"integrated installer");require(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr),"idempotence");configureModernGamepadFixture(keyboard,poll,true);
  auto run=[](){reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(image+0xc12c0))(world);};
- run();run();axisX=32767;run();auto velocity=reinterpret_cast<float*>(actor+0x16c);
+ setWorldTickObserver(&observe);run();require(observations==1&&observationControlled,"read-only observer runs after native tick");setWorldTickObserver(nullptr);run();require(observations==1,"observer removal preserves native tick");axisX=32767;run();auto velocity=reinterpret_cast<float*>(actor+0x16c);
  require(velocity[0]>29.9f&&std::abs(velocity[1])<.001f&&turnCalls==1,"right stick direction becomes forward movement not tank turn");
  require((image[0xf1b94+VK_UP]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"native forward key without tank steering");
  axisX=18000;run();require(velocity[0]>0&&velocity[0]<30,"analog speed scales native velocity");
@@ -44,8 +49,10 @@ int main(){
  connected=false;run();require(velocity[0]==0&&velocity[1]==0,"disconnect stops");connected=true;run();run();require(velocity[0]==0&&velocity[1]==0,"held reconnect cannot resume");axisX=0;run();axisY=32767;run();require(std::abs(velocity[0])>29.9f,"neutral rearm then continuous direction");
  axisY=0;buttons=XINPUT_GAMEPAD_A;run();require(image[0xf1b94+VK_SPACE]==0x81,"exploration confirm uses native space and keeps toggle");
  buttons=XINPUT_GAMEPAD_START;run();require(image[0xf1b94+VK_RBUTTON]&0x80,"menu maps native right button");
+ buttons=0;run();buttons=XINPUT_GAMEPAD_BACK;run();require(modernGamepadMapButtons()==1&&image[0xf1b94+VK_F8]==0,"View button routes only to map observer, never native F8");
+ buttons=0;run();buttons=XINPUT_GAMEPAD_RIGHT_THUMB;run();require(modernGamepadMapButtons()==2&&image[0xf1b94+VK_F9]==0,"R3 routes only to minimap observer");
  buttons=0;require(removeModernGamepad(reinterpret_cast<HMODULE>(image)),"integrated rollback");require(*iat==oldIat&&*reinterpret_cast<DWORD*>(image+0xc12c0)==reinterpret_cast<DWORD>(image+0x6b2d8)&&*reinterpret_cast<DWORD*>(image+0xc1258)==reinterpret_cast<DWORD>(image+0x652b4),"all three original slots restored");
  image[0x6e77e]^=1;require(!installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"unknown movement callsite rejects");image[0x6e77e]^=1;
- SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",nullptr);VirtualFree(image,0,MEM_RELEASE);
+ SetEnvironmentVariableW(L"MC_MAP_OVERLAY",nullptr);SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",nullptr);VirtualFree(image,0,MEM_RELEASE);
  printf("WORLD_GAMEPAD_FIXTURE PASS checks=%d camera_relative=true analog_speed=true native_movement=true keyboard_priority=true rollback=exact game_started=false\n",checks);
 }

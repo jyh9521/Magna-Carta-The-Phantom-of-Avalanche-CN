@@ -11,7 +11,7 @@ class AdvancedDisplayContract(unittest.TestCase):
 
     def test_modes_explicitly_clear_legacy_experiments(self):
         s=(ROOT/'src/runtime/workspace_launcher.cpp').read_text('utf8')
-        self.assertIn('!fixture&&(!modernInput||nativeGamepad)',s)
+        self.assertIn('!fixture&&(!modernInput||nativeGamepad||inputPassthrough)',s)
         self.assertIn('Unsupported advanced driver',s)
         self.assertIn('00d443327abf56c94f9f088515ab29be63bab9650771a5cacdcef20ab85eff29',s)
         self.assertIn('MC_GAMEPAD_NATIVE',s)

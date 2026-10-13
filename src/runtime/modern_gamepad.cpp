@@ -20,7 +20,7 @@ modern_input::Router router;
 SRWLOCK lock=SRWLOCK_INIT;
 DWORD selected=0xffffffff;
 bool backendTried=false;
-bool nativeRouting=false;
+bool nativeRouting=false;bool passthroughOnly=false,mapReservedKeys=false;volatile LONG mapPadButtons=0;
 BYTE* engine=nullptr;
 thread_local bool worldScope=false;
 thread_local modern_input::MoveIntent movement;
@@ -38,6 +38,10 @@ bool readable(const void* a,size_t n){
 BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame) {
     BOOL ok=original(keys);
     if(returnAddress!=caller)return ok;
+    InterlockedExchange(&mapPadButtons,0);
+    if(mapReservedKeys&&!worldScope)notifyWorldTickObserver(nullptr,false);
+    if(ok&&mapReservedKeys){keys[VK_F8]=keys[VK_F9]=0;}
+    if(passthroughOnly){movement={};navigation={};return ok;}
     AcquireSRWLockExclusive(&lock);
     // The profile attaches under the loader lock. Load XInput only at the verified
     // per-frame input call, not from DllMain or a LoadLibrary interception.
@@ -68,6 +72,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     if(sample.connected){sample.buttons=state.Gamepad.wButtons;sample.x=state.Gamepad.sThumbLX;sample.y=state.Gamepad.sThumbLY;
         sample.rx=state.Gamepad.sThumbRX;sample.ry=state.Gamepad.sThumbRY;sample.lt=state.Gamepad.bLeftTrigger;sample.rt=state.Gamepad.bRightTrigger;}
     auto frame=router.update(sample,ok!=FALSE,focused);
+    if(ok&&mapReservedKeys&&nativeRouting&&worldScope&&frame.armed&&focused)InterlockedExchange(&mapPadButtons,((sample.buttons&XINPUT_GAMEPAD_BACK)?1:0)|((sample.buttons&XINPUT_GAMEPAD_RIGHT_THUMB)?2:0));
     if(ok&&nativeRouting){
         bool clicksAllowed=true;
         uint8_t nativeBindings[7]={VK_UP,VK_DOWN,VK_LEFT,VK_RIGHT,static_cast<uint8_t>(worldScope?VK_SPACE:VK_LBUTTON),VK_RBUTTON,VK_RBUTTON};
@@ -139,6 +144,7 @@ __declspec(naked) BOOL WINAPI keyboardBridge(PBYTE){__asm {
 }
 void modernGamepadWorldScope(bool enabled){worldScope=enabled;movement={};}
 modern_input::MoveIntent modernGamepadMoveIntent(){return worldScope?movement:modern_input::MoveIntent{};}
+unsigned modernGamepadMapButtons(){return static_cast<unsigned>(InterlockedCompareExchange(&mapPadButtons,0,0));}
 GamepadNavigation modernGamepadNavigation(){return navigation;}
 void modernGamepadFocusCursor(float x,float y){if(!nativeRouting||!engine||!navigation.active)return;int w=*reinterpret_cast<int*>(engine+0xf1b48),h=*reinterpret_cast<int*>(engine+0xf1b4c);controllerCursor.focus(x,y,w,h);*reinterpret_cast<int*>(engine+0xf20b0)=static_cast<int>(x);*reinterpret_cast<int*>(engine+0xf20a8)=static_cast<int>(y);}
 
@@ -161,7 +167,10 @@ bool installModernGamepad(HMODULE module,void(*logger)(const wchar_t*)) {
     if(*slot==reinterpret_cast<DWORD>(&keyboardBridge))return engine==bytes&&(!nativeRouting||(canSetWorldGamepad(module,true)&&canSetGamepadUi(module,true)));
     auto systemKeyboard=reinterpret_cast<Keyboard>(GetProcAddress(GetModuleHandleW(L"user32.dll"),"GetKeyboardState"));
     if(!systemKeyboard || *slot!=reinterpret_cast<DWORD>(systemKeyboard))return false;
+    wchar_t passFlag[8]{};passthroughOnly=GetEnvironmentVariableW(L"MC_INPUT_PASSTHROUGH",passFlag,8)==1&&passFlag[0]==L'1';
+    mapReservedKeys=GetEnvironmentVariableW(L"MC_MAP_OVERLAY",passFlag,8)==1&&passFlag[0]==L'1';
     wchar_t mode[8]{};bool native=GetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",mode,8)==1&&mode[0]==L'1';
+    if(native&&passthroughOnly)return false;
     if(native&&(!canSetWorldGamepad(module,true)||!canSetGamepadUi(module,true)))return false;
     DWORD previous;
     if(!VirtualProtect(slot,sizeof(DWORD),PAGE_READWRITE,&previous))return false;
@@ -176,7 +185,7 @@ bool installModernGamepad(HMODULE module,void(*logger)(const wchar_t*)) {
         InterlockedExchange(reinterpret_cast<LONG*>(slot),reinterpret_cast<LONG>(systemKeyboard));
         VirtualProtect(slot,sizeof(DWORD),previous,&ignored);return false;
     }
-    if(logger)logger(nativeRouting?L"MODERN_INPUT_READY backend=xinput1_4 route=native_world_and_ui menu=right_button":L"MODERN_INPUT_READY backend=xinput1_4 route=keyboard_poll menu=unmapped");
+    if(logger)logger(passthroughOnly?L"INPUT_PASSTHROUGH_READY controller=false map_reserved_keys=prototype_flag source_keyboard=preserved":nativeRouting?L"MODERN_INPUT_READY backend=xinput1_4 route=native_world_and_ui menu=right_button":L"MODERN_INPUT_READY backend=xinput1_4 route=keyboard_poll menu=unmapped");
     if(nativeRouting&&!installWorldGamepad(module,logger)){
         if(VirtualProtect(slot,4,PAGE_READWRITE,&previous)){*slot=reinterpret_cast<DWORD>(systemKeyboard);VirtualProtect(slot,4,previous,&ignored);}return false;
     }
@@ -194,5 +203,5 @@ bool removeModernGamepad(HMODULE module){
     if(nativeRouting&&!removeGamepadUi(module)){installWorldGamepad(module,nullptr);return false;}
     DWORD old;if(!VirtualProtect(slot,4,PAGE_READWRITE,&old)){if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}*slot=originalIat;DWORD ignored;
     if(!VirtualProtect(slot,4,old,&ignored)){*slot=reinterpret_cast<DWORD>(&keyboardBridge);VirtualProtect(slot,4,old,&ignored);if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}
-    router=modern_input::Router();worldScope=false;movement={};return true;
+    router=modern_input::Router();worldScope=false;movement={};InterlockedExchange(&mapPadButtons,0);return true;
 }

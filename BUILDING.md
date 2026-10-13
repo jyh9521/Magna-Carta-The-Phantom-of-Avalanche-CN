@@ -91,3 +91,19 @@ python tools/build_text_resources.py --source SOURCE_GAME --catalog CATALOG --co
 ## 4K标题背景候选
 
 独立、源摘要锁定的背景构建及验收见[4K标题背景](docs/TITLE_BACKGROUND_4K.md)。不覆盖已验收运行副本。
+
+## 现代化候选与区域地图
+
+汉化正文、字库和已验收标题资产保持冻结。配置、纹理及自由视角独立入口分别见ENHANCEMENT_CONFIGURATION.md、CURRENT_TEXTURE_LIFETIME.md、FREE_VIEW_CANDIDATE.md。区域地图见docs/MAP_OVERLAY_CANDIDATE.md；以下命令不启动游戏，不刷新旧验收模块。
+
+地图构建依赖复用tools/requirements-localization.txt中的Pillow，仅构建需要；玩家端使用系统GDI+/GDI32，没有新的Python运行依赖。
+
+```powershell
+python -m pip install -r tools/requirements-localization.txt
+python tools/build_map_atlas.py --source USER_GAME/MAP --output build/map-atlas --size 2048
+python tools/prepare_map_trial.py --workspace build/configurable-modern-game --native build/advanced-display-native/Release --atlas build/map-atlas --locale locales/zh-CN --output build/map-overlay-runtime
+```
+
+前置配置副本由tools/prepare_configuration_trial.py从已有版本匹配、完整汉化的独立输入创建。新运行模块与地图输出都必须为新目录；在现有已配置Win32 CMake中构建workspace_profile、workspace_launcher、map_overlay_fixture、world_gamepad_fixture、modern_gamepad_fixture、gamepad_ui_fixture。Map数据、原游戏、生成图及运行DLL不提交仓库，源哈希与PNG/MCM1摘要写入生成清单。
+
+未知旧版WRD拒绝；不是静默套用新版布局。配置JSON不变，入口共享已有配置副本的互斥锁。这里只提供可复现构建与候选预检，真实区域/硬件验收分别记录。

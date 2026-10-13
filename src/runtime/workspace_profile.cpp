@@ -1,3 +1,5 @@
+#include "map_overlay.h"
+#include "world_gamepad.h"
 #include "current_texture_lifetime.h"
 #include <windows.h>
 #include <cstring>
@@ -23,6 +25,7 @@ bool focusGuard = false;
 bool nativeTextStep = false;
 bool systemMessages = false;
 bool modernInput = false;
+bool mapOverlay=false;
 bool wideDisplay=false,render60=false,titleBackground4k=false;
 wchar_t textureDriverPath[32768]{};
 using MessageFunction = int(WINAPI*)(HWND, LPCSTR, LPCSTR, UINT);
@@ -166,6 +169,10 @@ void patch(HMODULE module) {
     if (modernInput && !_wcsicmp(base,L"MCAlpha.dll") && !installModernGamepad(module,trace)) {
         trace(L"MODERN_INPUT_REJECTED");ExitProcess(125);
     }
+    if(mapOverlay&&!_wcsicmp(base,L"MCAlpha.dll")){
+        if(!installWorldGamepad(module,trace)||!installMapOverlay(module,trace)){trace(L"MAP_OVERLAY_REJECTED");ExitProcess(125);}
+        setWorldTickObserver(&observeMapWorld);
+    }
     if((wideDisplay||render60)&&!_wcsicmp(base,L"MCAlpha.dll")&&!installAdvancedEngine(module,wideDisplay,render60,trace)){trace(L"ADVANCED_ENGINE_REJECTED");ExitProcess(125);}
     if (nativeTextStep && !_wcsicmp(base, L"MCAlpha.dll")) {
         if (!installNativeTextStep(module)) {
@@ -256,6 +263,7 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) {
         focusGuard = GetEnvironmentVariableW(L"MC_FOCUS_GUARD", option, 8) && !wcscmp(option, L"1");
         nativeTextStep = GetEnvironmentVariableW(L"MC_NATIVE_TEXT_STEP", option, 8) && !wcscmp(option, L"1");
         systemMessages = GetEnvironmentVariableW(L"MC_SYSTEM_MESSAGES",option,8) && !wcscmp(option,L"1");
+        mapOverlay=GetEnvironmentVariableW(L"MC_MAP_OVERLAY",option,8)&&!wcscmp(option,L"1");
         modernInput = GetEnvironmentVariableW(L"MC_MODERN_INPUT",option,8) && !wcscmp(option,L"1");
         wideDisplay=GetEnvironmentVariableW(L"MC_WIDE_DISPLAY",option,8)&&!wcscmp(option,L"1");
         titleBackground4k=GetEnvironmentVariableW(L"MC_TITLE_BACKGROUND4K",option,8)&&!wcscmp(option,L"1");

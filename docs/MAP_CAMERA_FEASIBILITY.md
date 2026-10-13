@@ -17,3 +17,5 @@
 下一步依次核实实例变换与可行走数据，再制作独立地图显示和坐标追踪；自由视角保持独立开关，不替换原剧情镜头，不回写存档。
 
 示例：python tools/resource_wrd.py --input build/disc-gate-game/MAP/0009.wrd --output build/map-research/0009.json --preview build/map-research/0009.svg。输出仅为本地生成的研究数据，不提交原游戏地图资源。
+
+2026-10-14后续：第一帧实例投影及区域大/小图只读候选已实现，当前状态以[区域地图候选](MAP_OVERLAY_CANDIDATE.md)为准；前述“尚未应用/未接入”为研究起点，不扩展为导航或所有场景验收。环绕视角独立候选见FREE_VIEW_CANDIDATE.md。
