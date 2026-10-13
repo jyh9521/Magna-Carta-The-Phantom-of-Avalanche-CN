@@ -8,6 +8,15 @@ int failingWrite=-1;
 BYTE* engine=nullptr;int originalWidth=0,virtualWidth=0;
 ULONG_PTR widthResumeA=0,widthResumeD=0,pollResume=0,windowResume=0,compassResume[4]{};
 using Warp=BOOL(WINAPI*)(int,int);Warp originalWarp=nullptr;
+using Create=void*(__cdecl*)(DWORD*);Create originalCreate=nullptr;
+thread_local DWORD physicalCreateInfo[7]{};
+void* __cdecl createHook(DWORD* info){
+ if(info==reinterpret_cast<DWORD*>(engine+0xf1b40)&&originalWidth>0&&originalWidth!=virtualWidth){
+  memcpy(physicalCreateInfo,info,sizeof(physicalCreateInfo));physicalCreateInfo[2]=originalWidth;
+  return originalCreate(physicalCreateInfo);
+ }
+ return originalCreate(info);
+}
 void __cdecl storeWidth(int width){originalWidth=width;virtualWidth=(width==640||width==800)?(width*4+1)/3:width;*reinterpret_cast<int*>(engine+0xf1b48)=virtualWidth;}
 int __cdecl mapMouse(int x){return originalWidth>0?static_cast<int>(std::lround(static_cast<double>(x)*virtualWidth/originalWidth)):x;}
 float __cdecl compassX(){return static_cast<float>(virtualWidth!=originalWidth?virtualWidth-100:(originalWidth>0&&originalWidth<700?540:700));}
@@ -141,9 +150,10 @@ Site sites[]={
  {0x70843,{0xc7,0x45,0xf0,0,0,0x2f,0x44},7,compass1},
  {0x70cd4,{0xc7,0x45,0xe8,0,0,0x07,0x44},7,compass2},
  {0x70cdd,{0xc7,0x45,0xe8,0,0,0x2f,0x44},7,compass3},
- {0xc15b,{0x8b,0x0d,0,0,0,0},6,physicalWindowWidth}};
-void expected(BYTE* image){auto base=reinterpret_cast<DWORD>(image);*reinterpret_cast<DWORD*>(sites[0].original+1)=base+0xf1b48;*reinterpret_cast<DWORD*>(sites[1].original+2)=base+0xf1b48;*reinterpret_cast<DWORD*>(sites[2].original+5)=base+0xf20b0;for(int i=3;i<=4;++i)*reinterpret_cast<DWORD*>(sites[i].original+2)=base+0xbd3e4;*reinterpret_cast<DWORD*>(sites[9].original+2)=base+0xf1b48;}
-void changed(const Site& s,BYTE* image,BYTE* bytes){memset(bytes,0x90,s.count);bytes[0]=(s.rva==0x2ea5||s.rva==0x2f45)?0xe8:0xe9;*reinterpret_cast<int*>(bytes+1)=static_cast<int>(reinterpret_cast<ULONG_PTR>(s.hook)-reinterpret_cast<ULONG_PTR>(image+s.rva+5));}
+ {0xc15b,{0x8b,0x0d,0,0,0,0},6,physicalWindowWidth},
+ {0xb95b,{0xff,0x15,0,0,0,0},6,createHook}};
+void expected(BYTE* image){auto base=reinterpret_cast<DWORD>(image);*reinterpret_cast<DWORD*>(sites[0].original+1)=base+0xf1b48;*reinterpret_cast<DWORD*>(sites[1].original+2)=base+0xf1b48;*reinterpret_cast<DWORD*>(sites[2].original+5)=base+0xf20b0;for(int i=3;i<=4;++i)*reinterpret_cast<DWORD*>(sites[i].original+2)=base+0xbd3e4;*reinterpret_cast<DWORD*>(sites[9].original+2)=base+0xf1b48;*reinterpret_cast<DWORD*>(sites[10].original+2)=base+0xbd048;}
+void changed(const Site& s,BYTE* image,BYTE* bytes){memset(bytes,0x90,s.count);bytes[0]=(s.rva==0x2ea5||s.rva==0x2f45||s.rva==0xb95b)?0xe8:0xe9;*reinterpret_cast<int*>(bytes+1)=static_cast<int>(reinterpret_cast<ULONG_PTR>(s.hook)-reinterpret_cast<ULONG_PTR>(image+s.rva+5));}
 bool write(BYTE* p,const BYTE* data,size_t n){DWORD old;if(!VirtualProtect(p,n,PAGE_EXECUTE_READWRITE,&old))return false;memcpy(p,data,n);FlushInstructionCache(GetCurrentProcess(),p,n);DWORD ignored;bool ok=VirtualProtect(p,n,old,&ignored)!=FALSE;
 #ifdef WIDE_UI_TEST
 if(failingWrite==0){failingWrite=-1;return false;}if(failingWrite>0)--failingWrite;
@@ -157,8 +167,8 @@ bool setWideUi(BYTE* image,size_t available,bool enabled){
  expected(image);BYTE patch[9];bool already=true;
  for(auto& s:sites){changed(s,image,patch);if(memcmp(image+s.rva,enabled?patch:s.original,s.count)!=0)already=false;if(memcmp(image+s.rva,s.original,s.count)&&memcmp(image+s.rva,patch,s.count))return false;}
  if(already)return true;
- if(enabled){engine=image;originalWidth=virtualWidth=*reinterpret_cast<int*>(image+0xf1b48);widthResumeA=reinterpret_cast<ULONG_PTR>(image+0x9840);widthResumeD=reinterpret_cast<ULONG_PTR>(image+0x99e4);pollResume=reinterpret_cast<ULONG_PTR>(image+0x2df5);windowResume=reinterpret_cast<ULONG_PTR>(image+0xc161);for(int i=0;i<4;++i)compassResume[i]=reinterpret_cast<ULONG_PTR>(image+sites[5+i].rva+7);originalWarp=*reinterpret_cast<Warp*>(image+0xbd3e4);if(!originalWarp)return false;}
- BYTE previous[10][9]{};for(unsigned i=0;i<10;++i)memcpy(previous[i],image+sites[i].rva,sites[i].count);
+ if(enabled){engine=image;originalWidth=virtualWidth=*reinterpret_cast<int*>(image+0xf1b48);widthResumeA=reinterpret_cast<ULONG_PTR>(image+0x9840);widthResumeD=reinterpret_cast<ULONG_PTR>(image+0x99e4);pollResume=reinterpret_cast<ULONG_PTR>(image+0x2df5);windowResume=reinterpret_cast<ULONG_PTR>(image+0xc161);for(int i=0;i<4;++i)compassResume[i]=reinterpret_cast<ULONG_PTR>(image+sites[5+i].rva+7);originalWarp=*reinterpret_cast<Warp*>(image+0xbd3e4);originalCreate=*reinterpret_cast<Create*>(image+0xbd048);if(!originalWarp||!originalCreate)return false;}
+ constexpr unsigned siteCount=sizeof(sites)/sizeof(sites[0]);BYTE previous[siteCount][9]{};for(unsigned i=0;i<siteCount;++i)memcpy(previous[i],image+sites[i].rva,sites[i].count);
  unsigned done=0;for(auto& s:sites){changed(s,image,patch);if(!write(image+s.rva,enabled?patch:s.original,s.count)){for(unsigned i=0;i<=done;++i)write(image+sites[i].rva,previous[i],sites[i].count);return false;}++done;}
  if(!enabled){*reinterpret_cast<int*>(image+0xf1b48)=originalWidth;engine=nullptr;originalWidth=virtualWidth=0;}return true;
 }

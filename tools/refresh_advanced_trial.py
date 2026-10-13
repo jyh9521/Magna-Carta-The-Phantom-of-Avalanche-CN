@@ -65,7 +65,7 @@ def _refresh(workspace, native):
     mutex = 'Local\\MagnaCartaAdvanced_' + trial.render.graphics.sha(str(workspace).encode())[:24]
     expected_script = trial.SCRIPT.replace('__LOCK__', json.dumps(old, ensure_ascii=True)).replace(
         '__MANIFEST_HASH__', digest(manifest)).replace('__MUTEX__', mutex).encode('utf-8-sig')
-    if (runtime / 'StartAdvanced.ps1').read_bytes() != expected_script:
+    if (runtime / 'StartAdvanced.ps1').read_bytes().replace(b'\r\n', b'\n') != expected_script.replace(b'\r\n', b'\n'):
         raise ValueError('Changed preparation script; no writes')
     names = [*old['runtime_hashes'], 'manifest.json', 'StartAdvanced.ps1']
     backup = runtime / ('previous-runtime-' + old['runtime_hashes']['workspace_profile.dll'][:16])

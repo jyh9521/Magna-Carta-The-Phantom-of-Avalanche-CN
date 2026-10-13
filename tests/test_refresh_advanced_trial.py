@@ -73,6 +73,13 @@ class RefreshTests(unittest.TestCase):
             module.refresh(self.w, self.n)
         self.assertFalse(list(self.r.glob('previous-runtime-*')))
 
+    def test_generated_windows_line_endings_are_accepted(self):
+        p = self.r / 'StartAdvanced.ps1'
+        data = p.read_bytes().replace(b'\r\n', b'\n').replace(b'\n', b'\r\n')
+        p.write_bytes(data)
+        lock = module.refresh(self.w, self.n)
+        self.assertEqual((self.r / lock['backup'] / 'StartAdvanced.ps1').read_bytes(), data)
+
     def test_restore_rejects_drift_without_partial_write(self):
         module.refresh(self.w, self.n)
         (self.r / 'workspace_launcher.exe').write_bytes(b'unknown runtime')

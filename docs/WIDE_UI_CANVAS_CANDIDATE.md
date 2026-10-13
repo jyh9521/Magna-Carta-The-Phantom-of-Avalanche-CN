@@ -1,5 +1,13 @@
 # 宽屏 UI 虚拟画布候选
 
+## SetDisplayMode启动回归修正（2026-10-13）
+
+玩家反馈宽屏/组合启动报 `DDERR_UNSUPPORTED - SetDisplayMode`。上一轮只保持CreateWindow宽度，漏掉实际图形创建入口。REA/Ghidra静态证据 `ev_459484388a111bcd0c873a3c5d49d3d439f0d923ddb9c2e4fdb7459b9e386bd0` 确认engine+0xb8df将 `engine+0xf1b40` 共用结构指针传给CreateAsura；宽度正是该结构+8，即已扩展的f1b48。800×600因而被错误传成1067×600。
+
+在确切调用点RVA0xb95b增加第11个指令守卫。cdecl钩子给显示创建传入独立、线程生命周期持久的7 DWORD ASRCreateInfo副本，只将宽度恢复原800/640；其他六个字段原样复制，UI全局画布仍为1067/853。Asura同版本RVA0x1650复制构造器使用7次movsd，支持结构28字节解释（Capstone静态推导）。未知参数指针走原函数。补丁预检/写失败回滚数组改为按站点总数计算，覆盖全部11点。
+
+受控回归 `wide_ui_fixture --baseline-mode-check`：width=1067,height=600,ui_width=1067,result=DDERR_UNSUPPORTED，退出1；`--mode-check`：width=800,height=600,ui_width=1067,result=SUPPORTED，退出0。使用实际x86调用点和自有CreateAsura桩，不代表真实GPU启动已通过。仍需玩家重测宽屏及组合。
+
 2026-10-13。玩家截图确认原4:3右边界仍约束罗盘和系统菜单；宽屏扩展区存在全屏色层遗漏。该模块只在显式宽屏候选启用，基准/4K4:3/60Hz4:3保持原行为。汉化数据与游戏磁盘模块不改。
 
 ## 证据与实现
