@@ -21,3 +21,5 @@ GetTexture获取的临时引用需要Release；COM约定及[Wine Direct3D7实现
 生成：`python tools/prepare_engine_bug_trial.py --source build/disc-gate-game --native build/advanced-display-native/Release --locale locales/zh-CN --output build/engine-bug-game`。入口Play-texture-guard.cmd显式开启，Play-without-texture-guard.cmd关闭；两者读取同一增强设置。
 
 验收同一存档：关闭候选读档一次；开启候选反复读档/切场景/返回标题，确认模型、纹理与速度不退化；日志出现TEXTURE_LIFETIME_READY，仅真实发生解绑才出现TEXTURE_CURRENT_UNBOUND_BEFORE_DELETE。失败保留session/profile.log和转储，不将无解绑日志算作路径覆盖。
+
+低磁盘容量时使用tools/prepare_texture_overlay.py，仅复制独立运行模块到build/texture-guard-runtime，不替换已有配置副本的游戏数据或运行模块。Play-texture-guard.cmd与Play-without-texture-guard.cmd读取配置工具同一设置并使用同一互斥锁。关闭入口撤销候选开关，旧Play-configured.cmd仍使用旧模块。开启/关闭及五种模式均以VerifyOnly预检，不代表游戏内安装或删纹理路径已发生。
