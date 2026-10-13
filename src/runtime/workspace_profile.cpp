@@ -11,6 +11,7 @@
 #include "wide_ui.h"
 #include "menu_visibility.h"
 #include "motion60.h"
+#include "title_layout.h"
 
 namespace {
 wchar_t session[512]{};
@@ -179,6 +180,9 @@ void patch(HMODULE module) {
     }
     if(localizedModule && wideDisplay && !installWideUi(module,trace)) {
         trace(L"WIDE_UI_REJECTED");ExitProcess(125);
+    }
+    if(localizedModule && wideDisplay && !installTitleLayout(module,trace)) {
+        trace(L"TITLE_LAYOUT_REJECTED");ExitProcess(125);
     }
     if(localizedModule && render60 && !installMotion60(module,trace)) {
         trace(L"MOTION60_REJECTED");ExitProcess(125);

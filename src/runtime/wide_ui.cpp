@@ -173,6 +173,8 @@ bool setWideUi(BYTE* image,size_t available,bool enabled){
  if(!enabled){*reinterpret_cast<int*>(image+0xf1b48)=originalWidth;engine=nullptr;originalWidth=virtualWidth=0;}return true;
 }
 bool installWideUi(HMODULE module,void(*logger)(const wchar_t*)){bool ok=setWideUi(reinterpret_cast<BYTE*>(module),0x10b000,true);if(ok&&logger)logger(L"WIDE_UI_CANVAS enabled=true width=4/3 mouse=inverse_pair compass=right_anchor validation=fixture_only");return ok;}
+int wideUiPhysicalWidth(){return originalWidth;}
+int wideUiCanvasWidth(){return virtualWidth;}
 #ifdef WIDE_UI_TEST
 void configureWideUiWriteFailureFixture(int site){failingWrite=site;}
 void initializeWideUiFixture(BYTE* image){memset(image,0,0x10b000);auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x80;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(image+0x80);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.SizeOfImage=0x10b000;expected(image);for(auto& s:sites)memcpy(image+s.rva,s.original,s.count);}

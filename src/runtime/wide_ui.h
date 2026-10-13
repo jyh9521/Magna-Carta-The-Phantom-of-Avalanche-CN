@@ -1,5 +1,7 @@
 #pragma once
 #include <windows.h>
+int wideUiPhysicalWidth();
+int wideUiCanvasWidth();
 bool installWideUi(HMODULE module,void(*logger)(const wchar_t*));
 bool setWideUi(BYTE* image,size_t available,bool enabled);
 #ifdef WIDE_UI_TEST
