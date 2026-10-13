@@ -54,7 +54,7 @@ __declspec(naked) void timerThunk(){__asm {
  mov eax,dword ptr[ebp-14h]
  jmp dword ptr[timerResume]
 }}
-struct Cache{void* action=nullptr;void* bones=nullptr;Matrix* pose=nullptr;int frame=0;LONGLONG changed=0,last=0;motion::Phase phase{};motion::TransformTrack world,localWorld;std::vector<Matrix> previous,current;};
+struct Cache{void* action=nullptr;void* bones=nullptr;Matrix* pose=nullptr;unsigned clipLength=0;int frame=0;LONGLONG changed=0,last=0;motion::Phase phase{};motion::TransformTrack world,localWorld;std::vector<Matrix> previous,current;};
 std::map<void*,Cache> caches;SRWLOCK cacheLock=SRWLOCK_INIT;LONGLONG frequency=0;
 // The original renderer copies local pose into object+f0 on every draw.
 // Replaying the same fixed tick must start with the same transition history.
@@ -153,11 +153,16 @@ void __cdecl absoluteHook(void* bones,unsigned root,Matrix* poses,Matrix* parent
 for(auto i=caches.begin();i!=caches.end();)if(now.QuadPart-i->second.last>frequency/4)i=caches.erase(i);else ++i;
 if(caches.size()>=128){lock.release();originalAbsolute(bones,root,poses,parent);return;}
 }
-auto& c=caches[active->object];bool reset=c.current.size()!=count||c.action!=action||c.bones!=bones||c.pose!=poses||now.QuadPart-c.last>frequency/4;
+unsigned clipLength=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+4);
+auto& c=caches[active->object];bool reset=c.current.size()!=count||c.action!=action||c.bones!=bones||c.pose!=poses||c.clipLength!=clipLength||now.QuadPart-c.last>frequency/4;
  if(complete&&(c.phase.generation!=phase.generation||phase.tick<c.phase.tick||phase.tick>c.phase.tick+1))reset=true;
  if(!reset&&active->frame==c.frame&&memcmp(current.data(),c.current.data(),count*sizeof(Matrix)))reset=true;
- if(!reset&&active->frame!=c.frame&&active->frame!=c.frame+1)reset=true;
- if(reset){c.previous=current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;c.action=action;c.bones=bones;c.pose=poses;c.world.reset();c.localWorld.reset();}
+ // The native actor update wraps looping clips from length-1 to zero.
+ // Preserve render history for that adjacent step, but not seeks or reversals.
+ bool adjacent=static_cast<LONGLONG>(active->frame)==static_cast<LONGLONG>(c.frame)+1;
+ bool wrapped=clipLength>1&&c.frame>=0&&static_cast<unsigned>(c.frame)==clipLength-1&&active->frame==0;
+ if(!reset&&active->frame!=c.frame&&!adjacent&&!wrapped)reset=true;
+ if(reset){c.previous=current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;c.action=action;c.bones=bones;c.pose=poses;c.clipLength=clipLength;c.world.reset();c.localWorld.reset();}
  else if(active->frame!=c.frame||(complete&&phase.tick!=c.phase.tick)){c.previous=c.current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;}
  c.last=now.QuadPart;float alpha=frequency?static_cast<float>((now.QuadPart-c.changed)*1000.0/(frequency*33.0)):1;alpha=(std::max)(0.f,(std::min)(1.f,alpha));
  if(complete){alpha=phase.alpha;c.phase=phase;}
