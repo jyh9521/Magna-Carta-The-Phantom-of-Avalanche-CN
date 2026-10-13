@@ -2,6 +2,7 @@
 #include "wide_ui.h"
 #include <cstring>
 namespace {
+bool hdBackground=false;BYTE* titleEngine=nullptr;
 ULONG_PTR bgCompareResume=0,menuCompareResume=0,buttonResume=0,tileResume=0,tileSetter=0;
 #ifdef TITLE_LAYOUT_TEST
 int fixturePhysical=640,fixtureCanvas=853;
@@ -10,14 +11,14 @@ int __cdecl physical(){
 #ifdef TITLE_LAYOUT_TEST
  return fixturePhysical;
 #else
- return wideUiPhysicalWidth();
+ int width=wideUiPhysicalWidth();return width>0?width:(titleEngine?*reinterpret_cast<int*>(titleEngine+0xf1b48):0);
 #endif
 }
 int __cdecl centerOffset(){
 #ifdef TITLE_LAYOUT_TEST
  int canvas=fixtureCanvas;
 #else
- int canvas=wideUiCanvasWidth();
+ int canvas=wideUiCanvasWidth();if(canvas<=0&&titleEngine)canvas=*reinterpret_cast<int*>(titleEngine+0xf1b48);
 #endif
  int width=physical();return width>0&&canvas>width?(canvas-width+1)/2:0;
 }
@@ -47,17 +48,25 @@ __declspec(naked) void buttonPoint(){__asm {
 }}
 // GUI decorations are independent render nodes. Their local +0x24 vector,
 // not the container's constructor point, feeds the BGR render transform.
-void __cdecl centerTile(int id,float* position){
- if(id==209||id==210)position[0]+=static_cast<float>(centerOffset());
+void __cdecl centerTile(int id,float* position,void* node){
+ if(id!=209&&id!=210)return;
+ if(!hdBackground){position[0]+=static_cast<float>(centerOffset());return;}
+ // Six overlapping power-of-two tiles cover the 3840x2160 master.
+ // Uniform scaling preserves the title; the viewport clips padded tile edges.
+ float scale=static_cast<float>(physical())/2880.f;
+ position[0]=position[0]*5.f*scale+(centerOffset()?0.f:(static_cast<float>(physical())-3840.f*scale)/2.f);position[1]*=(1080.f/256.f)*scale;
+ float* size=reinterpret_cast<float*>(static_cast<BYTE*>(node)+0x40);
+ size[0]=scale;size[1]=scale;
 }
 __declspec(naked) void tilePoint(){__asm {
  pushfd
  pushad
  lea eax,[esp+36]
+ push dword ptr[esp+24]
  push eax
  push dword ptr[ebp+10h]
  call centerTile
- add esp,8
+ add esp,12
  popad
  popfd
  call dword ptr[tileSetter]
@@ -81,8 +90,9 @@ bool setTitleLayout(BYTE* p,size_t n,bool enabled){
  for(unsigned i=0;i<4;++i){auto& s=sites[i];patch(s,p,desired);if(!write(p+s.rva,enabled?desired:s.original,s.count)){for(unsigned j=0;j<=i;++j)write(p+sites[j].rva,before[j],sites[j].count);return false;}}
  return true;
 }
-bool installTitleLayout(HMODULE module,void(*log)(const wchar_t*)){bool ok=setTitleLayout(reinterpret_cast<BYTE*>(module),0x10b000,true);if(ok&&log)log(L"TITLE_LAYOUT_READY art_size=physical_layout title_tile_vectors=centered game_canvas=unchanged");return ok;}
+bool installTitleLayout(HMODULE module,void(*log)(const wchar_t*)){titleEngine=reinterpret_cast<BYTE*>(module);wchar_t mode[8]{};hdBackground=GetEnvironmentVariableW(L"MC_TITLE_BACKGROUND4K",mode,8)&&!wcscmp(mode,L"1");bool ok=setTitleLayout(reinterpret_cast<BYTE*>(module),0x10b000,true);if(ok&&log)log(L"TITLE_LAYOUT_READY art_size=physical_layout title_tile_vectors=centered game_canvas=unchanged");return ok;}
 #ifdef TITLE_LAYOUT_TEST
 void initializeTitleLayoutFixture(BYTE* p){memset(p,0,0x10b000);auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);d->e_magic=IMAGE_DOS_SIGNATURE;d->e_lfanew=0x80;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+0x80);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;expected(p);for(auto& s:sites)memcpy(p+s.rva,s.original,s.count);}
 void configureTitleLayoutFixture(int p,int c){fixturePhysical=p;fixtureCanvas=c;}
+void configureTitleBackgroundFixture(bool enabled){hdBackground=enabled;}
 #endif

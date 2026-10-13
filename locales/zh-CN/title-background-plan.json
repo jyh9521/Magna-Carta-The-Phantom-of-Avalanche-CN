@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "size": [
+    3840,
+    2160
+  ],
+  "source": "art/title-background-source.png",
+  "source_sha256": "02b5350ea687f51f3df79e1a947949c4dd84a37e6533b145131df12f7e3db0e1",
+  "wordmark": "art/title-wordmark.png",
+  "wordmark_sha256": "3d45f802af9a5405294d8ffa0a8a6a28f26012526990eeb6117c921068ee090f",
+  "wordmark_box": [
+    1110,
+    630,
+    2730,
+    1134
+  ],
+  "tile_size": 2048,
+  "columns": [
+    0,
+    1280,
+    2560
+  ],
+  "rows": [
+    0,
+    1080
+  ],
+  "source_tiles": {
+    "BGR/0357.BGR": "352fcaf4ad8e0f55b6d97a574644e359c2e14c468df7c04fee8fe588fb37f520",
+    "BGR/0358.BGR": "46cab7876074fc46507efec4f502fea264fc4608b515d3a7a7479d1063993d27",
+    "BGR/0359.BGR": "4560b090aa47d3a9c79fd3a45e03fa6a8b31fad5714d77bc0083d3dc6a85a5ba",
+    "BGR/0360.BGR": "2a9b837f278824cc93e1b97b3fb224a553790d107947cc15a47d444c4fc14918",
+    "BGR/0361.BGR": "bcfdbabe1f1fc73a9715bfa7fdf13ea29b8a071ba93ad2b88162af074ccffc2f",
+    "BGR/0362.BGR": "2cc1f0beb1c00b7982b88f5ec217263b3e083a8e29c8bf3ec9092cbe70602385",
+    "BGR/0363.BGR": "8c8b0df85286dc1beea561fd1db438cab6e6de50066a86966659bc819bc623ae",
+    "BGR/0364.BGR": "cb446c9f64d64bbbf0522a700f4d14a45a911cbd156ee766b66c04711b532d55",
+    "BGR/0365.BGR": "4b42d61b487a3285b8e88a43b64d9b219019390d1f775ef42ad8e63558557df0",
+    "BGR/0366.BGR": "07ed86b6aa3efb1e8d2e86469bac58ead78e1169f4b5da281722abe3d7566777",
+    "BGR/0367.BGR": "272b953d71d5aba6b68e233f9d19182006ff1c6fe5107f5c16f1f0983c92fabb",
+    "BGR/0368.BGR": "e1d9382c1ed253f8b8f51963c4c9620f5b40be38d93e509193fda136235dff17"
+  }
+}

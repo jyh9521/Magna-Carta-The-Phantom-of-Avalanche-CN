@@ -11,7 +11,7 @@ import render_candidate
 class FeedbackContracts(unittest.TestCase):
     def test_title_layout_is_only_enabled_with_wide_canvas(self):
         text = (ROOT / 'src/runtime/workspace_profile.cpp').read_text('utf8')
-        self.assertIn('localizedModule && wideDisplay && !installTitleLayout', text)
+        self.assertIn('localizedModule && (wideDisplay||titleBackground4k) && !installTitleLayout', text)
         source = (ROOT / 'src/runtime/title_layout.cpp').read_text('utf8')
         self.assertIn('wideUiPhysicalWidth()', source)
         self.assertIn('wideUiCanvasWidth()', source)
@@ -20,7 +20,7 @@ class FeedbackContracts(unittest.TestCase):
     def test_title_background_uses_final_decoration_vector(self):
         source = (ROOT / 'src/runtime/title_layout.cpp').read_text('utf8')
         self.assertIn('0x4e370', source)
-        self.assertIn('id==209||id==210', source)
+        self.assertIn('if(id!=209&&id!=210)return;', source)
         self.assertIn('position[0]+=', source)
         self.assertNotIn('bgPoint', source)
         fixture = (ROOT / 'src/runtime/title_layout_fixture.cpp').read_text('utf8')

@@ -22,7 +22,7 @@ bool focusGuard = false;
 bool nativeTextStep = false;
 bool systemMessages = false;
 bool modernInput = false;
-bool wideDisplay=false,render60=false;
+bool wideDisplay=false,render60=false,titleBackground4k=false;
 wchar_t textureDriverPath[32768]{};
 using MessageFunction = int(WINAPI*)(HWND, LPCSTR, LPCSTR, UINT);
 MessageFunction originalExceptionMessage = MessageBoxA;
@@ -181,7 +181,7 @@ void patch(HMODULE module) {
     if(localizedModule && wideDisplay && !installWideUi(module,trace)) {
         trace(L"WIDE_UI_REJECTED");ExitProcess(125);
     }
-    if(localizedModule && wideDisplay && !installTitleLayout(module,trace)) {
+    if(localizedModule && (wideDisplay||titleBackground4k) && !installTitleLayout(module,trace)) {
         trace(L"TITLE_LAYOUT_REJECTED");ExitProcess(125);
     }
     if(localizedModule && render60 && !installMotion60(module,trace)) {
@@ -255,6 +255,7 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) {
         systemMessages = GetEnvironmentVariableW(L"MC_SYSTEM_MESSAGES",option,8) && !wcscmp(option,L"1");
         modernInput = GetEnvironmentVariableW(L"MC_MODERN_INPUT",option,8) && !wcscmp(option,L"1");
         wideDisplay=GetEnvironmentVariableW(L"MC_WIDE_DISPLAY",option,8)&&!wcscmp(option,L"1");
+        titleBackground4k=GetEnvironmentVariableW(L"MC_TITLE_BACKGROUND4K",option,8)&&!wcscmp(option,L"1");
         render60=GetEnvironmentVariableW(L"MC_RENDER60",option,8)&&!wcscmp(option,L"1");
         GetEnvironmentVariableW(L"MC_TEXTURE_DRIVER", textureDriverPath, 32768);
         patch(GetModuleHandleW(nullptr));

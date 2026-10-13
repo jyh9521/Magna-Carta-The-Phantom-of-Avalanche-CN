@@ -87,3 +87,7 @@ python tools/build_text_resources.py --source SOURCE_GAME --catalog CATALOG --co
 灰度覆盖和存档地点的可复现构建、原生模块参数及受控测试见[显示反馈修正](docs/UI_READABILITY_FIX.md)。完整字体映射保持既有版本，新增Field包进入完整增量候选列表。
 
 图片正立竖排与原生字形统一字号/基线构建见[UI_ALIGNMENT_FIX.md](docs/UI_ALIGNMENT_FIX.md)，改动灰度头后须重新编译profile。
+
+## 4K标题背景候选
+
+独立、源摘要锁定的背景构建及验收见[4K标题背景](docs/TITLE_BACKGROUND_4K.md)。不覆盖已验收运行副本。
