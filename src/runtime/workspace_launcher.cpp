@@ -204,7 +204,7 @@ int wmain(int argc, wchar_t** argv) {
         require(!nativeTextStep || !fixture, "Native text step requires a version-locked game workspace");
         require(!modernInput || !fixture,"Modern input requires a version-locked game workspace");
         if(!displayProfile.empty()) {
-            require(!fixture&&!textureLifetime&&(!modernInput||nativeGamepad),"Advanced display excludes legacy input experiments");
+            require(!fixture&&(!modernInput||nativeGamepad),"Advanced display excludes legacy input experiments");
             require(sha256(workspace/L"Asura.dll")=="f81e7c458d43b77210311499b39b9be2c4895e3a3b356d2e848b6e84210d2557","Unsupported advanced animation library");
             require(sha256(workspace/L"Drv"/L"AsrD3DDrv.dll")=="00d443327abf56c94f9f088515ab29be63bab9650771a5cacdcef20ab85eff29","Unsupported advanced driver");
             require(sha256(workspace/L"ddraw.dll")=="f75f0ac48d2782f225c483dc2f1142303a513e8dd8a60793891ade89f64755ea","Unsupported advanced graphics layer");
@@ -232,7 +232,7 @@ int wmain(int argc, wchar_t** argv) {
         fs::create_directories(log.parent_path());
         fs::path captureHelper = shim.parent_path() / L"capture_helper.exe";
         if (focusGuard) {
-            require(!fixture && !textureLifetime, "Focus guard requires an isolated unpatched borderless trial");
+            require(!fixture, "Focus guard requires an isolated unpatched borderless trial");
             require(sha256(workspace / L"Drv" / L"AsrD3DDrv.dll") == "00d443327abf56c94f9f088515ab29be63bab9650771a5cacdcef20ab85eff29", "Unsupported focus driver");
             require(sha256(workspace / L"ddraw.dll") == "f75f0ac48d2782f225c483dc2f1142303a513e8dd8a60793891ade89f64755ea", "Unsupported focus graphics layer");
             auto focusConfig = sha256(workspace / L"DDrawCompat-MagnaCarta.ini");
@@ -243,7 +243,8 @@ int wmain(int argc, wchar_t** argv) {
         }
         if (textureLifetime) {
             require(!fixture, "Texture lifetime is not a registry fixture option");
-            require(sha256(workspace / L"Drv" / L"AsrD3DDrv.dll") == "27db21dee7dde8ca3463e11fab57cc0b7cf6a7ed3338c950b6b1181eed7959ed", "Unsupported graphics driver");
+            auto driverHash=sha256(workspace / L"Drv" / L"AsrD3DDrv.dll");
+            require(driverHash == "27db21dee7dde8ca3463e11fab57cc0b7cf6a7ed3338c950b6b1181eed7959ed" || driverHash == "00d443327abf56c94f9f088515ab29be63bab9650771a5cacdcef20ab85eff29", "Unsupported graphics driver");
         }
         if (captureException) {
             require(!fixture, "Exception capture is not a registry fixture option");

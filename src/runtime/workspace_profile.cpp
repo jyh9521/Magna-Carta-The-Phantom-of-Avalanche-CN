@@ -1,3 +1,4 @@
+#include "current_texture_lifetime.h"
 #include <windows.h>
 #include <cstring>
 #include <cwchar>
@@ -139,14 +140,15 @@ void patch(HMODULE module) {
     if (!GetModuleFileNameW(module, path, 32768)) return;
     const wchar_t* base = wcsrchr(path, L'\\');
     base = base ? base + 1 : path;
+    if (textureLifetime && !_wcsicmp(base, L"AsrD3DDrv.dll")) {
+        bool matched = textureDriverPath[0] && !_wcsicmp(path, textureDriverPath);
+        if(!matched || !(installCurrentTextureLifetime(module, trace) || installTextureLifetime(module, trace))){trace(L"TEXTURE_LIFETIME_REJECTED");ExitProcess(125);}
+        trace(L"TEXTURE_LIFETIME_READY");
+        if(!(wideDisplay||render60))return;
+    }
     if((wideDisplay||render60)&&!_wcsicmp(base,L"AsrD3DDrv.dll")) {
         if(!installAdvancedDriver(module,wideDisplay,render60,trace)){trace(L"ADVANCED_DRIVER_REJECTED");ExitProcess(125);}
         if(render60&&!installMotion60Driver(module,trace)){trace(L"MOTION60_CAMERA_REJECTED");ExitProcess(125);}
-        return;
-    }
-    if (textureLifetime && !_wcsicmp(base, L"AsrD3DDrv.dll")) {
-        bool matched = textureDriverPath[0] && !_wcsicmp(path, textureDriverPath);
-        trace(matched && installTextureLifetime(module, trace) ? L"TEXTURE_LIFETIME_READY" : L"TEXTURE_LIFETIME_REJECTED");
         return;
     }
     bool exceptionModule = captureHelper[0] && !_wcsicmp(base, L"Core.dll");
