@@ -56,6 +56,32 @@ __declspec(naked) void timerThunk(){__asm {
 }}
 struct Cache{void* action=nullptr;void* bones=nullptr;Matrix* pose=nullptr;int frame=0;LONGLONG changed=0,last=0;motion::Phase phase{};motion::TransformTrack world;std::vector<Matrix> previous,current;};
 std::map<void*,Cache> caches;SRWLOCK cacheLock=SRWLOCK_INIT;LONGLONG frequency=0;
+// The original renderer copies local pose into object+f0 on every draw.
+// Replaying the same fixed tick must start with the same transition history.
+struct History {void* action=nullptr;Matrix* buffer=nullptr;motion::Phase phase{};std::vector<Matrix> input;};
+std::map<void*,History> histories;
+motion::Phase renderPhase();
+void prepareHistory(void* value,int frame){
+ auto phase=renderPhase();
+ if(!complete||!phase.valid||!readable(value,0x100))return;
+ auto object=static_cast<BYTE*>(value);auto action=*reinterpret_cast<BYTE**>(object+0xa0);
+ auto buffer=*reinterpret_cast<Matrix**>(object+0xf0);
+ if(!buffer||!readable(action,0x20))return;
+ unsigned length=*reinterpret_cast<unsigned*>(action+4),stride=*reinterpret_cast<unsigned*>(action+8);
+ if(!length||!stride||frame<0)return;unsigned sample=(unsigned(frame)%length)/stride;
+ auto sequence=*reinterpret_cast<BYTE**>(action+0x18);
+ if(sample>65535||!readable(sequence,(sample+1)*sizeof(void*)))return;
+ auto record=*reinterpret_cast<BYTE**>(sequence+sample*sizeof(void*));
+ if(!readable(record,8))return;auto data=*reinterpret_cast<BYTE**>(record+4);
+ if(!readable(data,0x18))return;unsigned count=*reinterpret_cast<unsigned*>(data+0x14);
+ if(!count||count>512||!readable(buffer,count*sizeof(Matrix)))return;
+ if(histories.find(value)==histories.end()&&histories.size()>=128)return;
+ auto& h=histories[value];
+ bool repeat=h.action==action&&h.buffer==buffer&&h.input.size()==count
+  &&h.phase.generation==phase.generation&&h.phase.tick==phase.tick;
+ if(repeat)memcpy(buffer,h.input.data(),count*sizeof(Matrix));
+ else {h.action=action;h.buffer=buffer;h.input.assign(buffer,buffer+count);h.phase=phase;}
+}
 #ifdef MOTION60_TEST
 bool fixtureClock=false;LONGLONG fixtureTicks=0;
 #endif
@@ -160,6 +186,7 @@ void renderScoped(Context* ctx,void* object,int frame,Matrix* world,int a,int b,
  __finally {if(ctx->pose&&!ctx->baseline.empty())memcpy(ctx->pose,ctx->baseline.data(),ctx->baseline.size()*sizeof(Matrix));if(ctx->world)*ctx->world=ctx->baselineWorld;active=ctx->parent;}
 }
 void __fastcall renderHook(void* object,void*,int frame,Matrix* world,int a,int b,int c,int d,int e){
+ prepareHistory(object,frame);
  Context ctx{object,frame,nullptr,{},active};renderScoped(&ctx,object,frame,world,a,b,c,d,e);
 }
 bool write(void* p,DWORD value){DWORD old;if(!VirtualProtect(p,4,PAGE_READWRITE,&old))return false;DWORD before=*static_cast<DWORD*>(p);*static_cast<DWORD*>(p)=value;DWORD unused;if(VirtualProtect(p,4,old,&unused))return true;*static_cast<DWORD*>(p)=before;VirtualProtect(p,4,old,&unused);return false;}
@@ -175,7 +202,7 @@ bool timerPatch(BYTE* p,bool enabled){
  timerResume=reinterpret_cast<ULONG_PTR>(p+0xcf67);memcpy(p+0xcf61,enabled?patched:timerOriginal,6);
  bool ok=FlushInstructionCache(GetCurrentProcess(),p+0xcf61,6)!=FALSE;DWORD ignored;
  if(!ok||!VirtualProtect(p+0xcf61,6,old,&ignored)){memcpy(p+0xcf61,before,6);FlushInstructionCache(GetCurrentProcess(),p+0xcf61,6);VirtualProtect(p+0xcf61,6,old,&ignored);return false;}
- timeline.reset();cameraTrack.reset();cameraState={};return true;
+ timeline.reset();histories.clear();cameraTrack.reset();cameraState={};return true;
 }
 }
 namespace {

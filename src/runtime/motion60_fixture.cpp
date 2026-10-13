@@ -4,6 +4,7 @@
 #include <cmath>
 #include "render_timeline.h"
 static BYTE object[0x120],action[0x24],record[8],data[0x24];static BYTE* sequence[1];static MotionMatrix pose[1];static float observed;static int checks=0;static int absoluteCalls=0;static bool throwSeh=false;
+static bool transitionHistory=false;static MotionMatrix history[1];
 static bool fullDraw=false;static BYTE driver[0xe0],camera[0xc0];static float actorX=0,worldObserved=0;
 void require(bool b,const char* text){++checks;if(!b){fprintf(stderr,"FAIL %s\n",text);fflush(stderr);ExitProcess(1);}}
 MotionMatrix identity(float x){MotionMatrix m{};m.v[0]=m.v[5]=m.v[10]=m.v[15]=1;m.v[12]=x;return m;}
@@ -11,6 +12,7 @@ void __cdecl absolute(void*,unsigned,MotionMatrix* p,MotionMatrix*){++absoluteCa
 void __fastcall loadCamera(void* d,void*,MotionMatrix* m){memcpy(static_cast<BYTE*>(d)+0x5c,m,64);}
 void __fastcall draw(void*,void*,int frame,MotionMatrix*,int,int,int,int,int){
  pose[0]=identity(static_cast<float>(frame*10));
+ if(transitionHistory){pose[0].v[12]=(history[0].v[12]+pose[0].v[12])*.5f;history[0]=pose[0];}
  if(fullDraw){auto actor=identity(actorX);auto view=reinterpret_cast<motion::Matrix*>(driver+0x5c);auto w=motion::multiply(*view,reinterpret_cast<const motion::Matrix&>(actor));memcpy(object+0xc,&w,64);}
  motion60TestAbsolute(data,0,pose,nullptr);observed=pose[0].v[12];worldObserved=reinterpret_cast<MotionMatrix*>(object+0xc)->v[12];if(throwSeh)RaiseException(0xe0000001,0,0,nullptr);
 }
@@ -82,6 +84,16 @@ int main(){
  motion60TestRender(object,1);require(reinterpret_cast<MotionMatrix*>(object+0xc)->v[0]==1&&std::abs(reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]+10)<.002f,"free orbit draw restores original modelview not modified camera view");
  motion60TestFreeView(true,false,true,0,0);appliedCamera();require(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[0]==1,"free orbit reset restores original view orientation");
  motion60TestFreeView(false,false,false,0,0);appliedCamera();require(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[0]==1,"free orbit disabled leaves complete-motion camera unchanged");
+ transitionHistory=true;history[0]=identity(0);*reinterpret_cast<MotionMatrix**>(object+0xf0)=history;
+ *reinterpret_cast<unsigned*>(action+4)=100;*reinterpret_cast<unsigned*>(action+8)=100;
+ motion60TestComplete(image,true);motion60TestTick(0,0,1000);motion60TestRender(object,2);float stable=history[0].v[12];
+ motion60TestTick(0,16,1016);motion60TestRender(object,2);
+ require(std::abs(history[0].v[12]-stable)<.001f,"same logic tick cannot advance original transition history");
+ motion60TestTick(0,24,1024);motion60TestRender(object,2);
+ require(std::abs(history[0].v[12]-stable)<.001f,"third presentation still uses tick input history");
+ motion60TestTick(1,0,1033);motion60TestRender(object,2);
+ require(history[0].v[12]>stable,"next native logic tick advances transition exactly once");
+ transitionHistory=false;*reinterpret_cast<MotionMatrix**>(object+0xf0)=nullptr;
  require(motion60TestTimerPatch(image,false),"complete timer rollback");require(!memcmp(image+0xcf61,timerBytes,6),"complete timer exact rollback");
  image[0xcf61]^=1;require(!motion60TestTimerPatch(image,true),"unknown timer rejects");image[0xcf61]^=1;
  require(motion60TestDriverSet(driverImage,false),"camera rollback");require(*loadSlot==oldLoad&&*mulSlot==oldMul,"camera exact slots restored");require(motion60TestDriverSet(driverImage,false),"camera rollback idempotent");
