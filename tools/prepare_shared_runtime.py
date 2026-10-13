@@ -87,6 +87,9 @@ def prepare(source, modules, atlas, output):
             files['maps/'+name]=row[key]
     for name in ['manifest.json','label.txt']:
         files['maps/'+name]=sha(atlas/name)
+    title_original=b'@echo off\r\nsetlocal\r\nset MC_TITLE_STYLE=0\r\ncall "%~dp0Play.cmd"\r\n'
+    (output/'Play-title-original.cmd').write_bytes(title_original)
+    files['Play-title-original.cmd']=sha(output/'Play-title-original.cmd')
     manifest=dict(schema=1,data_root='data',data=data,files=files,profiles=original['profiles'],recipes=recipes,
                   configured_modules=dict(display='display',motion='modern',gamepad='modern',combined='modern'))
     (output/'runtime.json').write_bytes((json.dumps(manifest,indent=2)+'\n').encode('utf8'))

@@ -143,6 +143,11 @@ set_property(TARGET free_view_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThread
 target_compile_options(free_view_fixture PRIVATE /W4 /utf-8)
 
 target_sources(workspace_profile PRIVATE map_overlay.cpp)
+target_sources(workspace_profile PRIVATE title_style.cpp)
+add_executable(title_style_fixture title_style_fixture.cpp title_style.cpp)
+target_compile_definitions(title_style_fixture PRIVATE TITLE_STYLE_TEST)
+target_compile_options(title_style_fixture PRIVATE /W4 /utf-8)
+target_link_libraries(title_style_fixture PRIVATE user32)
 target_link_libraries(workspace_profile PRIVATE gdiplus gdi32)
 add_executable(map_overlay_fixture map_overlay_fixture.cpp map_overlay.cpp)
 target_compile_definitions(map_overlay_fixture PRIVATE MAP_OVERLAY_TEST)

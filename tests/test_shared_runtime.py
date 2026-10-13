@@ -47,6 +47,8 @@ class SharedRuntimeTests(unittest.TestCase):
             self.assertTrue(m['recipes']['camera']['camera'])
             self.assertTrue(m['recipes']['maps']['maps'])
             self.assertTrue((out/'Configure.cmd').is_file())
+            self.assertIn(b'set MC_TITLE_STYLE=0', (out/'Play-title-original.cmd').read_bytes())
+            self.assertEqual(tool.sha(out/'Play-title-original.cmd'),m['files']['Play-title-original.cmd'])
             self.assertRaises(ValueError,tool.prepare,game,modules,atlas,out)
 
     def test_source_hash_drift_rejected_before_output(self):

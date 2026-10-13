@@ -15,6 +15,7 @@
 #include "menu_visibility.h"
 #include "motion60.h"
 #include "title_layout.h"
+#include "title_style.h"
 
 namespace {
 wchar_t session[512]{};
@@ -188,6 +189,11 @@ void patch(HMODULE module) {
     if(localizedModule && !installMenuVisibility(module,trace)) {
         trace(L"MENU_VISIBILITY_REJECTED");ExitProcess(125);
     }
+      wchar_t titleStyleFlag[8]{};
+      bool titleStyleEnabled=!(GetEnvironmentVariableW(L"MC_TITLE_STYLE",titleStyleFlag,8)==1&&titleStyleFlag[0]==L'0');
+      if(localizedModule && titleStyleEnabled && !installTitleStyle(module,trace)) {
+          trace(L"TITLE_STYLE_REJECTED");ExitProcess(125);
+      }
     if(localizedModule && wideDisplay && !installWideUi(module,trace)) {
         trace(L"WIDE_UI_REJECTED");ExitProcess(125);
     }
