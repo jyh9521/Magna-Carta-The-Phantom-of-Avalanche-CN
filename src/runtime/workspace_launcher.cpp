@@ -1,4 +1,5 @@
 #include <windows.h>
+#include "advanced_display.h"
 #include <bcrypt.h>
 #include <filesystem>
 #include <fstream>
@@ -162,6 +163,7 @@ int wmain(int argc, wchar_t** argv) {
             return 0;
         }
         fs::path workspace, shim, setting, log;
+        std::wstring displayProfile;
         bool fixture = false, captureException = false, textureLifetime = false, focusGuard = false, nativeTextStep = false, systemMessages = false, modernInput = false, verifyOnly = false; DWORD seconds = 0;
         for (int i = 1; i < argc; ++i) {
             std::wstring arg = argv[i];
@@ -172,6 +174,7 @@ int wmain(int argc, wchar_t** argv) {
             else if (arg == L"--native-text-step") nativeTextStep = true;
             else if (arg == L"--system-messages") systemMessages = true;
             else if (arg == L"--modern-input") modernInput = true;
+            else if (i+1<argc&&arg==L"--display-profile") displayProfile=argv[++i];
             else if (arg == L"--verify-only") verifyOnly = true;
             else if (i + 1 < argc && arg == L"--workspace") workspace = fs::canonical(argv[++i]);
             else if (i + 1 < argc && arg == L"--shim") shim = fs::canonical(argv[++i]);
@@ -199,6 +202,12 @@ int wmain(int argc, wchar_t** argv) {
         fs::path exe = workspace / (fixture ? L"registry_probe.exe" : L"MagnaCarta.exe");
         require(!nativeTextStep || !fixture, "Native text step requires a version-locked game workspace");
         require(!modernInput || !fixture,"Modern input requires a version-locked game workspace");
+        if(!displayProfile.empty()) {
+            require(!fixture&&!textureLifetime&&!modernInput,"Advanced display excludes other experiments");
+            require(sha256(workspace/L"Drv"/L"AsrD3DDrv.dll")=="00d443327abf56c94f9f088515ab29be63bab9650771a5cacdcef20ab85eff29","Unsupported advanced driver");
+            require(sha256(workspace/L"ddraw.dll")=="f75f0ac48d2782f225c483dc2f1142303a513e8dd8a60793891ade89f64755ea","Unsupported advanced graphics layer");
+            require(advancedConfigMatches(displayProfile,sha256(workspace/L"DDrawCompat-MagnaCarta.ini")),"Advanced mode/config mismatch");
+        }
         if (!fixture) {
             require(supportedExecutable(exe), "Unsupported game executable");
             auto engine=sha256(workspace/L"MCAlpha.dll");
@@ -228,7 +237,7 @@ int wmain(int argc, wchar_t** argv) {
             require(focusConfig == "45f7df1d1c09bc3fea707d9da3dead33a6b21f48224639b7219656a572b3fa3a" ||
                 focusConfig == "9e9c39e6f51eee015fb90533fa67cd4bd66e076908c1a12ff15f70b28a1ead31" ||
                 focusConfig == "ddfc51a2b79757204c67e41d840cca035e0f5b1a0794108905a65f6948a2ebfc" ||
-                focusConfig == "0c49061b62b51e4e4dc91458d8c09650d3233895528aea80fafff06ff6b64ea3", "Unsupported focus graphics configuration");
+                focusConfig == "0c49061b62b51e4e4dc91458d8c09650d3233895528aea80fafff06ff6b64ea3" || advancedConfigMatches(displayProfile,focusConfig), "Unsupported focus graphics configuration");
         }
         if (textureLifetime) {
             require(!fixture, "Texture lifetime is not a registry fixture option");
@@ -244,6 +253,8 @@ int wmain(int argc, wchar_t** argv) {
         SetEnvironmentVariableW(L"MC_WORKSPACE_LOG", log.c_str());
         SetEnvironmentVariableW(L"MC_SYSTEM_MESSAGES",systemMessages?L"1":L"0");
         SetEnvironmentVariableW(L"MC_MODERN_INPUT",modernInput?L"1":L"0");
+        SetEnvironmentVariableW(L"MC_WIDE_DISPLAY",displayProfile==L"wide4k"||displayProfile==L"combined"?L"1":L"0");
+        SetEnvironmentVariableW(L"MC_RENDER60",displayProfile==L"fps60"||displayProfile==L"combined"?L"1":L"0");
         SetEnvironmentVariableW(L"MC_CAPTURE_HELPER", captureException ? captureHelper.c_str() : nullptr);
         SetEnvironmentVariableW(L"MC_TEXTURE_LIFETIME", textureLifetime ? L"1" : nullptr);
         SetEnvironmentVariableW(L"MC_FOCUS_GUARD", focusGuard ? L"1" : nullptr);

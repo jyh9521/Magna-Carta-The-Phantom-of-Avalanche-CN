@@ -7,6 +7,7 @@
 #include "native_font.h"
 #include "system_messages.h"
 #include "modern_gamepad.h"
+#include "advanced_display.h"
 
 namespace {
 wchar_t session[512]{};
@@ -17,6 +18,7 @@ bool focusGuard = false;
 bool nativeTextStep = false;
 bool systemMessages = false;
 bool modernInput = false;
+bool wideDisplay=false,render60=false;
 wchar_t textureDriverPath[32768]{};
 using MessageFunction = int(WINAPI*)(HWND, LPCSTR, LPCSTR, UINT);
 MessageFunction originalExceptionMessage = MessageBoxA;
@@ -133,6 +135,10 @@ void patch(HMODULE module) {
     if (!GetModuleFileNameW(module, path, 32768)) return;
     const wchar_t* base = wcsrchr(path, L'\\');
     base = base ? base + 1 : path;
+    if((wideDisplay||render60)&&!_wcsicmp(base,L"AsrD3DDrv.dll")) {
+        if(!installAdvancedDriver(module,wideDisplay,render60,trace)){trace(L"ADVANCED_DRIVER_REJECTED");ExitProcess(125);}
+        return;
+    }
     if (textureLifetime && !_wcsicmp(base, L"AsrD3DDrv.dll")) {
         bool matched = textureDriverPath[0] && !_wcsicmp(path, textureDriverPath);
         trace(matched && installTextureLifetime(module, trace) ? L"TEXTURE_LIFETIME_READY" : L"TEXTURE_LIFETIME_REJECTED");
@@ -153,6 +159,7 @@ void patch(HMODULE module) {
     if (modernInput && !_wcsicmp(base,L"MCAlpha.dll") && !installModernGamepad(module,trace)) {
         trace(L"MODERN_INPUT_REJECTED");ExitProcess(125);
     }
+    if((wideDisplay||render60)&&!_wcsicmp(base,L"MCAlpha.dll")&&!installAdvancedEngine(module,wideDisplay,render60,trace)){trace(L"ADVANCED_ENGINE_REJECTED");ExitProcess(125);}
     if (nativeTextStep && !_wcsicmp(base, L"MCAlpha.dll")) {
         if (!installNativeTextStep(module)) {
             trace(L"NATIVE_TEXT_STEP_REJECTED");
@@ -231,6 +238,8 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) {
         nativeTextStep = GetEnvironmentVariableW(L"MC_NATIVE_TEXT_STEP", option, 8) && !wcscmp(option, L"1");
         systemMessages = GetEnvironmentVariableW(L"MC_SYSTEM_MESSAGES",option,8) && !wcscmp(option,L"1");
         modernInput = GetEnvironmentVariableW(L"MC_MODERN_INPUT",option,8) && !wcscmp(option,L"1");
+        wideDisplay=GetEnvironmentVariableW(L"MC_WIDE_DISPLAY",option,8)&&!wcscmp(option,L"1");
+        render60=GetEnvironmentVariableW(L"MC_RENDER60",option,8)&&!wcscmp(option,L"1");
         GetEnvironmentVariableW(L"MC_TEXTURE_DRIVER", textureDriverPath, 32768);
         patch(GetModuleHandleW(nullptr));
         trace(L"PROFILE_ATTACHED");
