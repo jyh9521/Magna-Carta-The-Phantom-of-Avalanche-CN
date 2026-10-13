@@ -16,6 +16,7 @@
 #include "motion60.h"
 #include "title_layout.h"
 #include "title_style.h"
+#include "mouse_view.h"
 
 namespace {
 wchar_t session[512]{};
@@ -170,7 +171,7 @@ void patch(HMODULE module) {
     if (modernInput && !_wcsicmp(base,L"MCAlpha.dll") && !installModernGamepad(module,trace)) {
         trace(L"MODERN_INPUT_REJECTED");ExitProcess(125);
     }
-    if(cameraInput&&!_wcsicmp(base,L"MCAlpha.dll")&&!installWorldGamepad(module,trace)){
+    if(cameraInput&&!_wcsicmp(base,L"MCAlpha.dll")&&(!installWorldGamepad(module,trace)||!installMouseView(module,trace))){
         trace(L"CAMERA_INPUT_REJECTED");ExitProcess(125);
     }
     if(mapOverlay&&!_wcsicmp(base,L"MCAlpha.dll")){

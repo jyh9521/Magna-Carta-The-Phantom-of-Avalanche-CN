@@ -81,6 +81,7 @@ bool set(BYTE* p,bool enabled,void(*logger)(const wchar_t*),bool dry=false){
 bool installWorldGamepad(HMODULE m,void(*logger)(const wchar_t*)){return set(reinterpret_cast<BYTE*>(m),true,logger);}
 bool removeWorldGamepad(HMODULE m){return set(reinterpret_cast<BYTE*>(m),false,nullptr);}
 bool canSetWorldGamepad(HMODULE m,bool enabled){return set(reinterpret_cast<BYTE*>(m),enabled,nullptr,true);}
+bool worldExplorationActive(){return controllable(scene);}
 
 void setWorldTickObserver(WorldTickObserver callback){InterlockedExchangePointer(reinterpret_cast<PVOID volatile*>(&observer),reinterpret_cast<PVOID>(callback));}
 void notifyWorldTickObserver(BYTE* value,bool controlled){auto callback=reinterpret_cast<WorldTickObserver>(InterlockedCompareExchangePointer(reinterpret_cast<PVOID volatile*>(&observer),nullptr,nullptr));if(callback)callback(value,controlled);}
