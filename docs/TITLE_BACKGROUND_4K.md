@@ -45,3 +45,15 @@ Verified（受控）：导出3840×2160、1920×1080、1280×720、640×480和80
 layout_intent是可复核的设计约束，不是测得的引擎字段。新增测试只验证约束数据保存正确，最终空间关系以生成图和合成4K图的目视复核、玩家复测为准；不把该测试描述成图像识别或像素定位证明。
 
 仍通过build_title_background生成3840×2160母图及12个纹理，用refresh_title_background替换同一title-background4k-game。上一张错位背景摘要和18个文件备份保留，独立副本恢复上一版的结果见build/title-name-alignment-evidence/VERIFICATION.txt。
+
+## 韩文小字与旋涡表面形变
+
+本次背景韩文副标题明确采用玩家校正的눈사태의 유령，替换旧눈사태의 망령。先前网页名称仅保留为reference_korean_from_web历史资料，不再作为本背景小字的目标；前景中文标题与英文装饰拼写不改。
+
+上一版文字呈平面斜贴感。新绘版沿布纹作明显非线性S形曲线，使英文及韩文笔画局部拉伸、收缩、倾斜，暗色墨迹随褶皱渐隐；保持英文上层、韩文从N附近下方起笔。typography_treatment是设计意图记录，测试仅验证该约束与目标字串，不声称自动验证艺术风格或OCR识别。
+
+已有候选后续只需重新导出标题资产，不反复复制完整商业游戏：
+`python tools/build_title_background.py --assets-only --source build/disc-gate-game --locale locales/zh-CN --output build/title-vortex-assets`
+`python tools/refresh_title_background.py --workspace build/title-background4k-game --replacement build/title-vortex-assets`
+
+assets-only输出不含游戏入口或商业执行文件，只含12个标题纹理、母图、预览及摘要清单。原版来源和标题源摘要仍先校验。完整新副本构建保留原--native参数路径。输出为3840×2160，native显示/裁切与按钮未改。上一版背景及18文件摘要恢复测试见build/title-vortex-evidence/VERIFICATION.txt；实机视觉仍由玩家复测。

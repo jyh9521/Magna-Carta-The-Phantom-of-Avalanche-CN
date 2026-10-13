@@ -108,11 +108,17 @@ class BackgroundRefreshTests(unittest.TestCase):
         self.assertEqual(layout['korean_origin_under_english_letter'],'N')
         self.assertFalse(layout['left_half_lettering'])
 
+    def test_typography_is_surface_warped_not_flat(self):
+        plan=json.loads((ROOT/'locales/zh-CN/title-background-plan.json').read_text('utf8'))
+        layout=plan['background_names']['layout_intent']
+        self.assertEqual(layout['typography_treatment'],'nonlinear_vortex_surface_warp')
+        self.assertIn('individual_glyph_stretch_and_compression',layout['deformation'])
+
     def test_names_are_source_backed_and_exact(self):
         plan=json.loads((ROOT/'locales/zh-CN/title-background-plan.json').read_text('utf8'))
         names=plan['background_names']
         self.assertEqual(names['english'],'MagnaCarta: The Phantom of Avalanche')
-        self.assertEqual(names['korean_art_lines'],['마그나카르타','눈사태의 망령'])
+        self.assertEqual(names['korean_art_lines'],['마그나카르타','눈사태의 유령'])
         self.assertGreaterEqual(len(names['sources']),2)
 
 

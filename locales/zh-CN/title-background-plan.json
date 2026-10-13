@@ -5,7 +5,7 @@
     2160
   ],
   "source": "art/title-background-source.png",
-  "source_sha256": "a7519b2606e72ae02d7ad56a1a560d4154f8d7ae36446131c45f16f756a95c33",
+  "source_sha256": "11ef99ea3fd1d6bde1db763cdc07a4bb6f70789acfb2d68559e1b11df0451c84",
   "wordmark": "art/title-wordmark.png",
   "wordmark_sha256": "3d45f802af9a5405294d8ffa0a8a6a28f26012526990eeb6117c921068ee090f",
   "wordmark_box": [
@@ -40,27 +40,34 @@
   },
   "background_names": {
     "english": "MagnaCarta: The Phantom of Avalanche",
-    "korean": "마그나카르타 ~눈사태의 망령~",
+    "korean": "마그나카르타 ~눈사태의 유령~",
     "english_art_lines": [
       "MAGNACARTA",
       "THE PHANTOM OF AVALANCHE"
     ],
     "korean_art_lines": [
       "마그나카르타",
-      "눈사태의 망령"
+      "눈사태의 유령"
     ],
     "sources": [
       "https://en.wikipedia.org/wiki/Magna_Carta%3A_The_Phantom_of_Avalanche",
       "https://www.gamemeca.com/view.php?gid=119517",
       "https://www.aladin.co.kr/shop/wproduct.aspx?itemid=316586073"
     ],
-    "verification": "Web spelling cross-check and generated image visual review; stylized glyph recognition is not automated OCR proof.",
+    "verification": "English retained from web references; Korean artwork subtitle explicitly corrected by player to 눈사태의 유령. Generated glyphs and deformation reviewed visually, not automated OCR.",
     "layout_intent": {
       "arrangement": "english_upper_right_korean_below_N",
       "korean_origin_under_english_letter": "N",
       "left_half_lettering": false,
       "reference": "player annotated original title screenshot",
-      "review": "visual review; not automated pixel registration"
-    }
+      "review": "visual review; not automated pixel registration",
+      "typography_treatment": "nonlinear_vortex_surface_warp",
+      "deformation": [
+        "curved_baselines",
+        "individual_glyph_stretch_and_compression",
+        "ink_fades_into_folds"
+      ]
+    },
+    "reference_korean_from_web": "마그나카르타 ~눈사태의 망령~"
   }
 }

@@ -89,14 +89,17 @@ try {
 '''
 
 
-def build(source, native, locale, output):
+def checked_artwork(source, locale):
     plan = json.loads((locale/'title-background-plan.json').read_text('utf8'))
     for name, expected in plan['source_tiles'].items():
         if sha(source/name) != expected:
             raise ValueError('Original title tile drift: '+name)
-    image = master(locale, plan)
-    prepare_advanced_trial.prepare(source, native, output)
+    return plan, master(locale, plan)
+
+
+def write_assets(source, output, plan, image):
     runtime = output/'.advanced-runtime'
+    runtime.mkdir(parents=True,exist_ok=True)
     image.save(runtime/'title-background-4k.png')
     for width, height in [(1920,1080), (1280,720), (640,480), (800,600)]:
         centered_view(image,width,height).save(runtime/f'title-preview-{width}x{height}.png')
@@ -106,14 +109,23 @@ def build(source, native, locale, output):
             for col, x in enumerate(plan['columns']):
                 name = f'BGR/{group+row*3+col:04d}.BGR'
                 dest = output/name
-                original = dest.read_bytes()
+                original = (source/name).read_bytes()
                 backup = runtime/'title-original'/name
                 backup.parent.mkdir(parents=True,exist_ok=True)
                 backup.write_bytes(original)
-                dest.chmod(0o666)
+                dest.parent.mkdir(parents=True,exist_ok=True)
+                if dest.exists():dest.chmod(0o666)
                 dest.write_bytes(pack(original,image,x,y,plan['tile_size']))
                 records[name] = {'before':sha(backup), 'after':sha(dest)}
     (runtime/'title-background.json').write_text(json.dumps({'schema':1,'active':True,'master_sha256':sha(runtime/'title-background-4k.png'),'tiles':records},indent=2)+'\n',encoding='utf8')
+    return records
+
+
+def build(source, native, locale, output):
+    plan,image=checked_artwork(source,locale)
+    prepare_advanced_trial.prepare(source,native,output)
+    records=write_assets(source,output,plan,image)
+    runtime=output/'.advanced-runtime'
     (runtime/'StartTitle.ps1').write_text(START,encoding='utf-8-sig')
     for mode in prepare_advanced_trial.render.PROFILES:
         (output/f'Play-{mode}.cmd').write_bytes(('@echo off\r\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0.advanced-runtime\\StartTitle.ps1" -Mode '+mode+'\r\nif errorlevel 1 pause\r\n').encode('ascii'))
@@ -121,10 +133,26 @@ def build(source, native, locale, output):
     return records
 
 
+def export_assets(source, locale, output):
+    output=prepare_advanced_trial.render.plain_path(output,strict=False)
+    build_root=Path(__file__).resolve().parents[1]/'build'
+    if output.exists() or output==build_root or not output.is_relative_to(build_root):
+        raise ValueError('New isolated repository build asset directory required')
+    source=prepare_advanced_trial.render.checked_source(source)
+    plan,image=checked_artwork(source,locale)
+    return write_assets(source,output,plan,image)
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ['source','native','locale','output']:
+    parser.add_argument('--assets-only',action='store_true')
+    parser.add_argument('--native',type=Path)
+    for name in ['source','locale','output']:
         parser.add_argument('--'+name,type=Path,required=True)
     args=parser.parse_args()
-    build(args.source.resolve(),args.native.resolve(),args.locale.resolve(),args.output.resolve())
+    if args.assets_only:
+        export_assets(args.source.resolve(),args.locale.resolve(),args.output.resolve())
+    else:
+        if args.native is None:parser.error('--native is required for a playable candidate')
+        build(args.source.resolve(),args.native.resolve(),args.locale.resolve(),args.output.resolve())
     print('TITLE_BACKGROUND_BUILD PASS master=3840x2160 tiles=12 tile_size=2048 source_unchanged=true game_started=false')
