@@ -23,14 +23,17 @@ bool defaultArrows(BYTE* p){
  return generic||empty;
 }
 bool collect(BYTE* p,std::vector<modern_input::FocusTarget>& out,std::set<BYTE*>& visited,float x,float y,int w,int h,bool& nativeArrowControl){
- if(!gui(p)||visited.size()>=256||!visited.insert(p).second||!*reinterpret_cast<int*>(p+0xe8)||!*reinterpret_cast<int*>(p+0x160))return false;
+ if(!gui(p)||visited.size()>=256||!visited.insert(p).second)return false;
  auto child=*reinterpret_cast<BYTE**>(p+0x18);bool eligibleChild=false;std::set<BYTE*> chain;
  for(;child&&chain.size()<128&&readable(child,0x14)&&chain.insert(child).second;child=*reinterpret_cast<BYTE**>(child+0x10))if(gui(child)){
   // Native eligibility requires visible+enabled. Inactive decoration must not
   // hide the parent; every eligible child keeps the existing dispatch priority.
   bool eligible=collect(child,out,visited,x,y,w,h,nativeArrowControl);eligibleChild=eligibleChild||eligible;
  }
- if(eligibleChild||!*reinterpret_cast<void**>(p+0x17c))return true;
+ // Native 55134 dispatches children before checking the parent's own eligibility.
+ if(eligibleChild)return true;
+ if(!*reinterpret_cast<int*>(p+0xe8)||!*reinterpret_cast<int*>(p+0x160))return false;
+ if(!*reinterpret_cast<void**>(p+0x17c))return true;
  // +f8 is the list object. GetFirst (RVA 02014) reads its +8 head;
  // dereferencing the container itself mistakes its count for a pointer.
  auto node=*reinterpret_cast<BYTE**>(p+0x100);float ox=*reinterpret_cast<float*>(p+0x24),oy=*reinterpret_cast<float*>(p+0x28);
@@ -45,12 +48,11 @@ bool collect(BYTE* p,std::vector<modern_input::FocusTarget>& out,std::set<BYTE*>
  return true;
 }
 void navigate(BYTE* root){
- auto n=modernGamepadNavigation();if(!n.active||n.serial==consumed)return;consumed=n.serial;
+ auto n=modernGamepadNavigation();if(!n.active||n.serial==consumed)return;
  unsigned held=n.held&15;bool fresh=(n.pressed&15)!=0;
- if(!held){previousHeld=0;return;}
- if(held!=previousHeld){fresh=true;previousHeld=held;lastRepeat=n.time;}
- else if(!fresh&&DWORD(n.time-lastRepeat)<350)return;
- if(!fresh)lastRepeat=n.time-250;else lastRepeat=n.time;
+ if(!held){previousHeld=0;consumed=n.serial;return;}
+ if(held!=previousHeld)fresh=true;
+ if(!fresh&&DWORD(n.time-lastRepeat)<350)return;
  if(!gui(root))return;
  // The exclusive stack selects the actual modal, not widgets hidden behind it.
  auto manager=*reinterpret_cast<BYTE**>(engine+0xf220c);
@@ -60,15 +62,24 @@ void navigate(BYTE* root){
  }
  int w=*reinterpret_cast<int*>(engine+0xf1b48),h=*reinterpret_cast<int*>(engine+0xf1b4c);if(w<=0||h<=0)return;
  float x=float(*reinterpret_cast<int*>(engine+0xf20b0)),y=float(*reinterpret_cast<int*>(engine+0xf20a8));
- std::vector<modern_input::FocusTarget> targets;std::set<BYTE*> seen;bool native=false;collect(root,targets,seen,x,y,w,h,native);if(native)return;
+ std::vector<modern_input::FocusTarget> targets;std::set<BYTE*> seen;bool native=false;collect(root,targets,seen,x,y,w,h,native);
+ // An ineligible/empty root must not consume the serial or mutate repeat state:
+ // the native GUI manager may dispatch another root for this same input frame.
+ if(native)return; // Original dispatch result, not our classifier, decides consumption.
  int dx=(held&4)?-1:(held&8)?1:0,dy=(held&1)?-1:(held&2)?1:0;if(dy)dx=0;
  int index=modern_input::chooseFocus(targets,x,y,dx,dy);if(index<0)return;const auto& r=targets[index];
  modernGamepadFocusCursor((r.left+r.right)*.5f,(r.top+r.bottom)*.5f);
+ consumed=n.serial;previousHeld=held;lastRepeat=fresh?n.time:n.time-250;
  static LONG calls=0;if(InterlockedIncrement(&calls)==1&&trace)trace(L"GAMEPAD_UI_FOCUS_APPLIED native_hit_rects=true click_dispatch=original modal_scope=retained");
 }
 int __fastcall dispatchHook(void* root,void*){
  bool outer=depth++==0;int result=0;
- __try {if(outer)navigate(static_cast<BYTE*>(root));result=original(root);}
+ auto input=outer?modernGamepadNavigation():GamepadNavigation{};
+ __try {if(outer)navigate(static_cast<BYTE*>(root));result=original(root);
+  // Original return 1 means native input consumed, including keyboard-only roots
+  // with no directional hit target. Do not navigate a second root for that serial.
+  if(outer&&result==1&&input.active)consumed=input.serial;
+ }
  __finally {--depth;}
  return result;
 }
