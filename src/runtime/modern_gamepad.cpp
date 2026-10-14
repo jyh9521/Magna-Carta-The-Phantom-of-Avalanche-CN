@@ -19,7 +19,7 @@ Poll poll=nullptr;
 ULONG_PTR caller=0;
 HWND* gameWindow=nullptr;
 modern_input::Router router;modern_input::MenuDirection menuDirection;
-bool cursorHidden=false,cursorArmed=false;WORD cursorButtons=0;bool cursorRightEngaged=false;
+bool cursorHidden=false,cursorArmed=false,cursorMenu=false;WORD cursorButtons=0;bool cursorRightEngaged=false;
 SRWLOCK lock=SRWLOCK_INIT;
 DWORD selected=0xffffffff;
 bool backendTried=false;
@@ -168,6 +168,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
         auto x=reinterpret_cast<int*>(engine+0xf20b0),y=reinterpret_cast<int*>(engine+0xf20a8);
         bool mouseMoved=realMouseKnown&&(*x!=realMouseX||*y!=realMouseY);realMouseKnown=true;realMouseX=*x;realMouseY=*y;
         bool eligible=frame.armed&&focused&&sample.connected;
+        cursorMenu=!worldScope; // Menus need a visible locator at their actual click point.
         bool rightEngaged=std::abs(int(sample.rx))>=8689||std::abs(int(sample.ry))>=8689;
         bool mouseUsed=mouseMoved||physicalLeft||physicalRight||*reinterpret_cast<int*>(engine+0xf20a0)!=0;
         bool padUsed=(frame.pressed!=0)||((sample.buttons&~cursorButtons)!=0)||(rightEngaged&&!cursorRightEngaged);
@@ -194,7 +195,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     if(inputTrace&&(!traceTime||DWORD(traceNow-traceTime)>=1000)){
         traceTime=traceNow;wchar_t message[320];
         swprintf_s(message,L"INPUT_FRAME connected=%u slot=%u focused=%u armed=%u world=%u buttons=%04x actions=%02x native=%u title_phase=%d ui_active=%u mouse_blocked=%u cursor_hidden=%u space=%u",
-            unsigned(sample.connected),selected,unsigned(focused),unsigned(frame.armed),unsigned(worldScope),unsigned(sample.buttons),unsigned(frame.held),unsigned(nativeRouting),titlePhase,unsigned(navigation.active),unsigned(navMouseBlocked),unsigned(cursorHidden),unsigned(ok&&(keys[VK_SPACE]&0x80)!=0));
+            unsigned(sample.connected),selected,unsigned(focused),unsigned(frame.armed),unsigned(worldScope),unsigned(sample.buttons),unsigned(frame.held),unsigned(nativeRouting),titlePhase,unsigned(navigation.active),unsigned(navMouseBlocked),unsigned(cursorHidden&&!cursorMenu),unsigned(ok&&(keys[VK_SPACE]&0x80)!=0));
         inputTrace(message);
     }
     ReleaseSRWLockExclusive(&lock);
@@ -214,7 +215,7 @@ __declspec(naked) BOOL WINAPI keyboardBridge(PBYTE){__asm {
 }}
 }
 void modernGamepadWorldScope(bool enabled){worldScope=enabled;movement={};pendingInteraction=false;}
-bool modernGamepadCursorHidden(){return cursorHidden;}
+bool modernGamepadCursorHidden(){return cursorHidden&&!cursorMenu;}
 bool modernGamepadMenuCancellation(){return InterlockedCompareExchange(&cancelMenuPress,0,0)!=0;}
 bool modernGamepadConsumeInteraction(){bool value=worldScope&&pendingInteraction;pendingInteraction=false;return value;}
 modern_input::MoveIntent modernGamepadMoveIntent(){return worldScope?movement:modern_input::MoveIntent{};}
@@ -277,5 +278,5 @@ bool removeModernGamepad(HMODULE module){
     if(nativeRouting&&!removeGamepadUi(module)){installWorldGamepad(module,nullptr);return false;}
     DWORD old;if(!VirtualProtect(slot,4,PAGE_READWRITE,&old)){if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}*slot=originalIat;DWORD ignored;
     if(!VirtualProtect(slot,4,old,&ignored)){*slot=reinterpret_cast<DWORD>(&keyboardBridge);VirtualProtect(slot,4,old,&ignored);if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}
-    router=modern_input::Router();menuDirection=modern_input::MenuDirection();cursorHidden=cursorArmed=cursorRightEngaged=false;cursorButtons=0;worldScope=false;movement={};syntheticLeftOwned=syntheticRightOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
+    router=modern_input::Router();menuDirection=modern_input::MenuDirection();cursorHidden=cursorArmed=cursorRightEngaged=cursorMenu=false;cursorButtons=0;worldScope=false;movement={};syntheticLeftOwned=syntheticRightOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
 }

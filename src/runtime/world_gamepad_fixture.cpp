@@ -135,7 +135,10 @@ int main(int argc,char** argv){
  *reinterpret_cast<int*>(world+0x15b8)=0;*reinterpret_cast<int*>(world+0x15bc)=0;
  buttons=0;run();buttons=XINPUT_GAMEPAD_A;run();require(interactions==2&&!*reinterpret_cast<int*>(world+0x15bc),"native proximity gate prevents remote interaction");
  buttons=0;run();*reinterpret_cast<int*>(gui+0x190)=4;
- axisX=13000;axisY=0;run();require(!(image[0xf1b94+VK_RIGHT]&0x80),"menu moderate stick drift does not move selection");
+ axisX=13000;axisY=0;run();
+ require(!modernGamepadCursorHidden(),"menu must expose its exact native click position instead of hiding all focus feedback");
+ int menuCursorDraws=cursorDraws;drawCursor(currentCursor);require(cursorDraws==menuCursorDraws+1,"menu locator calls original cursor draw at exact native hit coordinates");
+ printf("GAMEPAD_MENU_LOCATOR_REPLAY PASS menu=visible exploration=hidden mouse_restore=retained native_hit_position=exact game_started=false\n");require(!(image[0xf1b94+VK_RIGHT]&0x80),"menu moderate stick drift does not move selection");
  axisX=20000;axisY=23000;run();require((image[0xf1b94+VK_UP]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"menu diagonal has exactly one dominant axis");
  axisX=25000;axisY=12000;run();require((image[0xf1b94+VK_UP]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"menu diagonal noise cannot switch a latched direction");
  axisX=axisY=0;run();axisX=32767;run();require((image[0xf1b94+VK_RIGHT]&0x80)&&!(image[0xf1b94+VK_UP]&0x80),"recenter permits a fresh menu direction");

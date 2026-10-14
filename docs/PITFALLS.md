@@ -176,3 +176,9 @@ A wrap score without an opposite-axis condition can convert horizontal input in 
 ## Virtual focus must not replay the same controller arrows natively
 
 Moving a synthetic hit point is not input consumption. Native GUI keyboard dispatch still reads the merged arrow counters, potentially changing a different control region. Suppress only owned synthetic direction bytes/counters during that original dispatch; restore exactly on all exits. Include hold-delay and release frames, same-serial dispatch, native-control entry and physical keyboard priority in the regression seam. See GAMEPAD_DIRECTION_OWNER.md.
+
+## Hiding a pointer needs reliable replacement focus feedback
+
+Do not treat hidden mouse graphics as proof of usable controller selection. Without dependable selected-widget visuals, retain a native menu locator. Snapshot input scope for later draw: worldScope is restored at tick exit, so querying it during rendering misclassifies exploration.
+
+Native marker research: Asura SHA f81e7c458d43b77210311499b39b9be2c4895e3a3b356d2e848b6e84210d2557, ASRRegRender RVA51a01 retains the vertex pointer while copying16 matrix words and4 RGBA floats. A temporary stack vertex buffer or null matrix reference is not a valid production render marker. Evidence ev_8b49744e8cca26d79f20d7aabc355954d699a2d44a41eb937ee4a43451597a17. Current menu locator reuses the original draw rather than inventing an unverified queue submission.
