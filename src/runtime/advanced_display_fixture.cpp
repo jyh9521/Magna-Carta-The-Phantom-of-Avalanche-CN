@@ -4,8 +4,11 @@
 #include <cmath>
 #include <vector>
 #include <cstring>
+#include <string>
 static unsigned checks=0;static double captured=0;static unsigned presents=0;
 void check(bool b){++checks;if(!b)throw std::runtime_error("advanced display fixture failed");}
+static std::vector<std::wstring> pacingLogs;
+void pacingLogger(const wchar_t* message){if(wcsstr(message,L"RENDER_PACING ")==message)pacingLogs.emplace_back(message);}
 struct Fake {BYTE data[0x58]{};int mode=0x1701;void __thiscall projection(double f,double a,double n,double z){check(f==45&&n==1&&z==1000);captured=a;} BYTE __thiscall present(){++presents;return 7;} };
 int main(){try{
     auto e=static_cast<BYTE*>(VirtualAlloc(nullptr,0x10b000,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE));
@@ -49,6 +52,26 @@ int main(){try{
     auto present=reinterpret_cast<PresentFn>(*reinterpret_cast<DWORD*>(d+0x1a5bc));LARGE_INTEGER start,end,freq;QueryPerformanceFrequency(&freq);QueryPerformanceCounter(&start);
     for(unsigned i=0;i<61;++i)check(present(&fake)==7);
     QueryPerformanceCounter(&end);double elapsed=(end.QuadPart-start.QuadPart)/static_cast<double>(freq.QuadPart);check(elapsed>=0.95&&elapsed<3.0&&presents==61);
+    check(installAdvancedDriver(reinterpret_cast<HMODULE>(d),true,true,&pacingLogger));configureAdvancedFixture(p,f);
+    const unsigned beforeSynthetic=presents;
+    for(LONGLONG testFrequency:{60000000LL,10000003LL}){
+      const LONGLONG overshoot=testFrequency/1000;
+      pacingLogs.clear();configurePacingClockFixture(testFrequency,overshoot);const LONGLONG epoch=pacingClockFixtureNow();
+      for(unsigned sample=0;sample<=3600;++sample)check(present(&fake)==7);
+      const LONGLONG actual=pacingClockFixtureNow()-epoch;
+      if(actual!=60*testFrequency+overshoot){std::cerr<<"PACING_DRIFT observed_ticks="<<actual<<" expected_ticks="<<(60*testFrequency+overshoot)<<" frequency="<<testFrequency<<"\n";throw std::runtime_error("FAIL present hook accumulates waiter overshoot instead of retaining exact60Hz epoch");}
+      check(actual==60*testFrequency+overshoot);
+      check(pacingLogs.size()==30);
+      check(pacingLogs.front().find(L"update_frame_hz=59.970")!=std::wstring::npos);
+      check(pacingLogs.back().find(L"update_frame_hz=60.000")!=std::wstring::npos);
+      advancePacingClockFixture(testFrequency*40/1000);const LONGLONG missed=pacingClockFixtureNow();check(present(&fake)==7);check(pacingClockFixtureNow()==missed);
+      check(present(&fake)==7);check(pacingClockFixtureNow()>missed&&pacingClockFixtureNow()-missed<testFrequency/60);
+      advancePacingClockFixture(testFrequency);const LONGLONG resumed=pacingClockFixtureNow();check(present(&fake)==7);check(pacingClockFixtureNow()==resumed);
+      check(present(&fake)==7);check(pacingClockFixtureNow()-resumed==testFrequency/60+overshoot);
+      Fake other;const LONGLONG beforeOther=pacingClockFixtureNow();check(present(&other)==7);check(pacingClockFixtureNow()==beforeOther);
+    }
+    check(presents-beforeSynthetic==7212);resetPacingClockFixture();
+    std::cout<<"PACING_CLOCK_REPLAY PASS frequencies=2 frames_per_trace=3601 oversleep_ms=1 epoch_drift_ticks=0 fractional_ticks=true missed_slots=skipped pause=reanchored device_switch=reanchored game_started=false\n";
     *reinterpret_cast<DWORD*>(d+0x1ab28)=projectionBefore;*reinterpret_cast<DWORD*>(d+0x1a5bc)=frameBefore;check(*reinterpret_cast<DWORD*>(d+0x1ab28)==projectionBefore&&*reinterpret_cast<DWORD*>(d+0x1a5bc)==frameBefore);
     VirtualFree(e,0,MEM_RELEASE);VirtualFree(d,0,MEM_RELEASE);
     std::cout<<"ADVANCED_DISPLAY_FIXTURE PASS checks="<<checks<<" frames30=1800 frames60=3600 updates30=1818 updates60=1818 projection=hor_plus orthographic=unchanged pacing_seconds="<<elapsed<<" return=preserved mismatch=rejected rollback=exact commercial_code_executed=false game_started=false\n";return 0;

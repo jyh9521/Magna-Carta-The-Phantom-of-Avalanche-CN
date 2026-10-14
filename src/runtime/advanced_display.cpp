@@ -65,9 +65,18 @@ __declspec(naked) void fpsThunk() {
 }
 void(*trace)(const wchar_t*)=nullptr;
 SRWLOCK paceLock=SRWLOCK_INIT;
-LONGLONG deadline=0,frequency=0,windowStart=0;unsigned frameCount=0,projectionCount=0;
+LONGLONG deadline=0,frequency=0,windowStart=0;unsigned frameCount=0,projectionCount=0,deadlineFraction=0;
 void* lastObject=nullptr;
 HANDLE pacingTimer=nullptr;bool timerTried=false;
+#ifdef ADVANCED_DISPLAY_TEST
+bool fixturePacingClock=false;LONGLONG fixturePacingNow=0,fixtureOvershoot=0;
+#endif
+void readPacingClock(LARGE_INTEGER& now){
+#ifdef ADVANCED_DISPLAY_TEST
+ if(fixturePacingClock){now.QuadPart=fixturePacingNow;return;}
+#endif
+ QueryPerformanceCounter(&now);
+}
 bool imageMatches(BYTE* p,size_t n,DWORD expected) {
     if(!p||n<expected)return false;
     auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(p);
@@ -96,22 +105,31 @@ BYTE __fastcall presentHook(void* object,void*) {
     BYTE result=originalPresent(object);
     if(!pace)return result;
     AcquireSRWLockExclusive(&paceLock);
-    LARGE_INTEGER now{};QueryPerformanceCounter(&now);
+    LARGE_INTEGER now{};readPacingClock(now);
     if(!frequency){LARGE_INTEGER f{};if(QueryPerformanceFrequency(&f))frequency=f.QuadPart;}
-    if(frequency) {
-        LONGLONG period=frequency/60;
-        if(!deadline||lastObject!=object||now.QuadPart>deadline+frequency/4){deadline=now.QuadPart;lastObject=object;windowStart=now.QuadPart;frameCount=0;}
+    if(frequency>=60) {
+        const LONGLONG period=frequency/60;
+        const bool newEpoch=!deadline||lastObject!=object||now.QuadPart>deadline+frequency/4;
+        if(newEpoch){deadline=now.QuadPart;deadlineFraction=0;lastObject=object;windowStart=now.QuadPart;frameCount=0;}
         if(!timerTried){timerTried=true;pacingTimer=CreateWaitableTimerExW(nullptr,nullptr,0x00000002,TIMER_ALL_ACCESS);}
         while(now.QuadPart<deadline){
+#ifdef ADVANCED_DISPLAY_TEST
+            if(fixturePacingClock){fixturePacingNow=deadline+fixtureOvershoot;now.QuadPart=fixturePacingNow;continue;}
+#endif
             LONGLONG remaining=deadline-now.QuadPart;
             if(pacingTimer&&remaining>frequency/1000){
                 LARGE_INTEGER due{};due.QuadPart=-((remaining-frequency/2000)*10000000/frequency);
                 if(SetWaitableTimer(pacingTimer,&due,0,nullptr,nullptr,FALSE))WaitForSingleObject(pacingTimer,1000);else Sleep(0);
             }else Sleep(0);
-            QueryPerformanceCounter(&now);
+            readPacingClock(now);
         }
-        deadline=now.QuadPart+period;
-        if(++frameCount>=120){
+        // Preserve the 60Hz epoch: waiter overshoot is not added every frame.
+        // Carry fractional QPC ticks, and skip elapsed slots instead of bursting.
+        do {
+            deadline+=period;deadlineFraction+=static_cast<unsigned>(frequency%60);
+            if(deadlineFraction>=60){++deadline;deadlineFraction-=60;}
+        } while(deadline<=now.QuadPart);
+        if(!newEpoch&&++frameCount>=120){
             if(trace&&now.QuadPart>windowStart){wchar_t text[180];swprintf_s(text,L"RENDER_PACING frames=%u update_frame_hz=%.3f logic_interval_ms=33",frameCount,frameCount*static_cast<double>(frequency)/(now.QuadPart-windowStart));trace(text);}
             frameCount=0;windowStart=now.QuadPart;
         }
@@ -168,6 +186,10 @@ bool installAdvancedDriver(HMODULE module,bool wide,bool render60,void(*logger)(
 }
 #ifdef ADVANCED_DISPLAY_TEST
 void configureAdvancedFixture(PerspectiveFn a,PresentFn b){originalPerspective=a;originalPresent=b;}
+void configurePacingClockFixture(LONGLONG f,LONGLONG overshoot){fixturePacingClock=true;frequency=f;fixturePacingNow=f;fixtureOvershoot=overshoot;deadline=windowStart=0;frameCount=deadlineFraction=0;lastObject=nullptr;}
+void advancePacingClockFixture(LONGLONG elapsed){fixturePacingNow+=elapsed;}
+LONGLONG pacingClockFixtureNow(){return fixturePacingNow;}
+void resetPacingClockFixture(){fixturePacingClock=false;frequency=deadline=windowStart=0;frameCount=deadlineFraction=0;lastObject=nullptr;}
 static void header(BYTE* p,DWORD size){memset(p,0,size);auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(p);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x100;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+0x100);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=size;}
 void initializeAdvancedEngineFixture(BYTE* p){header(p,0x10b000);memcpy(p+0xce4e,waitGuard,sizeof(waitGuard));memcpy(p+0xcf01,updateGuard,sizeof(updateGuard));memcpy(p+0x1d4b5,cameraStore,sizeof(cameraStore));*reinterpret_cast<float*>(p+0xbd654)=1000.0f;BYTE fps[]={0xd9,0x05,0,0,0,0,0xd8,0x75,0xd4};*reinterpret_cast<DWORD*>(fps+2)=reinterpret_cast<DWORD>(p+0xbd654);memcpy(p+0xcecc,fps,9);}
 void initializeAdvancedDriverFixture(BYTE* p){header(p,0x2c000);memcpy(p+0x85cd,projectionPrefix,sizeof(projectionPrefix));memcpy(p+0x3262,presentPrefix,sizeof(presentPrefix));*reinterpret_cast<DWORD*>(p+0x1ab28)=reinterpret_cast<DWORD>(p+0x85cd);*reinterpret_cast<DWORD*>(p+0x1a5bc)=reinterpret_cast<DWORD>(p+0x3262);}

@@ -13,6 +13,10 @@ unsigned fixedUpdates(unsigned elapsed,unsigned& remainder,unsigned interval=33)
 using PerspectiveFn=void(__thiscall*)(void*,double,double,double,double);
 using PresentFn=BYTE(__thiscall*)(void*);
 void configureAdvancedFixture(PerspectiveFn,PresentFn);
+void configurePacingClockFixture(LONGLONG frequency,LONGLONG overshoot);
+void advancePacingClockFixture(LONGLONG elapsed);
+LONGLONG pacingClockFixtureNow();
+void resetPacingClockFixture();
 void initializeAdvancedEngineFixture(BYTE* image);
 void initializeAdvancedDriverFixture(BYTE* image);
 #endif
