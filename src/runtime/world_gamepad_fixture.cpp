@@ -7,14 +7,15 @@
 #include <cstring>
 #include <cmath>
 static BYTE* image=nullptr;static BYTE world[0x15c4],actor[0x340],gui[0x194],cameraData[0xc0];
-static int physicalX=0,physicalY=0;
-static bool connected=true,physical=false,rawUp=false;static SHORT axisX=0,axisY=0,rightX=0;static WORD buttons=0;static int checks=0,forwardCalls=0,turnCalls=0,interactions=0;static int observations=0;static bool observationControlled=false;
+static int physicalX=0,physicalY=0;static DWORD controllerSlot=0;
+static bool connected=true,physical=false,rawUp=false,physicalMouseDown=false;static SHORT axisX=0,axisY=0,rightX=0;static WORD buttons=0;static int checks=0,forwardCalls=0,turnCalls=0,interactions=0;static int observations=0;static bool observationControlled=false;
 void require(bool,const char*);
 int __fastcall interaction(void* s,void*,void* g,unsigned event){require(s==world&&g==gui&&event==0x11,"interaction uses native scene and GUI event");++interactions;if(*reinterpret_cast<int*>(world+0x15b8))*reinterpret_cast<int*>(world+0x15bc)=1;return 0;}
 void observe(BYTE* s,bool controlled){if(s==world){++observations;observationControlled=controlled;}}
 void require(bool v,const char* s){++checks;if(!v){fprintf(stderr,"FAIL %s\n",s);ExitProcess(1);}}
-BOOL WINAPI keyboard(PBYTE keys){*reinterpret_cast<int*>(image+0xf20b0)=physicalX;*reinterpret_cast<int*>(image+0xf20a8)=physicalY;memset(keys,0,256);keys[VK_SPACE]=1;if(rawUp)keys[VK_UP]=0x80;if(physical)keys[VK_LEFT]=0x80;return TRUE;}
-DWORD WINAPI poll(DWORD slot,XINPUT_STATE* s){if(slot||!connected)return ERROR_DEVICE_NOT_CONNECTED;*s={};s->Gamepad.sThumbLX=axisX;s->Gamepad.sThumbLY=axisY;s->Gamepad.sThumbRX=rightX;s->Gamepad.wButtons=buttons;return ERROR_SUCCESS;}
+BOOL WINAPI keyboard(PBYTE keys){*reinterpret_cast<int*>(image+0xf20b0)=physicalX;*reinterpret_cast<int*>(image+0xf20a8)=physicalY;memset(keys,0,256);keys[VK_SPACE]=1;if(rawUp)keys[VK_UP]=0x80;if(physical)keys[VK_LEFT]=0x80;if(physicalMouseDown)keys[VK_LBUTTON]=0x80;return TRUE;}
+DWORD WINAPI poll(DWORD slot,XINPUT_STATE* s){if(slot!=controllerSlot||!connected)return ERROR_DEVICE_NOT_CONNECTED;*s={};s->Gamepad.sThumbLX=axisX;s->Gamepad.sThumbLY=axisY;s->Gamepad.sThumbRX=rightX;s->Gamepad.wButtons=buttons;return ERROR_SUCCESS;}
+void __fastcall clearNativePress(void* button,void*){*reinterpret_cast<int*>(static_cast<BYTE*>(button)+0x19c)=0;}
 void __fastcall heading(void* p,void*,float x,float y,float z){++turnCalls;auto d=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x148);d[0]=x;d[1]=y;d[2]=z;}
 void __fastcall forward(void* p,void*){++forwardCalls;auto d=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x148),v=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x16c);for(int i=0;i<3;++i)v[i]=30*d[i];}
 static unsigned titleRequests=0;static unsigned titleCommands[8]{};
@@ -34,10 +35,10 @@ void emitMenuEvent(void* widget,unsigned event){
  reinterpret_cast<Event>(*reinterpret_cast<DWORD*>(table+0x24))(listener,widget,event,0,0);
 }
 int __fastcall keyboardGui(void*,void*){return 0;}
-void __fastcall menuPressed(void* widget,void*){++menuPresses;lastPressed=*reinterpret_cast<int*>(static_cast<BYTE*>(widget)+4);emitMenuEvent(widget,0x3b);}
+void __fastcall menuPressed(void* widget,void*){++menuPresses;lastPressed=*reinterpret_cast<int*>(static_cast<BYTE*>(widget)+4);emitMenuEvent(widget,0x3b);*reinterpret_cast<int*>(static_cast<BYTE*>(widget)+0x19c)=1;}
 void __fastcall menuHeld(void* widget,void*){++menuHolds;emitMenuEvent(widget,0x39);}
 void __fastcall menuIdleEvent(void* widget,void*){++menuIdle;emitMenuEvent(widget,0x3a);}
-void __fastcall menuReleased(void* widget,void*){++menuReleases;lastReleased=*reinterpret_cast<int*>(static_cast<BYTE*>(widget)+4);emitMenuEvent(widget,0x3c);}
+void __fastcall menuReleased(void* widget,void*){++menuReleases;lastReleased=*reinterpret_cast<int*>(static_cast<BYTE*>(widget)+4);emitMenuEvent(widget,0x3c);*reinterpret_cast<int*>(static_cast<BYTE*>(widget)+0x19c)=0;}
 // Controlled replay of the verified 02f95 counters and 557ee mouse dispatch.
 // The original game DLL is not loaded or executed by this fixture.
 int replayMouse(BYTE* root){
@@ -74,7 +75,7 @@ int main(int argc,char** argv){
  image=static_cast<BYTE*>(VirtualAlloc(nullptr,0x10b000,MEM_COMMIT|MEM_RESERVE,PAGE_EXECUTE_READWRITE));require(image!=nullptr,"owned image");
  auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x100;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(image+0x100);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;
  image[0x2fca]=0x68;*reinterpret_cast<DWORD*>(image+0x2fcb)=reinterpret_cast<DWORD>(image+0xf1b94);image[0x2fcf]=0xff;image[0x2fd0]=0x15;*reinterpret_cast<DWORD*>(image+0x2fd1)=reinterpret_cast<DWORD>(image+0xbd3dc);image[0x2fd5]=0xc3;
- initializeGamepadUiFixture(image);
+ initializeGamepadUiFixture(image);BYTE clearPrefix[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc};stub(0x5718f,clearPrefix,sizeof(clearPrefix),reinterpret_cast<void*>(&clearNativePress));
  BYTE guiPrefix[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xf8};stub(0x55134,guiPrefix,sizeof(guiPrefix),reinterpret_cast<void*>(&keyboardGui));
  auto iat=reinterpret_cast<DWORD*>(image+0xbd3dc);DWORD oldIat=reinterpret_cast<DWORD>(GetProcAddress(GetModuleHandleW(L"user32.dll"),"GetKeyboardState"));*iat=oldIat;
  BYTE t[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc},f[]={0x55,0x8b,0xec,0x83,0xec,0x54,0x89,0x4d,0xac},d[]={0x55,0x8b,0xec,0x83,0xec,0x1c,0x89,0x4d,0xec};
@@ -176,6 +177,24 @@ int main(int argc,char** argv){
  require(titleRequests==4,"title phase below4 rejects menu activation even with source release event");
  *reinterpret_cast<int*>(titleScene+0x70)=4;
  printf("TITLE_LISTENER_REPLAY PASS requests=4 commands=6,7,9,11 event=3c release_only=true phase_guard=true native_widget_ids=true listener_vtable=true transition_executor=not_run commercial_code_executed=false\n");
+ buttons=0;run();buttons=XINPUT_GAMEPAD_A;run();const unsigned beforeDisconnect=titleRequests;
+ connected=false;run();
+ require(titleRequests==beforeDisconnect,"disconnect while A held must cancel synthetic press rather than activate release-only title action");
+ require(*reinterpret_cast<int*>(menuWidgets[3]+0x19c)==0,"cancelled controller press must clear native button visual state without release action");
+ connected=true;run();require(titleRequests==beforeDisconnect,"held reconnect must not confirm a menu item");
+ buttons=0;run();buttons=XINPUT_GAMEPAD_A;run();buttons=0;run();
+ require(titleRequests==beforeDisconnect+1,"neutral reconnect permits a fresh normal A release confirmation");
+ // A physical left button remains authoritative when the controller disconnects.
+ physicalX=400;physicalY=420;buttons=XINPUT_GAMEPAD_A;run();physicalMouseDown=true;run();
+ const unsigned beforePhysicalRelease=titleRequests;connected=false;run();require(titleRequests==beforePhysicalRelease,"physical held mouse is not released by controller cancellation");
+ physicalMouseDown=false;buttons=0;run();require(titleRequests==beforePhysicalRelease+1,"real physical mouse release still reaches native title listener");
+ connected=true;run();buttons=0;run();
+ buttons=XINPUT_GAMEPAD_A;run();const unsigned beforeSwitch=titleRequests;
+ controllerSlot=1;run();require(titleRequests==beforeSwitch,"replacement controller cannot release-confirm the previous controller press");
+ require(*reinterpret_cast<int*>(menuWidgets[0]+0x19c)==0,"replacement controller cancels prior native press visual");
+ buttons=0;run();buttons=XINPUT_GAMEPAD_A;run();buttons=0;run();require(titleRequests==beforeSwitch+1,"replacement controller confirms only after neutral rearm and fresh press");
+ controllerSlot=0;buttons=0;run();run();
+ printf("GAMEPAD_DISCONNECT_REPLAY PASS synthetic_release=cancelled device_switch=cancelled visual_press=cleared physical_release=preserved neutral_rearm=true focus_path=unchanged game_started=false\n");
  replayMenu=nullptr;*reinterpret_cast<int*>(gui+0x190)=1;
  buttons=0;require(removeModernGamepad(reinterpret_cast<HMODULE>(image)),"integrated rollback");require(*iat==oldIat&&*reinterpret_cast<DWORD*>(image+0xc12c0)==reinterpret_cast<DWORD>(image+0x6b2d8)&&*reinterpret_cast<DWORD*>(image+0xc1258)==reinterpret_cast<DWORD>(image+0x652b4),"all three original slots restored");
  image[0x6e77e]^=1;require(!installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"unknown movement callsite rejects");image[0x6e77e]^=1;

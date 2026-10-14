@@ -9,6 +9,7 @@
 namespace {
 constexpr unsigned slots[]={0xbee50,0xbf048,0xbf240,0xbf438,0xbf630,0xbf828,0xbfa20,0xbfc18,0xbfeb4,0xc00ac,0xc02a4,0xc049c,0xc06b0,0xc08c4,0xc0adc,0xc0cf0,0xc1560,0xc1da8,0xc1fa0,0xc2204,0xc2508};
 constexpr BYTE prefix[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xf8};
+constexpr BYTE cancelPrefix[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc};
 using Dispatch=int(__thiscall*)(void*);Dispatch original=nullptr;BYTE* engine=nullptr;
 thread_local unsigned depth=0;DWORD consumed=0,lastRepeat=0;unsigned previousHeld=0;void(*trace)(const wchar_t*)=nullptr;
 bool readable(const void* a,size_t n){auto p=reinterpret_cast<ULONG_PTR>(a),end=p+n;if(!p||end<p)return false;while(p<end){MEMORY_BASIC_INFORMATION m{};if(!VirtualQuery(reinterpret_cast<void*>(p),&m,sizeof(m))||m.State!=MEM_COMMIT||(m.Protect&(PAGE_GUARD|PAGE_NOACCESS)))return false;auto next=reinterpret_cast<ULONG_PTR>(m.BaseAddress)+m.RegionSize;if(next<=p)return false;p=next;}return true;}
@@ -72,10 +73,22 @@ void navigate(BYTE* root){
  consumed=n.serial;previousHeld=held;lastRepeat=fresh?n.time:n.time-250;
  static LONG calls=0;if(InterlockedIncrement(&calls)==1&&trace)trace(L"GAMEPAD_UI_FOCUS_APPLIED native_hit_rects=true click_dispatch=original modal_scope=retained");
 }
+void cancelPressedButtons(BYTE* p,std::set<BYTE*>& seen){
+ if(!gui(p)||seen.size()>=256||!seen.insert(p).second)return;
+ std::set<BYTE*> chain;auto child=*reinterpret_cast<BYTE**>(p+0x18);
+ for(;child&&chain.size()<128&&readable(child,0x14)&&chain.insert(child).second;child=*reinterpret_cast<BYTE**>(child+0x10))cancelPressedButtons(child,seen);
+ // Only the verified native button layout. The helper clears visual press state
+ // without calling the release listener or requesting a menu action.
+ if(*reinterpret_cast<ULONG_PTR*>(p)==reinterpret_cast<ULONG_PTR>(engine+0xbee80)&&readable(p,0x1a8)&&*reinterpret_cast<int*>(p+0x19c)){
+  reinterpret_cast<void(__thiscall*)(void*)>(engine+0x5718f)(p);
+ }
+}
+void cancelMenuRoot(void* root){std::set<BYTE*> seen;cancelPressedButtons(static_cast<BYTE*>(root),seen);}
 int __fastcall dispatchHook(void* root,void*){
  bool outer=depth++==0;int result=0;
  auto input=outer?modernGamepadNavigation():GamepadNavigation{};
- __try {if(outer)navigate(static_cast<BYTE*>(root));result=original(root);
+ __try {if(outer&&modernGamepadMenuCancellation())cancelMenuRoot(root);
+  if(outer)navigate(static_cast<BYTE*>(root));result=original(root);
   // Original return 1 means native input consumed, including keyboard-only roots
   // with no directional hit target. Do not navigate a second root for that serial.
   if(outer&&result==1&&input.active)consumed=input.serial;
@@ -85,7 +98,7 @@ int __fastcall dispatchHook(void* root,void*){
 }
 bool write(DWORD* p,DWORD from,DWORD to){if(*p!=from)return false;DWORD old;if(!VirtualProtect(p,4,PAGE_READWRITE,&old))return false;bool good=InterlockedCompareExchange(reinterpret_cast<LONG*>(p),to,from)==static_cast<LONG>(from);DWORD ignored;if(!VirtualProtect(p,4,old,&ignored)){if(good)InterlockedCompareExchange(reinterpret_cast<LONG*>(p),from,to);VirtualProtect(p,4,old,&ignored);return false;}return good;}
 bool set(BYTE* p,bool enabled,void(*logger)(const wchar_t*),bool dry=false){
- if(!readable(p,0x10b000)||memcmp(p+0x55134,prefix,sizeof(prefix)))return false;
+ if(!readable(p,0x10b000)||memcmp(p+0x55134,prefix,sizeof(prefix))||memcmp(p+0x5718f,cancelPrefix,sizeof(cancelPrefix)))return false;
  auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(p);if(dos->e_magic!=IMAGE_DOS_SIGNATURE||dos->e_lfanew<=0||dos->e_lfanew>4096)return false;
  auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+dos->e_lfanew);if(nt->Signature!=IMAGE_NT_SIGNATURE||nt->FileHeader.Machine!=IMAGE_FILE_MACHINE_I386||nt->OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR32_MAGIC||nt->OptionalHeader.SizeOfImage!=0x10b000)return false;
  DWORD base=reinterpret_cast<DWORD>(p+0x55134),hook=reinterpret_cast<DWORD>(&dispatchHook);
@@ -101,5 +114,5 @@ bool installGamepadUi(HMODULE m,void(*logger)(const wchar_t*)){return set(reinte
 bool removeGamepadUi(HMODULE m){return set(reinterpret_cast<BYTE*>(m),false,nullptr);}
 bool canSetGamepadUi(HMODULE m,bool enabled){return set(reinterpret_cast<BYTE*>(m),enabled,nullptr,true);}
 #ifdef MODERN_INPUT_TEST
-void initializeGamepadUiFixture(BYTE* p){memcpy(p+0x55134,prefix,sizeof(prefix));for(auto s:slots)*reinterpret_cast<DWORD*>(p+s)=reinterpret_cast<DWORD>(p+0x55134);}
+void initializeGamepadUiFixture(BYTE* p){memcpy(p+0x5718f,cancelPrefix,sizeof(cancelPrefix));memcpy(p+0x55134,prefix,sizeof(prefix));for(auto s:slots)*reinterpret_cast<DWORD*>(p+s)=reinterpret_cast<DWORD>(p+0x55134);}
 #endif

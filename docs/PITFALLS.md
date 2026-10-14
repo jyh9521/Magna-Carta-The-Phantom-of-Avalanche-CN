@@ -160,3 +160,7 @@ Advance a fixed presentation epoch, carry QPC fractional ticks and skip missed s
 ## One camera matrix pointer can have multiple render-stage uses
 
 Temporary object-screen projection can load the prior camera before native refresh; final scene consumption uses the refreshed camera in the same logic tick. Sampling both into one TransformTrack invents a same-tick instability and discards interpolation. Guard the source final-scene CALL and replay actual x86 caller addresses, not a fixture-only classification flag. See CAMERA_SCENE_SAMPLE_REPAIR.md.
+
+## Release-only menu actions and controller cancellation
+
+Do not equate disappearing synthetic pressed input with a deliberate release: native title buttons execute actions on release. Preserve raw physical mouse ownership before merging controller keys; clear only synthetic counter/visual state on device loss or replacement. A zero counter alone prevents the action but leaves the native pressed visual stuck; use the verified no-listener visual helper for supported widgets. Focus behavior is separate and unchanged. See GAMEPAD_DISCONNECT_CONFIRM.md.
