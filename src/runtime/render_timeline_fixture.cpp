@@ -51,5 +51,13 @@ int main(){
  for(int a=0;a<3;++a)for(int b=0;b<3;++b)require(std::abs(gram(shearMid,a,b)-gram(shear,a,b))<1e-5f,"rotation must preserve accepted shear Gram metric");
  for(unsigned frame=0;frame<=60;++frame){Matrix m{};blend(stretchA,stretchB,float(frame)/60,m);require(std::abs(m.v[0]-1.008f)<1e-5f,"full display phase cannot pump source scale");}
  Matrix endpoint{};blend(shear,turned,0,endpoint);require(!memcmp(&endpoint,&shear,sizeof(endpoint)),"stretch endpoint zero byte exact");blend(shear,turned,1,endpoint);require(!memcmp(&endpoint,&turned,sizeof(endpoint)),"stretch endpoint one byte exact");
+ auto inverseInput=multiply(quarter,shear);for(int c=0;c<3;++c)for(int r=0;r<3;++r)inverseInput.v[c*4+r]*=1.008f;
+ inverseInput.v[12]=37;inverseInput.v[13]=-11;inverseInput.v[14]=4;
+ require(rigid(inverseInput),"source inverse regression uses accepted near-rigid branch");
+ auto inverse=inverseRigid(inverseInput);auto left=multiply(inverse,inverseInput),right=multiply(inverseInput,inverse);auto unit=identity();
+ for(int k=0;k<16;++k)require(std::abs(left.v[k]-unit.v[k])<1e-5f&&std::abs(right.v[k]-unit.v[k])<1e-5f,"near-rigid inverse cancels native stretch and shear on both sides");
+ auto twice=inverseRigid(inverse);for(int k=0;k<16;++k)require(std::abs(twice.v[k]-inverseInput.v[k])<1e-5f,"view to pose round trip preserves native near-rigid transform");
+ TransformTrack nearCamera;Phase nearPhase{0,30,0,true};auto firstNear=nearCamera.sample(inverseInput,nearPhase,true);
+ for(int k=0;k<16;++k)require(std::abs(firstNear.v[k]-inverseInput.v[k])<1e-5f,"camera first frame cannot change source transform through inverse round trip");
  std::printf("RENDER_TIMELINE_FIXTURE PASS checks=%d world=true rotation=true camera=true phase=engine_remainder logic_events=unchanged game_started=false\n",checks);
 }

@@ -58,7 +58,20 @@ void blend(const Matrix& a,const Matrix& b,float t,Matrix& out){
  for(int i=12;i<15;++i)out.v[i]=a.v[i]+(b.v[i]-a.v[i])*t;
 }
 Matrix multiply(const Matrix& a,const Matrix& b){Matrix o{};for(int c=0;c<4;++c)for(int r=0;r<4;++r)for(int k=0;k<4;++k)o.v[c*4+r]+=a.v[k*4+r]*b.v[c*4+k];return o;}
-Matrix inverseRigid(const Matrix& m){Matrix o{};o.v[15]=1;for(int c=0;c<3;++c)for(int r=0;r<3;++r)o.v[c*4+r]=m.v[r*4+c];for(int r=0;r<3;++r)for(int k=0;k<3;++k)o.v[12+r]-=o.v[k*4+r]*m.v[12+k];return o;}
+Matrix inverseRigid(const Matrix& m){
+ // rigid() allows small native stretch/shear: transpose is not its inverse.
+ // Callers retain the existing near-rigid admission guard; unsupported input is unchanged.
+ if(!rigid(m))return m;
+ const double a=m.v[0],b=m.v[4],c=m.v[8],d=m.v[1],e=m.v[5],f=m.v[9],g=m.v[2],h=m.v[6],i=m.v[10];
+ const double determinant=a*(e*i-f*h)+b*(f*g-d*i)+c*(d*h-e*g);
+ if(!std::isfinite(determinant)||determinant<=1e-8)return m;
+ Matrix o{};o.v[15]=1;
+ o.v[0]=float((e*i-f*h)/determinant);o.v[4]=float((c*h-b*i)/determinant);o.v[8]=float((b*f-c*e)/determinant);
+ o.v[1]=float((f*g-d*i)/determinant);o.v[5]=float((a*i-c*g)/determinant);o.v[9]=float((c*d-a*f)/determinant);
+ o.v[2]=float((d*h-e*g)/determinant);o.v[6]=float((b*g-a*h)/determinant);o.v[10]=float((a*e-b*d)/determinant);
+ for(int row=0;row<3;++row){double translation=0;for(int k=0;k<3;++k)translation-=double(o.v[k*4+row])*m.v[12+k];o.v[12+row]=float(translation);}
+ return o;
+}
 Matrix TransformTrack::sample(const Matrix& input,Phase p,bool camera){
  if(!p.valid||!rigid(input)){reset();return input;}
  Matrix value=camera?inverseRigid(input):input;

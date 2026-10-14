@@ -105,6 +105,15 @@ int main(){
  motion60TestTick(1,0,1033);renderSample(2);
  require(history[0].v[12]>stable,"next native logic tick advances transition exactly once");
  transitionHistory=false;*reinterpret_cast<MotionMatrix**>(object+0xf0)=nullptr;
+ motion60TestComplete(image,true);actorX=12;*cameraMatrix=identity(-20);
+ cameraMatrix->v[0]=cameraMatrix->v[5]=cameraMatrix->v[10]=1.008f;
+ auto nativeScaledView=*cameraMatrix;float nativeScaledX=-20+12*1.008f;
+ motion60TestTick(0,0,1900);appliedCamera();renderSample(0);
+ require(std::abs(worldObserved-nativeScaledX)<.0001f,"real camera hook near-rigid first frame preserves native modelview");
+ motion60TestTick(0,16,1916);appliedCamera();renderSample(0);
+ require(std::abs(worldObserved-nativeScaledX)<.0001f,"stationary actor cannot drift under repeated near-rigid camera draws");
+ require(!memcmp(cameraMatrix,&nativeScaledView,sizeof(nativeScaledView)),"native near-rigid camera restored byte exact");
+ require(std::abs(reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]-nativeScaledX)<.0001f,"near-rigid modelview restored without transpose scaling error");
  localDraw=true;motion60TestComplete(image,true);actorX=0;*cameraMatrix=identity(-20);
  motion60TestTick(0,0,2000);appliedCamera();renderSample(0);
  require(worldObserved==0,"local source branch initial matrix");
