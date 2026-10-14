@@ -243,14 +243,13 @@ unsigned clipLength=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+4),s
   interpolatedWorld=c.localWorld.sample(*world,phase);
   if(trace&&diagnostics.enabled())diagnostics.transform(false,c.localWorld.observation());
   active->world=world;active->baselineWorld=*world;worldValid=true;
- }else if(complete&&cameraState.valid&&motion::rigid(*world)){
-  // Asura matrices are column-major: modelview = view * actorWorld.
-  auto actorWorld=motion::multiply(motion::inverseRigid(cameraState.applied),*world);
-  if(motion::rigid(actorWorld)){
-   interpolatedWorld=motion::multiply(cameraState.applied,c.world.sample(actorWorld,phase));
-   if(trace&&diagnostics.enabled())diagnostics.transform(false,c.world.observation());
-   active->world=world;active->baselineWorld=motion::multiply(cameraState.original,actorWorld);worldValid=true;
-  }
+ }else if(complete&&active->hasParent&&motion::rigid(*world)){
+  // MCAlpha registers parent * local before the camera is applied to ASRRender.
+  // Queued +c is world-space even with a non-NULL parent. Removing a camera
+  // here changes the input within a held tick and corrupts exact restoration.
+  interpolatedWorld=c.world.sample(*world,phase);
+  if(trace&&diagnostics.enabled())diagnostics.transform(false,c.world.observation());
+  active->world=world;active->baselineWorld=*world;worldValid=true;
  }
  if(complete&&!worldValid&&trace&&diagnostics.enabled())diagnostics.skippedWorld();
  if(caches.size()>128)for(auto i=caches.begin();i!=caches.end();)if(i->first!=active->object&&now.QuadPart-i->second.last>frequency/4)i=caches.erase(i);else ++i;
@@ -261,7 +260,7 @@ unsigned clipLength=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+4),s
  if(worldValid)*world=interpolatedWorld;
  static LONG localChanges=0,composedChanges=0;
  if(worldValid&&InterlockedIncrement(active->hasParent?&composedChanges:&localChanges)==1&&trace)
-  trace(active->hasParent?L"MOTION60_WORLD_APPLIED source_space=view_composed parent=non_null restore=original_modelview":L"MOTION60_WORLD_APPLIED source_space=local parent=null camera_conversion=false restore=exact_local");
+  trace(active->hasParent?L"MOTION60_WORLD_APPLIED source_space=queued_world parent=non_null camera_conversion=false restore=exact_world":L"MOTION60_WORLD_APPLIED source_space=local parent=null camera_conversion=false restore=exact_local");
  if(InterlockedIncrement(&changes)==1&&trace)trace(complete?L"MOTION60_POSE_APPLIED phase=engine_remainder world_camera=interpolated latency_ticks=1":L"MOTION60_POSE_APPLIED scope=skeletal_local_pose logic_interval_ms=33 world_camera=unchanged latency_ticks=1");
 }
 void renderScoped(Context* ctx,void* object,int frame,Matrix* world,int a,int b,int c,int d,int e){

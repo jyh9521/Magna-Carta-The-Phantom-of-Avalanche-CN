@@ -148,3 +148,7 @@ A held animation frame may have different native local poses across engine updat
 ## Mouse idle and release are separate native states
 
 MCAlpha key counter 0 is idle (+190), -1 is release (+194). Replay both independently, including held press counts. Source-shaped title-stack fixtures must restore the plain input epilogue before calling its middle-of-function entry; otherwise a fixture-only stack failure is not a game defect. See GAMEPAD_MENU_DISPATCH_REPLAY.md.
+
+## A non-null render parent is not proof of camera-composed space
+
+MCAlpha queues parent * local before ASRRender applies the camera. A fixture that bakes camera into that parent can validate the wrong implementation. Reproduce registration, copied queue matrix and deferred camera consumption separately. The prior inverse-camera branch polluted restored object+c and introduced camera-dependent same-tick world changes. See MOTION_QUEUED_WORLD_REPAIR.md.

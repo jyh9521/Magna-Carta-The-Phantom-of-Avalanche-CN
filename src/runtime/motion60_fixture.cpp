@@ -14,20 +14,36 @@ static void* absoluteBones=nullptr;static float localPoseOffset=0;
 static bool transitionHistory=false;static MotionMatrix history[1];
 static bool stretchDraw=false,mirrorDraw=false,affineDraw=false;static float observedScale=1;
 static bool fullDraw=false,localDraw=false;static BYTE driver[0xe0],camera[0xc0];static float actorX=0,worldObserved=0;
+static MotionMatrix queuedWorld{};
+static float actorYaw=0;
+
 void require(bool b,const char* text){++checks;if(!b){fprintf(stderr,"FAIL %s\n",text);fflush(stderr);ExitProcess(1);}}
 MotionMatrix identity(float x){MotionMatrix m{};m.v[0]=m.v[5]=m.v[10]=m.v[15]=1;m.v[12]=x;return m;}
+MotionMatrix actorParent(){auto m=identity(actorX);m.v[0]=m.v[10]=std::cos(actorYaw);m.v[2]=-std::sin(actorYaw);m.v[8]=std::sin(actorYaw);return m;}
 void __cdecl absolute(void*,unsigned,MotionMatrix* p,MotionMatrix*){++absoluteCalls;p[0].v[12]+=100;}
 void __fastcall loadCamera(void* d,void*,MotionMatrix* m){memcpy(static_cast<BYTE*>(d)+0x5c,m,64);}
-void __fastcall draw(void*,void*,int frame,MotionMatrix*,int,int,int,int,int){
+void __fastcall draw(void*,void*,int frame,MotionMatrix* parent,int,int,int,int,int){
  pose[0]=identity(static_cast<float>(frame*10)+localPoseOffset);pose[1]=identity(3);
  if(stretchDraw)pose[0].v[0]=pose[0].v[5]=pose[0].v[10]=1.008f;
  if(mirrorDraw)pose[0].v[0]=-1;
  if(affineDraw){pose[0].v[0]=2;pose[0].v[5]=.5f;pose[0].v[4]=.25f;}
  if(transitionHistory){pose[0].v[12]=(history[0].v[12]+pose[0].v[12])*.5f;history[0]=pose[0];}
- if(fullDraw){auto actor=identity(actorX);auto view=reinterpret_cast<motion::Matrix*>(driver+0x5c);auto w=localDraw?reinterpret_cast<const motion::Matrix&>(actor):motion::multiply(*view,reinterpret_cast<const motion::Matrix&>(actor));memcpy(object+0xc,&w,64);}
- motion60TestAbsolute(absoluteBones?absoluteBones:data,0,pose,nullptr);observed=pose[0].v[12];observedScale=pose[0].v[0];worldObserved=reinterpret_cast<MotionMatrix*>(object+0xc)->v[12];if(throwSeh)RaiseException(0xe0000001,0,0,nullptr);
+ if(fullDraw){
+  // MCAlpha Render: queue parent * object-local (or local when parent NULL).
+  // Camera is applied later by ASRRender, not baked into this copied matrix.
+  auto local=reinterpret_cast<const motion::Matrix*>(object+0x4c);
+  auto w=parent?motion::multiply(reinterpret_cast<const motion::Matrix&>(*parent),*local):*local;
+  memcpy(object+0xc,&w,64);
+ }
+ motion60TestAbsolute(absoluteBones?absoluteBones:data,0,pose,nullptr);observed=pose[0].v[12];observedScale=pose[0].v[0];queuedWorld=*reinterpret_cast<MotionMatrix*>(object+0xc);
+ auto presented=fullDraw&&!localDraw?motion::multiply(*reinterpret_cast<const motion::Matrix*>(driver+0x5c),reinterpret_cast<const motion::Matrix&>(queuedWorld)):reinterpret_cast<const motion::Matrix&>(queuedWorld);
+ worldObserved=presented.v[12];if(throwSeh)RaiseException(0xe0000001,0,0,nullptr);
 }
-void renderSample(int frame){if(fullDraw&&!localDraw)motion60TestRenderParent(object,frame,reinterpret_cast<MotionMatrix*>(driver+0x5c));else motion60TestRender(object,frame);}
+void renderSample(int frame){
+ if(fullDraw){auto local=identity(localDraw?actorX:0);memcpy(object+0x4c,&local,64);}
+ auto parent=actorParent();
+ if(fullDraw&&!localDraw)motion60TestRenderParent(object,frame,&parent);else motion60TestRender(object,frame);
+}
 bool sehProbe(){__try {renderSample(2);}__except(EXCEPTION_EXECUTE_HANDLER){return true;}return false;}
 int main(int argc,char** argv){
  const bool renderHistoryOnly=argc==2&&!strcmp(argv[1],"--render-history-only");
@@ -91,13 +107,13 @@ int main(int argc,char** argv){
  require(observed==100&&worldObserved==0,"complete first frame original");
  *reinterpret_cast<unsigned*>(manager+0x24)=33;actorX=10;*cameraMatrix=identity(-20);tick(manager,info,1,33);
  appliedCamera();renderSample(1);
- require(std::abs(worldObserved)<.001f&&observed==100,"world and pose start same phase");require(reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]==-10,"original modelview restored");
+ require(std::abs(worldObserved)<.001f&&observed==100,"world and pose start same phase");require(reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]==10,"queued parent world matrix restores exact native world not inverse-camera result");
  *reinterpret_cast<unsigned*>(manager+0x24)=49;*reinterpret_cast<unsigned*>(info+0x10)=16;tick(manager,info,0,16);
  appliedCamera();renderSample(1);
  float alpha=16.f/33;require(std::abs(worldObserved+10*alpha)<.002f,"shared world camera midpoint without double lag");require(std::abs(observed-(100+10*alpha))<.002f,"bone midpoint engine remainder");
- require(cameraMatrix->v[12]==-20&&reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]==-10&&pose[0].v[12]==110,"camera world pose exact restoration");
+ require(cameraMatrix->v[12]==-20&&reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]==10&&pose[0].v[12]==110,"camera world pose exact restoration");
  reinterpret_cast<void(__thiscall*)(void*,MotionMatrix*)>(*mulSlot)(driver,cameraMatrix);require(std::abs(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[12]+20*alpha)<.002f,"multiply camera path same phase");
- throwSeh=true;require(sehProbe(),"complete SEH propagates");throwSeh=false;require(reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]==-10&&pose[0].v[12]==120,"complete SEH restores world and pose");
+ throwSeh=true;require(sehProbe(),"complete SEH propagates");throwSeh=false;require(reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]==10&&pose[0].v[12]==120,"complete SEH restores world and pose");
  auto foreign=identity(99);motion60TestCamera(driver,&foreign,reinterpret_cast<void(__thiscall*)(void*,MotionMatrix*)>(&loadCamera));require(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[12]==99,"foreign transform bypass");
  *reinterpret_cast<unsigned*>(driver+0x58)=0x1701;motion60TestCamera(driver,cameraMatrix,reinterpret_cast<void(__thiscall*)(void*,MotionMatrix*)>(&loadCamera));require(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[12]==-20,"projection bypass");
  *reinterpret_cast<unsigned*>(driver+0x58)=0x1700;
@@ -109,7 +125,7 @@ int main(int argc,char** argv){
  float inputView[16]{};auto cameraIdentity=reinterpret_cast<uintptr_t>(*reinterpret_cast<void**>(image+0xf2290));
  require(render_input::inputView.read(cameraIdentity,GetTickCount(),inputView),"real camera hook publishes movement view while orbit active");
  require(std::abs(inputView[0]-reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[0])<.00001f,"published input view equals actually submitted driver view");
- renderSample(1);require(reinterpret_cast<MotionMatrix*>(object+0xc)->v[0]==1&&std::abs(reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]+10)<.002f,"free orbit draw restores original modelview not modified camera view");
+ renderSample(1);require(reinterpret_cast<MotionMatrix*>(object+0xc)->v[0]==1&&std::abs(reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]-10)<.002f,"free orbit leaves restored queued world independent of modified camera");
  motion60TestFreeView(true,false,true,0,0);appliedCamera();require(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[0]==1,"free orbit reset restores original view orientation");
  require(!render_input::inputView.read(cameraIdentity,GetTickCount(),inputView),"orbit reset removes input override immediately");
  motion60TestFreeView(false,false,false,0,0);appliedCamera();require(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[0]==1,"free orbit disabled leaves complete-motion camera unchanged");
@@ -131,7 +147,7 @@ int main(int argc,char** argv){
  motion60TestTick(0,16,1916);appliedCamera();renderSample(0);
  require(std::abs(worldObserved-nativeScaledX)<.0001f,"stationary actor cannot drift under repeated near-rigid camera draws");
  require(!memcmp(cameraMatrix,&nativeScaledView,sizeof(nativeScaledView)),"native near-rigid camera restored byte exact");
- require(std::abs(reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]-nativeScaledX)<.0001f,"near-rigid modelview restored without transpose scaling error");
+ require(std::abs(reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]-12)<.0001f,"near-rigid camera cannot enter restored queued world");
  localDraw=true;motion60TestComplete(image,true);actorX=0;*cameraMatrix=identity(-20);
  motion60TestTick(0,0,2000);appliedCamera();renderSample(0);
  require(worldObserved==0,"local source branch initial matrix");
@@ -280,6 +296,33 @@ int main(int argc,char** argv){
  motion::Diagnostics compatibleEvidence;compatibleEvidence.clock(1,1,false,true,0,0);
  compatibleEvidence.draw(.5f,false,false,false,false,false,true);motion::DiagnosticWindow compatibleWindow;
  require(compatibleEvidence.take(1000,compatibleWindow)&&compatibleWindow.compatibleSwitches==1&&compatibleWindow.resets==0,"bounded diagnostics separate compatible bridges from resource resets");
+ // Reproduce the native registration-before-camera and deferred queue order.
+ fullDraw=true;localDraw=false;actorX=0;actorYaw=0;*cameraMatrix=identity(0);
+ motion60TestComplete(image,true);motion60TestTick(0,0,12000);renderSample(0);
+ auto priorActor=identity(0);actorX=10;actorYaw=1;auto nextActor=actorParent();
+ motion60TestTick(1,0,12033);renderSample(1);
+ require(queuedWorld.v[12]==0&&queuedWorld.v[0]==1,"queued world interpolates even before any valid camera load in this render tick");
+ require(!memcmp(object+0xc,&nextActor,64),"rotating parent world restore is exact before deferred camera consumption");
+ for(unsigned remainder=1;remainder<33;++remainder){
+  motion60TestTick(0,remainder,12033+remainder);renderSample(1);
+  MotionMatrix expected{};motion60TestBlend(priorActor,nextActor,float(remainder)/33,expected);
+  for(unsigned k=0;k<16;++k)require(std::abs(queuedWorld.v[k]-expected.v[k])<.00002f,"queue-before-camera world translation and rotation use shared bone phase");
+  auto beforeCamera=queuedWorld;
+  *cameraMatrix=identity(-20);float angle=float(remainder)*.01f;
+  cameraMatrix->v[0]=cameraMatrix->v[10]=std::cos(angle);cameraMatrix->v[2]=-std::sin(angle);cameraMatrix->v[8]=std::sin(angle);
+  appliedCamera();renderSample(1);
+  require(!memcmp(&beforeCamera,&queuedWorld,64),"changing camera within held tick cannot mutate queued world or reset its trajectory");
+  auto presented=motion::multiply(*reinterpret_cast<const motion::Matrix*>(driver+0x5c),reinterpret_cast<const motion::Matrix&>(expected));
+  require(std::abs(worldObserved-presented.v[12])<.00002f,"deferred consumer applies camera once to interpolated queued world");
+  require(!memcmp(object+0xc,&nextActor,64),"all camera sweep samples restore native world byte exact");
+ }
+ motion60TestTick(1,0,12066);renderSample(2);require(!memcmp(&queuedWorld,&nextActor,64),"stopped actor begins next tick at prior world without camera-related settling jumps");
+ motion60TestTick(0,16,12082);*cameraMatrix=identity(-35);appliedCamera();renderSample(2);
+ for(unsigned k=0;k<16;++k)require(std::abs(queuedWorld.v[k]-nextActor.v[k])<.00002f,"stopped actor world remains stable during moving camera");
+ throwSeh=true;require(sehProbe(),"queued world rotating parent SEH propagated");throwSeh=false;
+ require(!memcmp(object+0xc,&nextActor,64),"queued world rotating parent exact SEH restoration");
+ actorYaw=0;
+ printf("QUEUED_WORLD_REPLAY PASS samples=32 camera_motion=true camera_rotation=true queue_before_camera=true world_restore=exact game_started=false\n");
  // Exercise the previously invisible world-only reset through the real hook.
  motion60TestComplete(image,true);motion60TestDiagnosticLogger(&diagnosticLogger);
  fullDraw=true;localDraw=false;actorX=0;*cameraMatrix=identity(0);
