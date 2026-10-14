@@ -39,3 +39,8 @@ world_gamepad_fixture增加真实鼠标恢复→生产XInput IAT桥→生产方�
 不带参数保留完整运动、镜头、键盘与回滚检查。
 玩家仍用runtime/Play-gamepad.cmd：方向选中后松开，A首按进入，B返回；
 Start打开游戏内菜单重复方向/A/B，再用真实鼠标接管。没有为测试新增游戏入口。
+
+## 后续：标题listener请求级契约
+
+现在回放已增加原生ID、listener+24转发与release-only请求选择，见GAMEPAD_TITLE_LISTENER_CONTRACT.md。
+自有callback计数不等于实际标题转场；本请求级验证仍未执行商业transition executor。
