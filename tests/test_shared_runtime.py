@@ -43,7 +43,7 @@ class SharedRuntimeTests(unittest.TestCase):
             self.assertFalse((out/'data').exists())
             self.assertEqual(m['data_root'],'data')
             self.assertEqual(m['configured_modules']['motion'],'modern')
-            self.assertEqual(len(m['recipes']),13)
+            self.assertEqual(len(m['recipes']),14)
             self.assertTrue(m['recipes']['camera']['camera'])
             self.assertTrue(m['recipes']['camera-gamepad']['camera'])
             self.assertTrue(m['recipes']['camera-gamepad']['settings']['native_gamepad'])
@@ -61,3 +61,26 @@ class SharedRuntimeTests(unittest.TestCase):
             (game/'engine.dll').write_bytes(b'drift')
             self.assertRaises(ValueError,tool.prepare,game,modules,atlas,root/'runtime')
             self.assertFalse((root/'runtime').exists())
+
+    def test_current_candidates_are_preserved_when_repackaging(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); game,modules,atlas=self.inputs(root)
+            motion=root/'motion.dll'; motion.write_bytes(b'current owned motion candidate')
+            pad=root/'pad.dll'; pad.write_bytes(b'current owned input candidate')
+            modules.update({'motion-space':motion,'input-diagnostics':pad})
+            m=tool.prepare(game,modules,atlas,root/'runtime')
+            self.assertEqual(m['recipes']['motion']['module'],'motion-space')
+            self.assertEqual(m['recipes']['gamepad']['module'],'input-diagnostics')
+            self.assertEqual(m['configured_modules']['combined'],'input-diagnostics')
+            self.assertEqual(m['files']['modules/motion-space.dll'],tool.sha(motion))
+            self.assertEqual(m['files']['modules/input-diagnostics.dll'],tool.sha(pad))
+
+    def test_motion_gamepad_recipe_has_both_controls_without_camera(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory); game,modules,atlas=self.inputs(root)
+            m=tool.prepare(game,modules,atlas,root/'runtime')
+            recipe=m['recipes']['motion-gamepad']
+            self.assertTrue(recipe['settings']['motion60'])
+            self.assertTrue(recipe['settings']['native_gamepad'])
+            self.assertEqual(recipe['settings']['display_profile'],'combined')
+            self.assertNotIn('camera',recipe)

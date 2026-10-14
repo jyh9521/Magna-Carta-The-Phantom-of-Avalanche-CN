@@ -100,6 +100,10 @@ python tools/build_text_resources.py --source SOURCE_GAME --catalog CATALOG --co
 
 ## 现代化候选与区域地图
 
+**当前共享运行包**：只使用一份`runtime/data`，不再按功能复制游戏。
+以下独立副本命令为历史实验流程，不用于新阶段交付。当前候选模块选择、
+新打包参数、常用旧cmd重定向及手动验收见[共享入口修正](docs/SHARED_ENTRY_REPAIR.md)。
+
 汉化正文、字库和已验收标题资产保持冻结。配置、纹理及自由视角独立入口分别见ENHANCEMENT_CONFIGURATION.md、CURRENT_TEXTURE_LIFETIME.md、FREE_VIEW_CANDIDATE.md。区域地图见docs/MAP_OVERLAY_CANDIDATE.md；以下命令不启动游戏，不刷新旧验收模块。
 
 地图构建依赖复用tools/requirements-localization.txt中的Pillow，仅构建需要；玩家端使用系统GDI+/GDI32，没有新的Python运行依赖。

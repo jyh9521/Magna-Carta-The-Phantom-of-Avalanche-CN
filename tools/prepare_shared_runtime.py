@@ -71,8 +71,11 @@ def prepare(source, modules, atlas, output):
     recipes={'configured':dict(module='configured',settings=None)}
     for profile in original['profiles']:
         recipes[profile]=dict(module='display',settings=settings(profile))
-    recipes['motion']=dict(module='modern',settings=settings('combined',True))
-    recipes['gamepad']=dict(module='modern',settings=settings(pad=True))
+    motion='motion-space' if 'motion-space' in modules else 'modern'
+    gamepad='input-diagnostics' if 'input-diagnostics' in modules else 'modern'
+    recipes['motion']=dict(module=motion,settings=settings('combined',True))
+    recipes['gamepad']=dict(module=gamepad,settings=settings(pad=True))
+    recipes['motion-gamepad']=dict(module=gamepad,settings=settings('combined',True,True))
     recipes['texture']=dict(module='texture',settings=settings(),texture=True)
     recipes['camera']=dict(module='camera',settings=settings('combined',True),camera=True)
     recipes['camera-gamepad']=dict(module='camera',settings=settings('combined',True,True),camera=True)
@@ -95,7 +98,7 @@ def prepare(source, modules, atlas, output):
     (output/'Play-title-original.cmd').write_bytes(title_original)
     files['Play-title-original.cmd']=sha(output/'Play-title-original.cmd')
     manifest=dict(schema=1,data_root='data',data=data,files=files,profiles=original['profiles'],recipes=recipes,
-                  configured_modules=dict(display='display',motion='modern',gamepad='modern',combined='modern'))
+                  configured_modules=dict(display='display',motion=motion,gamepad=gamepad,combined=gamepad))
     (output/'runtime.json').write_bytes((json.dumps(manifest,indent=2)+'\n').encode('utf8'))
     for recipe in recipes:
         entry='Play.cmd' if recipe=='configured' else 'Play-'+recipe+'.cmd'
@@ -109,7 +112,11 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ['source','display','modern','texture','camera','maps','launcher','atlas','output']:
         parser.add_argument('--'+name,type=Path,required=True)
+    parser.add_argument('--motion',type=Path)
+    parser.add_argument('--gamepad',type=Path)
     a=parser.parse_args()
     modules={name:getattr(a,name) for name in ['display','modern','texture','camera','maps','launcher']}
+    if a.motion: modules['motion-space']=a.motion
+    if a.gamepad: modules['input-diagnostics']=a.gamepad
     prepare(a.source,modules,a.atlas,a.output)
     print('SHARED_PACKAGE PASS copied_game_data=false data_move_pending=true')
