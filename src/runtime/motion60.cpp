@@ -49,8 +49,8 @@ void __cdecl captureTimer(BYTE* manager,BYTE* info,unsigned consumed,unsigned el
   auto now=*reinterpret_cast<unsigned*>(manager+0x24);auto after=timeline.phase();
   diagnostics.clock(owner,consumed,before.generation!=after.generation,after.valid,now,jobRva);
   motion::DiagnosticWindow s;if(diagnostics.take(now,s)){
-   wchar_t line[768];swprintf_s(line,L"MOTION60_DIAG clocks=%llu updates=%llu owner_switches=%llu generation_changes=%llu invalid=%llu draws=%llu midpoints=%llu resets=%llu resource=%llu phase=%llu same_frame=%llu jumps=%llu bones=%llu unsupported=%llu near_stretch=%llu job_vtable_rva=%x",
-    s.clocks,s.updates,s.owners,s.generations,s.invalid,s.draws,s.midpoints,s.resets,s.resource,s.phase,s.sameFrame,s.jumps,s.bones,s.unsupported,s.nearStretch,s.jobVtableRva);trace(line);
+   wchar_t line[768];swprintf_s(line,L"MOTION60_DIAG clocks=%llu updates=%llu owner_switches=%llu generation_changes=%llu invalid=%llu draws=%llu midpoints=%llu resets=%llu resource=%llu phase=%llu same_frame=%llu jumps=%llu bones=%llu unsupported=%llu near_stretch=%llu compatible_switches=%llu job_vtable_rva=%x",
+    s.clocks,s.updates,s.owners,s.generations,s.invalid,s.draws,s.midpoints,s.resets,s.resource,s.phase,s.sameFrame,s.jumps,s.bones,s.unsupported,s.nearStretch,s.compatibleSwitches,s.jobVtableRva);trace(line);
   }
  }
  cameraState.valid=false;
@@ -72,7 +72,7 @@ __declspec(naked) void timerThunk(){__asm {
  mov eax,dword ptr[ebp-14h]
  jmp dword ptr[timerResume]
 }}
-struct Cache{void* action=nullptr;void* bones=nullptr;Matrix* pose=nullptr;unsigned clipLength=0;int frame=0;LONGLONG changed=0,last=0;motion::Phase phase{};motion::TransformTrack world,localWorld;std::vector<Matrix> previous,current;};
+struct Cache{void* action=nullptr;void* bones=nullptr;void* data=nullptr;void* model=nullptr;unsigned stride=0;std::vector<unsigned> layout;Matrix* pose=nullptr;unsigned clipLength=0;int frame=0;LONGLONG changed=0,last=0;motion::Phase phase{};motion::TransformTrack world,localWorld;std::vector<Matrix> previous,current;};
 std::map<void*,Cache> caches;SRWLOCK cacheLock=SRWLOCK_INIT;LONGLONG frequency=0;
 // The original renderer copies local pose into object+f0 on every draw.
 // Replaying the same fixed tick must start with the same transition history.
@@ -160,6 +160,25 @@ bool sourceCall(void* caller){
 return reinterpret_cast<BYTE*>(caller)==engineBase+0x3b801;
 #endif
 }
+// Asura MakeAbsoluteMatrix uses 12-byte entries: opaque word, child count,
+// child-index pointer. Snapshot logical indices, never compare pointer identity.
+// Require one complete rooted tree before bridging a resource/action change.
+bool skeletonLayout(void* bones,unsigned count,std::vector<unsigned>& out){
+ out.clear();if(!count||count>512||!readable(bones,count*12))return false;
+ std::vector<unsigned> parents(count,0),offsets(count);auto bytes=static_cast<BYTE*>(bones);
+ for(unsigned bone=0;bone<count;++bone){
+  unsigned children=*reinterpret_cast<unsigned*>(bytes+bone*12+4);auto indices=*reinterpret_cast<unsigned**>(bytes+bone*12+8);
+  if(children>count||(children&&!readable(indices,children*4)))return false;
+  offsets[bone]=static_cast<unsigned>(out.size());out.push_back(children);
+  for(unsigned child=0;child<children;++child){unsigned index=indices[child];if(index>=count||!index||index==bone||++parents[index]>1)return false;out.push_back(index);}
+ }
+ for(unsigned bone=1;bone<count;++bone)if(parents[bone]!=1)return false;
+ std::vector<unsigned> pending{0};std::vector<bool> seen(count,false);unsigned visited=0;
+ while(!pending.empty()){unsigned bone=pending.back();pending.pop_back();if(seen[bone])return false;seen[bone]=true;++visited;
+  unsigned at=offsets[bone],children=out[at];for(unsigned child=0;child<children;++child)pending.push_back(out[at+1+child]);
+ }
+ return visited==count;
+}
 void __cdecl absoluteHook(void* bones,unsigned root,Matrix* poses,Matrix* parent){
  auto phase=renderPhase();
  if(complete&&!phase.valid){originalAbsolute(bones,root,poses,parent);return;}
@@ -182,24 +201,30 @@ void __cdecl absoluteHook(void* bones,unsigned root,Matrix* poses,Matrix* parent
 for(auto i=caches.begin();i!=caches.end();)if(now.QuadPart-i->second.last>frequency/4)i=caches.erase(i);else ++i;
 if(caches.size()>=128){lock.release();originalAbsolute(bones,root,poses,parent);return;}
 }
-unsigned clipLength=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+4);
-auto& c=caches[active->object];bool resourceReset=c.current.size()!=count||c.action!=action||c.bones!=bones||c.pose!=poses||c.clipLength!=clipLength||now.QuadPart-c.last>frequency/4;
+unsigned clipLength=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+4),stride=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+8);
+ void* model=*reinterpret_cast<void**>(object+8);std::vector<unsigned> layout;bool validLayout=complete&&skeletonLayout(bones,count,layout);
+ auto& c=caches[active->object];bool structuralReset=c.current.size()!=count||c.pose!=poses||c.model!=model||now.QuadPart-c.last>frequency/4||(complete&&(!validLayout||c.layout!=layout));
+ bool resourceChanged=c.action!=action||c.bones!=bones||c.data!=data||c.clipLength!=clipLength||c.stride!=stride;
  bool phaseReset=complete&&(c.phase.generation!=phase.generation||phase.tick<c.phase.tick||phase.tick>c.phase.tick+1);
- bool reset=resourceReset||phaseReset;
- bool sameFrameChange=!reset&&active->frame==c.frame&&memcmp(current.data(),c.current.data(),count*sizeof(Matrix));
- if(sameFrameChange)reset=true;
- // The native actor update wraps looping clips from length-1 to zero.
- // Preserve render history for that adjacent step, but not seeks or reversals.
  bool adjacent=static_cast<LONGLONG>(active->frame)==static_cast<LONGLONG>(c.frame)+1;
  bool wrapped=clipLength>1&&c.frame>=0&&static_cast<unsigned>(c.frame)==clipLength-1&&active->frame==0;
- bool frameJump=!reset&&active->frame!=c.frame&&!adjacent&&!wrapped;
+ bool compatible=complete&&resourceChanged&&!structuralReset&&!phaseReset&&validLayout&&c.layout==layout
+  &&phase.generation==c.phase.generation&&phase.tick==c.phase.tick+1
+  &&(c.action!=action||(c.clipLength==clipLength&&c.stride==stride&&(adjacent||wrapped)));
+ bool resourceReset=structuralReset||(resourceChanged&&!compatible);
+ bool reset=resourceReset||phaseReset;
+ bool sameFrameChange=!reset&&!compatible&&active->frame==c.frame&&memcmp(current.data(),c.current.data(),count*sizeof(Matrix));
+ if(sameFrameChange)reset=true;
+ bool frameJump=!reset&&!compatible&&active->frame!=c.frame&&!adjacent&&!wrapped;
  if(frameJump)reset=true;
- if(reset){c.previous=current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;c.action=action;c.bones=bones;c.pose=poses;c.clipLength=clipLength;c.world.reset();c.localWorld.reset();}
+ if(reset){c.previous=current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;c.world.reset();c.localWorld.reset();}
  else if(active->frame!=c.frame||(complete&&phase.tick!=c.phase.tick)){c.previous=c.current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;}
+ c.action=action;c.bones=bones;c.data=data;c.pose=poses;c.model=model;c.clipLength=clipLength;c.stride=stride;
+ if(validLayout)c.layout=std::move(layout);else c.layout.clear();
  c.last=now.QuadPart;float alpha=frequency?static_cast<float>((now.QuadPart-c.changed)*1000.0/(frequency*33.0)):1;alpha=(std::max)(0.f,(std::min)(1.f,alpha));
  if(complete){alpha=phase.alpha;c.phase=phase;}
  if(complete&&trace&&diagnostics.enabled()){
-  diagnostics.draw(alpha,reset,resourceReset,phaseReset,sameFrameChange,frameJump);
+  diagnostics.draw(alpha,reset,resourceReset,phaseReset,sameFrameChange,frameJump,compatible);
   for(unsigned bone=0;bone<count;++bone){const auto& m=current[bone];bool stretch=false;
    for(int row=0;row<3;++row){float norm=0;for(int col=0;col<3;++col)norm+=m.v[row*4+col]*m.v[row*4+col];stretch=stretch||std::abs(norm-1)>.0005f;}
    diagnostics.bone(motion::poseInterpolatable(m),stretch);

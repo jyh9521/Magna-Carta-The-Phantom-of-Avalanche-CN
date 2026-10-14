@@ -6,7 +6,7 @@ namespace motion {
 struct DiagnosticWindow {
  uint64_t clocks=0,updates=0,owners=0,generations=0,invalid=0;
  uint64_t draws=0,midpoints=0,resets=0,resource=0,phase=0,sameFrame=0,jumps=0;
- uint64_t bones=0,unsupported=0,nearStretch=0;
+ uint64_t bones=0,unsupported=0,nearStretch=0,compatibleSwitches=0;
  unsigned jobVtableRva=0;
 };
 class Diagnostics {
@@ -24,10 +24,10 @@ public:
   if(owner_&&owner_!=owner)++window_.owners;
   owner_=owner;window_.generations+=generationChanged;window_.invalid+=!valid;window_.jobVtableRva=jobRva;
  }
- void draw(float alpha,bool reset,bool resource,bool phase,bool sameFrame,bool jump){
+ void draw(float alpha,bool reset,bool resource,bool phase,bool sameFrame,bool jump,bool compatible=false){
   ++window_.draws;window_.midpoints+=alpha>0&&alpha<1;
   window_.resets+=reset;window_.resource+=resource;window_.phase+=phase;
-  window_.sameFrame+=sameFrame;window_.jumps+=jump;
+  window_.sameFrame+=sameFrame;window_.jumps+=jump;window_.compatibleSwitches+=compatible;
  }
  void bone(bool accepted,bool stretch){++window_.bones;window_.unsupported+=!accepted;window_.nearStretch+=accepted&&stretch;}
  bool take(uint32_t now,DiagnosticWindow& out){

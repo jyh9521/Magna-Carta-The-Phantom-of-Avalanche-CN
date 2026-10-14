@@ -9,7 +9,8 @@
 static std::wstring diagnosticLine;
 static unsigned diagnosticLines=0;
 void diagnosticLogger(const wchar_t* text){if(wcsstr(text,L"MOTION60_DIAG ")==text){diagnosticLine=text;++diagnosticLines;}}
-static BYTE object[0x120],action[0x24],record[8],data[0x24];static BYTE* sequence[1];static MotionMatrix pose[1];static float observed;static int checks=0;static int absoluteCalls=0;static bool throwSeh=false;
+static BYTE object[0x120],action[0x24],record[8],data[0x24];static BYTE* sequence[1];static MotionMatrix pose[2];static float observed;static int checks=0;static int absoluteCalls=0;static bool throwSeh=false;
+static void* absoluteBones=nullptr;
 static bool transitionHistory=false;static MotionMatrix history[1];
 static bool stretchDraw=false,mirrorDraw=false,affineDraw=false;static float observedScale=1;
 static bool fullDraw=false,localDraw=false;static BYTE driver[0xe0],camera[0xc0];static float actorX=0,worldObserved=0;
@@ -18,13 +19,13 @@ MotionMatrix identity(float x){MotionMatrix m{};m.v[0]=m.v[5]=m.v[10]=m.v[15]=1;
 void __cdecl absolute(void*,unsigned,MotionMatrix* p,MotionMatrix*){++absoluteCalls;p[0].v[12]+=100;}
 void __fastcall loadCamera(void* d,void*,MotionMatrix* m){memcpy(static_cast<BYTE*>(d)+0x5c,m,64);}
 void __fastcall draw(void*,void*,int frame,MotionMatrix*,int,int,int,int,int){
- pose[0]=identity(static_cast<float>(frame*10));
+ pose[0]=identity(static_cast<float>(frame*10));pose[1]=identity(3);
  if(stretchDraw)pose[0].v[0]=pose[0].v[5]=pose[0].v[10]=1.008f;
  if(mirrorDraw)pose[0].v[0]=-1;
  if(affineDraw){pose[0].v[0]=2;pose[0].v[5]=.5f;pose[0].v[4]=.25f;}
  if(transitionHistory){pose[0].v[12]=(history[0].v[12]+pose[0].v[12])*.5f;history[0]=pose[0];}
  if(fullDraw){auto actor=identity(actorX);auto view=reinterpret_cast<motion::Matrix*>(driver+0x5c);auto w=localDraw?reinterpret_cast<const motion::Matrix&>(actor):motion::multiply(*view,reinterpret_cast<const motion::Matrix&>(actor));memcpy(object+0xc,&w,64);}
- motion60TestAbsolute(data,0,pose,nullptr);observed=pose[0].v[12];observedScale=pose[0].v[0];worldObserved=reinterpret_cast<MotionMatrix*>(object+0xc)->v[12];if(throwSeh)RaiseException(0xe0000001,0,0,nullptr);
+ motion60TestAbsolute(absoluteBones?absoluteBones:data,0,pose,nullptr);observed=pose[0].v[12];observedScale=pose[0].v[0];worldObserved=reinterpret_cast<MotionMatrix*>(object+0xc)->v[12];if(throwSeh)RaiseException(0xe0000001,0,0,nullptr);
 }
 void renderSample(int frame){if(fullDraw&&!localDraw)motion60TestRenderParent(object,frame,reinterpret_cast<MotionMatrix*>(driver+0x5c));else motion60TestRender(object,frame);}
 bool sehProbe(){__try {renderSample(2);}__except(EXCEPTION_EXECUTE_HANDLER){return true;}return false;}
@@ -225,6 +226,44 @@ int main(int argc,char** argv){
  renderSample(3);require(history[0].v[12]==20,"real render hook frame change uses current native transition history not prior sample input");
  renderSample(3);require(history[0].v[12]==20,"real render hook repeated changed-frame draw cannot accumulate transition again");
  transitionHistory=false;*reinterpret_cast<MotionMatrix**>(object+0xf0)=nullptr;*reinterpret_cast<unsigned*>(object+0xf4)=0;
+ BYTE switchAction[0x24]{},switchRecord[8]{},switchData[0x24]{},switchBones[12]{};BYTE* switchSequence[]={switchRecord};
+ *reinterpret_cast<unsigned*>(switchAction+4)=4;*reinterpret_cast<unsigned*>(switchAction+8)=4;
+ *reinterpret_cast<BYTE***>(switchAction+0x18)=switchSequence;*reinterpret_cast<BYTE**>(switchRecord+4)=switchData;*reinterpret_cast<unsigned*>(switchData+0x14)=1;
+ motion60TestComplete(image,true);motion60TestTick(0,0,8000);renderSample(3);require(observed==130,"compatible action switch baseline last pose");
+ *reinterpret_cast<BYTE**>(object+0xa0)=switchAction;absoluteBones=switchBones;
+ motion60TestTick(1,0,8033);renderSample(0);
+ require(observed==130,"compatible native action switch begins at previous local pose instead of resource snap");
+ require(pose[0].v[12]==100,"new action native absolute output restores exactly");
+ motion60TestTick(0,16,8049);renderSample(0);require(std::abs(observed-(130-30*16.f/33))<.002f,"compatible action switch has real intermediate pose");
+ require(pose[0].v[12]==100,"compatible switch repeated render does not contaminate native pose");
+ *reinterpret_cast<BYTE**>(object+0xa0)=action;absoluteBones=nullptr;
+ motion60TestTick(1,0,8066);renderSample(1);require(observed==100,"same topology switch back retains one-tick display continuity");
+ *reinterpret_cast<BYTE**>(object+8)=switchData;*reinterpret_cast<BYTE**>(object+0xa0)=switchAction;absoluteBones=switchBones;
+ motion60TestTick(1,0,8099);renderSample(2);require(observed==120,"changed model identity rejects cross-action interpolation");
+ *reinterpret_cast<BYTE**>(object+8)=nullptr;*reinterpret_cast<BYTE**>(object+0xa0)=action;absoluteBones=nullptr;
+ BYTE bonesA[24]{},bonesB[24]{};unsigned childA=1,childB=1;
+ *reinterpret_cast<unsigned*>(bonesA+4)=*reinterpret_cast<unsigned*>(bonesB+4)=1;
+ *reinterpret_cast<unsigned**>(bonesA+8)=&childA;*reinterpret_cast<unsigned**>(bonesB+8)=&childB;
+ *reinterpret_cast<unsigned*>(data+0x14)=*reinterpret_cast<unsigned*>(switchData+0x14)=2;
+ motion60TestComplete(image,true);absoluteBones=bonesA;motion60TestTick(0,0,9000);renderSample(3);
+ *reinterpret_cast<BYTE**>(object+0xa0)=switchAction;absoluteBones=bonesB;motion60TestTick(1,0,9033);renderSample(0);
+ require(observed==130,"equivalent two-bone child arrays bridge despite different source addresses");
+ require(pose[1].v[12]==3&&pose[1].v[15]==1,"all native local bones restored after compatible switch");
+ *reinterpret_cast<unsigned*>(bonesB+4)=0;motion60TestTick(1,0,9066);renderSample(1);
+ require(observed==110,"in-place hierarchy mutation resets even without changed pointer");
+ *reinterpret_cast<unsigned*>(bonesB+4)=1;childB=2;motion60TestTick(1,0,9099);renderSample(2);
+ require(observed==120,"out-of-range child rejects compatibility without reading another bone");
+ childB=0;motion60TestTick(1,0,9132);renderSample(3);require(observed==130,"cyclic root hierarchy cannot bridge");
+ childB=1;*reinterpret_cast<BYTE**>(object+0xa0)=action;absoluteBones=bonesA;motion60TestTick(0,0,9200);renderSample(3);
+ *reinterpret_cast<BYTE**>(object+0xa0)=switchAction;absoluteBones=bonesB;motion60TestTick(0,16,9216);renderSample(0);
+ require(observed==100,"same-tick action mutation does not bridge unrelated render history");
+ *reinterpret_cast<BYTE**>(object+0xa0)=action;absoluteBones=bonesA;motion60TestComplete(image,true);motion60TestTick(0,0,9300);renderSample(3);
+ *reinterpret_cast<BYTE**>(object+0xa0)=switchAction;absoluteBones=bonesB;motion60TestTick(2,0,9366);renderSample(0);
+ require(observed==100,"catchup action switch resets rather than inventing missing updates");
+ *reinterpret_cast<BYTE**>(object+0xa0)=action;absoluteBones=nullptr;*reinterpret_cast<unsigned*>(data+0x14)=1;
+ motion::Diagnostics compatibleEvidence;compatibleEvidence.clock(1,1,false,true,0,0);
+ compatibleEvidence.draw(.5f,false,false,false,false,false,true);motion::DiagnosticWindow compatibleWindow;
+ require(compatibleEvidence.take(1000,compatibleWindow)&&compatibleWindow.compatibleSwitches==1&&compatibleWindow.resets==0,"bounded diagnostics separate compatible bridges from resource resets");
  require(motion60TestTimerPatch(image,false),"complete timer rollback");require(!memcmp(image+0xcf61,timerBytes,6),"complete timer exact rollback");
  image[0xcf61]^=1;require(!motion60TestTimerPatch(image,true),"unknown timer rejects");image[0xcf61]^=1;
  require(motion60TestDriverSet(driverImage,false),"camera rollback");require(*loadSlot==oldLoad&&*mulSlot==oldMul,"camera exact slots restored");require(motion60TestDriverSet(driverImage,false),"camera rollback idempotent");

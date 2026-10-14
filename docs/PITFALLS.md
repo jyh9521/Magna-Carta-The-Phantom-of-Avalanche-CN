@@ -136,3 +136,7 @@ Verified: StartShared reused cache/profile.log, while workspace_launcher refuses
 ## Native OS polling is not a virtual cursor write
 
 GetCursorPos refreshes engine coordinates before the keyboard IAT hook. A virtual field write must not replace the raw physical baseline. Replays must restore OS coordinates every frame and check confirm press/release hit positions; see GAMEPAD_PHYSICAL_POLL.md.
+
+## Resource addresses are not skeletal topology
+
+Action and ASRBone pointer changes can describe an equivalent rooted hierarchy. Preserve one-tick display continuity only after exact logical child-index comparison and model/pose/epoch/adjacent-tick checks; retain all true incompatibility resets. See MOTION_ACTION_CONTINUITY.md.
