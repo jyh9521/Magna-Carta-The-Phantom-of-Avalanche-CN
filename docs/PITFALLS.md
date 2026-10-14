@@ -172,3 +172,7 @@ Canceling only synthetic left presses does not protect native right-release menu
 ## Menu wrap must respect the requested axis
 
 A wrap score without an opposite-axis condition can convert horizontal input in a vertical menu into an unrelated row change. Restrict wrap candidates to negative directional projection; retain normal opposite-end wrapping and grid behavior. Actual old focus fixture failed check5. Shared sprite-class cursor suppression must compare the current cursor object identity, not hide every object using its vtable. See GAMEPAD_USABILITY.md.
+
+## Virtual focus must not replay the same controller arrows natively
+
+Moving a synthetic hit point is not input consumption. Native GUI keyboard dispatch still reads the merged arrow counters, potentially changing a different control region. Suppress only owned synthetic direction bytes/counters during that original dispatch; restore exactly on all exits. Include hold-delay and release frames, same-serial dispatch, native-control entry and physical keyboard priority in the regression seam. See GAMEPAD_DIRECTION_OWNER.md.

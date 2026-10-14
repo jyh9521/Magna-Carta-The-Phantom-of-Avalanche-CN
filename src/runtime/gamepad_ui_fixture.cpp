@@ -3,7 +3,10 @@
 #include <cstdio>
 #include <cstring>
 static int checks=0,calls=0,originalResult=7;void require(bool v,const char* s){++checks;if(!v){fprintf(stderr,"FAIL %s\n",s);ExitProcess(1);}}
-int __fastcall original(void*,void*){++calls;return originalResult;}
+static BYTE* replayImage=nullptr;static bool inspectArrows=false;static int greenMoves=0;
+int __fastcall original(void*,void*){++calls;
+ if(inspectArrows){const int arrows[]={VK_UP,VK_DOWN,VK_LEFT,VK_RIGHT};for(int k:arrows)if(*reinterpret_cast<int*>(replayImage+0xf1c9c+k*4)!=0||(replayImage[0xf1b94+k]&0x80))++greenMoves;}
+return originalResult;}
 int main(){
  auto image=static_cast<BYTE*>(VirtualAlloc(nullptr,0x10b000,MEM_COMMIT|MEM_RESERVE,PAGE_EXECUTE_READWRITE));require(image!=nullptr,"owned allocation");
  auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x100;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(image+0x100);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;
@@ -60,6 +63,20 @@ int main(){
  require(!removeGamepadUi(reinterpret_cast<HMODULE>(image)),"unknown cursor draw slot rejects all GUI rollback before writes");
  require(*reinterpret_cast<DWORD*>(vt+0x1c8)!=reinterpret_cast<DWORD>(image+0x55134),"cursor guard rejection keeps every GUI hook installed");
  *reinterpret_cast<DWORD*>(image+0xbe38c)=cursorSlot;
+ replayImage=image;inspectArrows=true;*x=400;*y=300;
+ auto downCounter=reinterpret_cast<int*>(image+0xf1c9c+VK_DOWN*4);*downCounter=1;image[0xf1b94+VK_DOWN]=0x81;
+ invokeAt(root,{2,2,21,2500,true});require(*y==420&&greenMoves==0,"virtual right menu navigation must not also drive native green-arrow keyboard control");
+ require(*downCounter==1&&image[0xf1b94+VK_DOWN]==0x81,"original controller key counter and bytes restored exactly after dispatch");
+ *downCounter=2;invokeAt(root,{2,0,22,2600,true});require(*y==420&&greenMoves==0,"held direction during repeat delay stays exclusive to virtual menu");
+ *downCounter=-1;image[0xf1b94+VK_DOWN]=1;invokeAt(root,{0,0,23,2700,true});require(greenMoves==0&&*downCounter==-1,"synthetic arrow release remains exclusive and restores native counter");
+ *downCounter=1;image[0xf1b94+VK_DOWN]=0x80;invokeAt(root,{2,2,24,2800,false});require(greenMoves==1,"physical keyboard priority bypasses controller direction mask");
+ *reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x12345);*y=420;
+ invokeAt(root,{2,2,25,2900,true});require(greenMoves==2&&*y==420,"focused native arrow control receives controller input without moving sidebar focus");
+ *y=50;invokeAt(nativeRoot,{2,2,26,3000,true});require(*y==300&&greenMoves==2,"controller can enter native control without applying its arrow action on entry");
+ invokeAt(nativeRoot,{2,2,26,3000,true});require(greenMoves==2,"same-frame second root cannot replay direction after virtual focus entry");
+ invokeAt(nativeRoot,{2,0,27,3100,true});require(*y==300&&greenMoves==3,"next-frame focused native control owns direction without sidebar movement");
+ *reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x55f3c);*downCounter=0;image[0xf1b94+VK_DOWN]=0;inspectArrows=false;
+ printf("GAMEPAD_DIRECTION_OWNER_REPLAY PASS sidebar=exclusive green_control=native repeat=exclusive release=exclusive physical_keyboard=preserved state_restore=exact game_started=false\n");
  auto changed=*reinterpret_cast<DWORD*>(image+0xc2508);*reinterpret_cast<DWORD*>(image+0xc2508)=1;require(!removeGamepadUi(reinterpret_cast<HMODULE>(image)),"unknown slot rejects whole rollback");require(*reinterpret_cast<DWORD*>(vt+0x1c8)!=reinterpret_cast<DWORD>(image+0x55134),"rejection no partial restore");*reinterpret_cast<DWORD*>(image+0xc2508)=changed;
  require(removeGamepadUi(reinterpret_cast<HMODULE>(image)),"rollback");require(*reinterpret_cast<DWORD*>(vt+0x1c8)==reinterpret_cast<DWORD>(image+0x55134),"exact original dispatcher slot");
  require(*reinterpret_cast<DWORD*>(image+0xbe38c)==reinterpret_cast<DWORD>(image+0x38c24),"exact original cursor slot restored");

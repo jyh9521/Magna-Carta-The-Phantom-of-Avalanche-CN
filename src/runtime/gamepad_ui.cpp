@@ -12,7 +12,7 @@ constexpr BYTE prefix[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xf8};
 constexpr BYTE cancelPrefix[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc};
 using Draw=void(__thiscall*)(void*);Draw originalCursorDraw=nullptr;
 using Dispatch=int(__thiscall*)(void*);Dispatch original=nullptr;BYTE* engine=nullptr;
-thread_local unsigned depth=0;DWORD consumed=0,lastRepeat=0;unsigned previousHeld=0;void(*trace)(const wchar_t*)=nullptr;
+thread_local unsigned depth=0;DWORD consumed=0,lastRepeat=0,maskedSerial=0,lastDirectionSerial=0;unsigned maskedDirections=0,previousVirtualDirections=0;unsigned previousHeld=0;void(*trace)(const wchar_t*)=nullptr;
 bool readable(const void* a,size_t n){auto p=reinterpret_cast<ULONG_PTR>(a),end=p+n;if(!p||end<p)return false;while(p<end){MEMORY_BASIC_INFORMATION m{};if(!VirtualQuery(reinterpret_cast<void*>(p),&m,sizeof(m))||m.State!=MEM_COMMIT||(m.Protect&(PAGE_GUARD|PAGE_NOACCESS)))return false;auto next=reinterpret_cast<ULONG_PTR>(m.BaseAddress)+m.RegionSize;if(next<=p)return false;p=next;}return true;}
 bool gui(BYTE* p){if(!readable(p,0x190))return false;auto vt=*reinterpret_cast<ULONG_PTR*>(p);for(auto slot:slots)if(vt==reinterpret_cast<ULONG_PTR>(engine+slot-0x1c8))return true;return false;}
 bool defaultArrows(BYTE* p){
@@ -44,7 +44,7 @@ bool collect(BYTE* p,std::vector<modern_input::FocusTarget>& out,std::set<BYTE*>
   auto rect=*reinterpret_cast<int**>(node);if(!readable(rect,16))break;
   modern_input::FocusTarget r{reinterpret_cast<uintptr_t>(p),float(rect[0])+ox,float(rect[1])+oy,float(rect[2])+ox,float(rect[3])+oy};
   if(r.right-r.left<4||r.bottom-r.top<4||r.right-r.left>w*.8f||r.bottom-r.top>h*.8f||r.left<0||r.top<0||r.right>w||r.bottom>h)continue;
-  if(!defaultArrows(p)){if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)nativeArrowControl=true;continue;}
+  if(!defaultArrows(p)&&x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)nativeArrowControl=true;
   if(out.size()<128)out.push_back(r);
  }
  return true;
@@ -74,6 +74,18 @@ void navigate(BYTE* root){
  consumed=n.serial;previousHeld=held;lastRepeat=fresh?n.time:n.time-250;
  static LONG calls=0;if(InterlockedIncrement(&calls)==1&&trace)trace(L"GAMEPAD_UI_FOCUS_APPLIED native_hit_rects=true click_dispatch=original modal_scope=retained");
 }
+bool virtualDirectionScope(BYTE* root){
+ if(!gui(root))return false;
+ auto manager=*reinterpret_cast<BYTE**>(engine+0xf220c);
+ if(readable(manager,0x40)&&*reinterpret_cast<int*>(manager+0x38)>0){auto node=*reinterpret_cast<BYTE**>(manager+0x3c);if(!readable(node,4))return false;root=*reinterpret_cast<BYTE**>(node);if(!gui(root))return false;}
+ if(*reinterpret_cast<ULONG_PTR*>(root)==reinterpret_cast<ULONG_PTR>(engine+0xc2340)){
+  auto title=*reinterpret_cast<BYTE**>(root+0x1a8);if(!readable(title,0x74)||*reinterpret_cast<int*>(title+0x70)!=4)return false;
+ }
+ int w=*reinterpret_cast<int*>(engine+0xf1b48),h=*reinterpret_cast<int*>(engine+0xf1b4c);if(w<=0||h<=0)return false;
+ float x=float(*reinterpret_cast<int*>(engine+0xf20b0)),y=float(*reinterpret_cast<int*>(engine+0xf20a8));
+ std::vector<modern_input::FocusTarget> targets;std::set<BYTE*> seen;bool native=false;collect(root,targets,seen,x,y,w,h,native);
+ return !native&&!targets.empty();
+}
 void cancelPressedButtons(BYTE* p,std::set<BYTE*>& seen){
  if(!gui(p)||seen.size()>=256||!seen.insert(p).second)return;
  std::set<BYTE*> chain;auto child=*reinterpret_cast<BYTE**>(p+0x18);
@@ -88,13 +100,22 @@ void cancelMenuRoot(void* root){std::set<BYTE*> seen;cancelPressedButtons(static
 int __fastcall dispatchHook(void* root,void*){
  bool outer=depth++==0;int result=0;
  auto input=outer?modernGamepadNavigation():GamepadNavigation{};
- __try {if(outer&&modernGamepadMenuCancellation())cancelMenuRoot(root);
+ bool mask=false;unsigned directions=0;
+ const int arrows[]={VK_UP,VK_DOWN,VK_LEFT,VK_RIGHT};int savedCounters[4]{};BYTE savedKeys[4]{};
+ __try {if(outer){
+   bool owns=input.active&&(maskedSerial==input.serial||virtualDirectionScope(static_cast<BYTE*>(root)));
+   directions=owns?(input.held|previousVirtualDirections|(maskedSerial==input.serial?maskedDirections:0)):0;
+   if(input.serial!=lastDirectionSerial){lastDirectionSerial=input.serial;previousVirtualDirections=owns?input.held:0;}
+   mask=directions!=0;
+  }
+  if(mask){maskedSerial=input.serial;maskedDirections=directions;for(unsigned i=0;i<4;++i){if(!(directions&(1u<<i)))continue;int k=arrows[i];savedCounters[i]=*reinterpret_cast<int*>(engine+0xf1c9c+k*4);savedKeys[i]=engine[0xf1b94+k];*reinterpret_cast<int*>(engine+0xf1c9c+k*4)=0;engine[0xf1b94+k]&=0x7f;}}
+  if(outer&&modernGamepadMenuCancellation())cancelMenuRoot(root);
   if(outer)navigate(static_cast<BYTE*>(root));result=original(root);
   // Original return 1 means native input consumed, including keyboard-only roots
   // with no directional hit target. Do not navigate a second root for that serial.
   if(outer&&result==1&&input.active)consumed=input.serial;
  }
- __finally {--depth;}
+ __finally {if(mask)for(unsigned i=0;i<4;++i){if(!(directions&(1u<<i)))continue;int k=arrows[i];*reinterpret_cast<int*>(engine+0xf1c9c+k*4)=savedCounters[i];engine[0xf1b94+k]=savedKeys[i];}--depth;}
  return result;
 }
 void __fastcall cursorDrawHook(void* value,void*){
