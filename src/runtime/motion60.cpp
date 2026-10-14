@@ -76,7 +76,7 @@ struct Cache{void* action=nullptr;void* bones=nullptr;Matrix* pose=nullptr;unsig
 std::map<void*,Cache> caches;SRWLOCK cacheLock=SRWLOCK_INIT;LONGLONG frequency=0;
 // The original renderer copies local pose into object+f0 on every draw.
 // Replaying the same fixed tick must start with the same transition history.
-struct History {void* action=nullptr;Matrix* buffer=nullptr;motion::Phase phase{};std::vector<Matrix> input;};
+struct History {void* action=nullptr;void* data=nullptr;Matrix* buffer=nullptr;unsigned frame=0,length=0,stride=0,transition=0;motion::Phase phase{};std::vector<Matrix> input;};
 std::map<void*,History> histories;
 motion::Phase renderPhase();
 void prepareHistory(void* value,int frame){
@@ -86,7 +86,7 @@ void prepareHistory(void* value,int frame){
  auto buffer=*reinterpret_cast<Matrix**>(object+0xf0);
  if(!buffer||!readable(action,0x20))return;
  unsigned length=*reinterpret_cast<unsigned*>(action+4),stride=*reinterpret_cast<unsigned*>(action+8);
- if(!length||!stride||frame<0)return;unsigned sample=(unsigned(frame)%length)/stride;
+ if(!length||!stride||frame<0)return;unsigned normalizedFrame=unsigned(frame)%length,sample=normalizedFrame/stride;
  auto sequence=*reinterpret_cast<BYTE**>(action+0x18);
  if(sample>65535||!readable(sequence,(sample+1)*sizeof(void*)))return;
  auto record=*reinterpret_cast<BYTE**>(sequence+sample*sizeof(void*));
@@ -103,10 +103,12 @@ void prepareHistory(void* value,int frame){
   if(histories.size()>=128)return; // Retain every still-live same-tick input.
  }
  auto& h=histories[value];
- bool repeat=h.action==action&&h.buffer==buffer&&h.input.size()==count
+ unsigned transition=*reinterpret_cast<unsigned*>(object+0xf4);
+ bool repeat=h.action==action&&h.data==data&&h.buffer==buffer&&h.input.size()==count
+  &&h.frame==normalizedFrame&&h.length==length&&h.stride==stride&&h.transition==transition
   &&h.phase.generation==phase.generation&&h.phase.tick==phase.tick;
  if(repeat)memcpy(buffer,h.input.data(),count*sizeof(Matrix));
- else {h.action=action;h.buffer=buffer;h.input.assign(buffer,buffer+count);h.phase=phase;}
+ else {h.action=action;h.data=data;h.buffer=buffer;h.frame=normalizedFrame;h.length=length;h.stride=stride;h.transition=transition;h.input.assign(buffer,buffer+count);h.phase=phase;}
 }
 #ifdef MOTION60_TEST
 bool fixtureClock=false;LONGLONG fixtureTicks=0;

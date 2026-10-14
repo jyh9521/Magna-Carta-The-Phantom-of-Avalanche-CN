@@ -26,7 +26,8 @@ void __fastcall draw(void*,void*,int frame,MotionMatrix*,int,int,int,int,int){
 }
 void renderSample(int frame){if(fullDraw&&!localDraw)motion60TestRenderParent(object,frame,reinterpret_cast<MotionMatrix*>(driver+0x5c));else motion60TestRender(object,frame);}
 bool sehProbe(){__try {renderSample(2);}__except(EXCEPTION_EXECUTE_HANDLER){return true;}return false;}
-int main(){
+int main(int argc,char** argv){
+ const bool renderHistoryOnly=argc==2&&!strcmp(argv[1],"--render-history-only");
  BYTE* image=static_cast<BYTE*>(VirtualAlloc(nullptr,0x10b000,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE));require(image!=nullptr,"fixture allocation");motion60TestInitialize(image,&absolute);
  DWORD oldRender=*reinterpret_cast<DWORD*>(image+0xbd9f8),oldIat=*reinterpret_cast<DWORD*>(image+0xbd0a4);
  require(motion60TestSetMapped(image,0x10b000,&absolute,true),"source installer");require(motion60TestSetMapped(image,0x10b000,&absolute,true),"idempotent install");
@@ -190,6 +191,32 @@ int main(){
  motion60TestTick(0,0,5000);historyInputs[127]=identity(700);motion60TestPrepareHistory(historyObjects[127],0);
  historyInputs[127]=identity(999);motion60TestPrepareHistory(historyObjects[127],0);
  require(historyInputs[127].v[12]==700,"new clock generation reclaims old scene histories without replaying old poses");
+ if(!renderHistoryOnly){
+ BYTE keyedObject[0x100]{},keyedAction[0x24]{},otherRecord[8]{},otherData[0x18]{};BYTE* keyedSequence[]={record};auto keyedInput=identity(200);
+ *reinterpret_cast<BYTE**>(keyedObject+0xa0)=keyedAction;*reinterpret_cast<MotionMatrix**>(keyedObject+0xf0)=&keyedInput;
+ *reinterpret_cast<unsigned*>(keyedAction+4)=4;*reinterpret_cast<unsigned*>(keyedAction+8)=4;
+ *reinterpret_cast<BYTE***>(keyedAction+0x18)=keyedSequence;motion60TestTick(0,0,6000);
+ motion60TestPrepareHistory(keyedObject,0);keyedInput=identity(400);motion60TestPrepareHistory(keyedObject,1);
+ require(keyedInput.v[12]==400,"same-tick changed native frame cannot replay another sample history input");
+ keyedInput=identity(900);motion60TestPrepareHistory(keyedObject,1);require(keyedInput.v[12]==400,"new frame repeated draw retains its own history input");
+ *reinterpret_cast<BYTE**>(otherRecord+4)=otherData;*reinterpret_cast<unsigned*>(otherData+0x14)=1;keyedSequence[0]=otherRecord;
+ keyedInput=identity(600);motion60TestPrepareHistory(keyedObject,1);require(keyedInput.v[12]==600,"same-count changed source resource recaptures history input");
+ *reinterpret_cast<unsigned*>(keyedAction+4)=8;keyedInput=identity(700);motion60TestPrepareHistory(keyedObject,1);
+ require(keyedInput.v[12]==700,"same action address changed clip length recaptures history input");
+ *reinterpret_cast<unsigned*>(keyedAction+8)=2;keyedInput=identity(800);motion60TestPrepareHistory(keyedObject,1);
+ require(keyedInput.v[12]==800,"same sample with changed source stride recaptures history input");
+ *reinterpret_cast<unsigned*>(keyedObject+0xf4)=1;keyedInput=identity(850);motion60TestPrepareHistory(keyedObject,1);
+ require(keyedInput.v[12]==850,"changed native transition counter recaptures history input");
+ keyedInput=identity(999);motion60TestPrepareHistory(keyedObject,9);
+ require(keyedInput.v[12]==850,"equivalent modulo-length native request replays same history input");
+ }
+ *reinterpret_cast<unsigned*>(action+4)=4;*reinterpret_cast<unsigned*>(action+8)=4;
+ *reinterpret_cast<MotionMatrix**>(object+0xf0)=history;*reinterpret_cast<unsigned*>(object+0xf4)=1;
+ history[0]=identity(0);transitionHistory=true;motion60TestComplete(image,true);motion60TestTick(0,0,7000);
+ renderSample(2);require(history[0].v[12]==10,"source-shaped transition draw records first native result");
+ renderSample(3);require(history[0].v[12]==20,"real render hook frame change uses current native transition history not prior sample input");
+ renderSample(3);require(history[0].v[12]==20,"real render hook repeated changed-frame draw cannot accumulate transition again");
+ transitionHistory=false;*reinterpret_cast<MotionMatrix**>(object+0xf0)=nullptr;*reinterpret_cast<unsigned*>(object+0xf4)=0;
  require(motion60TestTimerPatch(image,false),"complete timer rollback");require(!memcmp(image+0xcf61,timerBytes,6),"complete timer exact rollback");
  image[0xcf61]^=1;require(!motion60TestTimerPatch(image,true),"unknown timer rejects");image[0xcf61]^=1;
  require(motion60TestDriverSet(driverImage,false),"camera rollback");require(*loadSlot==oldLoad&&*mulSlot==oldMul,"camera exact slots restored");require(motion60TestDriverSet(driverImage,false),"camera rollback idempotent");
