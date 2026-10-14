@@ -15,6 +15,7 @@ void observe(BYTE* s,bool controlled){if(s==world){++observations;observationCon
 void require(bool v,const char* s){++checks;if(!v){fprintf(stderr,"FAIL %s\n",s);ExitProcess(1);}}
 BOOL WINAPI keyboard(PBYTE keys){*reinterpret_cast<int*>(image+0xf20b0)=physicalX;*reinterpret_cast<int*>(image+0xf20a8)=physicalY;memset(keys,0,256);keys[VK_SPACE]=1;if(rawUp)keys[VK_UP]=0x80;if(physical)keys[VK_LEFT]=0x80;if(physicalMouseDown)keys[VK_LBUTTON]=0x80;if(physicalRightDown)keys[VK_RBUTTON]=0x80;return TRUE;}
 DWORD WINAPI poll(DWORD slot,XINPUT_STATE* s){if(slot!=controllerSlot||!connected)return ERROR_DEVICE_NOT_CONNECTED;*s={};s->Gamepad.sThumbLX=axisX;s->Gamepad.sThumbLY=axisY;s->Gamepad.sThumbRX=rightX;s->Gamepad.wButtons=buttons;return ERROR_SUCCESS;}
+static int cursorDraws=0;void __fastcall cursorDraw(void*,void*){++cursorDraws;}
 void __fastcall clearNativePress(void* button,void*){*reinterpret_cast<int*>(static_cast<BYTE*>(button)+0x19c)=0;}
 void __fastcall heading(void* p,void*,float x,float y,float z){++turnCalls;auto d=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x148);d[0]=x;d[1]=y;d[2]=z;}
 void __fastcall forward(void* p,void*){++forwardCalls;auto d=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x148),v=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x16c);for(int i=0;i<3;++i)v[i]=30*d[i];}
@@ -85,7 +86,7 @@ int main(int argc,char** argv){
  auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x100;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(image+0x100);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;
  image[0x2fca]=0x68;*reinterpret_cast<DWORD*>(image+0x2fcb)=reinterpret_cast<DWORD>(image+0xf1b94);image[0x2fcf]=0xff;image[0x2fd0]=0x15;*reinterpret_cast<DWORD*>(image+0x2fd1)=reinterpret_cast<DWORD>(image+0xbd3dc);image[0x2fd5]=0xc3;
  initializeGamepadUiFixture(image);BYTE clearPrefix[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc};stub(0x5718f,clearPrefix,sizeof(clearPrefix),reinterpret_cast<void*>(&clearNativePress));
- BYTE guiPrefix[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xf8};stub(0x55134,guiPrefix,sizeof(guiPrefix),reinterpret_cast<void*>(&keyboardGui));
+ BYTE guiPrefix[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xf8};stub(0x55134,guiPrefix,sizeof(guiPrefix),reinterpret_cast<void*>(&keyboardGui));stub(0x38c24,guiPrefix,sizeof(guiPrefix),reinterpret_cast<void*>(&cursorDraw));
  auto iat=reinterpret_cast<DWORD*>(image+0xbd3dc);DWORD oldIat=reinterpret_cast<DWORD>(GetProcAddress(GetModuleHandleW(L"user32.dll"),"GetKeyboardState"));*iat=oldIat;
  BYTE t[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc},f[]={0x55,0x8b,0xec,0x83,0xec,0x54,0x89,0x4d,0xac},d[]={0x55,0x8b,0xec,0x83,0xec,0x1c,0x89,0x4d,0xec};
  stub(0x6b2d8,t,sizeof(t),reinterpret_cast<void*>(&tick));stub(0x652b4,f,sizeof(f),reinterpret_cast<void*>(&forward));stub(0x65504,d,sizeof(d),reinterpret_cast<void*>(&heading));
@@ -102,8 +103,21 @@ int main(int argc,char** argv){
  require(removeWorldGamepad(reinterpret_cast<HMODULE>(image)),"passive observer exact hook rollback");
  SetEnvironmentVariableW(L"MC_MAP_OVERLAY",L"1");SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",L"1");require(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr),"integrated installer");require(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr),"idempotence");configureModernGamepadFixture(keyboard,poll,true);
  auto run=[](){reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(image+0xc12c0))(world);};
- setWorldTickObserver(&observe);run();require(observations==1&&observationControlled,"read-only observer runs after native tick");setWorldTickObserver(nullptr);run();require(observations==1,"observer removal preserves native tick");axisX=32767;run();auto velocity=reinterpret_cast<float*>(actor+0x16c);
- require(velocity[0]>29.9f&&std::abs(velocity[1])<.001f&&turnCalls==1,"right stick direction becomes forward movement not tank turn");
+ setWorldTickObserver(&observe);run();require(observations==1&&observationControlled,"read-only observer runs after native tick");setWorldTickObserver(nullptr);run();require(observations==1,"observer removal preserves native tick");
+ BYTE currentCursor[0x144]{},otherSprite[0x144]{};*reinterpret_cast<BYTE**>(image+0xf2388)=currentCursor;
+ auto drawCursor=[&](void* value){reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(image+0xbe38c))(value);};
+ require(modernGamepadCursorHidden(),"detected armed controller hides game cursor");drawCursor(currentCursor);require(cursorDraws==0,"current game cursor rendering suppressed");
+ drawCursor(otherSprite);require(cursorDraws==1,"shared cursor class unrelated sprite draws preserved");
+ physicalX=1;run();require(!modernGamepadCursorHidden(),"raw physical mouse motion restores game cursor in same poll");drawCursor(currentCursor);require(cursorDraws==2,"mouse-restored cursor calls original draw");
+ run();require(!modernGamepadCursorHidden(),"idle connected controller does not steal mouse mode back");
+ buttons=XINPUT_GAMEPAD_DPAD_UP;run();require(modernGamepadCursorHidden(),"fresh controller action hides cursor again");buttons=0;run();
+ physicalMouseDown=true;run();require(!modernGamepadCursorHidden(),"physical mouse click restores cursor without movement");
+ require(*reinterpret_cast<int*>(image+0xf20b0)==physicalX&&*reinterpret_cast<int*>(image+0xf20a8)==physicalY,"physical click restores raw cursor position not previous virtual focus");physicalMouseDown=false;run();
+ buttons=XINPUT_GAMEPAD_DPAD_UP;run();buttons=0;run();*reinterpret_cast<int*>(image+0xf20a0)=1;run();require(!modernGamepadCursorHidden(),"physical wheel restores cursor");*reinterpret_cast<int*>(image+0xf20a0)=0;
+ connected=false;run();require(!modernGamepadCursorHidden(),"disconnection restores cursor");connected=true;run();run();require(modernGamepadCursorHidden(),"neutral reconnect hides cursor after arming");
+ printf("GAMEPAD_CURSOR_VISIBILITY_REPLAY PASS detected=hidden motion_click_wheel=restore idle_pad=no_steal fresh_pad=hide unrelated_sprite=preserved disconnect=restore game_started=false\n");
+ int turnsBeforeMovement=turnCalls;axisX=32767;run();auto velocity=reinterpret_cast<float*>(actor+0x16c);
+ require(velocity[0]>29.9f&&std::abs(velocity[1])<.001f&&turnCalls==turnsBeforeMovement+1,"right stick direction becomes forward movement not tank turn");
  require((image[0xf1b94+VK_UP]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"native forward key without tank steering");
  axisX=18000;run();require(velocity[0]>0&&velocity[0]<30,"analog speed scales native velocity");
  view[0]=0;view[4]=1;view[1]=-1;view[5]=0;axisX=32767;run();require(velocity[1]>29.9f&&std::abs(velocity[0])<.001f,"camera-relative actual native callback");
@@ -120,9 +134,20 @@ int main(int argc,char** argv){
  run();require(interactions==1,"held A cannot dispatch interaction twice");
  *reinterpret_cast<int*>(world+0x15b8)=0;*reinterpret_cast<int*>(world+0x15bc)=0;
  buttons=0;run();buttons=XINPUT_GAMEPAD_A;run();require(interactions==2&&!*reinterpret_cast<int*>(world+0x15bc),"native proximity gate prevents remote interaction");
- buttons=0;run();*reinterpret_cast<int*>(gui+0x190)=4;buttons=XINPUT_GAMEPAD_A;run();require(interactions==2&&(image[0xf1b94+VK_LBUTTON]&0x80),"menu confirm clicks without exploration interaction");
+ buttons=0;run();*reinterpret_cast<int*>(gui+0x190)=4;
+ axisX=13000;axisY=0;run();require(!(image[0xf1b94+VK_RIGHT]&0x80),"menu moderate stick drift does not move selection");
+ axisX=20000;axisY=23000;run();require((image[0xf1b94+VK_UP]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"menu diagonal has exactly one dominant axis");
+ axisX=25000;axisY=12000;run();require((image[0xf1b94+VK_UP]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"menu diagonal noise cannot switch a latched direction");
+ axisX=axisY=0;run();axisX=32767;run();require((image[0xf1b94+VK_RIGHT]&0x80)&&!(image[0xf1b94+VK_UP]&0x80),"recenter permits a fresh menu direction");
+ buttons=XINPUT_GAMEPAD_DPAD_DOWN;run();require((image[0xf1b94+VK_DOWN]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"Dpad overrides held menu stick without competing keys");
+ axisX=axisY=0;buttons=0;run();printf("GAMEPAD_MENU_PRECISION_REPLAY PASS engage=19000 release=11000 diagonal=one_axis direction=latched dpad=priority world_analog=unchanged game_started=false\n");
+ buttons=XINPUT_GAMEPAD_A;run();require(interactions==2&&(image[0xf1b94+VK_LBUTTON]&0x80),"menu confirm clicks without exploration interaction");
  *reinterpret_cast<int*>(gui+0x190)=1;
  buttons=0;run();buttons=XINPUT_GAMEPAD_X;run();require(!(image[0xf1b94+VK_LBUTTON]&0x80)&&!velocity[0]&&!velocity[1],"exploration X cannot issue cursor-directed walking");
+ require(image[0xf1b94+VK_SPACE]&0x80,"X must map original Space for interaction and dialogue");
+ run();require((image[0xf1b94+VK_SPACE]&0x80)&&interactions==2,"X held uses original Space path without duplicate direct interaction");
+ buttons=0;run();require(!(image[0xf1b94+VK_SPACE]&0x80),"X release clears synthetic Space preserving raw low bit");
+ printf("GAMEPAD_SPACE_REPLAY PASS X=Space high_bit=merged held=native direct_interaction=not_duplicated mouse_walk=false game_started=false\n");
  buttons=XINPUT_GAMEPAD_START;run();require(image[0xf1b94+VK_RBUTTON]&0x80,"menu maps native right button");
  buttons=0;run();buttons=XINPUT_GAMEPAD_BACK;run();require(modernGamepadMapButtons()==1&&image[0xf1b94+VK_F8]==0,"View button routes only to map observer, never native F8");
  buttons=0;run();buttons=XINPUT_GAMEPAD_RIGHT_THUMB;run();require(modernGamepadMapButtons()==2&&image[0xf1b94+VK_F9]==0,"R3 routes only to minimap observer");
@@ -212,7 +237,7 @@ int main(int argc,char** argv){
  connected=true;buttons=XINPUT_GAMEPAD_B;run();run();require(rightReleases==rightBefore,"reconnect held B must not return menu");
  buttons=0;run();buttons=XINPUT_GAMEPAD_B;run();buttons=0;run();require(rightReleases==rightBefore+1,"fresh B deliberate release retains native return event");
  buttons=XINPUT_GAMEPAD_B;run();controllerSlot=2;buttons=0;run();require(rightReleases==rightBefore+1,"controller replacement while B held cancels return event");
- run();buttons=XINPUT_GAMEPAD_B;run();physicalRightDown=true;run();connected=false;buttons=0;run();
+ run();buttons=XINPUT_GAMEPAD_B;run();physicalX=400;physicalY=570;physicalRightDown=true;run();connected=false;buttons=0;run();
  require(rightReleases==rightBefore+1,"physical right mouse remains held when controller disappears");
  physicalRightDown=false;run();require(rightReleases==rightBefore+2,"physical right mouse deliberate release is preserved");
  connected=true;controllerSlot=0;buttons=0;run();run();

@@ -6,6 +6,7 @@ bool removeModernGamepad(HMODULE);
 void modernGamepadWorldScope(bool enabled);
 bool modernGamepadConsumeInteraction();
 bool modernGamepadMenuCancellation();
+bool modernGamepadCursorHidden();
 modern_input::MoveIntent modernGamepadMoveIntent();
 struct GamepadNavigation {unsigned held=0,pressed=0;DWORD serial=0,time=0;bool active=false;};
 GamepadNavigation modernGamepadNavigation();

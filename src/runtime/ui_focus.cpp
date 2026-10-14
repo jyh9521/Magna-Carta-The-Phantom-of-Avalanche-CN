@@ -18,7 +18,10 @@ int chooseFocus(const std::vector<FocusTarget>& targets,float x,float y,int dx,i
  for(unsigned i=0;i<targets.size();++i){const auto& r=targets[i];if(!valid(r))continue;
   if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)continue;
   float vx=(r.left+r.right)*.5f-x,vy=(r.top+r.bottom)*.5f-y;
-  float s=vx*dx+vy*dy+std::abs(vx*dy-vy*dx)*8;
+  // Wrap only across the requested axis. A purely vertical list must not
+  // turn horizontal input into an arbitrary up/down selection.
+  float ahead=vx*dx+vy*dy;if(ahead>=-.5f)continue;
+  float s=ahead+std::abs(vx*dy-vy*dx)*8;
   if(s<score){score=s;best=static_cast<int>(i);}
  }
  return best;

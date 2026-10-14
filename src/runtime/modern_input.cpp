@@ -1,10 +1,20 @@
 #include "modern_input.h"
 #include <stdexcept>
+#include <cstdlib>
 
 namespace modern_input {
 void mergeKeyboard(uint8_t* keys,const Frame& frame,const uint8_t (&bindings)[7]) {
     if(!keys)return;
     for(unsigned i=0;i<7;++i)if(bindings[i] && (frame.held&(1u<<i)))keys[bindings[i]]|=0x80;
+}
+uint32_t MenuDirection::update(const Sample& s,bool eligible){
+    if(!eligible){stick=0;return 0;}
+    uint32_t d=s.buttons&15;
+    if(d){stick=0;if((d&3)==3)d&=~3u;if((d&12)==12)d&=~12u;return (d&3)?(d&3):(d&12);}
+    int x=std::abs(int(s.x)),y=std::abs(int(s.y));
+    if(x<=11000&&y<=11000)stick=0;
+    if(!stick&&((x>y?x:y)>=19000))stick=x>y?(s.x<0?Left:Right):(s.y<0?Down:Up);
+    return stick;
 }
 Router::Router(Config options):config(options) {
     auto single=[](uint16_t b){return b && !(b&(b-1));};

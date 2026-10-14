@@ -18,6 +18,13 @@ struct Config {
 struct Frame { uint32_t held=0,pressed=0,released=0; bool armed=false; };
 void mergeKeyboard(uint8_t* keys,const Frame&,const uint8_t (&bindings)[7]);
 // Backend-neutral action state. No keyboard injection or game memory access.
+// Menu stick direction is discrete and latched until recentering; world analog
+// movement remains independent. D-pad always has explicit priority.
+class MenuDirection {
+    uint32_t stick=0;
+public:
+    uint32_t update(const Sample&,bool eligible);
+};
 class Router {
     Config config;
     uint32_t held=0,device=0;

@@ -168,3 +168,7 @@ Do not equate disappearing synthetic pressed input with a deliberate release: na
 ### Controller cancellation must cover both mouse buttons
 
 Canceling only synthetic left presses does not protect native right-release menu actions. B/Start disconnection can dispatch event40 even when the user did not deliberately release. Replay the original counters for both buttons and separately preserve raw physical ownership. Do not apply left-button visual cleanup to right callbacks without source evidence. See GAMEPAD_CANCEL_RELEASE.md.
+
+## Menu wrap must respect the requested axis
+
+A wrap score without an opposite-axis condition can convert horizontal input in a vertical menu into an unrelated row change. Restrict wrap candidates to negative directional projection; retain normal opposite-end wrapping and grid behavior. Actual old focus fixture failed check5. Shared sprite-class cursor suppression must compare the current cursor object identity, not hide every object using its vtable. See GAMEPAD_USABILITY.md.

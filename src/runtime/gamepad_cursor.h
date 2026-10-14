@@ -9,6 +9,7 @@ class Cursor {
 public:
     CursorPoint update(int physicalX,int physicalY,int16_t rightX,int16_t rightY,
                        unsigned elapsed,int width,int height,bool eligible);
+    void mouseInput(){owned_=false;blocked_=true;}
     void focus(float x,float y,int width,int height);
 };
 }

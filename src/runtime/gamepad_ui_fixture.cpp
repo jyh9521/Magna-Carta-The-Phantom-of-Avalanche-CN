@@ -20,7 +20,7 @@ int main(){
  require(installGamepadUi(reinterpret_cast<HMODULE>(image),nullptr),"install all known classes");require(installGamepadUi(reinterpret_cast<HMODULE>(image),nullptr),"idempotence");
  auto invoke=[&](GamepadNavigation n){configureModernNavigationFixture(image,n);return reinterpret_cast<int(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(vt+0x1c8))(root);};
  require(invoke({2,2,1,100,true})==7&&*x==400&&*y==420,"first downward focus and original dispatcher return");
- invoke({2,0,2,200,true});require(*y==420,"repeat initial delay");invoke({2,0,3,450,true});require(*y==470,"repeat advances after delay");invoke({2,2,4,700,true});require(*y==520,"next focus");invoke({2,2,5,800,true});require(*y==420,"wrap focus");
+ invoke({2,0,2,200,true});require(*y==420,"repeat initial delay");invoke({2,0,3,500,true});require(*y==470,"repeat advances after delay");invoke({2,2,4,700,true});require(*y==520,"next focus");invoke({2,2,5,800,true});require(*y==420,"wrap focus");
  require(calls==5,"original dispatcher once each call");
  *reinterpret_cast<int*>(widgets[1]+0x160)=0;invoke({2,2,6,900,true});require(*y==520,"disabled widgets skipped");*reinterpret_cast<int*>(widgets[1]+0x160)=1;
  *reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x12345);invoke({1,1,7,1000,true});require(*y==520,"native arrow consumer left untouched");*reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x55f3c);
@@ -38,9 +38,9 @@ int main(){
  auto invokeAt=[&](BYTE* target,GamepadNavigation n){configureModernNavigationFixture(image,n);return reinterpret_cast<int(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(vt+0x1c8))(target);};
  *x=400;*y=300;invokeAt(inactiveRoot,{2,2,13,1600,true});require(*y==300,"inactive root leaves focus unchanged");
  invokeAt(root,{2,2,13,1600,true});require(*y==420,"inactive root must not consume same-frame direction intended for active menu");
- invokeAt(inactiveRoot,{2,0,14,1950,true});require(*y==420,"inactive root leaves repeat focus unchanged");
- invokeAt(root,{2,0,14,1950,true});require(*y==470,"inactive root must not advance repeat clock before active menu handles direction");
- invokeAt(root,{2,0,14,1950,true});require(*y==470,"handled serial still moves focus at most once per frame");
+ invokeAt(inactiveRoot,{2,0,14,2000,true});require(*y==420,"inactive root leaves repeat focus unchanged");
+ invokeAt(root,{2,0,14,2000,true});require(*y==470,"inactive root must not advance repeat clock before active menu handles direction");
+ invokeAt(root,{2,0,14,2000,true});require(*y==470,"handled serial still moves focus at most once per frame");
  *reinterpret_cast<int*>(root+0x160)=0;*y=300;invokeAt(root,{2,2,15,2000,true});
  require(*y==420,"inactive parent must retain active descendant navigation like native child-first dispatcher");
  *reinterpret_cast<int*>(root+0x160)=1;*reinterpret_cast<int*>(root+0xe8)=0;*y=300;invokeAt(root,{2,2,16,2100,true});
@@ -56,7 +56,12 @@ int main(){
  require(invokeAt(nativeRoot,{2,2,19,2400,true})==0&&*y==300,"blocked native arrow root preserves original decline and cursor");
  *reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x55f3c);originalResult=7;
  invokeAt(root,{2,2,19,2400,true});require(*y==420,"declined native arrow root cannot consume another menu direction");
+ auto cursorSlot=*reinterpret_cast<DWORD*>(image+0xbe38c);*reinterpret_cast<DWORD*>(image+0xbe38c)=1;
+ require(!removeGamepadUi(reinterpret_cast<HMODULE>(image)),"unknown cursor draw slot rejects all GUI rollback before writes");
+ require(*reinterpret_cast<DWORD*>(vt+0x1c8)!=reinterpret_cast<DWORD>(image+0x55134),"cursor guard rejection keeps every GUI hook installed");
+ *reinterpret_cast<DWORD*>(image+0xbe38c)=cursorSlot;
  auto changed=*reinterpret_cast<DWORD*>(image+0xc2508);*reinterpret_cast<DWORD*>(image+0xc2508)=1;require(!removeGamepadUi(reinterpret_cast<HMODULE>(image)),"unknown slot rejects whole rollback");require(*reinterpret_cast<DWORD*>(vt+0x1c8)!=reinterpret_cast<DWORD>(image+0x55134),"rejection no partial restore");*reinterpret_cast<DWORD*>(image+0xc2508)=changed;
  require(removeGamepadUi(reinterpret_cast<HMODULE>(image)),"rollback");require(*reinterpret_cast<DWORD*>(vt+0x1c8)==reinterpret_cast<DWORD>(image+0x55134),"exact original dispatcher slot");
+ require(*reinterpret_cast<DWORD*>(image+0xbe38c)==reinterpret_cast<DWORD>(image+0x38c24),"exact original cursor slot restored");
  VirtualFree(image,0,MEM_RELEASE);printf("GAMEPAD_UI_FIXTURE PASS checks=%d native_rects=true directional=true modal=true original_dispatch=true rollback=exact game_started=false\n",checks);
 }

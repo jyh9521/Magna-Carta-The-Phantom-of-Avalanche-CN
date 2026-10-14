@@ -18,7 +18,8 @@ DWORD originalIat=0;
 Poll poll=nullptr;
 ULONG_PTR caller=0;
 HWND* gameWindow=nullptr;
-modern_input::Router router;
+modern_input::Router router;modern_input::MenuDirection menuDirection;
+bool cursorHidden=false,cursorArmed=false;WORD cursorButtons=0;bool cursorRightEngaged=false;
 SRWLOCK lock=SRWLOCK_INIT;
 DWORD selected=0xffffffff;
 bool backendTried=false;
@@ -86,7 +87,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     }
     movement={};
     navigation={};
-    if(!poll){router.update({},false,false);ReleaseSRWLockExclusive(&lock);return ok;}
+    if(!poll){cursorHidden=cursorArmed=false;menuDirection=modern_input::MenuDirection();router.update({},false,false);ReleaseSRWLockExclusive(&lock);return ok;}
     modern_input::Sample sample{};XINPUT_STATE state{};
     if(selected!=0xffffffff && poll(selected,&state)==ERROR_SUCCESS) {
         sample.connected=true;sample.device=selected;
@@ -110,6 +111,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     }
     syntheticLeftOwned=syntheticRightOwned=false;
     auto frame=router.update(sample,ok!=FALSE,focused);int titlePhase=-1;
+    if(!ok){cursorHidden=cursorArmed=false;menuDirection.update(sample,false);}
     if(ok&&mapReservedKeys&&nativeRouting&&worldScope&&frame.armed&&focused)InterlockedExchange(&mapPadButtons,((sample.buttons&XINPUT_GAMEPAD_BACK)?1:0)|((sample.buttons&XINPUT_GAMEPAD_RIGHT_THUMB)?2:0));
     if(ok&&nativeRouting){
         bool clicksAllowed=true;
@@ -131,8 +133,9 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
         bool keyboardDirection=(keys[VK_UP]|keys[VK_DOWN]|keys[VK_LEFT]|keys[VK_RIGHT]|keys[VK_LBUTTON])&0x80;
         bool physicalArrows=(keys[VK_UP]|keys[VK_DOWN]|keys[VK_LEFT]|keys[VK_RIGHT])&0x80;
         if(worldScope){
+            menuDirection.update(sample,false);
             // Confirm is a scene interaction request, not a global UI Space key.
-            pendingInteraction=frame.armed&&focused&&(frame.pressed&modern_input::Confirm);
+            pendingInteraction=frame.armed&&focused&&(frame.pressed&modern_input::Confirm)&&!(sample.buttons&XINPUT_GAMEPAD_X);
             frame.held&=~uint32_t(15);
             bool orbitKeys=orbitKeyboard(keys,focused);
             if(!orbitKeys&&frame.armed&&focused&&!keyboardDirection&&engine){
@@ -145,13 +148,16 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
             }
             if(movement.active)frame.held|=modern_input::Up;
         }else{
+            frame.held=(frame.held&~15u)|menuDirection.update(sample,frame.armed&&focused);
             if(sample.buttons&XINPUT_GAMEPAD_LEFT_SHOULDER)frame.held|=modern_input::Left;
             if(sample.buttons&XINPUT_GAMEPAD_RIGHT_SHOULDER)frame.held|=modern_input::Right;
             if(physicalArrows)frame.held&=~uint32_t(15);
         }
         modern_input::mergeKeyboard(keys,frame,nativeBindings);
         if(frame.armed&&focused){
-            if(clicksAllowed&&!worldScope&&(sample.buttons&XINPUT_GAMEPAD_X))keys[VK_LBUTTON]|=0x80;
+            // Dedicated X = original Space in all contexts, including dialogue.
+            // A remains menu confirm / nearby interaction; never issue both routes.
+            if(sample.buttons&XINPUT_GAMEPAD_X)keys[VK_SPACE]|=0x80;
             if(sample.buttons&XINPUT_GAMEPAD_Y)keys[VK_TAB]|=0x80;
         }
         syntheticLeftOwned=frame.armed&&focused&&!worldScope&&clicksAllowed&&!physicalLeft&&(keys[VK_LBUTTON]&0x80);
@@ -161,7 +167,15 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
         int w=*reinterpret_cast<int*>(engine+0xf1b48),h=*reinterpret_cast<int*>(engine+0xf1b4c);
         auto x=reinterpret_cast<int*>(engine+0xf20b0),y=reinterpret_cast<int*>(engine+0xf20a8);
         bool mouseMoved=realMouseKnown&&(*x!=realMouseX||*y!=realMouseY);realMouseKnown=true;realMouseX=*x;realMouseY=*y;
-        if(mouseMoved)navMouseBlocked=true;if(!(frame.held&15))navMouseBlocked=false;
+        bool eligible=frame.armed&&focused&&sample.connected;
+        bool rightEngaged=std::abs(int(sample.rx))>=8689||std::abs(int(sample.ry))>=8689;
+        bool mouseUsed=mouseMoved||physicalLeft||physicalRight||*reinterpret_cast<int*>(engine+0xf20a0)!=0;
+        bool padUsed=(frame.pressed!=0)||((sample.buttons&~cursorButtons)!=0)||(rightEngaged&&!cursorRightEngaged);
+        if(!eligible)cursorHidden=false;
+        else if(mouseUsed)cursorHidden=false;
+        else if(!cursorArmed||padUsed)cursorHidden=true;
+        cursorArmed=eligible;cursorButtons=sample.buttons;cursorRightEngaged=rightEngaged;
+        if(mouseUsed){navMouseBlocked=true;controllerCursor.mouseInput();}if(!(frame.held&15))navMouseBlocked=false;
         auto point=controllerCursor.update(*x,*y,sample.rx,sample.ry,elapsed,w,h,frame.armed&&focused);
         if(point.owned)writeControllerCursor(static_cast<int>(point.x),static_cast<int>(point.y));
         navigation={frame.held&15,(frame.held&15)&~navHeld,++inputSerial,now,
@@ -178,9 +192,9 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     }else if(ok)modern_input::mergeKeyboard(keys,frame,bindings);
     DWORD traceNow=GetTickCount();
     if(inputTrace&&(!traceTime||DWORD(traceNow-traceTime)>=1000)){
-        traceTime=traceNow;wchar_t message[256];
-        swprintf_s(message,L"INPUT_FRAME connected=%u slot=%u focused=%u armed=%u world=%u buttons=%04x actions=%02x native=%u title_phase=%d ui_active=%u mouse_blocked=%u",
-            unsigned(sample.connected),selected,unsigned(focused),unsigned(frame.armed),unsigned(worldScope),unsigned(sample.buttons),unsigned(frame.held),unsigned(nativeRouting),titlePhase,unsigned(navigation.active),unsigned(navMouseBlocked));
+        traceTime=traceNow;wchar_t message[320];
+        swprintf_s(message,L"INPUT_FRAME connected=%u slot=%u focused=%u armed=%u world=%u buttons=%04x actions=%02x native=%u title_phase=%d ui_active=%u mouse_blocked=%u cursor_hidden=%u space=%u",
+            unsigned(sample.connected),selected,unsigned(focused),unsigned(frame.armed),unsigned(worldScope),unsigned(sample.buttons),unsigned(frame.held),unsigned(nativeRouting),titlePhase,unsigned(navigation.active),unsigned(navMouseBlocked),unsigned(cursorHidden),unsigned(ok&&(keys[VK_SPACE]&0x80)!=0));
         inputTrace(message);
     }
     ReleaseSRWLockExclusive(&lock);
@@ -200,6 +214,7 @@ __declspec(naked) BOOL WINAPI keyboardBridge(PBYTE){__asm {
 }}
 }
 void modernGamepadWorldScope(bool enabled){worldScope=enabled;movement={};pendingInteraction=false;}
+bool modernGamepadCursorHidden(){return cursorHidden;}
 bool modernGamepadMenuCancellation(){return InterlockedCompareExchange(&cancelMenuPress,0,0)!=0;}
 bool modernGamepadConsumeInteraction(){bool value=worldScope&&pendingInteraction;pendingInteraction=false;return value;}
 modern_input::MoveIntent modernGamepadMoveIntent(){return worldScope?movement:modern_input::MoveIntent{};}
@@ -262,5 +277,5 @@ bool removeModernGamepad(HMODULE module){
     if(nativeRouting&&!removeGamepadUi(module)){installWorldGamepad(module,nullptr);return false;}
     DWORD old;if(!VirtualProtect(slot,4,PAGE_READWRITE,&old)){if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}*slot=originalIat;DWORD ignored;
     if(!VirtualProtect(slot,4,old,&ignored)){*slot=reinterpret_cast<DWORD>(&keyboardBridge);VirtualProtect(slot,4,old,&ignored);if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}
-    router=modern_input::Router();worldScope=false;movement={};syntheticLeftOwned=syntheticRightOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
+    router=modern_input::Router();menuDirection=modern_input::MenuDirection();cursorHidden=cursorArmed=cursorRightEngaged=false;cursorButtons=0;worldScope=false;movement={};syntheticLeftOwned=syntheticRightOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
 }
