@@ -7,12 +7,13 @@
 #include <cstring>
 #include <cmath>
 static BYTE* image=nullptr;static BYTE world[0x15c4],actor[0x340],gui[0x194],cameraData[0xc0];
+static int physicalX=0,physicalY=0;
 static bool connected=true,physical=false,rawUp=false;static SHORT axisX=0,axisY=0,rightX=0;static WORD buttons=0;static int checks=0,forwardCalls=0,turnCalls=0,interactions=0;static int observations=0;static bool observationControlled=false;
 void require(bool,const char*);
 int __fastcall interaction(void* s,void*,void* g,unsigned event){require(s==world&&g==gui&&event==0x11,"interaction uses native scene and GUI event");++interactions;if(*reinterpret_cast<int*>(world+0x15b8))*reinterpret_cast<int*>(world+0x15bc)=1;return 0;}
 void observe(BYTE* s,bool controlled){if(s==world){++observations;observationControlled=controlled;}}
 void require(bool v,const char* s){++checks;if(!v){fprintf(stderr,"FAIL %s\n",s);ExitProcess(1);}}
-BOOL WINAPI keyboard(PBYTE keys){memset(keys,0,256);keys[VK_SPACE]=1;if(rawUp)keys[VK_UP]=0x80;if(physical)keys[VK_LEFT]=0x80;return TRUE;}
+BOOL WINAPI keyboard(PBYTE keys){*reinterpret_cast<int*>(image+0xf20b0)=physicalX;*reinterpret_cast<int*>(image+0xf20a8)=physicalY;memset(keys,0,256);keys[VK_SPACE]=1;if(rawUp)keys[VK_UP]=0x80;if(physical)keys[VK_LEFT]=0x80;return TRUE;}
 DWORD WINAPI poll(DWORD slot,XINPUT_STATE* s){if(slot||!connected)return ERROR_DEVICE_NOT_CONNECTED;*s={};s->Gamepad.sThumbLX=axisX;s->Gamepad.sThumbLY=axisY;s->Gamepad.sThumbRX=rightX;s->Gamepad.wButtons=buttons;return ERROR_SUCCESS;}
 void __fastcall heading(void* p,void*,float x,float y,float z){++turnCalls;auto d=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x148);d[0]=x;d[1]=y;d[2]=z;}
 void __fastcall forward(void* p,void*){++forwardCalls;auto d=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x148),v=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x16c);for(int i=0;i<3;++i)v[i]=30*d[i];}
@@ -82,12 +83,16 @@ int main(){
  titleRun(4,0);titleRun(4,XINPUT_GAMEPAD_A);require(image[0xf1b94+VK_LBUTTON]&0x80,"visible title confirm remains native mouse click");
  titleRun(5,0);titleRun(5,XINPUT_GAMEPAD_A);require(!(image[0xf1b94+VK_LBUTTON]&0x80)&&!(image[0xf1b94+VK_ESCAPE]&0x80),"title transition does not receive confirm clicks or skip");
  *reinterpret_cast<int*>(image+0xf1b48)=800;*reinterpret_cast<int*>(image+0xf1b4c)=600;
- auto mouseX=reinterpret_cast<int*>(image+0xf20b0),mouseY=reinterpret_cast<int*>(image+0xf20a8);*mouseX=400;*mouseY=300;
+ auto mouseX=reinterpret_cast<int*>(image+0xf20b0),mouseY=reinterpret_cast<int*>(image+0xf20a8);*mouseX=physicalX=400;*mouseY=physicalY=300;
  titleRun(4,0);titleRun(4,0);titleRun(4,XINPUT_GAMEPAD_DPAD_DOWN);
  require(modernGamepadNavigation().active,"integrated menu direction acquires navigation");
  modernGamepadFocusCursor(400,420);require(*mouseY==420,"integrated directional focus writes virtual cursor");
- titleRun(4,XINPUT_GAMEPAD_DPAD_DOWN);require(modernGamepadNavigation().active,"controller focus write must not masquerade as physical mouse movement");
- *mouseX=123;*mouseY=234;titleRun(4,XINPUT_GAMEPAD_DPAD_DOWN);
+ titleRun(4,XINPUT_GAMEPAD_DPAD_DOWN);require(modernGamepadNavigation().active&&*mouseX==400&&*mouseY==420,"native physical mouse polling must not erase controller menu focus");
+ titleRun(4,0);titleRun(4,XINPUT_GAMEPAD_A);
+ require(*mouseX==400&&*mouseY==420&&(image[0xf1b94+VK_LBUTTON]&0x80),"A press retains selected menu hit position after real OS cursor poll");
+ titleRun(4,0);require(*mouseX==400&&*mouseY==420&&!(image[0xf1b94+VK_LBUTTON]&0x80),"A release retains selected native click position");
+ titleRun(4,XINPUT_GAMEPAD_DPAD_DOWN);
+ *mouseX=physicalX=123;*mouseY=physicalY=234;titleRun(4,XINPUT_GAMEPAD_DPAD_DOWN);
  require(!modernGamepadNavigation().active&&*mouseX==123&&*mouseY==234,"actual changed mouse coordinates retain physical priority");
  titleRun(4,XINPUT_GAMEPAD_DPAD_DOWN);require(!modernGamepadNavigation().active,"held direction cannot steal navigation after real mouse movement");
  titleRun(4,0);titleRun(4,XINPUT_GAMEPAD_DPAD_DOWN);require(modernGamepadNavigation().active,"neutral direction rearms navigation after real mouse movement");

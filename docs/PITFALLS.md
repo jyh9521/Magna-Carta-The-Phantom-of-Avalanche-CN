@@ -132,3 +132,7 @@ modelview→actorWorld链路必须验证往返误差和静止人物不漂移，�
 ## Shared launcher log reuse (2026-10-14)
 
 Verified: StartShared reused cache/profile.log, while workspace_launcher refuses an existing log. Its verify-only branch returns before that check, so engine hash preflight did not prove launch readiness. The shared entry now removes only that single prior session log under the existing session mutex and running-game exclusion, before real launch. Verify-only preserves it. Directories and reparse points are rejected; other logs, saves and game assets are untouched. Repeated-cache tests execute the actual PowerShell preparation block without launching the game. Game startup remains manual acceptance.
+
+## Native OS polling is not a virtual cursor write
+
+GetCursorPos refreshes engine coordinates before the keyboard IAT hook. A virtual field write must not replace the raw physical baseline. Replays must restore OS coordinates every frame and check confirm press/release hit positions; see GAMEPAD_PHYSICAL_POLL.md.

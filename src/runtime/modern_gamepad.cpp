@@ -41,7 +41,9 @@ bool readable(const void* a,size_t n){
 }
 void writeControllerCursor(int x,int y){
  *reinterpret_cast<int*>(engine+0xf20b0)=x;*reinterpret_cast<int*>(engine+0xf20a8)=y;
- realMouseX=x;realMouseY=y;realMouseKnown=true;controllerCursor.acknowledgeWrite(x,y);
+ // Native GetCursorPos refreshes these fields before the next keyboard poll.
+ // Keep the real OS baseline separate from our virtual output; never acknowledge
+ // a field write as an OS mouse movement (we do not call SetCursorPos).
 }
 bool orbitKeyboard(PBYTE keys,bool focused){
  if(!focused||!worldScope||!engine||!keys||!(0x80&(keys[VK_UP]|keys[VK_DOWN]|keys[VK_LEFT]|keys[VK_RIGHT]))||(keys[VK_LBUTTON]&0x80))return false;
