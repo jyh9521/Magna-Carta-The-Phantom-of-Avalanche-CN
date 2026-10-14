@@ -144,3 +144,7 @@ Action and ASRBone pointer changes can describe an equivalent rooted hierarchy. 
 ## Animation frame identity is not a logical transition epoch
 
 A held animation frame may have different native local poses across engine updates. Same-frame stability checks belong inside one tick; consecutive transitions must update the interpolation endpoints. See MOTION_HELD_FRAME_TRANSITION.md.
+
+## Mouse idle and release are separate native states
+
+MCAlpha key counter 0 is idle (+190), -1 is release (+194). Replay both independently, including held press counts. Source-shaped title-stack fixtures must restore the plain input epilogue before calling its middle-of-function entry; otherwise a fixture-only stack failure is not a game defect. See GAMEPAD_MENU_DISPATCH_REPLAY.md.
