@@ -93,14 +93,18 @@ Matrix inverseRigid(const Matrix& m){
  return o;
 }
 Matrix TransformTrack::sample(const Matrix& input,Phase p,bool camera){
- if(!p.valid||!rigid(input)){reset();return input;}
+ observation_={};
+ if(!p.valid||!rigid(input)){reset();observation_.reset=true;observation_.phaseReset=!p.valid;observation_.unsupported=!rigid(input);return input;}
  Matrix value=camera?inverseRigid(input):input;
- bool cut=false;if(initialized_){float distance=0;for(int k=12;k<15;++k){float d=value.v[k]-current_.v[k];distance+=d*d;}cut=distance>256.f*256.f;
+ bool cut=false;if(initialized_){float distance=0;for(int k=12;k<15;++k){float d=value.v[k]-current_.v[k];distance+=d*d;}observation_.translationStep=std::sqrt(distance);cut=distance>256.f*256.f;
  if(camera){auto a=quaternion(current_),b=quaternion(value);cut=cut||std::abs(a.x*b.x+a.y*b.y+a.z*b.z+a.w*b.w)<.5f;}}
- bool discontinuity=!initialized_||stamp_.generation!=p.generation||p.tick<stamp_.tick||p.tick>stamp_.tick+1||cut;
+ observation_.initial=!initialized_;observation_.cut=cut;
+ observation_.phaseReset=initialized_&&(stamp_.generation!=p.generation||p.tick<stamp_.tick||p.tick>stamp_.tick+1);
+ bool discontinuity=observation_.initial||observation_.phaseReset||cut;
  // Removing a changing camera may introduce float roundoff into a stationary actor.
  if(!discontinuity&&p.tick==stamp_.tick)for(int i=0;i<16;++i)
-  if(std::abs(value.v[i]-current_.v[i])>(i>=12&&i<=14?.01f:.0005f)){discontinuity=true;break;}
+  if(std::abs(value.v[i]-current_.v[i])>(i>=12&&i<=14?.01f:.0005f)){discontinuity=true;observation_.unstable=true;break;}
+ observation_.reset=discontinuity;observation_.advanced=!discontinuity&&p.tick!=stamp_.tick;
  if(discontinuity){previous_=current_=value;initialized_=true;}
  else if(p.tick!=stamp_.tick){previous_=current_;current_=value;}
  stamp_=p;Matrix out{};blend(previous_,current_,p.alpha,out);return camera?inverseRigid(out):out;

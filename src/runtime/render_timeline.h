@@ -24,12 +24,18 @@ bool poseInterpolatable(const Matrix&);
 void blend(const Matrix&,const Matrix&,float,Matrix&);
 Matrix multiply(const Matrix&,const Matrix&);
 Matrix inverseRigid(const Matrix&);
+struct TransformObservation {
+ bool reset=false,initial=false,phaseReset=false,cut=false,unstable=false,unsupported=false,advanced=false;
+ float translationStep=0;
+};
 class TransformTrack {
     bool initialized_=false;
     Phase stamp_{};
+    TransformObservation observation_{};
     Matrix previous_{},current_{};
 public:
-    void reset() { initialized_=false; }
+    void reset() { initialized_=false; observation_={}; }
+    const TransformObservation& observation() const {return observation_;}
     Matrix sample(const Matrix&,Phase,bool camera=false);
 };
 }

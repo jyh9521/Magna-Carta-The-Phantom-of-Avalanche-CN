@@ -96,5 +96,18 @@ int main(){
  auto ill=identity();ill.v[0]=1e-9f;require(!poseInterpolatable(ill),"relative ill-conditioned pose rejects without unstable inverse");
  auto perspective=large;perspective.v[3]=.1f;require(!poseInterpolatable(perspective),"perspective pose not treated as affine bone");
  auto invalid=large;invalid.v[4]=std::nanf("");require(!poseInterpolatable(invalid),"nonfinite bone input rejects before decomposition");
+ // Trace causes without changing the existing guarded transform behavior.
+ TransformTrack probe;Phase probePhase{0,1,0,true};
+ auto probeInput=identity();probe.sample(probeInput,probePhase);
+ require(probe.observation().initial&&!probe.observation().unstable,"first transform observation is startup not instability");
+ probePhase.tick=1;probeInput.v[12]=10;probe.sample(probeInput,probePhase);
+ require(probe.observation().advanced&&!probe.observation().reset&&near(probe.observation().translationStep,10),"ordinary moving tick reports advance and step without reset");
+ probePhase.alpha=.5f;probeInput.v[12]=11;auto unstableOutput=probe.sample(probeInput,probePhase);
+ require(probe.observation().unstable&&probe.observation().reset&&near(unstableOutput.v[12],11),"same-tick moving source mutation exposes exact existing snap reason");
+ probe.sample(probeInput,probePhase);require(!probe.observation().reset&&!probe.observation().unstable,"stable repeat does not reuse prior reset observation");
+ probePhase.tick=4;probe.sample(probeInput,probePhase);require(probe.observation().phaseReset,"catchup transform reports phase discontinuity");
+ probePhase.tick=5;probeInput.v[12]=300;probe.sample(probeInput,probePhase);require(probe.observation().cut,"large movement reports guarded camera or actor cut");
+ probeInput.v[0]=0;probe.sample(probeInput,probePhase);require(probe.observation().unsupported,"nonrigid transform observation remains bypassed");
+ probe.reset();probeInput=identity();probe.sample(probeInput,probePhase);require(probe.observation().initial,"explicit reset reinitializes observation without stale counts");
  std::printf("RENDER_TIMELINE_FIXTURE PASS checks=%d world=true rotation=true camera=true phase=engine_remainder logic_events=unchanged game_started=false\n",checks);
 }

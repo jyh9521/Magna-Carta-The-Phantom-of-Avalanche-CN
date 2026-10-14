@@ -49,8 +49,8 @@ void __cdecl captureTimer(BYTE* manager,BYTE* info,unsigned consumed,unsigned el
   auto now=*reinterpret_cast<unsigned*>(manager+0x24);auto after=timeline.phase();
   diagnostics.clock(owner,consumed,before.generation!=after.generation,after.valid,now,jobRva);
   motion::DiagnosticWindow s;if(diagnostics.take(now,s)){
-   wchar_t line[768];swprintf_s(line,L"MOTION60_DIAG clocks=%llu updates=%llu owner_switches=%llu generation_changes=%llu invalid=%llu draws=%llu midpoints=%llu resets=%llu resource=%llu phase=%llu same_frame=%llu jumps=%llu bones=%llu unsupported=%llu near_stretch=%llu compatible_switches=%llu job_vtable_rva=%x",
-    s.clocks,s.updates,s.owners,s.generations,s.invalid,s.draws,s.midpoints,s.resets,s.resource,s.phase,s.sameFrame,s.jumps,s.bones,s.unsupported,s.nearStretch,s.compatibleSwitches,s.jobVtableRva);trace(line);
+   wchar_t line[1536];swprintf_s(line,L"MOTION60_DIAG clocks=%llu updates=%llu owner_switches=%llu generation_changes=%llu invalid=%llu draws=%llu midpoints=%llu resets=%llu resource=%llu phase=%llu same_frame=%llu jumps=%llu bones=%llu unsupported=%llu near_stretch=%llu compatible_switches=%llu job_vtable_rva=%x world_draws=%llu world_initial=%llu world_phase=%llu world_cuts=%llu world_unstable=%llu world_skipped=%llu world_max_step=%.6f camera_draws=%llu camera_initial=%llu camera_phase=%llu camera_cuts=%llu camera_unstable=%llu camera_skipped=%llu camera_max_step=%.6f",
+    s.clocks,s.updates,s.owners,s.generations,s.invalid,s.draws,s.midpoints,s.resets,s.resource,s.phase,s.sameFrame,s.jumps,s.bones,s.unsupported,s.nearStretch,s.compatibleSwitches,s.jobVtableRva,s.worldDraws,s.worldInitial,s.worldPhase,s.worldCuts,s.worldUnstable,s.worldSkipped,double(s.worldMaxStep),s.cameraDraws,s.cameraInitial,s.cameraPhase,s.cameraCuts,s.cameraUnstable,s.cameraSkipped,double(s.cameraMaxStep));trace(line);
   }
  }
  cameraState.valid=false;
@@ -124,6 +124,7 @@ void cameraMatrix(void* driver,Matrix* matrix,LoadMatrix original){
  auto phase=renderPhase();if(!phase.valid){cameraTrack.reset();cameraState.valid=false;render_input::inputView.reset();original(driver,matrix);return;}
  if(cameraState.identity!=camera){cameraTrack.reset();cameraState.identity=camera;}
  cameraState.original=*matrix;cameraState.applied=cameraTrack.sample(*matrix,phase,true);
+ if(trace&&diagnostics.enabled())diagnostics.transform(true,cameraTrack.observation());
  if(freeView){
   if(freeGeneration!=phase.generation){freeOrbit.reset();freeGeneration=phase.generation;}
 #ifdef MOTION60_TEST
@@ -240,15 +241,18 @@ unsigned clipLength=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+4),s
   // Original Render(NULL parent) copies local +4c into +c. No view matrix
   // exists in this value: camera removal would corrupt both draw and restore.
   interpolatedWorld=c.localWorld.sample(*world,phase);
+  if(trace&&diagnostics.enabled())diagnostics.transform(false,c.localWorld.observation());
   active->world=world;active->baselineWorld=*world;worldValid=true;
  }else if(complete&&cameraState.valid&&motion::rigid(*world)){
   // Asura matrices are column-major: modelview = view * actorWorld.
   auto actorWorld=motion::multiply(motion::inverseRigid(cameraState.applied),*world);
   if(motion::rigid(actorWorld)){
    interpolatedWorld=motion::multiply(cameraState.applied,c.world.sample(actorWorld,phase));
+   if(trace&&diagnostics.enabled())diagnostics.transform(false,c.world.observation());
    active->world=world;active->baselineWorld=motion::multiply(cameraState.original,actorWorld);worldValid=true;
   }
  }
+ if(complete&&!worldValid&&trace&&diagnostics.enabled())diagnostics.skippedWorld();
  if(caches.size()>128)for(auto i=caches.begin();i!=caches.end();)if(i->first!=active->object&&now.QuadPart-i->second.last>frequency/4)i=caches.erase(i);else ++i;
  lock.release();
  // Obtain the exact unmodified absolute output first; restore it after drawing.

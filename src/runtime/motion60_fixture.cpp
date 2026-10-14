@@ -280,6 +280,19 @@ int main(int argc,char** argv){
  motion::Diagnostics compatibleEvidence;compatibleEvidence.clock(1,1,false,true,0,0);
  compatibleEvidence.draw(.5f,false,false,false,false,false,true);motion::DiagnosticWindow compatibleWindow;
  require(compatibleEvidence.take(1000,compatibleWindow)&&compatibleWindow.compatibleSwitches==1&&compatibleWindow.resets==0,"bounded diagnostics separate compatible bridges from resource resets");
+ // Exercise the previously invisible world-only reset through the real hook.
+ motion60TestComplete(image,true);motion60TestDiagnosticLogger(&diagnosticLogger);
+ fullDraw=true;localDraw=false;actorX=0;*cameraMatrix=identity(0);
+ *reinterpret_cast<unsigned*>(info+4)=1;*reinterpret_cast<unsigned*>(info+0x10)=0;
+ *reinterpret_cast<unsigned*>(manager+0x24)=10000;tick(manager,info,0,0);appliedCamera();renderSample(0);
+ actorX=1;renderSample(0);require(worldObserved==1,"world-only same-tick mutation keeps existing guarded native snap behavior");
+ *cameraMatrix=identity(-1);appliedCamera();renderSample(0);
+ *reinterpret_cast<unsigned*>(manager+0x24)=11000;tick(manager,info,0,0);
+ require(diagnosticLine.find(L"world_unstable=1 ")!=std::wstring::npos,"actual world hook exposes reset absent from bone-only diagnostics");
+ require(diagnosticLine.find(L"camera_unstable=1 ")!=std::wstring::npos,"actual camera hook exposes repeated-tick input mutation separately");
+ require(diagnosticLine.find(L"same_frame=0 ")!=std::wstring::npos,"world-only reset is not mislabeled as a bone pose reset");
+ require(diagnosticLine.find(L"world_max_step=1.000000 ")!=std::wstring::npos,"actual actor displacement emits bounded scalar evidence not pose arrays");
+ motion60TestDiagnosticLogger(nullptr);fullDraw=false;
  require(motion60TestTimerPatch(image,false),"complete timer rollback");require(!memcmp(image+0xcf61,timerBytes,6),"complete timer exact rollback");
  image[0xcf61]^=1;require(!motion60TestTimerPatch(image,true),"unknown timer rejects");image[0xcf61]^=1;
  require(motion60TestDriverSet(driverImage,false),"camera rollback");require(*loadSlot==oldLoad&&*mulSlot==oldMul,"camera exact slots restored");require(motion60TestDriverSet(driverImage,false),"camera rollback idempotent");
