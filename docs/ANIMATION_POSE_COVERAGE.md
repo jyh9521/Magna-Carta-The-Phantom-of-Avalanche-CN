@@ -72,3 +72,34 @@ python -m unittest discover -s tests -p test_bone_animation_audit.py
 正常退出后提供`runtime/cache/profile.log`及具体动作。
 本轮商业游戏启动0次，完整游戏复制0份，动画文件与汉化未改。
 统计报告、模块摘要与独立源回滚证据在`runtime/maintenance/animation-audit/`。
+
+## 伸缩／剪切骨骼分支（2026-10-14）
+
+Verified：旧生产数学遇到原容差外的仿射姿态仍显示最新30Hz姿态。
+旧代码配新增回归失败 `FAIL scaled sheared bone reaches midpoint rather than latest native frame`。
+现在骨骼分支使用双精度、幅值归一化的scaled Newton极分解（最多32步），
+将proper旋转与伸缩／剪切分开，再插值并重组。固定公共反射因子保留负手性。
+条件数估计超过1e6、归一化行列式<=1e-14、不收敛、非有限或非仿射仍拒绝；
+相机/世界TransformTrack的rigid守卫及原生逻辑计时未变。端点字节精确，输出非有限时旁路。
+1503项数学检查覆盖61相位、非均匀伸缩、剪切、正/负手性、大小均匀比例与退化输入。
+真实骨骼钩子233项验证中间显示姿态与绘制后原生绝对矩阵恢复。
+
+新增只读原生bone_pose_audit直接调用生产poseInterpolatable与blend，不导出矩阵。
+对1,818份实际ANI再检查计数、长度、子引用、有限数与完整消费，遍历结果：
+- 非首矩阵2,600,174个；旧near-rigid+固定反射资格2,454,761个；新资格2,600,174个。
+- 相邻非首矩阵对2,528,835个；其中反射符号变化12对，仍按旧旁路，不穿越奇异几何。
+- 全部遍历中间输出有限；单矩阵资格与有限输出不证明实际场景动作或任意姿态对成功插值。
+- 前次审计绝对行列式接近零270个不等于真实奇异：均匀小尺度可以有很小行列式，
+  此次相对尺度/条件检查均通过。不要把前次阈值类别写成270个已证实退化骨骼。
+- 遍历约4.9秒是离线批处理时间，不是游戏帧时间；输入1,818份SHA256全部保持原摘要。
+
+复现：先构建bone_pose_audit，再运行
+`build/native/Release/bone_pose_audit.exe runtime/data/AINIM`。
+完整Python451项通过；独立源回滚恢复数学265/骨骼231项旧行为。
+源码复制后必须刷新时间戳或干净重建：Copy-Item保留旧时间可能使MSBuild复用旧夹具，
+本轮曾发现265项陈旧结果，强制重编译后才接受RED证据。
+
+人工入口仍为runtime/Play-motion.cmd和Play-motion-gamepad.cmd；同存档待机、
+走动、转身、停止、动作切换、换区，检查四肢/衣摆与速度；以Play-baseline.cmd对照。
+单独手柄轮询修正保留。当前未获新模块实机反馈，完整60FPS动作继续保持未完成。
+没有启动商业游戏、复制游戏数据、修改汉化或原动画。

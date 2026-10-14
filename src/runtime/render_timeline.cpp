@@ -25,34 +25,44 @@ bool rigid(const Matrix& m){
  float det=m.v[0]*(m.v[5]*m.v[10]-m.v[6]*m.v[9])-m.v[1]*(m.v[4]*m.v[10]-m.v[6]*m.v[8])+m.v[2]*(m.v[4]*m.v[9]-m.v[5]*m.v[8]);
  return det>0.97f&&det<1.03f&&std::abs(m.v[3])+std::abs(m.v[7])+std::abs(m.v[11])<0.001f&&std::abs(m.v[15]-1)<0.001f;
 }
-// Separate near-rigid stretch/shear rather than dropping it in quaternion rebuild.
+// Scaled Newton polar decomposition, in double precision. A shared fixed
+// reflection factor handles negative parity outside this proper-rotation path.
+// Only the bone pose gate uses this; camera/world rigid admission is unchanged.
 static bool rotationPart(const Matrix& input,Matrix& rotation){
- rotation={};rotation.v[15]=1;for(int c=0;c<3;++c)for(int r=0;r<3;++r)rotation.v[c*4+r]=input.v[c*4+r];
- for(unsigned iteration=0;iteration<6;++iteration){
-  const auto& m=rotation.v;
-  float cof[9]={m[5]*m[10]-m[9]*m[6],m[8]*m[6]-m[4]*m[10],m[4]*m[9]-m[8]*m[5],
-                m[9]*m[2]-m[1]*m[10],m[0]*m[10]-m[8]*m[2],m[8]*m[1]-m[0]*m[9],
-                m[1]*m[6]-m[5]*m[2],m[4]*m[2]-m[0]*m[6],m[0]*m[5]-m[4]*m[1]};
-  float determinant=m[0]*cof[0]+m[4]*cof[3]+m[8]*cof[6];
-  if(!std::isfinite(determinant)||determinant<=1e-8f)return false;
-  Matrix next=rotation;float error=0;
-  for(int c=0;c<3;++c)for(int r=0;r<3;++r){int at=c*4+r;next.v[at]=.5f*(m[at]+cof[c*3+r]/determinant);error=(std::max)(error,std::abs(next.v[at]-m[at]));}
-  rotation=next;if(error<1e-6f)break;
+ for(float v:input.v)if(!std::isfinite(v))return false;
+ if(std::abs(input.v[3])+std::abs(input.v[7])+std::abs(input.v[11])>=.001f||std::abs(input.v[15]-1)>=.001f)return false;
+ double m[9],scale=0;for(int c=0;c<3;++c)for(int row=0;row<3;++row)scale=(std::max)(scale,std::abs(double(input.v[c*4+row])));
+ if(scale==0)return false;
+ for(int c=0;c<3;++c)for(int row=0;row<3;++row)m[c*3+row]=input.v[c*4+row]/scale;
+ bool converged=false;
+ for(unsigned iteration=0;iteration<32;++iteration){
+  double cof[9]={m[4]*m[8]-m[7]*m[5],m[6]*m[5]-m[3]*m[8],m[3]*m[7]-m[6]*m[4],
+                 m[7]*m[2]-m[1]*m[8],m[0]*m[8]-m[6]*m[2],m[6]*m[1]-m[0]*m[7],
+                 m[1]*m[5]-m[4]*m[2],m[3]*m[2]-m[0]*m[5],m[0]*m[4]-m[3]*m[1]};
+  double determinant=m[0]*cof[0]+m[3]*cof[3]+m[6]*cof[6];
+  if(!std::isfinite(determinant)||determinant<=1e-14)return false;
+  double norm=0,inverseNorm=0;for(int k=0;k<9;++k){norm+=m[k]*m[k];cof[k]/=determinant;inverseNorm+=cof[k]*cof[k];}
+  // Relative conditioning, not absolute size: uniform small/large poses work.
+  if(iteration==0&&std::sqrt(norm*inverseNorm)>1e6)return false;
+  double gamma=std::sqrt(std::sqrt(inverseNorm/norm)),error=0;
+  for(int k=0;k<9;++k){double next=.5*(gamma*m[k]+cof[k]/gamma);if(!std::isfinite(next))return false;error=(std::max)(error,std::abs(next-m[k]));m[k]=next;}
+  if(error<1e-10){converged=true;break;}
  }
+ if(!converged)return false;
+ rotation={};rotation.v[15]=1;for(int c=0;c<3;++c)for(int row=0;row<3;++row)rotation.v[c*4+row]=float(m[c*3+row]);
  return rigid(rotation);
 }
 static Matrix flipPoseAxis(const Matrix& m){Matrix out=m;for(int row=0;row<3;++row)out.v[row]=-out.v[row];return out;}
-bool poseInterpolatable(const Matrix& m){return rigid(m)||rigid(flipPoseAxis(m));}
+bool poseInterpolatable(const Matrix& m){Matrix rotation{};return rotationPart(m,rotation)||rotationPart(flipPoseAxis(m),rotation);}
 void blend(const Matrix& a,const Matrix& b,float t,Matrix& out){
  out=b;if(!std::isfinite(t))return;
- Matrix positiveA=a,positiveB=b;bool mirrored=false;
- if(!rigid(positiveA)||!rigid(positiveB)){
+ Matrix positiveA=a,positiveB=b,rotationA{},rotationB{};bool mirrored=false;
+ if(!rotationPart(positiveA,rotationA)||!rotationPart(positiveB,rotationB)){
   positiveA=flipPoseAxis(a);positiveB=flipPoseAxis(b);
-  if(!rigid(positiveA)||!rigid(positiveB))return;
+  if(!rotationPart(positiveA,rotationA)||!rotationPart(positiveB,rotationB))return;
   mirrored=true; // Common fixed reflection cancels before quaternion extraction.
  }
  if(t>=1)return;if(t<=0){out=a;return;}
- Matrix rotationA{},rotationB{};if(!rotationPart(positiveA,rotationA)||!rotationPart(positiveB,rotationB))return;
  auto stretchA=multiply(inverseRigid(rotationA),positiveA),stretchB=multiply(inverseRigid(rotationB),positiveB);
  Q x=quaternion(rotationA),y=quaternion(rotationB);float dot=x.x*y.x+x.y*y.y+x.z*y.z+x.w*y.w;
  if(dot<0){y.x=-y.x;y.y=-y.y;y.z=-y.z;y.w=-y.w;}
@@ -65,6 +75,7 @@ void blend(const Matrix& a,const Matrix& b,float t,Matrix& out){
  for(int c=0;c<3;++c)for(int r=0;r<3;++r){out.v[c*4+r]=0;for(int k=0;k<3;++k)out.v[c*4+r]+=rotation.v[k*4+r]*(stretchA.v[c*4+k]+(stretchB.v[c*4+k]-stretchA.v[c*4+k])*t);}
  for(int i=12;i<15;++i)out.v[i]=a.v[i]+(b.v[i]-a.v[i])*t;
  if(mirrored)out=flipPoseAxis(out);
+ for(float v:out.v)if(!std::isfinite(v)){out=b;return;}
 }
 Matrix multiply(const Matrix& a,const Matrix& b){Matrix o{};for(int c=0;c<4;++c)for(int r=0;r<4;++r)for(int k=0;k<4;++k)o.v[c*4+r]+=a.v[k*4+r]*b.v[c*4+k];return o;}
 Matrix inverseRigid(const Matrix& m){

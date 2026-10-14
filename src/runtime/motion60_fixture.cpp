@@ -11,7 +11,7 @@ static unsigned diagnosticLines=0;
 void diagnosticLogger(const wchar_t* text){if(wcsstr(text,L"MOTION60_DIAG ")==text){diagnosticLine=text;++diagnosticLines;}}
 static BYTE object[0x120],action[0x24],record[8],data[0x24];static BYTE* sequence[1];static MotionMatrix pose[1];static float observed;static int checks=0;static int absoluteCalls=0;static bool throwSeh=false;
 static bool transitionHistory=false;static MotionMatrix history[1];
-static bool stretchDraw=false,mirrorDraw=false;static float observedScale=1;
+static bool stretchDraw=false,mirrorDraw=false,affineDraw=false;static float observedScale=1;
 static bool fullDraw=false,localDraw=false;static BYTE driver[0xe0],camera[0xc0];static float actorX=0,worldObserved=0;
 void require(bool b,const char* text){++checks;if(!b){fprintf(stderr,"FAIL %s\n",text);fflush(stderr);ExitProcess(1);}}
 MotionMatrix identity(float x){MotionMatrix m{};m.v[0]=m.v[5]=m.v[10]=m.v[15]=1;m.v[12]=x;return m;}
@@ -21,6 +21,7 @@ void __fastcall draw(void*,void*,int frame,MotionMatrix*,int,int,int,int,int){
  pose[0]=identity(static_cast<float>(frame*10));
  if(stretchDraw)pose[0].v[0]=pose[0].v[5]=pose[0].v[10]=1.008f;
  if(mirrorDraw)pose[0].v[0]=-1;
+ if(affineDraw){pose[0].v[0]=2;pose[0].v[5]=.5f;pose[0].v[4]=.25f;}
  if(transitionHistory){pose[0].v[12]=(history[0].v[12]+pose[0].v[12])*.5f;history[0]=pose[0];}
  if(fullDraw){auto actor=identity(actorX);auto view=reinterpret_cast<motion::Matrix*>(driver+0x5c);auto w=localDraw?reinterpret_cast<const motion::Matrix&>(actor):motion::multiply(*view,reinterpret_cast<const motion::Matrix&>(actor));memcpy(object+0xc,&w,64);}
  motion60TestAbsolute(data,0,pose,nullptr);observed=pose[0].v[12];observedScale=pose[0].v[0];worldObserved=reinterpret_cast<MotionMatrix*>(object+0xc)->v[12];if(throwSeh)RaiseException(0xe0000001,0,0,nullptr);
@@ -49,7 +50,7 @@ int main(int argc,char** argv){
  motion60TestSetTime(327);renderSample(10);require(observed==200,"pause resets");
  *reinterpret_cast<unsigned*>(data+0x14)=513;int before=absoluteCalls;renderSample(11);require(absoluteCalls==before+1,"invalid count original only");require(observed==210,"invalid count untouched");
  auto a=identity(0),b=identity(10);MotionMatrix out{};motion60TestBlend(a,b,.5f,out);require(std::abs(out.v[12]-5)<.001f,"translation interpolates");b.v[0]=-1;b.v[5]=-1;motion60TestBlend(a,b,.5f,out);require(std::abs(out.v[0])<.001f&&std::abs(out.v[1])>.99f,"rotation nlerp intermediate");
- b=identity(10);b.v[0]=2;motion60TestBlend(a,b,.5f,out);require(out.v[0]==2&&out.v[12]==10,"nonrigid bypass");
+ b=identity(10);b.v[0]=2;motion60TestBlend(a,b,.5f,out);require(std::abs(out.v[0]-1.5f)<1e-5f&&out.v[12]==5,"nonuniform bone scale interpolates");
  *reinterpret_cast<unsigned*>(data+0x14)=1;
  stretchDraw=true;motion60TestSetTime(1000);renderSample(0);motion60TestSetTime(1033);renderSample(1);motion60TestSetTime(1049);renderSample(1);
  require(std::abs(observedScale-1.008f)<1e-5f,"real bone absolute hook retains native stretch at display midpoint");
@@ -57,6 +58,9 @@ int main(int argc,char** argv){
  mirrorDraw=true;motion60TestSetTime(2000);renderSample(0);motion60TestSetTime(2033);renderSample(1);motion60TestSetTime(2049);renderSample(1);
  require(observed>102&&observed<109,"real reflected bone hook must interpolate rather than present latest30Hz pose");
  require(pose[0].v[0]==-1&&pose[0].v[12]==110,"mirrored bone native absolute pose restored exactly");mirrorDraw=false;
+ affineDraw=true;motion60TestSetTime(3000);renderSample(0);motion60TestSetTime(3033);renderSample(1);motion60TestSetTime(3049);renderSample(1);
+ require(observed>102&&observed<109&&std::abs(observedScale-2)<1e-5f,"real scaled sheared bone hook draws continuous midpoint without losing native scale");
+ require(pose[0].v[0]==2&&pose[0].v[5]==.5f&&pose[0].v[4]==.25f&&pose[0].v[12]==110,"scaled sheared absolute pose restored exactly");affineDraw=false;
  image=static_cast<BYTE*>(VirtualAlloc(nullptr,0x10b000,MEM_COMMIT|MEM_RESERVE,PAGE_EXECUTE_READWRITE));require(image!=nullptr,"complete image");motion60TestInitialize(image,&absolute);
  BYTE timerBytes[]={0x8b,0x55,0xf8,0x8b,0x45,0xec};memcpy(image+0xcf61,timerBytes,6);
  // Owned executable wrapper establishes the same locals as the guarded timer site.

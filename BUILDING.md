@@ -117,3 +117,11 @@ python tools/prepare_map_trial.py --workspace build/configurable-modern-game --n
 前置配置副本由tools/prepare_configuration_trial.py从已有版本匹配、完整汉化的独立输入创建。新运行模块与地图输出都必须为新目录；在现有已配置Win32 CMake中构建workspace_profile、workspace_launcher、map_overlay_fixture、world_gamepad_fixture、modern_gamepad_fixture、gamepad_ui_fixture。Map数据、原游戏、生成图及运行DLL不提交仓库，源哈希与PNG/MCM1摘要写入生成清单。
 
 未知旧版WRD拒绝；不是静默套用新版布局。配置JSON不变，入口共享已有配置副本的互斥锁。这里只提供可复现构建与候选预检，真实区域/硬件验收分别记录。
+
+## 只读动画姿态审计
+
+在现有Win32 build/native中构建目标bone_pose_audit（C++17，无新增依赖），
+运行`build/native/Release/bone_pose_audit.exe runtime/data/AINIM`。
+该命令只读用户本地动画、执行生产矩阵数学，不启动游戏、不导出姿态数组。
+`tests/test_bone_pose_native.py`以自有合成ANI检查截断、非有限与子引用；
+未构建原生目标时显式skip，不把skip称作已验证。

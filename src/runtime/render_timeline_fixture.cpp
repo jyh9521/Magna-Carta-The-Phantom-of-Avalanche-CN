@@ -73,5 +73,28 @@ int main(){
   auto rotationHalf=identity();rotationHalf.v[0]=rotationHalf.v[1]=rotationHalf.v[5]=std::sqrt(.5f);rotationHalf.v[4]=-std::sqrt(.5f);
   auto expected=multiply(rotationHalf,aMirror);for(int k=0;k<16;++k)require(std::abs(m.v[k]-expected.v[k])<1e-5f,"all source reflection axes retain correct half rotation");
  }
+ auto large=identity();large.v[0]=2;large.v[5]=.5f;large.v[10]=1.5f;large.v[4]=.25f;
+ auto largeTurn=multiply(quarter,large);largeTurn.v[12]=10;
+ Matrix largeMid{};blend(large,largeTurn,.5f,largeMid);
+ require(near(largeMid.v[12],5)&&poseInterpolatable(large)&&!rigid(large),"scaled sheared bone reaches midpoint rather than latest native frame");
+ for(int axis=0;axis<2;++axis){auto sa=large,sb=largeTurn;if(axis){for(int r=0;r<3;++r){sa.v[r]=-sa.v[r];sb.v[r]=-sb.v[r];}}
+  for(int frame=0;frame<=60;++frame){Matrix m{};blend(sa,sb,float(frame)/60,m);
+   for(int a=0;a<3;++a)for(int b=0;b<3;++b)require(std::abs(gram(m,a,b)-gram(sa,a,b))<2e-5f,"large affine rotation preserves native scale shear through all display phases");
+   require(poseInterpolatable(m)&&!rigid(m),"bone affine qualification does not widen camera qualification");
+  }
+  blend(sa,sb,0,endpoint);require(!memcmp(&endpoint,&sa,sizeof(endpoint)),"large affine zero endpoint exact");
+  blend(sa,sb,1,endpoint);require(!memcmp(&endpoint,&sb,sizeof(endpoint)),"large affine one endpoint exact");
+ }
+ auto degenerate=identity();degenerate.v[0]=0;require(!poseInterpolatable(degenerate),"singular pose remains rejected");
+ blend(degenerate,large,.5f,endpoint);require(!memcmp(&endpoint,&large,sizeof(endpoint)),"singular pair bypass unchanged");
+ for(float factor:{.00001f,.01f,100.f,100000.f}){
+  auto small=identity(),smallTurn=quarter;for(int c=0;c<3;++c)for(int row=0;row<3;++row){small.v[c*4+row]*=factor;smallTurn.v[c*4+row]*=factor;}
+  smallTurn.v[12]=10;Matrix m{};blend(small,smallTurn,.5f,m);
+  require(poseInterpolatable(small)&&near(m.v[12],5),"relative conditioning accepts uniformly small and large bone poses");
+  require(std::abs(m.v[0]/factor-std::sqrt(.5f))<1e-5f,"uniform scale preserves rotation throughout polar decomposition");
+ }
+ auto ill=identity();ill.v[0]=1e-9f;require(!poseInterpolatable(ill),"relative ill-conditioned pose rejects without unstable inverse");
+ auto perspective=large;perspective.v[3]=.1f;require(!poseInterpolatable(perspective),"perspective pose not treated as affine bone");
+ auto invalid=large;invalid.v[4]=std::nanf("");require(!poseInterpolatable(invalid),"nonfinite bone input rejects before decomposition");
  std::printf("RENDER_TIMELINE_FIXTURE PASS checks=%d world=true rotation=true camera=true phase=engine_remainder logic_events=unchanged game_started=false\n",checks);
 }
