@@ -20,6 +20,7 @@ public:
     Phase phase() const { return phase_; }
 };
 bool rigid(const Matrix&);
+bool poseInterpolatable(const Matrix&);
 void blend(const Matrix&,const Matrix&,float,Matrix&);
 Matrix multiply(const Matrix&,const Matrix&);
 Matrix inverseRigid(const Matrix&);

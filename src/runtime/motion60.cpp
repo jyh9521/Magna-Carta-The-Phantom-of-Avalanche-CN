@@ -202,7 +202,7 @@ auto& c=caches[active->object];bool resourceReset=c.current.size()!=count||c.act
   diagnostics.draw(alpha,reset,resourceReset,phaseReset,sameFrameChange,frameJump);
   for(unsigned bone=0;bone<count;++bone){const auto& m=current[bone];bool stretch=false;
    for(int row=0;row<3;++row){float norm=0;for(int col=0;col<3;++col)norm+=m.v[row*4+col]*m.v[row*4+col];stretch=stretch||std::abs(norm-1)>.0005f;}
-   diagnostics.bone(motion::rigid(m),stretch);
+   diagnostics.bone(motion::poseInterpolatable(m),stretch);
   }
  }
  for(unsigned i=0;i<count;++i)blend(c.previous[i],c.current[i],alpha,interpolated[i]);

@@ -41,11 +41,19 @@ static bool rotationPart(const Matrix& input,Matrix& rotation){
  }
  return rigid(rotation);
 }
+static Matrix flipPoseAxis(const Matrix& m){Matrix out=m;for(int row=0;row<3;++row)out.v[row]=-out.v[row];return out;}
+bool poseInterpolatable(const Matrix& m){return rigid(m)||rigid(flipPoseAxis(m));}
 void blend(const Matrix& a,const Matrix& b,float t,Matrix& out){
- out=b;if(!rigid(a)||!rigid(b)||!std::isfinite(t))return;
+ out=b;if(!std::isfinite(t))return;
+ Matrix positiveA=a,positiveB=b;bool mirrored=false;
+ if(!rigid(positiveA)||!rigid(positiveB)){
+  positiveA=flipPoseAxis(a);positiveB=flipPoseAxis(b);
+  if(!rigid(positiveA)||!rigid(positiveB))return;
+  mirrored=true; // Common fixed reflection cancels before quaternion extraction.
+ }
  if(t>=1)return;if(t<=0){out=a;return;}
- Matrix rotationA{},rotationB{};if(!rotationPart(a,rotationA)||!rotationPart(b,rotationB))return;
- auto stretchA=multiply(inverseRigid(rotationA),a),stretchB=multiply(inverseRigid(rotationB),b);
+ Matrix rotationA{},rotationB{};if(!rotationPart(positiveA,rotationA)||!rotationPart(positiveB,rotationB))return;
+ auto stretchA=multiply(inverseRigid(rotationA),positiveA),stretchB=multiply(inverseRigid(rotationB),positiveB);
  Q x=quaternion(rotationA),y=quaternion(rotationB);float dot=x.x*y.x+x.y*y.y+x.z*y.z+x.w*y.w;
  if(dot<0){y.x=-y.x;y.y=-y.y;y.z=-y.z;y.w=-y.w;}
  Q q{x.x+(y.x-x.x)*t,x.y+(y.y-x.y)*t,x.z+(y.z-x.z)*t,x.w+(y.w-x.w)*t};
@@ -56,6 +64,7 @@ void blend(const Matrix& a,const Matrix& b,float t,Matrix& out){
  Matrix rotation=out;
  for(int c=0;c<3;++c)for(int r=0;r<3;++r){out.v[c*4+r]=0;for(int k=0;k<3;++k)out.v[c*4+r]+=rotation.v[k*4+r]*(stretchA.v[c*4+k]+(stretchB.v[c*4+k]-stretchA.v[c*4+k])*t);}
  for(int i=12;i<15;++i)out.v[i]=a.v[i]+(b.v[i]-a.v[i])*t;
+ if(mirrored)out=flipPoseAxis(out);
 }
 Matrix multiply(const Matrix& a,const Matrix& b){Matrix o{};for(int c=0;c<4;++c)for(int r=0;r<4;++r)for(int k=0;k<4;++k)o.v[c*4+r]+=a.v[k*4+r]*b.v[c*4+k];return o;}
 Matrix inverseRigid(const Matrix& m){

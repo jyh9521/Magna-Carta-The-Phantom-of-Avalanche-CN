@@ -59,5 +59,19 @@ int main(){
  auto twice=inverseRigid(inverse);for(int k=0;k<16;++k)require(std::abs(twice.v[k]-inverseInput.v[k])<1e-5f,"view to pose round trip preserves native near-rigid transform");
  TransformTrack nearCamera;Phase nearPhase{0,30,0,true};auto firstNear=nearCamera.sample(inverseInput,nearPhase,true);
  for(int k=0;k<16;++k)require(std::abs(firstNear.v[k]-inverseInput.v[k])<1e-5f,"camera first frame cannot change source transform through inverse round trip");
+ auto mirrorA=identity(),mirrorB=identity(10);mirrorA.v[0]=-1;mirrorB=multiply(quarter,mirrorA);mirrorB.v[12]=10;
+ Matrix mirrorMid{};blend(mirrorA,mirrorB,.5f,mirrorMid);
+ require(std::abs(mirrorMid.v[0]+std::sqrt(.5f))<1e-5f&&near(mirrorMid.v[12],5),"stable mirrored bone rotates and translates at midpoint instead of 30Hz passthrough");
+ blend(mirrorA,mirrorB,0,endpoint);require(!memcmp(&endpoint,&mirrorA,sizeof(endpoint)),"mirrored endpoint zero byte exact");
+ blend(mirrorA,mirrorB,1,endpoint);require(!memcmp(&endpoint,&mirrorB,sizeof(endpoint)),"mirrored endpoint one byte exact");
+ auto proper=identity(20);blend(mirrorA,proper,.5f,endpoint);require(!memcmp(&endpoint,&proper,sizeof(endpoint)),"reflection parity change does not interpolate through singular geometry");
+ for(unsigned frame=0;frame<=60;++frame){Matrix m{};blend(mirrorA,mirrorB,float(frame)/60,m);
+  float det=m.v[0]*(m.v[5]*m.v[10]-m.v[6]*m.v[9])-m.v[1]*(m.v[4]*m.v[10]-m.v[6]*m.v[8])+m.v[2]*(m.v[4]*m.v[9]-m.v[5]*m.v[8]);
+  require(std::abs(det+1)<1e-5f&&poseInterpolatable(m)&&!rigid(m),"mirrored full display phase preserves handedness without broadening camera rigid guard");
+ }
+ for(int axis=0;axis<3;++axis){auto aMirror=identity();aMirror.v[axis*5]=-1;auto bMirror=multiply(quarter,aMirror);Matrix m{};blend(aMirror,bMirror,.5f,m);
+  auto rotationHalf=identity();rotationHalf.v[0]=rotationHalf.v[1]=rotationHalf.v[5]=std::sqrt(.5f);rotationHalf.v[4]=-std::sqrt(.5f);
+  auto expected=multiply(rotationHalf,aMirror);for(int k=0;k<16;++k)require(std::abs(m.v[k]-expected.v[k])<1e-5f,"all source reflection axes retain correct half rotation");
+ }
  std::printf("RENDER_TIMELINE_FIXTURE PASS checks=%d world=true rotation=true camera=true phase=engine_remainder logic_events=unchanged game_started=false\n",checks);
 }
