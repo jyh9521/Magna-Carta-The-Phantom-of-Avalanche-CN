@@ -22,15 +22,19 @@ bool defaultArrows(BYTE* p){
  bool generic=true,empty=true;for(unsigned i=0;i<4;++i){auto f=*reinterpret_cast<ULONG_PTR*>(vt+0xc8+i*4);generic&=f==reinterpret_cast<ULONG_PTR>(engine+forward[i]);empty&=f==reinterpret_cast<ULONG_PTR>(engine+noop[i]);}
  return generic||empty;
 }
-void collect(BYTE* p,std::vector<modern_input::FocusTarget>& out,std::set<BYTE*>& visited,float x,float y,int w,int h,bool& nativeArrowControl){
- if(!gui(p)||visited.size()>=256||!visited.insert(p).second||!*reinterpret_cast<int*>(p+0xe8)||!*reinterpret_cast<int*>(p+0x160))return;
- auto child=*reinterpret_cast<BYTE**>(p+0x18);bool hasChild=false;std::set<BYTE*> chain;
- for(;child&&chain.size()<128&&readable(child,0x14)&&chain.insert(child).second;child=*reinterpret_cast<BYTE**>(child+0x10))if(gui(child)){hasChild=true;collect(child,out,visited,x,y,w,h,nativeArrowControl);}
- if(hasChild||!*reinterpret_cast<void**>(p+0x17c))return;
+bool collect(BYTE* p,std::vector<modern_input::FocusTarget>& out,std::set<BYTE*>& visited,float x,float y,int w,int h,bool& nativeArrowControl){
+ if(!gui(p)||visited.size()>=256||!visited.insert(p).second||!*reinterpret_cast<int*>(p+0xe8)||!*reinterpret_cast<int*>(p+0x160))return false;
+ auto child=*reinterpret_cast<BYTE**>(p+0x18);bool eligibleChild=false;std::set<BYTE*> chain;
+ for(;child&&chain.size()<128&&readable(child,0x14)&&chain.insert(child).second;child=*reinterpret_cast<BYTE**>(child+0x10))if(gui(child)){
+  // Native eligibility requires visible+enabled. Inactive decoration must not
+  // hide the parent; every eligible child keeps the existing dispatch priority.
+  bool eligible=collect(child,out,visited,x,y,w,h,nativeArrowControl);eligibleChild=eligibleChild||eligible;
+ }
+ if(eligibleChild||!*reinterpret_cast<void**>(p+0x17c))return true;
  // +f8 is the list object. GetFirst (RVA 02014) reads its +8 head;
  // dereferencing the container itself mistakes its count for a pointer.
  auto node=*reinterpret_cast<BYTE**>(p+0x100);float ox=*reinterpret_cast<float*>(p+0x24),oy=*reinterpret_cast<float*>(p+0x28);
- if(!std::isfinite(ox)||!std::isfinite(oy)||std::abs(ox)>100000||std::abs(oy)>100000)return;
+ if(!std::isfinite(ox)||!std::isfinite(oy)||std::abs(ox)>100000||std::abs(oy)>100000)return true;
  chain.clear();for(;node&&chain.size()<32&&readable(node,8)&&chain.insert(node).second;node=*reinterpret_cast<BYTE**>(node+4)){
   auto rect=*reinterpret_cast<int**>(node);if(!readable(rect,16))break;
   modern_input::FocusTarget r{reinterpret_cast<uintptr_t>(p),float(rect[0])+ox,float(rect[1])+oy,float(rect[2])+ox,float(rect[3])+oy};
@@ -38,6 +42,7 @@ void collect(BYTE* p,std::vector<modern_input::FocusTarget>& out,std::set<BYTE*>
   if(!defaultArrows(p)){if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)nativeArrowControl=true;continue;}
   if(out.size()<128)out.push_back(r);
  }
+ return true;
 }
 void navigate(BYTE* root){
  auto n=modernGamepadNavigation();if(!n.active||n.serial==consumed)return;consumed=n.serial;

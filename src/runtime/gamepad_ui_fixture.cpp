@@ -25,6 +25,15 @@ int main(){
  *reinterpret_cast<int*>(widgets[1]+0x160)=0;invoke({2,2,6,900,true});require(*y==520,"disabled widgets skipped");*reinterpret_cast<int*>(widgets[1]+0x160)=1;
  *reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x12345);invoke({1,1,7,1000,true});require(*y==520,"native arrow consumer left untouched");*reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x55f3c);
  *reinterpret_cast<int*>(manager+0x38)=1;*reinterpret_cast<BYTE**>(manager+0x3c)=exclusive;*reinterpret_cast<BYTE**>(exclusive)=widgets[1];invoke({1,1,8,1100,true});require(*y==470,"exclusive modal restricts focus");
+ *reinterpret_cast<int*>(manager+0x38)=0;BYTE decoration[0x190]{};init(decoration);*reinterpret_cast<void**>(decoration+0x17c)=nullptr;*reinterpret_cast<int*>(decoration+0x160)=0;
+ *reinterpret_cast<BYTE**>(widgets[0]+0x18)=decoration;*x=400;*y=300;
+ invoke({2,2,9,1200,true});require(*y==420,"decorative GUI child cannot hide actionable parent button");
+ *reinterpret_cast<int*>(decoration+0x160)=1;*reinterpret_cast<int*>(decoration+0xe8)=0;*y=300;invoke({2,2,10,1300,true});require(*y==420,"hidden decorative child cannot hide actionable parent button");
+ *reinterpret_cast<int*>(decoration+0xe8)=1;*y=300;invoke({2,2,11,1400,true});require(*y==470,"eligible child without listener still preserves native dispatcher priority");
+ *reinterpret_cast<void**>(decoration+0x17c)=root;
+ BYTE childNode[8]{};int childRect[]={300,550,500,590};*reinterpret_cast<int**>(childNode)=childRect;*reinterpret_cast<BYTE**>(decoration+0x100)=childNode;
+ *y=300;invoke({2,2,12,1500,true});require(*y==470,"actionable descendant retains container focus ownership");
+ *reinterpret_cast<BYTE**>(widgets[0]+0x18)=nullptr;
  auto changed=*reinterpret_cast<DWORD*>(image+0xc2508);*reinterpret_cast<DWORD*>(image+0xc2508)=1;require(!removeGamepadUi(reinterpret_cast<HMODULE>(image)),"unknown slot rejects whole rollback");require(*reinterpret_cast<DWORD*>(vt+0x1c8)!=reinterpret_cast<DWORD>(image+0x55134),"rejection no partial restore");*reinterpret_cast<DWORD*>(image+0xc2508)=changed;
  require(removeGamepadUi(reinterpret_cast<HMODULE>(image)),"rollback");require(*reinterpret_cast<DWORD*>(vt+0x1c8)==reinterpret_cast<DWORD>(image+0x55134),"exact original dispatcher slot");
  VirtualFree(image,0,MEM_RELEASE);printf("GAMEPAD_UI_FIXTURE PASS checks=%d native_rects=true directional=true modal=true original_dispatch=true rollback=exact game_started=false\n",checks);
