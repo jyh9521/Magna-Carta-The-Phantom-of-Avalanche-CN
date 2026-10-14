@@ -2,6 +2,8 @@
 #include "camera_input_view.h"
 #include "motion60.h"
 #include "render_timeline.h"
+#include "motion_diagnostics.h"
+#include <cwchar>
 #include <intrin.h>
 #include <array>
 #include <vector>
@@ -20,6 +22,7 @@ bool complete=false;
 bool readable(const void*,size_t);
 DWORD timelineThread=0;
 motion::Timeline timeline;
+motion::Diagnostics diagnostics;
 using LoadMatrix=void(__thiscall*)(void*,Matrix*);
 LoadMatrix originalLoad=nullptr,originalMultiply=nullptr;
 BYTE* driverBase=nullptr;
@@ -35,8 +38,21 @@ constexpr BYTE timerOriginal[]={0x8b,0x55,0xf8,0x8b,0x45,0xec};
 void __cdecl captureTimer(BYTE* manager,BYTE* info,unsigned consumed,unsigned elapsed){
  if(manager!=engineBase+0xf2250||!readable(info,0x24)||*reinterpret_cast<unsigned*>(info+8)!=33)return;
  timelineThread=GetCurrentThreadId();
+ auto before=timeline.phase();auto owner=*reinterpret_cast<ULONG_PTR*>(info+4);
  timeline.observe(*reinterpret_cast<ULONG_PTR*>(info+4),33,*reinterpret_cast<unsigned*>(info+0x10),consumed,
                   *reinterpret_cast<unsigned*>(manager+0x24),*reinterpret_cast<int*>(info+0x1c)==0&&elapsed<=250);
+ if(trace&&diagnostics.enabled()){
+  unsigned jobRva=0;if(readable(reinterpret_cast<void*>(owner),4)){
+   auto vtable=*reinterpret_cast<ULONG_PTR*>(owner);auto base=reinterpret_cast<ULONG_PTR>(engineBase);
+   if(vtable>=base&&vtable-base<0x10b000)jobRva=static_cast<unsigned>(vtable-base);
+  }
+  auto now=*reinterpret_cast<unsigned*>(manager+0x24);auto after=timeline.phase();
+  diagnostics.clock(owner,consumed,before.generation!=after.generation,after.valid,now,jobRva);
+  motion::DiagnosticWindow s;if(diagnostics.take(now,s)){
+   wchar_t line[768];swprintf_s(line,L"MOTION60_DIAG clocks=%llu updates=%llu owner_switches=%llu generation_changes=%llu invalid=%llu draws=%llu midpoints=%llu resets=%llu resource=%llu phase=%llu same_frame=%llu jumps=%llu bones=%llu unsupported=%llu near_stretch=%llu job_vtable_rva=%x",
+    s.clocks,s.updates,s.owners,s.generations,s.invalid,s.draws,s.midpoints,s.resets,s.resource,s.phase,s.sameFrame,s.jumps,s.bones,s.unsupported,s.nearStretch,s.jobVtableRva);trace(line);
+  }
+ }
  cameraState.valid=false;
  if(!timeline.phase().valid||timeline.phase().generation!=freeGeneration)render_input::inputView.reset();
  static LONG captured=0;if(timeline.phase().valid&&InterlockedIncrement(&captured)==1&&trace)trace(L"MOTION60_CLOCK_APPLIED interval_ms=33 phase=callback_remainder controller=source_locked");
@@ -157,18 +173,28 @@ for(auto i=caches.begin();i!=caches.end();)if(now.QuadPart-i->second.last>freque
 if(caches.size()>=128){lock.release();originalAbsolute(bones,root,poses,parent);return;}
 }
 unsigned clipLength=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+4);
-auto& c=caches[active->object];bool reset=c.current.size()!=count||c.action!=action||c.bones!=bones||c.pose!=poses||c.clipLength!=clipLength||now.QuadPart-c.last>frequency/4;
- if(complete&&(c.phase.generation!=phase.generation||phase.tick<c.phase.tick||phase.tick>c.phase.tick+1))reset=true;
- if(!reset&&active->frame==c.frame&&memcmp(current.data(),c.current.data(),count*sizeof(Matrix)))reset=true;
+auto& c=caches[active->object];bool resourceReset=c.current.size()!=count||c.action!=action||c.bones!=bones||c.pose!=poses||c.clipLength!=clipLength||now.QuadPart-c.last>frequency/4;
+ bool phaseReset=complete&&(c.phase.generation!=phase.generation||phase.tick<c.phase.tick||phase.tick>c.phase.tick+1);
+ bool reset=resourceReset||phaseReset;
+ bool sameFrameChange=!reset&&active->frame==c.frame&&memcmp(current.data(),c.current.data(),count*sizeof(Matrix));
+ if(sameFrameChange)reset=true;
  // The native actor update wraps looping clips from length-1 to zero.
  // Preserve render history for that adjacent step, but not seeks or reversals.
  bool adjacent=static_cast<LONGLONG>(active->frame)==static_cast<LONGLONG>(c.frame)+1;
  bool wrapped=clipLength>1&&c.frame>=0&&static_cast<unsigned>(c.frame)==clipLength-1&&active->frame==0;
- if(!reset&&active->frame!=c.frame&&!adjacent&&!wrapped)reset=true;
+ bool frameJump=!reset&&active->frame!=c.frame&&!adjacent&&!wrapped;
+ if(frameJump)reset=true;
  if(reset){c.previous=current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;c.action=action;c.bones=bones;c.pose=poses;c.clipLength=clipLength;c.world.reset();c.localWorld.reset();}
  else if(active->frame!=c.frame||(complete&&phase.tick!=c.phase.tick)){c.previous=c.current;c.current=current;c.frame=active->frame;c.changed=now.QuadPart;}
  c.last=now.QuadPart;float alpha=frequency?static_cast<float>((now.QuadPart-c.changed)*1000.0/(frequency*33.0)):1;alpha=(std::max)(0.f,(std::min)(1.f,alpha));
  if(complete){alpha=phase.alpha;c.phase=phase;}
+ if(complete&&trace&&diagnostics.enabled()){
+  diagnostics.draw(alpha,reset,resourceReset,phaseReset,sameFrameChange,frameJump);
+  for(unsigned bone=0;bone<count;++bone){const auto& m=current[bone];bool stretch=false;
+   for(int row=0;row<3;++row){float norm=0;for(int col=0;col<3;++col)norm+=m.v[row*4+col]*m.v[row*4+col];stretch=stretch||std::abs(norm-1)>.0005f;}
+   diagnostics.bone(motion::rigid(m),stretch);
+  }
+ }
  for(unsigned i=0;i<count;++i)blend(c.previous[i],c.current[i],alpha,interpolated[i]);
  Matrix interpolatedWorld{};bool worldValid=false;
  auto world=reinterpret_cast<Matrix*>(object+0xc);
@@ -217,7 +243,7 @@ bool timerPatch(BYTE* p,bool enabled){
  timerResume=reinterpret_cast<ULONG_PTR>(p+0xcf67);memcpy(p+0xcf61,enabled?patched:timerOriginal,6);
  bool ok=FlushInstructionCache(GetCurrentProcess(),p+0xcf61,6)!=FALSE;DWORD ignored;
  if(!ok||!VirtualProtect(p+0xcf61,6,old,&ignored)){memcpy(p+0xcf61,before,6);FlushInstructionCache(GetCurrentProcess(),p+0xcf61,6);VirtualProtect(p+0xcf61,6,old,&ignored);return false;}
- timeline.reset();histories.clear();cameraTrack.reset();cameraState={};render_input::inputView.reset();return true;
+ timeline.reset();diagnostics.reset();histories.clear();cameraTrack.reset();cameraState={};render_input::inputView.reset();return true;
 }
 }
 namespace {
@@ -302,6 +328,7 @@ void motion60TestBlend(const MotionMatrix& a,const MotionMatrix& b,float t,Motio
 void motion60TestComplete(BYTE* p,bool enabled){engineBase=p;complete=enabled;timeline.reset();timelineThread=GetCurrentThreadId();cameraState={};cameraTrack.reset();caches.clear();}
 void motion60TestFreeView(bool enabled,bool toggle,bool reset,float yaw,float dt){freeView=enabled;freeFixture=true;freeFixtureInput={toggle,reset,yaw,0,0,dt};}
 void motion60TestTick(unsigned consumed,unsigned remainder,unsigned timestamp){timeline.observe(1,33,remainder,consumed,timestamp,true);cameraState.valid=false;}
+void motion60TestDiagnosticLogger(void(*logger)(const wchar_t*)){trace=logger;diagnostics.reset();}
 void motion60TestCamera(void* d,MotionMatrix* m,void(__thiscall* f)(void*,MotionMatrix*)){cameraMatrix(d,reinterpret_cast<Matrix*>(m),reinterpret_cast<LoadMatrix>(f));}
 bool motion60TestTimerPatch(BYTE* p,bool enabled){return timerPatch(p,enabled);}
 bool motion60TestDriverSet(BYTE* p,bool enabled){return setDriver(p,enabled,nullptr);}

@@ -4,6 +4,11 @@
 #include <cstdio>
 #include <cmath>
 #include "render_timeline.h"
+#include "motion_diagnostics.h"
+#include <string>
+static std::wstring diagnosticLine;
+static unsigned diagnosticLines=0;
+void diagnosticLogger(const wchar_t* text){if(wcsstr(text,L"MOTION60_DIAG ")==text){diagnosticLine=text;++diagnosticLines;}}
 static BYTE object[0x120],action[0x24],record[8],data[0x24];static BYTE* sequence[1];static MotionMatrix pose[1];static float observed;static int checks=0;static int absoluteCalls=0;static bool throwSeh=false;
 static bool transitionHistory=false;static MotionMatrix history[1];
 static bool stretchDraw=false;static float observedScale=1;
@@ -56,6 +61,7 @@ int main(){
  motion60TestComplete(image,true);require(motion60TestTimerPatch(image,true),"install source-guarded timer site");require(motion60TestTimerPatch(image,true),"timer idempotent");
  auto tick=reinterpret_cast<void(__cdecl*)(BYTE*,BYTE*,unsigned,unsigned)>(image+0xcf20);
  BYTE info[0x24]{};*reinterpret_cast<unsigned*>(info+8)=33;*reinterpret_cast<unsigned*>(info+4)=1;auto manager=image+0xf2250;
+ motion60TestDiagnosticLogger(&diagnosticLogger);
  *reinterpret_cast<void**>(image+0xf2290)=camera;*reinterpret_cast<unsigned*>(driver+0x58)=0x1700;
  auto cameraMatrix=reinterpret_cast<MotionMatrix*>(camera+0x80);*cameraMatrix=identity(0);
  BYTE* driverImage=static_cast<BYTE*>(VirtualAlloc(nullptr,0x2c000,MEM_COMMIT|MEM_RESERVE,PAGE_EXECUTE_READWRITE));require(driverImage!=nullptr,"owned driver image");
@@ -145,6 +151,22 @@ int main(){
  *reinterpret_cast<unsigned*>(action+4)=3;
  motion60TestTick(1,0,3165);renderSample(0);
  require(observed==100,"same action with changed length resets even at apparent wrap");
+ stretchDraw=true;renderSample(0);stretchDraw=false;
+ *reinterpret_cast<unsigned*>(manager+0x24)=1049;tick(manager,info,0,16);
+ require(diagnosticLines==1,"real timer hook emits one bounded diagnostic window");
+ require(diagnosticLine.find(L"midpoints=0 ")==std::wstring::npos&&diagnosticLine.find(L"near_stretch=0 ")==std::wstring::npos,"real bone hook contributes midpoint and native stretch evidence");
+ BYTE fieldJob[16]{};*reinterpret_cast<ULONG_PTR*>(fieldJob)=reinterpret_cast<ULONG_PTR>(image+0xc0f20);
+ *reinterpret_cast<ULONG_PTR*>(info+4)=reinterpret_cast<ULONG_PTR>(fieldJob);*reinterpret_cast<unsigned*>(manager+0x24)=2049;tick(manager,info,0,16);
+ require(diagnosticLines==2&&diagnosticLine.find(L"owner_switches=1 ")!=std::wstring::npos,"real timer hook records owner switch without hiding generation reset");
+ require(diagnosticLine.find(L"job_vtable_rva=c0f20")!=std::wstring::npos,"source-bound field job classification logs relative vtable only");
+ motion::Diagnostics aggregate;motion::DiagnosticWindow window;
+ aggregate.clock(1,1,false,true,0xfffffff0,0xc0f20);aggregate.draw(.5f,false,false,false,false,false);aggregate.bone(true,true);
+ require(!aggregate.take(983,window),"diagnostic cadence survives unsigned clock wrap");
+ require(aggregate.take(984,window)&&window.draws==1&&window.midpoints==1&&window.nearStretch==1,"diagnostic window retains preceding draw counts across clock wrap");
+ for(unsigned n=1;n<120;++n){aggregate.clock(1,0,false,true,985+1000*n,0xc0f20);require(aggregate.take(985+1000*n,window),"diagnostics bounded report before cap");}
+ aggregate.clock(2,1,true,false,121985,0);require(!aggregate.take(121985,window),"diagnostics stop after 120 reports");
+ aggregate.reset();aggregate.clock(1,0,false,true,0,0);require(aggregate.take(1000,window)&&window.draws==0&&window.owners==0,"diagnostic reset clears evidence and budget");
+ motion60TestDiagnosticLogger(nullptr);
  require(motion60TestTimerPatch(image,false),"complete timer rollback");require(!memcmp(image+0xcf61,timerBytes,6),"complete timer exact rollback");
  image[0xcf61]^=1;require(!motion60TestTimerPatch(image,true),"unknown timer rejects");image[0xcf61]^=1;
  require(motion60TestDriverSet(driverImage,false),"camera rollback");require(*loadSlot==oldLoad&&*mulSlot==oldMul,"camera exact slots restored");require(motion60TestDriverSet(driverImage,false),"camera rollback idempotent");

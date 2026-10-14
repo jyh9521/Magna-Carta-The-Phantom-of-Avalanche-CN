@@ -9,6 +9,7 @@ struct MotionMatrix { float v[16]; };
 void motion60TestBlend(const MotionMatrix&,const MotionMatrix&,float,MotionMatrix&);
 void motion60TestComplete(BYTE* engine,bool enabled);
 void motion60TestTick(unsigned consumed,unsigned remainder,unsigned timestamp);
+void motion60TestDiagnosticLogger(void(*)(const wchar_t*));
 void motion60TestCamera(void* driver,MotionMatrix*,void(__thiscall*)(void*,MotionMatrix*));
 bool motion60TestTimerPatch(BYTE*,bool);
 bool motion60TestDriverSet(BYTE*,bool);
