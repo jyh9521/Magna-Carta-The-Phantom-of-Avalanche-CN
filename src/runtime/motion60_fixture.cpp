@@ -102,7 +102,22 @@ int main(int argc,char** argv){
  DWORD oldLoad=*loadSlot,oldMul=*mulSlot;
  require(motion60TestDriverSet(driverImage,true),"guarded camera installation");require(motion60TestDriverSet(driverImage,true),"camera idempotent install");
  driverImage[0x7036]^=1;require(!motion60TestDriverSet(driverImage,false),"driver rollback rejects prefix drift");driverImage[0x7036]^=1;
- auto appliedCamera=[&](){reinterpret_cast<void(__thiscall*)(void*,MotionMatrix*)>(*loadSlot)(driver,cameraMatrix);};
+ // Owned callers reproduce native thiscall and the exact scene return address.
+ DWORD cameraVtable[0xb5]{};*reinterpret_cast<DWORD*>(driver)=reinterpret_cast<DWORD>(cameraVtable);
+ auto cameraCaller=[&](BYTE* start,BYTE* call,unsigned slot){
+  BYTE prolog[]={0x55,0x8b,0xec,0x8b,0x4d,0x08,0xff,0x75,0x0c,0x8b,0x11};memcpy(start,prolog,sizeof(prolog));
+  memset(start+sizeof(prolog),0x90,call-start-sizeof(prolog));call[0]=0xff;call[1]=0x92;*reinterpret_cast<unsigned*>(call+2)=slot;
+  BYTE end[]={0x8b,0xe5,0x5d,0xc3};memcpy(call+6,end,sizeof(end));
+  return reinterpret_cast<void(__cdecl*)(void*,MotionMatrix*)>(start);
+ };
+ auto sceneCameraCall=cameraCaller(image+0x1da10,image+0x1da20,0x2d0);
+ auto temporaryCameraCall=cameraCaller(image+0x1000,image+0x1020,0x290);
+ require(motion60TestCameraSiteMatches(image),"native scene commit six-byte CALL guard matches owned source caller");
+ image[0x1da20]^=1;require(!motion60TestCameraSiteMatches(image),"scene camera source instruction drift rejected");
+ require(!motion60TestDriverSet(driverImage,true)&&*mulSlot!=oldMul,"source caller drift rejects even idempotent camera installation without changing existing slot");
+ image[0x1da20]^=1;require(motion60TestDriverSet(driverImage,true),"restored source caller guard permits idempotent installation");
+ auto appliedCamera=[&](){cameraVtable[0x2d0/4]=*mulSlot;sceneCameraCall(driver,cameraMatrix);};
+ auto temporaryCamera=[&](){cameraVtable[0x290/4]=*loadSlot;temporaryCameraCall(driver,cameraMatrix);};
  fullDraw=true;actorX=0;tick(manager,info,0,0);motion60TestCamera(driver,cameraMatrix,reinterpret_cast<void(__thiscall*)(void*,MotionMatrix*)>(&loadCamera));renderSample(0);
  require(observed==100&&worldObserved==0,"complete first frame original");
  *reinterpret_cast<unsigned*>(manager+0x24)=33;actorX=10;*cameraMatrix=identity(-20);tick(manager,info,1,33);
@@ -112,7 +127,7 @@ int main(int argc,char** argv){
  appliedCamera();renderSample(1);
  float alpha=16.f/33;require(std::abs(worldObserved+10*alpha)<.002f,"shared world camera midpoint without double lag");require(std::abs(observed-(100+10*alpha))<.002f,"bone midpoint engine remainder");
  require(cameraMatrix->v[12]==-20&&reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]==10&&pose[0].v[12]==110,"camera world pose exact restoration");
- reinterpret_cast<void(__thiscall*)(void*,MotionMatrix*)>(*mulSlot)(driver,cameraMatrix);require(std::abs(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[12]+20*alpha)<.002f,"multiply camera path same phase");
+ appliedCamera();require(std::abs(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[12]+20*alpha)<.002f,"multiply camera path same phase");
  throwSeh=true;require(sehProbe(),"complete SEH propagates");throwSeh=false;require(reinterpret_cast<MotionMatrix*>(object+0xc)->v[12]==10&&pose[0].v[12]==120,"complete SEH restores world and pose");
  auto foreign=identity(99);motion60TestCamera(driver,&foreign,reinterpret_cast<void(__thiscall*)(void*,MotionMatrix*)>(&loadCamera));require(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[12]==99,"foreign transform bypass");
  *reinterpret_cast<unsigned*>(driver+0x58)=0x1701;motion60TestCamera(driver,cameraMatrix,reinterpret_cast<void(__thiscall*)(void*,MotionMatrix*)>(&loadCamera));require(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[12]==-20,"projection bypass");
@@ -323,6 +338,24 @@ int main(int argc,char** argv){
  require(!memcmp(object+0xc,&nextActor,64),"queued world rotating parent exact SEH restoration");
  actorYaw=0;
  printf("QUEUED_WORLD_REPLAY PASS samples=32 camera_motion=true camera_rotation=true queue_before_camera=true world_restore=exact game_started=false\n");
+ // A source camera refresh happens after temporary object-screen projection.
+ motion60TestComplete(image,true);fullDraw=false;*cameraMatrix=identity(0);
+ motion60TestTick(0,0,13000);appliedCamera();
+ motion60TestTick(1,0,13033);temporaryCamera();*cameraMatrix=identity(-20);appliedCamera();
+ require(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[12]==0,"temporary projection must not commit stale camera as new tick interpolation endpoint");
+ for(unsigned remainder=1;remainder<33;++remainder){
+  motion60TestTick(0,remainder,13033+remainder);
+  for(unsigned pass=0;pass<48;++pass)temporaryCamera();
+  require(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[12]==-20,"temporary source projection remains native rather than taking display camera history");
+  appliedCamera();
+  require(std::abs(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[12]+20*float(remainder)/33)<.0001f,"final scene camera stays smooth despite48 temporary projection loads");
+  require(cameraMatrix->v[12]==-20,"camera source remains native after temporary and final loads");
+ }
+ motion60TestTick(0,32,13065);*cameraMatrix=identity(-999);temporaryCamera();*cameraMatrix=identity(-20);appliedCamera();
+ require(std::abs(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[12]+20*32.f/33)<.0001f,"temporary camera values cannot introduce a cut or overwrite final scene trajectory");
+ motion60TestTick(1,0,13066);temporaryCamera();*cameraMatrix=identity(-40);appliedCamera();
+ require(reinterpret_cast<MotionMatrix*>(driver+0x5c)->v[12]==-20,"next late camera refresh retains prior endpoint instead of snapping");
+ printf("CAMERA_SCENE_REPLAY PASS temporary_passes=48 remainders=32 late_refresh=true canonical_return_rva=1da26 native_camera=unchanged game_started=false\n");
  // Exercise the previously invisible world-only reset through the real hook.
  motion60TestComplete(image,true);motion60TestDiagnosticLogger(&diagnosticLogger);
  fullDraw=true;localDraw=false;actorX=0;*cameraMatrix=identity(0);

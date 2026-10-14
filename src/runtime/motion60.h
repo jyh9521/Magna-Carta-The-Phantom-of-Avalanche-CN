@@ -14,6 +14,7 @@ void motion60TestPrepareHistory(void*,int);
 void motion60TestCamera(void* driver,MotionMatrix*,void(__thiscall*)(void*,MotionMatrix*));
 bool motion60TestTimerPatch(BYTE*,bool);
 bool motion60TestDriverSet(BYTE*,bool);
+bool motion60TestCameraSiteMatches(BYTE*);
 #endif
 #ifdef MOTION60_TEST
 using MotionRenderFn=void(__thiscall*)(void*,int,MotionMatrix*,int,int,int,int,int);

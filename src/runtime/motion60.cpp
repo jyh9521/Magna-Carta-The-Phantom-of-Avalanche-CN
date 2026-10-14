@@ -116,11 +116,17 @@ bool fixtureClock=false;LONGLONG fixtureTicks=0;
 struct Context{void* object;int frame;Matrix* pose=nullptr;std::vector<Matrix> baseline;Context* parent;Matrix* world=nullptr;Matrix baselineWorld{};bool hasParent=false;};
 thread_local Context* active=nullptr;volatile LONG changes=0;
 motion::Phase renderPhase(){return timelineThread==GetCurrentThreadId()?timeline.phase():motion::Phase{};}
-void cameraMatrix(void* driver,Matrix* matrix,LoadMatrix original){
+constexpr unsigned sceneCameraReturn=0x1da26;
+constexpr BYTE sceneCameraCall[]={0xff,0x92,0xd0,0x02,0x00,0x00};
+bool sceneCameraSiteMatches(BYTE* base){return readable(base+0x1da20,sizeof(sceneCameraCall))&&!memcmp(base+0x1da20,sceneCameraCall,sizeof(sceneCameraCall));}
+void cameraMatrix(void* driver,Matrix* matrix,LoadMatrix original,void* caller){
  if(!complete||!engineBase||!readable(matrix,sizeof(Matrix))||!readable(driver,0x60)
     ||*reinterpret_cast<unsigned*>(static_cast<BYTE*>(driver)+0x58)!=0x1700){original(driver,matrix);return;}
  auto camera=*reinterpret_cast<BYTE**>(engineBase+0xf2290);
  if(!camera||matrix!=reinterpret_cast<Matrix*>(camera+0x80)){original(driver,matrix);return;}
+ // Temporary object-screen projections load the previous source camera before
+ // native camera refresh. Only the later scene-consumption site commits history.
+ if(caller!=engineBase+sceneCameraReturn){original(driver,matrix);return;}
  auto phase=renderPhase();if(!phase.valid){cameraTrack.reset();cameraState.valid=false;render_input::inputView.reset();original(driver,matrix);return;}
  if(cameraState.identity!=camera){cameraTrack.reset();cameraState.identity=camera;}
  cameraState.original=*matrix;cameraState.applied=cameraTrack.sample(*matrix,phase,true);
@@ -146,10 +152,10 @@ void cameraMatrix(void* driver,Matrix* matrix,LoadMatrix original){
  cameraState.valid=motion::rigid(cameraState.original)&&motion::rigid(cameraState.applied);
  Matrix copy=cameraState.applied;original(driver,&copy);
  render_input::inputView.publish(cameraState.applied.v,reinterpret_cast<uintptr_t>(camera),GetTickCount(),cameraState.valid&&freeView&&freeOrbit.active());
- static LONG applied=0;if(cameraState.valid&&InterlockedIncrement(&applied)==1&&trace)trace(L"MOTION60_CAMERA_APPLIED phase=engine_remainder original_camera=unchanged");
+ static LONG applied=0;if(cameraState.valid&&InterlockedIncrement(&applied)==1&&trace)trace(L"MOTION60_CAMERA_APPLIED phase=engine_remainder original_camera=unchanged sample_source=scene_commit return_rva=1da26 temporary_projection=passthrough");
 }
-void __fastcall loadHook(void* d,void*,Matrix* m){cameraMatrix(d,m,originalLoad);}
-void __fastcall multiplyHook(void* d,void*,Matrix* m){cameraMatrix(d,m,originalMultiply);}
+void __fastcall loadHook(void* d,void*,Matrix* m){cameraMatrix(d,m,originalLoad,_ReturnAddress());}
+void __fastcall multiplyHook(void* d,void*,Matrix* m){cameraMatrix(d,m,originalMultiply,_ReturnAddress());}
 bool readable(const void* address,size_t length){
  if(!address||!length)return false;auto p=reinterpret_cast<ULONG_PTR>(address);if(p+length<p)return false;auto end=p+length;
  while(p<end){MEMORY_BASIC_INFORMATION m{};if(!VirtualQuery(reinterpret_cast<void*>(p),&m,sizeof(m))||m.State!=MEM_COMMIT||(m.Protect&(PAGE_GUARD|PAGE_NOACCESS)))return false;auto next=reinterpret_cast<ULONG_PTR>(m.BaseAddress)+m.RegionSize;if(next<=p)return false;p=next;}return true;
@@ -320,7 +326,7 @@ bool installMotion60(HMODULE engine,void(*logger)(const wchar_t*)){
  auto absolute=GetProcAddress(asura,"?MakeAbsoluteMatrix@@YAXPAUASRBone@@IPAVASRMatrix@@1@Z");BYTE prefix[]={0x55,0x8b,0xec,0x83,0xec,0x44,0x56,0x57};
  if(absolute!=reinterpret_cast<FARPROC>(p+0x44f0d)||!readable(p+0x44f0d,sizeof(prefix))||memcmp(p+0x44f0d,prefix,sizeof(prefix)))return false;
  auto base=reinterpret_cast<BYTE*>(engine);wchar_t flag[8]{};complete=GetEnvironmentVariableW(L"MC_MOTION60_COMPLETE",flag,8)==1&&flag[0]==L'1';
- if(!headerMatches(base,0x10b000)||(complete&&!timerMatches(base)))return false;
+ if(!headerMatches(base,0x10b000)||(complete&&(!timerMatches(base)||!sceneCameraSiteMatches(base))))return false;
  if(!setMapped(base,0x10b000,reinterpret_cast<Absolute>(absolute),true,logger))return false;
  if(complete&&!timerPatch(base,true)){setMapped(base,0x10b000,reinterpret_cast<Absolute>(absolute),false,nullptr);return false;}
  if(complete&&logger)logger(L"MOTION60_COMPLETE_READY clock=engine_fixed_step world=source_locked camera=source_locked logic_events=unchanged");return true;
@@ -333,6 +339,7 @@ bool removeMotion60(HMODULE engine){
 }
 namespace {
 bool setDriver(BYTE* p,bool enabled,void(*logger)(const wchar_t*)){
+ if(complete&&engineBase&&!sceneCameraSiteMatches(engineBase))return false;
  if(!readable(p,0x2c000))return false;
  auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(p);if(dos->e_magic!=IMAGE_DOS_SIGNATURE||dos->e_lfanew<=0||dos->e_lfanew>4096)return false;
  auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+dos->e_lfanew);if(nt->Signature!=IMAGE_NT_SIGNATURE||nt->FileHeader.Machine!=IMAGE_FILE_MACHINE_I386||nt->OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR32_MAGIC||nt->OptionalHeader.SizeOfImage!=0x2c000)return false;
@@ -359,7 +366,7 @@ bool installMotion60Driver(HMODULE module,void(*logger)(const wchar_t*)){
 bool removeMotion60Driver(HMODULE module){return setDriver(reinterpret_cast<BYTE*>(module),false,nullptr);}
 #ifdef MOTION60_TEST
 bool motion60TestSetMapped(BYTE* p,size_t n,MotionAbsoluteFn a,bool enabled){return setMapped(p,n,reinterpret_cast<Absolute>(a),enabled,nullptr);}
-void motion60TestInitialize(BYTE* p,MotionAbsoluteFn a){memset(p,0,0x10b000);auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);d->e_magic=IMAGE_DOS_SIGNATURE;d->e_lfanew=0x100;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+0x100);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0x04,0x03,0x00,0x00,0x56,0x57};memcpy(p+0x3b0c0,prefix,sizeof(prefix));BYTE call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);memcpy(p+0x3b7fb,call,sizeof(call));*reinterpret_cast<DWORD*>(p+0xbd9f8)=reinterpret_cast<DWORD>(p+0x3b0c0);*reinterpret_cast<DWORD*>(p+0xbd0a4)=reinterpret_cast<DWORD>(a);}
+void motion60TestInitialize(BYTE* p,MotionAbsoluteFn a){memset(p,0,0x10b000);memcpy(p+0x1da20,sceneCameraCall,sizeof(sceneCameraCall));auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);d->e_magic=IMAGE_DOS_SIGNATURE;d->e_lfanew=0x100;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+0x100);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0x04,0x03,0x00,0x00,0x56,0x57};memcpy(p+0x3b0c0,prefix,sizeof(prefix));BYTE call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);memcpy(p+0x3b7fb,call,sizeof(call));*reinterpret_cast<DWORD*>(p+0xbd9f8)=reinterpret_cast<DWORD>(p+0x3b0c0);*reinterpret_cast<DWORD*>(p+0xbd0a4)=reinterpret_cast<DWORD>(a);}
 void motion60TestConfigure(MotionRenderFn r,MotionAbsoluteFn a){originalRender=reinterpret_cast<Render>(r);originalAbsolute=reinterpret_cast<Absolute>(a);LARGE_INTEGER f{};QueryPerformanceFrequency(&f);frequency=f.QuadPart;caches.clear();}
 void motion60TestSetTime(double milliseconds){fixtureClock=true;fixtureTicks=static_cast<LONGLONG>(milliseconds*frequency/1000.0);}
 void motion60TestRender(void* o,int f){renderHook(o,nullptr,f,nullptr,0,0,0,0,0);}
@@ -371,7 +378,8 @@ void motion60TestFreeView(bool enabled,bool toggle,bool reset,float yaw,float dt
 void motion60TestTick(unsigned consumed,unsigned remainder,unsigned timestamp){timeline.observe(1,33,remainder,consumed,timestamp,true);cameraState.valid=false;}
 void motion60TestDiagnosticLogger(void(*logger)(const wchar_t*)){trace=logger;diagnostics.reset();}
 void motion60TestPrepareHistory(void* object,int frame){prepareHistory(object,frame);}
-void motion60TestCamera(void* d,MotionMatrix* m,void(__thiscall* f)(void*,MotionMatrix*)){cameraMatrix(d,reinterpret_cast<Matrix*>(m),reinterpret_cast<LoadMatrix>(f));}
+void motion60TestCamera(void* d,MotionMatrix* m,void(__thiscall* f)(void*,MotionMatrix*)){cameraMatrix(d,reinterpret_cast<Matrix*>(m),reinterpret_cast<LoadMatrix>(f),engineBase+sceneCameraReturn);}
 bool motion60TestTimerPatch(BYTE* p,bool enabled){return timerPatch(p,enabled);}
+bool motion60TestCameraSiteMatches(BYTE* p){return sceneCameraSiteMatches(p);}
 bool motion60TestDriverSet(BYTE* p,bool enabled){return setDriver(p,enabled,nullptr);}
 #endif
