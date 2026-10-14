@@ -77,6 +77,7 @@ def prepare(source, modules, atlas, output):
     recipes['camera']=dict(module='camera',settings=settings('combined',True),camera=True)
     recipes['camera-gamepad']=dict(module='camera',settings=settings('combined',True,True),camera=True)
     recipes['maps']=dict(module='maps',settings=settings(),maps=True)
+    recipes['maps-gamepad']=dict(module='maps',settings=settings(pad=True),maps=True)
     atlas_manifest=json.loads((atlas/'manifest.json').read_text(encoding='utf8'))
     if atlas_manifest.get('schema')!=1 or atlas_manifest.get('navigation_verified') is not False:
         raise ValueError('Unsupported map atlas')
@@ -88,6 +89,8 @@ def prepare(source, modules, atlas, output):
             files['maps/'+name]=row[key]
     for name in ['manifest.json','label.txt']:
         files['maps/'+name]=sha(atlas/name)
+    if (atlas/'legend.txt').is_file():
+        files['maps/legend.txt']=sha(atlas/'legend.txt')
     title_original=b'@echo off\r\nsetlocal\r\nset MC_TITLE_STYLE=0\r\ncall "%~dp0Play.cmd"\r\n'
     (output/'Play-title-original.cmd').write_bytes(title_original)
     files['Play-title-original.cmd']=sha(output/'Play-title-original.cmd')

@@ -36,9 +36,13 @@ def prepare(workspace,native,atlas,locale,output):
     shutil.copy2(atlas/'manifest.json',assets/'manifest.json')
     for row in manifest['accepted']:
         for extension in ['png','map']:shutil.copy2(atlas/f"{row['id']:04d}.{extension}",assets/f"{row['id']:04d}.{extension}")
-    label=json.loads((locale/'map-ui.json').read_text(encoding='utf8'))['map_title']
+    labels=json.loads((locale/'map-ui.json').read_text(encoding='utf8'));label=labels['map_title']
     if not isinstance(label,str) or not label or len(label)>120:raise ValueError('Invalid map title')
     (assets/'label.txt').write_bytes(label.encode('utf-16le'))
+    legend=labels.get('map_legend','N NPC    B Box    P Player')
+    if not isinstance(legend,str) or not legend or len(legend)>120:raise ValueError('Invalid map legend')
+    (assets/'legend.txt').write_bytes(legend.encode('utf-16le'))
+    lock['inputs'][str(assets/'legend.txt')]=overlay.sha(assets/'legend.txt')
     return write_entrypoints(output,lock,assets)
 
 if __name__=='__main__':

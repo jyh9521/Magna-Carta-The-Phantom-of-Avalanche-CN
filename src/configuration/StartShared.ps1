@@ -1,4 +1,4 @@
-param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','texture','camera','camera-gamepad','maps')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='')
+param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='')
 $ErrorActionPreference='Stop'
 $runtimeRoot=$PSScriptRoot
 $manifest=Get-Content -LiteralPath (Join-Path $runtimeRoot 'runtime.json') -Raw | ConvertFrom-Json
