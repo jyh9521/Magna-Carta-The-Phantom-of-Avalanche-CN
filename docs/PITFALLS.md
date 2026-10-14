@@ -140,3 +140,7 @@ GetCursorPos refreshes engine coordinates before the keyboard IAT hook. A virtua
 ## Resource addresses are not skeletal topology
 
 Action and ASRBone pointer changes can describe an equivalent rooted hierarchy. Preserve one-tick display continuity only after exact logical child-index comparison and model/pose/epoch/adjacent-tick checks; retain all true incompatibility resets. See MOTION_ACTION_CONTINUITY.md.
+
+## Animation frame identity is not a logical transition epoch
+
+A held animation frame may have different native local poses across engine updates. Same-frame stability checks belong inside one tick; consecutive transitions must update the interpolation endpoints. See MOTION_HELD_FRAME_TRANSITION.md.

@@ -10,7 +10,7 @@ static std::wstring diagnosticLine;
 static unsigned diagnosticLines=0;
 void diagnosticLogger(const wchar_t* text){if(wcsstr(text,L"MOTION60_DIAG ")==text){diagnosticLine=text;++diagnosticLines;}}
 static BYTE object[0x120],action[0x24],record[8],data[0x24];static BYTE* sequence[1];static MotionMatrix pose[2];static float observed;static int checks=0;static int absoluteCalls=0;static bool throwSeh=false;
-static void* absoluteBones=nullptr;
+static void* absoluteBones=nullptr;static float localPoseOffset=0;
 static bool transitionHistory=false;static MotionMatrix history[1];
 static bool stretchDraw=false,mirrorDraw=false,affineDraw=false;static float observedScale=1;
 static bool fullDraw=false,localDraw=false;static BYTE driver[0xe0],camera[0xc0];static float actorX=0,worldObserved=0;
@@ -19,7 +19,7 @@ MotionMatrix identity(float x){MotionMatrix m{};m.v[0]=m.v[5]=m.v[10]=m.v[15]=1;
 void __cdecl absolute(void*,unsigned,MotionMatrix* p,MotionMatrix*){++absoluteCalls;p[0].v[12]+=100;}
 void __fastcall loadCamera(void* d,void*,MotionMatrix* m){memcpy(static_cast<BYTE*>(d)+0x5c,m,64);}
 void __fastcall draw(void*,void*,int frame,MotionMatrix*,int,int,int,int,int){
- pose[0]=identity(static_cast<float>(frame*10));pose[1]=identity(3);
+ pose[0]=identity(static_cast<float>(frame*10)+localPoseOffset);pose[1]=identity(3);
  if(stretchDraw)pose[0].v[0]=pose[0].v[5]=pose[0].v[10]=1.008f;
  if(mirrorDraw)pose[0].v[0]=-1;
  if(affineDraw){pose[0].v[0]=2;pose[0].v[5]=.5f;pose[0].v[4]=.25f;}
@@ -43,6 +43,8 @@ int main(int argc,char** argv){
  motion60TestConfigure(reinterpret_cast<MotionRenderFn>(&draw),&absolute);
  motion60TestSetTime(0);
  renderSample(0);require(observed==100,"first frame unchanged");require(pose[0].v[12]==100,"baseline absolute restored");
+ localPoseOffset=2;renderSample(0);require(observed==102,"legacy clock same-frame pose mutation still resets");localPoseOffset=0;
+ renderSample(0);require(observed==100,"legacy reset returns exact native pose");
  renderSample(1);require(observed<101,"next tick begins previous pose");require(pose[0].v[12]==110,"next baseline restored");
  motion60TestSetTime(17);renderSample(1);require(observed>102&&observed<109,"deterministic half step pose drawn");require(pose[0].v[12]==110,"halfstep cannot contaminate next logic");
  motion60TestSetTime(57);renderSample(1);require(observed==110,"latest pose reached");
@@ -225,6 +227,20 @@ int main(int argc,char** argv){
  renderSample(2);require(history[0].v[12]==10,"source-shaped transition draw records first native result");
  renderSample(3);require(history[0].v[12]==20,"real render hook frame change uses current native transition history not prior sample input");
  renderSample(3);require(history[0].v[12]==20,"real render hook repeated changed-frame draw cannot accumulate transition again");
+ transitionHistory=false;*reinterpret_cast<MotionMatrix**>(object+0xf0)=nullptr;*reinterpret_cast<unsigned*>(object+0xf4)=0;
+ *reinterpret_cast<MotionMatrix**>(object+0xf0)=history;*reinterpret_cast<unsigned*>(object+0xf4)=2;
+ history[0]=identity(0);transitionHistory=true;motion60TestComplete(image,true);motion60TestTick(0,0,7500);
+ renderSample(2);require(observed==110&&pose[0].v[12]==110,"held-frame transition first native pose");
+ *reinterpret_cast<unsigned*>(object+0xf4)=1;motion60TestTick(1,0,7533);renderSample(2);
+ require(observed==110,"new logic tick held animation frame must retain previous transition pose instead of snap");
+ require(pose[0].v[12]==115,"held-frame transition native output restored exactly");
+ motion60TestTick(0,16,7549);renderSample(2);
+ require(std::abs(observed-(110+5*16.f/33))<.002f,"held frame transition has intermediate pose on shared engine phase");
+ require(pose[0].v[12]==115&&history[0].v[12]==15,"repeated held-frame render preserves original native transition result");
+ renderSample(2);require(std::abs(observed-(110+5*16.f/33))<.002f&&history[0].v[12]==15,"held-frame midpoint is repeatable without accumulating native blend");
+ motion60TestTick(1,0,7566);renderSample(2);require(observed==115&&pose[0].v[12]==117.5f,"second held-frame logic update retains prior native transition output");
+ motion60TestTick(0,16,7582);renderSample(2);require(std::abs(observed-(115+2.5f*16.f/33))<.002f,"successive held-frame updates remain interpolated");
+ localPoseOffset=6;renderSample(2);require(observed==120.5f,"unexpected same-tick held-frame pose mutation still resets");localPoseOffset=0;
  transitionHistory=false;*reinterpret_cast<MotionMatrix**>(object+0xf0)=nullptr;*reinterpret_cast<unsigned*>(object+0xf4)=0;
  BYTE switchAction[0x24]{},switchRecord[8]{},switchData[0x24]{},switchBones[12]{};BYTE* switchSequence[]={switchRecord};
  *reinterpret_cast<unsigned*>(switchAction+4)=4;*reinterpret_cast<unsigned*>(switchAction+8)=4;

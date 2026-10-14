@@ -158,3 +158,8 @@ Xbox焦点收集已修正隐藏/禁用GUI子节点导致父按钮漏选的受控
 
 已增加严格层级比较后的相邻动作显示桥接，详见MOTION_ACTION_CONTINUITY.md；
 完整60FPS仍未获实机通过，新的compatible_switches计数不是已修复画面数量。
+
+### 固定帧号的过渡候选
+
+已区分同tick异常变化与相邻tick的原生过渡更新；详见MOTION_HELD_FRAME_TRANSITION.md。
+259项受控检查不替代实机验收，完整60FPS仍未完成。

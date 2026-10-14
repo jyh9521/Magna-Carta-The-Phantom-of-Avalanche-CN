@@ -213,7 +213,10 @@ unsigned clipLength=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+4),s
   &&(c.action!=action||(c.clipLength==clipLength&&c.stride==stride&&(adjacent||wrapped)));
  bool resourceReset=structuralReset||(resourceChanged&&!compatible);
  bool reset=resourceReset||phaseReset;
- bool sameFrameChange=!reset&&!compatible&&active->frame==c.frame&&memcmp(current.data(),c.current.data(),count*sizeof(Matrix));
+ // A native transition may update local pose while its animation frame is held.
+ // Compare stability within one logical tick, not across consecutive updates.
+ bool sameFrameChange=!reset&&!compatible&&(!complete||phase.tick==c.phase.tick)
+  &&active->frame==c.frame&&memcmp(current.data(),c.current.data(),count*sizeof(Matrix));
  if(sameFrameChange)reset=true;
  bool frameJump=!reset&&!compatible&&active->frame!=c.frame&&!adjacent&&!wrapped;
  if(frameJump)reset=true;
