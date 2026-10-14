@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <cmath>
 #include <cstring>
+#include <initializer_list>
 using namespace motion;
 int checks=0;
 void require(bool b,const char* s){++checks;if(!b){std::fprintf(stderr,"FAIL %s\n",s);std::exit(1);}}
@@ -40,5 +41,15 @@ int main(){
  t.observe(2,33,33,0,504,true);require(!t.phase().valid,"invalid remainder rejects");
  t.observe(2,33,0,0,0xfffffff0,true);g=t.phase().generation;t.observe(2,33,16,1,5,true);require(t.phase().generation==g,"timeGetTime wrap retains continuity");
  unsigned events=0;Timeline timer;for(unsigned ms=0;ms<330;++ms){unsigned n=(ms&&ms%33==0)?1:0;events+=n;timer.observe(7,33,ms%33,n,ms,true);}require(events==9&&timer.phase().tick==9,"33ms event count independent from render");
+ auto stretchA=identity(),stretchB=identity(10);for(int k:{0,5,10})stretchA.v[k]=stretchB.v[k]=1.008f;
+ require(rigid(stretchA)&&rigid(stretchB),"near-unit native stretch reaches existing accepted branch");
+ Matrix stretchMid{};blend(stretchA,stretchB,.5f,stretchMid);
+ require(near(stretchMid.v[0],1.008f)&&near(stretchMid.v[5],1.008f)&&near(stretchMid.v[10],1.008f),"intermediate pose must preserve accepted native stretch instead of breathing to unit scale");
+ auto quarter=identity();quarter.v[0]=quarter.v[5]=0;quarter.v[1]=1;quarter.v[4]=-1;
+ auto shear=identity();shear.v[4]=.005f;auto turned=multiply(quarter,shear);Matrix shearMid{};blend(shear,turned,.5f,shearMid);
+ auto gram=[](const Matrix& m,int a,int b){float v=0;for(int k=0;k<3;++k)v+=m.v[a*4+k]*m.v[b*4+k];return v;};
+ for(int a=0;a<3;++a)for(int b=0;b<3;++b)require(std::abs(gram(shearMid,a,b)-gram(shear,a,b))<1e-5f,"rotation must preserve accepted shear Gram metric");
+ for(unsigned frame=0;frame<=60;++frame){Matrix m{};blend(stretchA,stretchB,float(frame)/60,m);require(std::abs(m.v[0]-1.008f)<1e-5f,"full display phase cannot pump source scale");}
+ Matrix endpoint{};blend(shear,turned,0,endpoint);require(!memcmp(&endpoint,&shear,sizeof(endpoint)),"stretch endpoint zero byte exact");blend(shear,turned,1,endpoint);require(!memcmp(&endpoint,&turned,sizeof(endpoint)),"stretch endpoint one byte exact");
  std::printf("RENDER_TIMELINE_FIXTURE PASS checks=%d world=true rotation=true camera=true phase=engine_remainder logic_events=unchanged game_started=false\n",checks);
 }

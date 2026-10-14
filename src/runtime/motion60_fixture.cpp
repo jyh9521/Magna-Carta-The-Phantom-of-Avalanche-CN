@@ -6,6 +6,7 @@
 #include "render_timeline.h"
 static BYTE object[0x120],action[0x24],record[8],data[0x24];static BYTE* sequence[1];static MotionMatrix pose[1];static float observed;static int checks=0;static int absoluteCalls=0;static bool throwSeh=false;
 static bool transitionHistory=false;static MotionMatrix history[1];
+static bool stretchDraw=false;static float observedScale=1;
 static bool fullDraw=false,localDraw=false;static BYTE driver[0xe0],camera[0xc0];static float actorX=0,worldObserved=0;
 void require(bool b,const char* text){++checks;if(!b){fprintf(stderr,"FAIL %s\n",text);fflush(stderr);ExitProcess(1);}}
 MotionMatrix identity(float x){MotionMatrix m{};m.v[0]=m.v[5]=m.v[10]=m.v[15]=1;m.v[12]=x;return m;}
@@ -13,9 +14,10 @@ void __cdecl absolute(void*,unsigned,MotionMatrix* p,MotionMatrix*){++absoluteCa
 void __fastcall loadCamera(void* d,void*,MotionMatrix* m){memcpy(static_cast<BYTE*>(d)+0x5c,m,64);}
 void __fastcall draw(void*,void*,int frame,MotionMatrix*,int,int,int,int,int){
  pose[0]=identity(static_cast<float>(frame*10));
+ if(stretchDraw)pose[0].v[0]=pose[0].v[5]=pose[0].v[10]=1.008f;
  if(transitionHistory){pose[0].v[12]=(history[0].v[12]+pose[0].v[12])*.5f;history[0]=pose[0];}
  if(fullDraw){auto actor=identity(actorX);auto view=reinterpret_cast<motion::Matrix*>(driver+0x5c);auto w=localDraw?reinterpret_cast<const motion::Matrix&>(actor):motion::multiply(*view,reinterpret_cast<const motion::Matrix&>(actor));memcpy(object+0xc,&w,64);}
- motion60TestAbsolute(data,0,pose,nullptr);observed=pose[0].v[12];worldObserved=reinterpret_cast<MotionMatrix*>(object+0xc)->v[12];if(throwSeh)RaiseException(0xe0000001,0,0,nullptr);
+ motion60TestAbsolute(data,0,pose,nullptr);observed=pose[0].v[12];observedScale=pose[0].v[0];worldObserved=reinterpret_cast<MotionMatrix*>(object+0xc)->v[12];if(throwSeh)RaiseException(0xe0000001,0,0,nullptr);
 }
 void renderSample(int frame){if(fullDraw&&!localDraw)motion60TestRenderParent(object,frame,reinterpret_cast<MotionMatrix*>(driver+0x5c));else motion60TestRender(object,frame);}
 bool sehProbe(){__try {renderSample(2);}__except(EXCEPTION_EXECUTE_HANDLER){return true;}return false;}
@@ -42,6 +44,9 @@ int main(){
  auto a=identity(0),b=identity(10);MotionMatrix out{};motion60TestBlend(a,b,.5f,out);require(std::abs(out.v[12]-5)<.001f,"translation interpolates");b.v[0]=-1;b.v[5]=-1;motion60TestBlend(a,b,.5f,out);require(std::abs(out.v[0])<.001f&&std::abs(out.v[1])>.99f,"rotation nlerp intermediate");
  b=identity(10);b.v[0]=2;motion60TestBlend(a,b,.5f,out);require(out.v[0]==2&&out.v[12]==10,"nonrigid bypass");
  *reinterpret_cast<unsigned*>(data+0x14)=1;
+ stretchDraw=true;motion60TestSetTime(1000);renderSample(0);motion60TestSetTime(1033);renderSample(1);motion60TestSetTime(1049);renderSample(1);
+ require(std::abs(observedScale-1.008f)<1e-5f,"real bone absolute hook retains native stretch at display midpoint");
+ require(pose[0].v[0]==1.008f,"native stretched pose restored exactly after render");stretchDraw=false;
  image=static_cast<BYTE*>(VirtualAlloc(nullptr,0x10b000,MEM_COMMIT|MEM_RESERVE,PAGE_EXECUTE_READWRITE));require(image!=nullptr,"complete image");motion60TestInitialize(image,&absolute);
  BYTE timerBytes[]={0x8b,0x55,0xf8,0x8b,0x45,0xec};memcpy(image+0xcf61,timerBytes,6);
  // Owned executable wrapper establishes the same locals as the guarded timer site.

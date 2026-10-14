@@ -25,16 +25,36 @@ bool rigid(const Matrix& m){
  float det=m.v[0]*(m.v[5]*m.v[10]-m.v[6]*m.v[9])-m.v[1]*(m.v[4]*m.v[10]-m.v[6]*m.v[8])+m.v[2]*(m.v[4]*m.v[9]-m.v[5]*m.v[8]);
  return det>0.97f&&det<1.03f&&std::abs(m.v[3])+std::abs(m.v[7])+std::abs(m.v[11])<0.001f&&std::abs(m.v[15]-1)<0.001f;
 }
+// Separate near-rigid stretch/shear rather than dropping it in quaternion rebuild.
+static bool rotationPart(const Matrix& input,Matrix& rotation){
+ rotation={};rotation.v[15]=1;for(int c=0;c<3;++c)for(int r=0;r<3;++r)rotation.v[c*4+r]=input.v[c*4+r];
+ for(unsigned iteration=0;iteration<6;++iteration){
+  const auto& m=rotation.v;
+  float cof[9]={m[5]*m[10]-m[9]*m[6],m[8]*m[6]-m[4]*m[10],m[4]*m[9]-m[8]*m[5],
+                m[9]*m[2]-m[1]*m[10],m[0]*m[10]-m[8]*m[2],m[8]*m[1]-m[0]*m[9],
+                m[1]*m[6]-m[5]*m[2],m[4]*m[2]-m[0]*m[6],m[0]*m[5]-m[4]*m[1]};
+  float determinant=m[0]*cof[0]+m[4]*cof[3]+m[8]*cof[6];
+  if(!std::isfinite(determinant)||determinant<=1e-8f)return false;
+  Matrix next=rotation;float error=0;
+  for(int c=0;c<3;++c)for(int r=0;r<3;++r){int at=c*4+r;next.v[at]=.5f*(m[at]+cof[c*3+r]/determinant);error=(std::max)(error,std::abs(next.v[at]-m[at]));}
+  rotation=next;if(error<1e-6f)break;
+ }
+ return rigid(rotation);
+}
 void blend(const Matrix& a,const Matrix& b,float t,Matrix& out){
  out=b;if(!rigid(a)||!rigid(b)||!std::isfinite(t))return;
  if(t>=1)return;if(t<=0){out=a;return;}
- Q x=quaternion(a),y=quaternion(b);float dot=x.x*y.x+x.y*y.y+x.z*y.z+x.w*y.w;
+ Matrix rotationA{},rotationB{};if(!rotationPart(a,rotationA)||!rotationPart(b,rotationB))return;
+ auto stretchA=multiply(inverseRigid(rotationA),a),stretchB=multiply(inverseRigid(rotationB),b);
+ Q x=quaternion(rotationA),y=quaternion(rotationB);float dot=x.x*y.x+x.y*y.y+x.z*y.z+x.w*y.w;
  if(dot<0){y.x=-y.x;y.y=-y.y;y.z=-y.z;y.w=-y.w;}
  Q q{x.x+(y.x-x.x)*t,x.y+(y.y-x.y)*t,x.z+(y.z-x.z)*t,x.w+(y.w-x.w)*t};
  float n=std::sqrt(q.x*q.x+q.y*q.y+q.z*q.z+q.w*q.w);if(n<0.001f)return;q.x/=n;q.y/=n;q.z/=n;q.w/=n;
  out.v[0]=1-2*(q.y*q.y+q.z*q.z);out.v[1]=2*(q.x*q.y-q.z*q.w);out.v[2]=2*(q.x*q.z+q.y*q.w);
  out.v[4]=2*(q.x*q.y+q.z*q.w);out.v[5]=1-2*(q.x*q.x+q.z*q.z);out.v[6]=2*(q.y*q.z-q.x*q.w);
  out.v[8]=2*(q.x*q.z-q.y*q.w);out.v[9]=2*(q.y*q.z+q.x*q.w);out.v[10]=1-2*(q.x*q.x+q.y*q.y);
+ Matrix rotation=out;
+ for(int c=0;c<3;++c)for(int r=0;r<3;++r){out.v[c*4+r]=0;for(int k=0;k<3;++k)out.v[c*4+r]+=rotation.v[k*4+r]*(stretchA.v[c*4+k]+(stretchB.v[c*4+k]-stretchA.v[c*4+k])*t);}
  for(int i=12;i<15;++i)out.v[i]=a.v[i]+(b.v[i]-a.v[i])*t;
 }
 Matrix multiply(const Matrix& a,const Matrix& b){Matrix o{};for(int c=0;c<4;++c)for(int r=0;r<4;++r)for(int k=0;k<4;++k)o.v[c*4+r]+=a.v[k*4+r]*b.v[c*4+k];return o;}
