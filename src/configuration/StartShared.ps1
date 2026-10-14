@@ -34,6 +34,14 @@ try{
  $profile=Convert-CompatibilityProfile $profile
  $cache=Join-Path $runtimeRoot 'cache'
  if(-not (Test-Path -LiteralPath $cache)){New-Item -ItemType Directory -Path $cache | Out-Null}
+ # The native launcher requires a fresh log; the shared mutex owns this cache.
+ # Verify-only must not destroy the previous session's diagnostic log.
+ $log=Join-Path $cache 'profile.log'
+ if(-not $VerifyOnly -and (Test-Path -LiteralPath $log)){
+  $item=Get-Item -LiteralPath $log -Force
+  if($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)){throw 'Unexpected shared log path type'}
+  Remove-Item -LiteralPath $log -Force -ErrorAction Stop
+ }
  [IO.File]::WriteAllBytes((Join-Path $cache 'profile.bin'),$profile)
  [IO.File]::WriteAllBytes($ini,[IO.File]::ReadAllBytes((Join-Path $runtimeRoot ('config/profiles/'+$settings.display_profile+'.ini'))))
  $env:MC_MOTION60_COMPLETE=if($settings.motion60){'1'}else{'0'}
@@ -41,7 +49,7 @@ try{
  $env:MC_FREE_VIEW=if($selected.camera){'1'}else{'0'}
  $env:MC_MAP_OVERLAY=if($selected.maps){'1'}else{'0'}
  $env:MC_MAP_ASSETS=if($selected.maps){Join-Path $runtimeRoot 'maps'}else{''}
- $args=@('--workspace',$game,'--shim',(Join-Path $runtimeRoot ('modules/'+$module+'.dll')),'--profile',(Join-Path $cache 'profile.bin'),'--log',(Join-Path $cache 'profile.log'),'--native-text-step','--system-messages','--focus-guard','--display-profile',$settings.display_profile)
+ $args=@('--workspace',$game,'--shim',(Join-Path $runtimeRoot ('modules/'+$module+'.dll')),'--profile',(Join-Path $cache 'profile.bin'),'--log',$log,'--native-text-step','--system-messages','--focus-guard','--display-profile',$settings.display_profile)
  if($settings.native_gamepad){$args+='--native-gamepad'}elseif($selected.maps -or $selected.camera){$args+='--input-passthrough'}
  if($selected.texture){$args+='--texture-lifetime'}
  if($VerifyOnly){$args+='--verify-only'}

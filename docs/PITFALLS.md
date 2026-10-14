@@ -128,3 +128,7 @@ modelview→actorWorld链路必须验证往返误差和静止人物不漂移，�
 比较输入字段前后坐标时，必须确认控制器消费者写回的整数值，否则方向焦点
 与连续右摇杆会被自己的上一帧提交阻断。既要覆盖“自己写入→下一次实际轮询”，
 也要保留真正不同坐标的鼠标优先、持续偏转阻断及回中接管。见 `GAMEPAD_CURSOR_OWNERSHIP.md`。
+
+## Shared launcher log reuse (2026-10-14)
+
+Verified: StartShared reused cache/profile.log, while workspace_launcher refuses an existing log. Its verify-only branch returns before that check, so engine hash preflight did not prove launch readiness. The shared entry now removes only that single prior session log under the existing session mutex and running-game exclusion, before real launch. Verify-only preserves it. Directories and reparse points are rejected; other logs, saves and game assets are untouched. Repeated-cache tests execute the actual PowerShell preparation block without launching the game. Game startup remains manual acceptance.

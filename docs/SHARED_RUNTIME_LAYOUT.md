@@ -73,3 +73,7 @@ python -m unittest discover -s tests
 `build/`、`dist/`及唯一游戏目录中废弃的旧入口、session、备份运行目录。
 不建立另一份全量备份。删除后的旧副本及调试证据不可从本机恢复；
 源码历史仍在GitHub，必要的构建输入和当前数据留在新布局。
+
+## Shared launcher log reuse (2026-10-14)
+
+Verified: StartShared reused cache/profile.log, while workspace_launcher refuses an existing log. Its verify-only branch returns before that check, so engine hash preflight did not prove launch readiness. The shared entry now removes only that single prior session log under the existing session mutex and running-game exclusion, before real launch. Verify-only preserves it. Directories and reparse points are rejected; other logs, saves and game assets are untouched. Repeated-cache tests execute the actual PowerShell preparation block without launching the game. Game startup remains manual acceptance.
