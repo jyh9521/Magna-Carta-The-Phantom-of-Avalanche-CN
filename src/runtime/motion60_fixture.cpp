@@ -167,6 +167,29 @@ int main(){
  aggregate.clock(2,1,true,false,121985,0);require(!aggregate.take(121985,window),"diagnostics stop after 120 reports");
  aggregate.reset();aggregate.clock(1,0,false,true,0,0);require(aggregate.take(1000,window)&&window.draws==0&&window.owners==0,"diagnostic reset clears evidence and budget");
  motion60TestDiagnosticLogger(nullptr);
+ require(motion60TestTimerPatch(image,false)&&motion60TestTimerPatch(image,true),"history capacity fixture starts clean guarded timer generation");
+ static BYTE historyObjects[129][0x100];static MotionMatrix historyInputs[129];
+ motion60TestTick(0,0,4000);
+ for(unsigned n=0;n<128;++n){
+  *reinterpret_cast<BYTE**>(historyObjects[n]+0xa0)=action;*reinterpret_cast<MotionMatrix**>(historyObjects[n]+0xf0)=&historyInputs[n];
+  historyInputs[n]=identity(float(n));motion60TestPrepareHistory(historyObjects[n],0);
+ }
+ historyInputs[127]=identity(900);motion60TestPrepareHistory(historyObjects[127],0);
+ require(historyInputs[127].v[12]==127,"history capacity retains live same-tick transition input");
+ *reinterpret_cast<BYTE**>(historyObjects[128]+0xa0)=action;*reinterpret_cast<MotionMatrix**>(historyObjects[128]+0xf0)=&historyInputs[128];
+ historyInputs[128]=identity(800);motion60TestPrepareHistory(historyObjects[128],0);
+ historyInputs[128]=identity(900);motion60TestPrepareHistory(historyObjects[128],0);
+ require(historyInputs[128].v[12]==900,"all-live same-tick capacity falls back without stealing another actor input");
+ historyInputs[127]=identity(999);motion60TestPrepareHistory(historyObjects[127],0);
+ require(historyInputs[127].v[12]==127,"capacity pressure cannot evict current-tick replay history");
+ motion60TestTick(1,0,4033);*reinterpret_cast<BYTE**>(historyObjects[128]+0xa0)=action;
+ *reinterpret_cast<MotionMatrix**>(historyObjects[128]+0xf0)=&historyInputs[128];historyInputs[128]=identity(800);
+ motion60TestPrepareHistory(historyObjects[128],0);historyInputs[128]=identity(900);motion60TestPrepareHistory(historyObjects[128],0);
+ require(historyInputs[128].v[12]==800,"expired history capacity must admit new actor and replay same-tick transition input");
+ for(unsigned n=0;n<127;++n)motion60TestPrepareHistory(historyObjects[n],0);
+ motion60TestTick(0,0,5000);historyInputs[127]=identity(700);motion60TestPrepareHistory(historyObjects[127],0);
+ historyInputs[127]=identity(999);motion60TestPrepareHistory(historyObjects[127],0);
+ require(historyInputs[127].v[12]==700,"new clock generation reclaims old scene histories without replaying old poses");
  require(motion60TestTimerPatch(image,false),"complete timer rollback");require(!memcmp(image+0xcf61,timerBytes,6),"complete timer exact rollback");
  image[0xcf61]^=1;require(!motion60TestTimerPatch(image,true),"unknown timer rejects");image[0xcf61]^=1;
  require(motion60TestDriverSet(driverImage,false),"camera rollback");require(*loadSlot==oldLoad&&*mulSlot==oldMul,"camera exact slots restored");require(motion60TestDriverSet(driverImage,false),"camera rollback idempotent");

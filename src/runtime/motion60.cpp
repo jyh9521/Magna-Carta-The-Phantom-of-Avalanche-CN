@@ -93,7 +93,15 @@ void prepareHistory(void* value,int frame){
  if(!readable(record,8))return;auto data=*reinterpret_cast<BYTE**>(record+4);
  if(!readable(data,0x18))return;unsigned count=*reinterpret_cast<unsigned*>(data+0x14);
  if(!count||count>512||!readable(buffer,count*sizeof(Matrix)))return;
- if(histories.find(value)==histories.end()&&histories.size()>=128)return;
+ if(histories.find(value)==histories.end()&&histories.size()>=128){
+  // Only same-tick input is replayable. Prior-tick/scene records are obsolete,
+  // not permanently reserved capacity for actors that are no longer visible.
+  for(auto i=histories.begin();i!=histories.end();){
+   if(i->second.phase.generation!=phase.generation||i->second.phase.tick!=phase.tick)i=histories.erase(i);
+   else ++i;
+  }
+  if(histories.size()>=128)return; // Retain every still-live same-tick input.
+ }
  auto& h=histories[value];
  bool repeat=h.action==action&&h.buffer==buffer&&h.input.size()==count
   &&h.phase.generation==phase.generation&&h.phase.tick==phase.tick;
@@ -329,6 +337,7 @@ void motion60TestComplete(BYTE* p,bool enabled){engineBase=p;complete=enabled;ti
 void motion60TestFreeView(bool enabled,bool toggle,bool reset,float yaw,float dt){freeView=enabled;freeFixture=true;freeFixtureInput={toggle,reset,yaw,0,0,dt};}
 void motion60TestTick(unsigned consumed,unsigned remainder,unsigned timestamp){timeline.observe(1,33,remainder,consumed,timestamp,true);cameraState.valid=false;}
 void motion60TestDiagnosticLogger(void(*logger)(const wchar_t*)){trace=logger;diagnostics.reset();}
+void motion60TestPrepareHistory(void* object,int frame){prepareHistory(object,frame);}
 void motion60TestCamera(void* d,MotionMatrix* m,void(__thiscall* f)(void*,MotionMatrix*)){cameraMatrix(d,reinterpret_cast<Matrix*>(m),reinterpret_cast<LoadMatrix>(f));}
 bool motion60TestTimerPatch(BYTE* p,bool enabled){return timerPatch(p,enabled);}
 bool motion60TestDriverSet(BYTE* p,bool enabled){return setDriver(p,enabled,nullptr);}
