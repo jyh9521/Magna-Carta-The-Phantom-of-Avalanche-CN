@@ -10,5 +10,7 @@ public:
     CursorPoint update(int physicalX,int physicalY,int16_t rightX,int16_t rightY,
                        unsigned elapsed,int width,int height,bool eligible);
     void focus(float x,float y,int width,int height);
+    // Caller acknowledges only values it actually wrote to the game's cursor fields.
+    void acknowledgeWrite(int x,int y){physicalX_=x;physicalY_=y;}
 };
 }

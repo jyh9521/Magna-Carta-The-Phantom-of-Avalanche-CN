@@ -39,6 +39,10 @@ bool readable(const void* a,size_t n){
  auto p=reinterpret_cast<ULONG_PTR>(a),end=p+n;if(!p||end<p)return false;
  while(p<end){MEMORY_BASIC_INFORMATION m{};if(!VirtualQuery(reinterpret_cast<void*>(p),&m,sizeof(m))||m.State!=MEM_COMMIT||(m.Protect&(PAGE_GUARD|PAGE_NOACCESS)))return false;auto next=reinterpret_cast<ULONG_PTR>(m.BaseAddress)+m.RegionSize;if(next<=p)return false;p=next;}return true;
 }
+void writeControllerCursor(int x,int y){
+ *reinterpret_cast<int*>(engine+0xf20b0)=x;*reinterpret_cast<int*>(engine+0xf20a8)=y;
+ realMouseX=x;realMouseY=y;realMouseKnown=true;controllerCursor.acknowledgeWrite(x,y);
+}
 bool orbitKeyboard(PBYTE keys,bool focused){
  if(!focused||!worldScope||!engine||!keys||!(0x80&(keys[VK_UP]|keys[VK_DOWN]|keys[VK_LEFT]|keys[VK_RIGHT]))||(keys[VK_LBUTTON]&0x80))return false;
  auto cam=*reinterpret_cast<BYTE**>(engine+0xf2290);float displayed[16];
@@ -137,7 +141,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
         bool mouseMoved=realMouseKnown&&(*x!=realMouseX||*y!=realMouseY);realMouseKnown=true;realMouseX=*x;realMouseY=*y;
         if(mouseMoved)navMouseBlocked=true;if(!(frame.held&15))navMouseBlocked=false;
         auto point=controllerCursor.update(*x,*y,sample.rx,sample.ry,elapsed,w,h,frame.armed&&focused);
-        if(point.owned){*x=static_cast<int>(point.x);*y=static_cast<int>(point.y);}
+        if(point.owned)writeControllerCursor(static_cast<int>(point.x),static_cast<int>(point.y));
         navigation={frame.held&15,(frame.held&15)&~navHeld,++inputSerial,now,
                     frame.armed&&focused&&!worldScope&&!keyboardDirection&&!navMouseBlocked
                     &&std::abs(int(sample.rx))<8689&&std::abs(int(sample.ry))<8689
@@ -178,7 +182,7 @@ bool modernGamepadConsumeInteraction(){bool value=worldScope&&pendingInteraction
 modern_input::MoveIntent modernGamepadMoveIntent(){return worldScope?movement:modern_input::MoveIntent{};}
 unsigned modernGamepadMapButtons(){return static_cast<unsigned>(InterlockedCompareExchange(&mapPadButtons,0,0));}
 GamepadNavigation modernGamepadNavigation(){return navigation;}
-void modernGamepadFocusCursor(float x,float y){if(!nativeRouting||!engine||!navigation.active)return;int w=*reinterpret_cast<int*>(engine+0xf1b48),h=*reinterpret_cast<int*>(engine+0xf1b4c);controllerCursor.focus(x,y,w,h);*reinterpret_cast<int*>(engine+0xf20b0)=static_cast<int>(x);*reinterpret_cast<int*>(engine+0xf20a8)=static_cast<int>(y);}
+void modernGamepadFocusCursor(float x,float y){if(!nativeRouting||!engine||!navigation.active)return;int w=*reinterpret_cast<int*>(engine+0xf1b48),h=*reinterpret_cast<int*>(engine+0xf1b4c);controllerCursor.focus(x,y,w,h);writeControllerCursor(static_cast<int>(x),static_cast<int>(y));}
 
 #ifdef MODERN_INPUT_TEST
 void configureModernGamepadFixture(BOOL(WINAPI* keyboard)(PBYTE),DWORD(WINAPI* controller)(DWORD,XINPUT_STATE*),bool front) {
