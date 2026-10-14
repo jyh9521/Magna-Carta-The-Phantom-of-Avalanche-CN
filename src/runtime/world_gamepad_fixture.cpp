@@ -8,12 +8,12 @@
 #include <cmath>
 static BYTE* image=nullptr;static BYTE world[0x15c4],actor[0x340],gui[0x194],cameraData[0xc0];
 static int physicalX=0,physicalY=0;static DWORD controllerSlot=0;
-static bool connected=true,physical=false,rawUp=false,physicalMouseDown=false;static SHORT axisX=0,axisY=0,rightX=0;static WORD buttons=0;static int checks=0,forwardCalls=0,turnCalls=0,interactions=0;static int observations=0;static bool observationControlled=false;
+static bool connected=true,physical=false,rawUp=false,physicalMouseDown=false,physicalRightDown=false;static SHORT axisX=0,axisY=0,rightX=0;static WORD buttons=0;static int checks=0,forwardCalls=0,turnCalls=0,interactions=0;static int observations=0;static bool observationControlled=false;
 void require(bool,const char*);
 int __fastcall interaction(void* s,void*,void* g,unsigned event){require(s==world&&g==gui&&event==0x11,"interaction uses native scene and GUI event");++interactions;if(*reinterpret_cast<int*>(world+0x15b8))*reinterpret_cast<int*>(world+0x15bc)=1;return 0;}
 void observe(BYTE* s,bool controlled){if(s==world){++observations;observationControlled=controlled;}}
 void require(bool v,const char* s){++checks;if(!v){fprintf(stderr,"FAIL %s\n",s);ExitProcess(1);}}
-BOOL WINAPI keyboard(PBYTE keys){*reinterpret_cast<int*>(image+0xf20b0)=physicalX;*reinterpret_cast<int*>(image+0xf20a8)=physicalY;memset(keys,0,256);keys[VK_SPACE]=1;if(rawUp)keys[VK_UP]=0x80;if(physical)keys[VK_LEFT]=0x80;if(physicalMouseDown)keys[VK_LBUTTON]=0x80;return TRUE;}
+BOOL WINAPI keyboard(PBYTE keys){*reinterpret_cast<int*>(image+0xf20b0)=physicalX;*reinterpret_cast<int*>(image+0xf20a8)=physicalY;memset(keys,0,256);keys[VK_SPACE]=1;if(rawUp)keys[VK_UP]=0x80;if(physical)keys[VK_LEFT]=0x80;if(physicalMouseDown)keys[VK_LBUTTON]=0x80;if(physicalRightDown)keys[VK_RBUTTON]=0x80;return TRUE;}
 DWORD WINAPI poll(DWORD slot,XINPUT_STATE* s){if(slot!=controllerSlot||!connected)return ERROR_DEVICE_NOT_CONNECTED;*s={};s->Gamepad.sThumbLX=axisX;s->Gamepad.sThumbLY=axisY;s->Gamepad.sThumbRX=rightX;s->Gamepad.wButtons=buttons;return ERROR_SUCCESS;}
 void __fastcall clearNativePress(void* button,void*){*reinterpret_cast<int*>(static_cast<BYTE*>(button)+0x19c)=0;}
 void __fastcall heading(void* p,void*,float x,float y,float z){++turnCalls;auto d=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x148);d[0]=x;d[1]=y;d[2]=z;}
@@ -27,6 +27,13 @@ int __fastcall titleListener(void* listener,void*,void* sender,unsigned event,un
  switch(id){case 0x16c:command=6;break;case 0x16d:command=7;break;case 0x16e:command=9;break;case 0x16f:command=11;break;default:return 0;}
  // Record the source listener's transition request, not execute a game task.
  require(titleRequests<8,"owned title command recording remains bounded");titleCommands[titleRequests++]=command;return 0;
+}
+static int rightReleases=0,worldMenuRequests=0;
+void __fastcall rightReleased(void* widget,void*){
+ ++rightReleases;
+ // Source-shaped 80932 -> 6e6d8 event 40 -> 6e246 request 5.
+ // Record the mode request; do not execute commercial scene transition tasks.
+ if(widget==gui&&*reinterpret_cast<int*>(gui+4)==0x42&&*reinterpret_cast<int*>(gui+0x190)==1){++worldMenuRequests;*reinterpret_cast<int*>(world+0x156c)=5;}
 }
 void emitMenuEvent(void* widget,unsigned event){
  auto listener=*reinterpret_cast<BYTE**>(static_cast<BYTE*>(widget)+0x17c);if(!listener)return;
@@ -52,6 +59,8 @@ int replayMouse(BYTE* root){
  if(state>0)reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(table+0x18c))(root);
  if(state==0)reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(table+0x190))(root);
  if(state==-1)reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(table+0x194))(root);
+ auto rightState=*reinterpret_cast<int*>(image+0xf1c9c+VK_RBUTTON*4);
+ if(rightState==-1)reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(table+0x1a4))(root);
  return 1;
 }
 void replayMenuInput(){
@@ -152,6 +161,7 @@ int main(int argc,char** argv){
  auto menuVt=image+0xbee80;auto titleVt=image+0xc2340;constexpr unsigned arrowMethods[]={0x55f0a,0x55f23,0x55f3c,0x55f55};
  for(unsigned n=0;n<4;++n)*reinterpret_cast<DWORD*>(menuVt+0xc8+n*4)=reinterpret_cast<DWORD>(image+arrowMethods[n]);
  *reinterpret_cast<DWORD*>(menuVt+0x188)=reinterpret_cast<DWORD>(&menuPressed);*reinterpret_cast<DWORD*>(menuVt+0x18c)=reinterpret_cast<DWORD>(&menuHeld);*reinterpret_cast<DWORD*>(menuVt+0x190)=reinterpret_cast<DWORD>(&menuIdleEvent);*reinterpret_cast<DWORD*>(menuVt+0x194)=reinterpret_cast<DWORD>(&menuReleased);
+ *reinterpret_cast<DWORD*>(menuVt+0x1a4)=reinterpret_cast<DWORD>(&rightReleased);
  auto menuWidget=[&](BYTE* widget){*reinterpret_cast<BYTE**>(widget)=menuVt;*reinterpret_cast<int*>(widget+0x160)=*reinterpret_cast<int*>(widget+0xe8)=1;*reinterpret_cast<BYTE**>(widget+0x17c)=menuRoot;};
  menuWidget(menuRoot);*reinterpret_cast<BYTE**>(menuRoot)=titleVt;*reinterpret_cast<DWORD*>(titleVt+0x24)=reinterpret_cast<DWORD>(&titleListener);*reinterpret_cast<BYTE**>(menuRoot+0x18)=menuWidgets[0];
  for(int n=0;n<4;++n){menuWidget(menuWidgets[n]);*reinterpret_cast<int*>(menuWidgets[n]+4)=0x16c+n;*reinterpret_cast<int**>(menuNodes[n])=menuRects[n];*reinterpret_cast<BYTE**>(menuWidgets[n]+0x100)=menuNodes[n];if(n<3)*reinterpret_cast<BYTE**>(menuWidgets[n]+0x10)=menuWidgets[n+1];}
@@ -187,7 +197,7 @@ int main(int argc,char** argv){
  // A physical left button remains authoritative when the controller disconnects.
  physicalX=400;physicalY=420;buttons=XINPUT_GAMEPAD_A;run();physicalMouseDown=true;run();
  const unsigned beforePhysicalRelease=titleRequests;connected=false;run();require(titleRequests==beforePhysicalRelease,"physical held mouse is not released by controller cancellation");
- physicalMouseDown=false;buttons=0;run();require(titleRequests==beforePhysicalRelease+1,"real physical mouse release still reaches native title listener");
+ physicalMouseDown=false,physicalRightDown=false;buttons=0;run();require(titleRequests==beforePhysicalRelease+1,"real physical mouse release still reaches native title listener");
  connected=true;run();buttons=0;run();
  buttons=XINPUT_GAMEPAD_A;run();const unsigned beforeSwitch=titleRequests;
  controllerSlot=1;run();require(titleRequests==beforeSwitch,"replacement controller cannot release-confirm the previous controller press");
@@ -195,6 +205,26 @@ int main(int argc,char** argv){
  buttons=0;run();buttons=XINPUT_GAMEPAD_A;run();buttons=0;run();require(titleRequests==beforeSwitch+1,"replacement controller confirms only after neutral rearm and fresh press");
  controllerSlot=0;buttons=0;run();run();
  printf("GAMEPAD_DISCONNECT_REPLAY PASS synthetic_release=cancelled device_switch=cancelled visual_press=cleared physical_release=preserved neutral_rearm=true focus_path=unchanged game_started=false\n");
+ // Menu B must release once deliberately, never because a controller disappeared.
+ buttons=0;run();int rightBefore=rightReleases;buttons=XINPUT_GAMEPAD_B;run();
+ require(rightReleases==rightBefore,"B press does not prematurely dispatch native right release");
+ connected=false;buttons=0;run();require(rightReleases==rightBefore,"disconnect while B held must cancel right release instead of returning menu");
+ connected=true;buttons=XINPUT_GAMEPAD_B;run();run();require(rightReleases==rightBefore,"reconnect held B must not return menu");
+ buttons=0;run();buttons=XINPUT_GAMEPAD_B;run();buttons=0;run();require(rightReleases==rightBefore+1,"fresh B deliberate release retains native return event");
+ buttons=XINPUT_GAMEPAD_B;run();controllerSlot=2;buttons=0;run();require(rightReleases==rightBefore+1,"controller replacement while B held cancels return event");
+ run();buttons=XINPUT_GAMEPAD_B;run();physicalRightDown=true;run();connected=false;buttons=0;run();
+ require(rightReleases==rightBefore+1,"physical right mouse remains held when controller disappears");
+ physicalRightDown=false;run();require(rightReleases==rightBefore+2,"physical right mouse deliberate release is preserved");
+ connected=true;controllerSlot=0;buttons=0;run();run();
+ // Exploration uses the same original right-release to request field mode 5.
+ *reinterpret_cast<BYTE**>(gui)=menuVt;*reinterpret_cast<int*>(gui+0x190)=1;
+ *reinterpret_cast<int*>(gui+0xe8)=*reinterpret_cast<int*>(gui+0x160)=1;
+ BYTE worldNode[8]{};int worldRect[]={0,0,800,600};*reinterpret_cast<int**>(worldNode)=worldRect;*reinterpret_cast<BYTE**>(gui+0x100)=worldNode;
+ replayMenu=gui;buttons=XINPUT_GAMEPAD_START;run();require(worldMenuRequests==0,"Start press waits for source right-release event");
+ connected=false;buttons=0;run();require(worldMenuRequests==0,"disconnect while Start held must not request field menu mode 5");
+ connected=true;buttons=0;run();run();buttons=XINPUT_GAMEPAD_START;run();buttons=0;run();
+ require(worldMenuRequests==1&&*reinterpret_cast<int*>(world+0x156c)==5,"deliberate Start release requests source field menu mode 5 once");run();require(worldMenuRequests==1,"idle cannot repeat field menu request");
+ printf("GAMEPAD_CANCEL_RELEASE_REPLAY PASS menu_B=deliberate_release device_loss=cancelled device_switch=cancelled physical_right=preserved world_Start=mode5 release_event=40 transition_executor=not_run game_started=false\n");
  replayMenu=nullptr;*reinterpret_cast<int*>(gui+0x190)=1;
  buttons=0;require(removeModernGamepad(reinterpret_cast<HMODULE>(image)),"integrated rollback");require(*iat==oldIat&&*reinterpret_cast<DWORD*>(image+0xc12c0)==reinterpret_cast<DWORD>(image+0x6b2d8)&&*reinterpret_cast<DWORD*>(image+0xc1258)==reinterpret_cast<DWORD>(image+0x652b4),"all three original slots restored");
  image[0x6e77e]^=1;require(!installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"unknown movement callsite rejects");image[0x6e77e]^=1;

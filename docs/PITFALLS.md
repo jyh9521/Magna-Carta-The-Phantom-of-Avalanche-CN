@@ -164,3 +164,7 @@ Temporary object-screen projection can load the prior camera before native refre
 ## Release-only menu actions and controller cancellation
 
 Do not equate disappearing synthetic pressed input with a deliberate release: native title buttons execute actions on release. Preserve raw physical mouse ownership before merging controller keys; clear only synthetic counter/visual state on device loss or replacement. A zero counter alone prevents the action but leaves the native pressed visual stuck; use the verified no-listener visual helper for supported widgets. Focus behavior is separate and unchanged. See GAMEPAD_DISCONNECT_CONFIRM.md.
+
+### Controller cancellation must cover both mouse buttons
+
+Canceling only synthetic left presses does not protect native right-release menu actions. B/Start disconnection can dispatch event40 even when the user did not deliberately release. Replay the original counters for both buttons and separately preserve raw physical ownership. Do not apply left-button visual cleanup to right callbacks without source evidence. See GAMEPAD_CANCEL_RELEASE.md.

@@ -29,7 +29,7 @@ thread_local modern_input::MoveIntent movement;
 thread_local bool pendingInteraction=false;
 modern_input::Cursor controllerCursor;DWORD cursorTime=0;
 GamepadNavigation navigation;DWORD inputSerial=0;unsigned navHeld=0;WORD lastButtons=0;
-bool syntheticLeftOwned=false;unsigned syntheticLeftDevice=0xffffffff;volatile LONG cancelMenuPress=0;
+bool syntheticLeftOwned=false,syntheticRightOwned=false;unsigned syntheticLeftDevice=0xffffffff;volatile LONG cancelMenuPress=0;
 bool realMouseKnown=false,navMouseBlocked=false;int realMouseX=0,realMouseY=0;unsigned triggerHeld=0;DWORD triggerTime=0;
 void(*inputTrace)(const wchar_t*)=nullptr;DWORD traceTime=0;
 #ifdef MODERN_INPUT_TEST
@@ -60,6 +60,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     BOOL ok=original(keys);
     if(returnAddress!=caller)return ok;
     const bool physicalLeft=ok&&(keys[VK_LBUTTON]&0x80);
+    const bool physicalRight=ok&&(keys[VK_RBUTTON]&0x80);
     InterlockedExchange(&cancelMenuPress,0);
     InterlockedExchange(&mapPadButtons,0);
     if(mapReservedKeys&&!worldScope)notifyWorldTickObserver(nullptr,false);
@@ -101,7 +102,13 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
         auto counter=reinterpret_cast<int*>(engine+0xf1c9c+VK_LBUTTON*sizeof(int));
         if(readable(counter,sizeof(int))){*counter=0;InterlockedExchange(&cancelMenuPress,1);}
     }
-    syntheticLeftOwned=false;
+    if(ok&&nativeRouting&&syntheticRightOwned&&!physicalRight&&(!sample.connected||sample.device!=syntheticLeftDevice)){
+        // B/Start use native right-button release for return/open. Device loss
+        // cancels that owned press, not the physical mouse or deliberate release.
+        auto counter=reinterpret_cast<int*>(engine+0xf1c9c+VK_RBUTTON*sizeof(int));
+        if(readable(counter,sizeof(int)))*counter=0;
+    }
+    syntheticLeftOwned=syntheticRightOwned=false;
     auto frame=router.update(sample,ok!=FALSE,focused);int titlePhase=-1;
     if(ok&&mapReservedKeys&&nativeRouting&&worldScope&&frame.armed&&focused)InterlockedExchange(&mapPadButtons,((sample.buttons&XINPUT_GAMEPAD_BACK)?1:0)|((sample.buttons&XINPUT_GAMEPAD_RIGHT_THUMB)?2:0));
     if(ok&&nativeRouting){
@@ -148,7 +155,8 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
             if(sample.buttons&XINPUT_GAMEPAD_Y)keys[VK_TAB]|=0x80;
         }
         syntheticLeftOwned=frame.armed&&focused&&!worldScope&&clicksAllowed&&!physicalLeft&&(keys[VK_LBUTTON]&0x80);
-        if(syntheticLeftOwned)syntheticLeftDevice=sample.device;
+        syntheticRightOwned=frame.armed&&focused&&!physicalRight&&(keys[VK_RBUTTON]&0x80);
+        if(syntheticLeftOwned||syntheticRightOwned)syntheticLeftDevice=sample.device;
         DWORD now=GetTickCount();unsigned elapsed=cursorTime?now-cursorTime:0;cursorTime=now;
         int w=*reinterpret_cast<int*>(engine+0xf1b48),h=*reinterpret_cast<int*>(engine+0xf1b4c);
         auto x=reinterpret_cast<int*>(engine+0xf20b0),y=reinterpret_cast<int*>(engine+0xf20a8);
@@ -254,5 +262,5 @@ bool removeModernGamepad(HMODULE module){
     if(nativeRouting&&!removeGamepadUi(module)){installWorldGamepad(module,nullptr);return false;}
     DWORD old;if(!VirtualProtect(slot,4,PAGE_READWRITE,&old)){if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}*slot=originalIat;DWORD ignored;
     if(!VirtualProtect(slot,4,old,&ignored)){*slot=reinterpret_cast<DWORD>(&keyboardBridge);VirtualProtect(slot,4,old,&ignored);if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}
-    router=modern_input::Router();worldScope=false;movement={};syntheticLeftOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
+    router=modern_input::Router();worldScope=false;movement={};syntheticLeftOwned=syntheticRightOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
 }
