@@ -1,5 +1,7 @@
 # 配置工具接回共享运行入口（2026-10-15）
 
+入口预检对游戏显示 INI 的临时切换和恢复见 [配置预检事务](CONFIGURATION_VERIFY_TRANSACTION.md)；预检仍更新 cache 诊断文件，不等于零磁盘写入。
+
 ## Verified
 
 迁移后活动 `runtime/config/Configure.ps1` 仍尝试启动同目录 `StartEnhanced.ps1`，而共享目录中没有该文件。直接以 `-File runtime/config/StartEnhanced.ps1 -VerifyOnly` 调用实际返回 -196608，提示文件不存在；没有启动游戏。先前仅检查控件值的隐藏表单自检未覆盖这个连接。

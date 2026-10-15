@@ -44,7 +44,7 @@ try{
   Remove-Item -LiteralPath $log -Force -ErrorAction Stop
  }
  [IO.File]::WriteAllBytes((Join-Path $cache 'profile.bin'),$profile)
- [IO.File]::WriteAllBytes($ini,[IO.File]::ReadAllBytes((Join-Path $runtimeRoot ('config/profiles/'+$settings.display_profile+'.ini'))))
+ Invoke-EnhancementDisplayTransaction $ini ([IO.File]::ReadAllBytes((Join-Path $runtimeRoot ('config/profiles/'+$settings.display_profile+'.ini')))) ([bool]$VerifyOnly) {
  $env:MC_MOTION60_COMPLETE=if($settings.motion60){'1'}else{'0'}
  $env:MC_TITLE_BACKGROUND4K='1'
  $env:MC_FREE_VIEW=if($selected.camera){'1'}else{'0'}
@@ -58,6 +58,7 @@ try{
  $code=$LASTEXITCODE
  if($code -ne 0){throw ('Shared launcher exit='+$code+'; see runtime/cache')}
  Write-Output ('SHARED_RUNTIME PASS recipe='+$Recipe+' module='+$module+' verify_only='+[bool]$VerifyOnly+' data='+$game)
+ }
 }finally{
  foreach($key in $environment.Keys){[Environment]::SetEnvironmentVariable($key,$environment[$key],'Process')}
  $mutex.ReleaseMutex();$mutex.Dispose()

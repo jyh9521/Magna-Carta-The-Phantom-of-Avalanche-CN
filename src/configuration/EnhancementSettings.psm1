@@ -50,4 +50,34 @@ function Get-EnhancementLaunchSpec([string]$ConfigDirectory,[string]$SettingsFil
  if($VerifyOnly){$parameters+='-VerifyOnly'}
  [pscustomobject]@{Entry=$entry;Arguments=$parameters;LogPath=$log;Layout=$layout}
 }
-Export-ModuleMember -Function New-EnhancementSettings,Test-EnhancementSettings,Read-EnhancementSettings,Write-EnhancementSettings,Get-EnhancementLaunchSpec
+function Get-EnhancementByteHash([byte[]]$Bytes) {
+ $hash=[Security.Cryptography.SHA256]::Create()
+ try{([BitConverter]::ToString($hash.ComputeHash($Bytes))).Replace('-','')}finally{$hash.Dispose()}
+}
+function Write-EnhancementBytesAtomic([string]$Path,[byte[]]$Bytes) {
+ $item=Get-Item -LiteralPath $Path -Force -ErrorAction Stop
+ if($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)){throw 'Unexpected display configuration path type'}
+ $temporary=Join-Path (Split-Path -Parent $Path) ('enhancement-'+[guid]::NewGuid().ToString('N')+'.tmp')
+ try{
+  [IO.File]::WriteAllBytes($temporary,$Bytes)
+  [IO.File]::Replace($temporary,$Path,[NullString]::Value)
+ }finally{if(Test-Path -LiteralPath $temporary){Remove-Item -LiteralPath $temporary -ErrorAction Stop}}
+}
+function Invoke-EnhancementDisplayTransaction([string]$Path,[byte[]]$Candidate,[bool]$Restore,[scriptblock]$Action) {
+ $path=[IO.Path]::GetFullPath($Path)
+ if($null -eq $Candidate -or $Candidate.Length -eq 0 -or $null -eq $Action){throw 'Display candidate and action are required'}
+ $original=[IO.File]::ReadAllBytes($path);$originalHash=Get-EnhancementByteHash $original
+ $candidateHash=Get-EnhancementByteHash $Candidate
+ Write-EnhancementBytesAtomic $path $Candidate
+ try{& $Action}finally{
+  if($Restore){
+   if(-not (Test-Path -LiteralPath $path -PathType Leaf)){throw 'Display configuration changed during verification'}
+   $currentHash=Get-EnhancementByteHash ([IO.File]::ReadAllBytes($path))
+   if($currentHash -ne $originalHash){
+    if($currentHash -ne $candidateHash){throw 'Display configuration changed during verification; preserving external edit'}
+    Write-EnhancementBytesAtomic $path $original
+   }
+  }
+ }
+}
+Export-ModuleMember -Function New-EnhancementSettings,Test-EnhancementSettings,Read-EnhancementSettings,Write-EnhancementSettings,Get-EnhancementLaunchSpec,Invoke-EnhancementDisplayTransaction
