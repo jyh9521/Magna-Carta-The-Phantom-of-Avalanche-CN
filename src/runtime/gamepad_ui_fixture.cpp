@@ -27,11 +27,16 @@ int main(){
  // reads list+8; a nonzero count must never be mistaken for a node pointer.
  for(int i=0;i<3;++i){init(widgets[i]);*reinterpret_cast<unsigned*>(widgets[i]+4)=0x200+i;*reinterpret_cast<int**>(nodes[i])=rects[i];*reinterpret_cast<int*>(widgets[i]+0xf8)=1;*reinterpret_cast<BYTE**>(widgets[i]+0x100)=nodes[i];if(i<2)*reinterpret_cast<BYTE**>(widgets[i]+0x10)=widgets[i+1];}
  *reinterpret_cast<int*>(image+0xf1b48)=800;*reinterpret_cast<int*>(image+0xf1b4c)=600;auto x=reinterpret_cast<int*>(image+0xf20b0),y=reinterpret_cast<int*>(image+0xf20a8);*x=400;*y=300;*reinterpret_cast<BYTE**>(image+0xf220c)=manager;
+ *reinterpret_cast<DWORD*>(image+0xbe38c)=1;
+ require(!installGamepadUi(reinterpret_cast<HMODULE>(image),&capture),"unknown cursor preparation slot rejects render hook installation");
+ require(*reinterpret_cast<DWORD*>(image+0xbe380)==reinterpret_cast<DWORD>(image+0x48774),"preparation guard rejects before writing render slot");
+ *reinterpret_cast<DWORD*>(image+0xbe38c)=reinterpret_cast<DWORD>(image+0x38c24);
  auto admissionSlot=reinterpret_cast<DWORD*>(vt+0x1dc);*admissionSlot=reinterpret_cast<DWORD>(image+0x56640);
  require(!installGamepadUi(reinterpret_cast<HMODULE>(image),&capture),"unknown native admission implementation rejects before patching");
  require(*reinterpret_cast<DWORD*>(vt+0x1c8)==reinterpret_cast<DWORD>(image+0x55134),"admission guard rejection preserves original input slot");
  *admissionSlot=reinterpret_cast<DWORD>(image+0x5663f);
  require(installGamepadUi(reinterpret_cast<HMODULE>(image),&capture),"install all known classes");require(installGamepadUi(reinterpret_cast<HMODULE>(image),nullptr),"idempotence");
+ require(*reinterpret_cast<DWORD*>(image+0xbe38c)==reinterpret_cast<DWORD>(image+0x38c24),"cursor preparation must remain original while render suppression uses its own slot");
  auto invoke=[&](GamepadNavigation n){configureModernNavigationFixture(image,n);return reinterpret_cast<int(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(vt+0x1c8))(root);};
  require(invoke({2,2,1,100,true})==7&&*x==400&&*y==420,"first downward focus and original dispatcher return");
  require(focusRecords==1&&wcsstr(lastFocus,L"target_id=200")&&wcsstr(lastFocus,L"root_class=bec88")&&wcsstr(lastFocus,L"to=400,420"),"selected target identity and native coordinates must be observable, not only first-use readiness");
@@ -78,10 +83,10 @@ int main(){
  require(invokeAt(nativeRoot,{2,2,19,2400,true})==0&&*y==300,"blocked native arrow root preserves original decline and cursor");
  *reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x55f3c);originalResult=7;
  invokeAt(root,{2,2,19,2400,true});require(*y==420,"declined native arrow root cannot consume another menu direction");
- auto cursorSlot=*reinterpret_cast<DWORD*>(image+0xbe38c);*reinterpret_cast<DWORD*>(image+0xbe38c)=1;
+ auto cursorSlot=*reinterpret_cast<DWORD*>(image+0xbe380);*reinterpret_cast<DWORD*>(image+0xbe380)=1;
  require(!removeGamepadUi(reinterpret_cast<HMODULE>(image)),"unknown cursor draw slot rejects all GUI rollback before writes");
  require(*reinterpret_cast<DWORD*>(vt+0x1c8)!=reinterpret_cast<DWORD>(image+0x55134),"cursor guard rejection keeps every GUI hook installed");
- *reinterpret_cast<DWORD*>(image+0xbe38c)=cursorSlot;
+ *reinterpret_cast<DWORD*>(image+0xbe380)=cursorSlot;
  replayImage=image;inspectArrows=true;*x=400;*y=300;
  auto downCounter=reinterpret_cast<int*>(image+0xf1c9c+VK_DOWN*4);*downCounter=1;image[0xf1b94+VK_DOWN]=0x81;
  invokeAt(root,{2,2,21,2500,true});require(*y==420&&greenMoves==0,"virtual right menu navigation must not also drive native green-arrow keyboard control");
@@ -104,6 +109,7 @@ int main(){
  printf("GAMEPAD_MENU_EVIDENCE_REPLAY PASS target_identity=true native_coordinates=true click_phase=before_mouse state=unchanged limit=256 limit_notice=once game_started=false\n");
  auto changed=*reinterpret_cast<DWORD*>(image+0xc2508);*reinterpret_cast<DWORD*>(image+0xc2508)=1;require(!removeGamepadUi(reinterpret_cast<HMODULE>(image)),"unknown slot rejects whole rollback");require(*reinterpret_cast<DWORD*>(vt+0x1c8)!=reinterpret_cast<DWORD>(image+0x55134),"rejection no partial restore");*reinterpret_cast<DWORD*>(image+0xc2508)=changed;
  require(removeGamepadUi(reinterpret_cast<HMODULE>(image)),"rollback");require(*reinterpret_cast<DWORD*>(vt+0x1c8)==reinterpret_cast<DWORD>(image+0x55134),"exact original dispatcher slot");
- require(*reinterpret_cast<DWORD*>(image+0xbe38c)==reinterpret_cast<DWORD>(image+0x38c24),"exact original cursor slot restored");
+ require(*reinterpret_cast<DWORD*>(image+0xbe38c)==reinterpret_cast<DWORD>(image+0x38c24),"exact original cursor preparation slot restored");
+ require(*reinterpret_cast<DWORD*>(image+0xbe380)==reinterpret_cast<DWORD>(image+0x48774),"exact original cursor render slot restored");
  VirtualFree(image,0,MEM_RELEASE);printf("GAMEPAD_UI_FIXTURE PASS checks=%d native_rects=true directional=true modal=true original_dispatch=true rollback=exact game_started=false\n",checks);
 }

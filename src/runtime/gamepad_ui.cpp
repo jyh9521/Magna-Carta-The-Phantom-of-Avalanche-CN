@@ -153,7 +153,8 @@ int __fastcall dispatchHook(void* root,void*){
  return result;
 }
 void __fastcall cursorDrawHook(void* value,void*){
- // Only the current native cursor; other instances using this shared class draw.
+ // Suppress only actual sprite submission (+0xc), never position preparation (+0x18).
+ // Other instances of the shared sprite class keep their original drawing.
  if(value==*reinterpret_cast<void**>(engine+0xf2388)&&modernGamepadCursorHidden())return;
  originalCursorDraw(value);
 }
@@ -162,17 +163,18 @@ bool set(BYTE* p,bool enabled,void(*logger)(const wchar_t*),bool dry=false){
  if(!readable(p,0x10b000)||memcmp(p+0x55134,prefix,sizeof(prefix))||memcmp(p+0x5718f,cancelPrefix,sizeof(cancelPrefix)))return false;
  auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(p);if(dos->e_magic!=IMAGE_DOS_SIGNATURE||dos->e_lfanew<=0||dos->e_lfanew>4096)return false;
  auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+dos->e_lfanew);if(nt->Signature!=IMAGE_NT_SIGNATURE||nt->FileHeader.Machine!=IMAGE_FILE_MACHINE_I386||nt->OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR32_MAGIC||nt->OptionalHeader.SizeOfImage!=0x10b000)return false;
- if(memcmp(p+0x38c24,prefix,sizeof(prefix)))return false;
+ if(memcmp(p+0x38c24,prefix,sizeof(prefix))||memcmp(p+0x48774,cancelPrefix,sizeof(cancelPrefix)))return false;
+ if(*reinterpret_cast<DWORD*>(p+0xbe38c)!=reinterpret_cast<DWORD>(p+0x38c24))return false;
  for(auto r:slots)if(*reinterpret_cast<DWORD*>(p+r+0x14)!=reinterpret_cast<DWORD>(p+0x5663f))return false;
- DWORD drawBase=reinterpret_cast<DWORD>(p+0x38c24),drawHook=reinterpret_cast<DWORD>(&cursorDrawHook);
+ DWORD drawBase=reinterpret_cast<DWORD>(p+0x48774),drawHook=reinterpret_cast<DWORD>(&cursorDrawHook);
  DWORD base=reinterpret_cast<DWORD>(p+0x55134),hook=reinterpret_cast<DWORD>(&dispatchHook);
  bool allBase=true,allHook=true;for(auto r:slots){auto v=*reinterpret_cast<DWORD*>(p+r);allBase&=v==base;allHook&=v==hook;}
- allBase&=*reinterpret_cast<DWORD*>(p+0xbe38c)==drawBase;allHook&=*reinterpret_cast<DWORD*>(p+0xbe38c)==drawHook;
+ allBase&=*reinterpret_cast<DWORD*>(p+0xbe380)==drawBase;allHook&=*reinterpret_cast<DWORD*>(p+0xbe380)==drawHook;
  if(!allBase&&!(allHook&&engine==p))return false;if(enabled&&allHook)return true;if(!enabled&&allBase)return true;
  if(dry)return true;
  if(enabled){engine=p;original=reinterpret_cast<Dispatch>(base);originalCursorDraw=reinterpret_cast<Draw>(drawBase);trace=logger;traceEvents=0;traceLimited=false;}
  unsigned done=0;for(auto r:slots){if(!write(reinterpret_cast<DWORD*>(p+r),enabled?base:hook,enabled?hook:base)){for(unsigned i=0;i<done;++i)write(reinterpret_cast<DWORD*>(p+slots[i]),enabled?hook:base,enabled?base:hook);return false;}++done;}
- if(!write(reinterpret_cast<DWORD*>(p+0xbe38c),enabled?drawBase:drawHook,enabled?drawHook:drawBase)){
+ if(!write(reinterpret_cast<DWORD*>(p+0xbe380),enabled?drawBase:drawHook,enabled?drawHook:drawBase)){
   for(auto r:slots)write(reinterpret_cast<DWORD*>(p+r),enabled?hook:base,enabled?base:hook);return false;
  }
  if(enabled&&logger)logger(L"GAMEPAD_UI_READY source_classes=21 focus=directional native_arrow_controls=preserved cursor=virtual");return true;
@@ -182,5 +184,5 @@ bool installGamepadUi(HMODULE m,void(*logger)(const wchar_t*)){return set(reinte
 bool removeGamepadUi(HMODULE m){return set(reinterpret_cast<BYTE*>(m),false,nullptr);}
 bool canSetGamepadUi(HMODULE m,bool enabled){return set(reinterpret_cast<BYTE*>(m),enabled,nullptr,true);}
 #ifdef MODERN_INPUT_TEST
-void initializeGamepadUiFixture(BYTE* p){memcpy(p+0x38c24,prefix,sizeof(prefix));*reinterpret_cast<DWORD*>(p+0xbe38c)=reinterpret_cast<DWORD>(p+0x38c24);memcpy(p+0x5718f,cancelPrefix,sizeof(cancelPrefix));memcpy(p+0x55134,prefix,sizeof(prefix));for(auto s:slots){*reinterpret_cast<DWORD*>(p+s)=reinterpret_cast<DWORD>(p+0x55134);*reinterpret_cast<DWORD*>(p+s+0x14)=reinterpret_cast<DWORD>(p+0x5663f);}}
+void initializeGamepadUiFixture(BYTE* p){memcpy(p+0x38c24,prefix,sizeof(prefix));memcpy(p+0x48774,cancelPrefix,sizeof(cancelPrefix));*reinterpret_cast<DWORD*>(p+0xbe380)=reinterpret_cast<DWORD>(p+0x48774);*reinterpret_cast<DWORD*>(p+0xbe38c)=reinterpret_cast<DWORD>(p+0x38c24);memcpy(p+0x5718f,cancelPrefix,sizeof(cancelPrefix));memcpy(p+0x55134,prefix,sizeof(prefix));for(auto s:slots){*reinterpret_cast<DWORD*>(p+s)=reinterpret_cast<DWORD>(p+0x55134);*reinterpret_cast<DWORD*>(p+s+0x14)=reinterpret_cast<DWORD>(p+0x5663f);}}
 #endif

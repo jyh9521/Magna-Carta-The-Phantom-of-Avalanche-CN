@@ -15,6 +15,7 @@ void observe(BYTE* s,bool controlled){if(s==world){++observations;observationCon
 void require(bool v,const char* s){++checks;if(!v){fprintf(stderr,"FAIL %s\n",s);ExitProcess(1);}}
 BOOL WINAPI keyboard(PBYTE keys){*reinterpret_cast<int*>(image+0xf20b0)=physicalX;*reinterpret_cast<int*>(image+0xf20a8)=physicalY;memset(keys,0,256);keys[VK_SPACE]=1;if(rawUp)keys[VK_UP]=0x80;if(physical)keys[VK_LEFT]=0x80;if(physicalMouseDown)keys[VK_LBUTTON]=0x80;if(physicalRightDown)keys[VK_RBUTTON]=0x80;return TRUE;}
 DWORD WINAPI poll(DWORD slot,XINPUT_STATE* s){if(slot!=controllerSlot||!connected)return ERROR_DEVICE_NOT_CONNECTED;*s={};s->Gamepad.sThumbLX=axisX;s->Gamepad.sThumbLY=axisY;s->Gamepad.sThumbRX=rightX;s->Gamepad.wButtons=buttons;return ERROR_SUCCESS;}
+static int cursorPrepares=0;void __fastcall cursorPrepare(void*,void*){++cursorPrepares;}
 static int cursorDraws=0;void __fastcall cursorDraw(void*,void*){++cursorDraws;}
 void __fastcall clearNativePress(void* button,void*){*reinterpret_cast<int*>(static_cast<BYTE*>(button)+0x19c)=0;}
 void __fastcall heading(void* p,void*,float x,float y,float z){++turnCalls;auto d=reinterpret_cast<float*>(static_cast<BYTE*>(p)+0x148);d[0]=x;d[1]=y;d[2]=z;}
@@ -86,7 +87,7 @@ int main(int argc,char** argv){
  auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x100;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(image+0x100);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;
  image[0x2fca]=0x68;*reinterpret_cast<DWORD*>(image+0x2fcb)=reinterpret_cast<DWORD>(image+0xf1b94);image[0x2fcf]=0xff;image[0x2fd0]=0x15;*reinterpret_cast<DWORD*>(image+0x2fd1)=reinterpret_cast<DWORD>(image+0xbd3dc);image[0x2fd5]=0xc3;
  initializeGamepadUiFixture(image);BYTE clearPrefix[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc};stub(0x5718f,clearPrefix,sizeof(clearPrefix),reinterpret_cast<void*>(&clearNativePress));
- BYTE guiPrefix[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xf8};stub(0x55134,guiPrefix,sizeof(guiPrefix),reinterpret_cast<void*>(&keyboardGui));stub(0x38c24,guiPrefix,sizeof(guiPrefix),reinterpret_cast<void*>(&cursorDraw));
+ BYTE guiPrefix[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xf8};stub(0x55134,guiPrefix,sizeof(guiPrefix),reinterpret_cast<void*>(&keyboardGui));stub(0x38c24,guiPrefix,sizeof(guiPrefix),reinterpret_cast<void*>(&cursorPrepare));stub(0x48774,clearPrefix,sizeof(clearPrefix),reinterpret_cast<void*>(&cursorDraw));
  auto iat=reinterpret_cast<DWORD*>(image+0xbd3dc);DWORD oldIat=reinterpret_cast<DWORD>(GetProcAddress(GetModuleHandleW(L"user32.dll"),"GetKeyboardState"));*iat=oldIat;
  BYTE t[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc},f[]={0x55,0x8b,0xec,0x83,0xec,0x54,0x89,0x4d,0xac},d[]={0x55,0x8b,0xec,0x83,0xec,0x1c,0x89,0x4d,0xec};
  stub(0x6b2d8,t,sizeof(t),reinterpret_cast<void*>(&tick));stub(0x652b4,f,sizeof(f),reinterpret_cast<void*>(&forward));stub(0x65504,d,sizeof(d),reinterpret_cast<void*>(&heading));
@@ -105,8 +106,10 @@ int main(int argc,char** argv){
  auto run=[](){reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(image+0xc12c0))(world);};
  setWorldTickObserver(&observe);run();require(observations==1&&observationControlled,"read-only observer runs after native tick");setWorldTickObserver(nullptr);run();require(observations==1,"observer removal preserves native tick");
  BYTE currentCursor[0x144]{},otherSprite[0x144]{};*reinterpret_cast<BYTE**>(image+0xf2388)=currentCursor;
- auto drawCursor=[&](void* value){reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(image+0xbe38c))(value);};
- require(modernGamepadCursorHidden(),"detected armed controller hides game cursor");drawCursor(currentCursor);require(cursorDraws==0,"current game cursor rendering suppressed");
+ auto drawCursor=[&](void* value){reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(image+0xbe380))(value);};
+ require(modernGamepadCursorHidden(),"detected armed controller hides game cursor");
+ reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(image+0xbe38c))(currentCursor);require(cursorPrepares==1,"hidden cursor still executes original position preparation");
+ drawCursor(currentCursor);require(cursorDraws==0,"current game cursor rendering suppressed");
  drawCursor(otherSprite);require(cursorDraws==1,"shared cursor class unrelated sprite draws preserved");
  physicalX=1;run();require(!modernGamepadCursorHidden(),"raw physical mouse motion restores game cursor in same poll");drawCursor(currentCursor);require(cursorDraws==2,"mouse-restored cursor calls original draw");
  run();require(!modernGamepadCursorHidden(),"idle connected controller does not steal mouse mode back");
@@ -273,5 +276,6 @@ int main(int argc,char** argv){
  render_input::inputView.reset();run();require((image[0xf1b94+VK_LEFT]&0x80)&&!(image[0xf1b94+VK_UP]&0x80),"camera toggle off restores original keyboard semantics");physical=false;
  require(removeWorldGamepad(reinterpret_cast<HMODULE>(image))&&removeModernGamepad(reinterpret_cast<HMODULE>(image)),"camera-only exact rollback");SetEnvironmentVariableW(L"MC_INPUT_PASSTHROUGH",nullptr);
  SetEnvironmentVariableW(L"MC_MAP_OVERLAY",nullptr);SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",nullptr);VirtualFree(image,0,MEM_RELEASE);
+ printf("GAMEPAD_CURSOR_RENDER_BOUNDARY_REPLAY PASS preparation=preserved hidden_submission=suppressed mouse_restore=original menu_submission=original game_started=false\n");
  printf("WORLD_GAMEPAD_FIXTURE PASS checks=%d camera_relative=true analog_speed=true native_movement=true keyboard_priority=true rollback=exact game_started=false\n",checks);
 }

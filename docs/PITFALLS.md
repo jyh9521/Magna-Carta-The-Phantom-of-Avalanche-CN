@@ -190,3 +190,6 @@ A sampled input stream can jump across neutral between frames. Requiring a fully
 ## Menu trace phases must not overclaim confirmation
 
 A merged mouse counter at the keyboard GUI hook precedes native mouse dispatch. Label it before_mouse/merged_input, not a completed A confirmation or saved-game transition. Successful virtual focus movement likewise proves only selected target/coordinates, not a rendered highlight. Bound repetitive event records and emit one explicit limit notice. See GAMEPAD_MENU_EVIDENCE.md.
+# Cursor preparation is not sprite submission (2026-10-15)
+
+For supported MCAlpha cursor class be374, +18/38c24 prepares position/matrices; suppressing it can leave stale transforms without suppressing sprite submission. Actual sprite drawing is +c/48774, reached by +10/38bd7 traversal. The input cursor ownership hook now targets only the actual draw slot and preserves the preparation slot. A fixture that only counts calls through +18 must not be described as rendered-pixel evidence. See GAMEPAD_CURSOR_RENDER_BOUNDARY.md and GAMEPAD_NATIVE_CURSOR_PATH.md.

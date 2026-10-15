@@ -36,12 +36,14 @@ class NativeCursorReplayTests(unittest.TestCase):
                          'Requires optional Unicorn and user-supplied supported image')
     def test_original_cursor_preparation_and_visibility(self):
         report = replay.run_replay((ROOT/'runtime/data/MCAlpha.dll').read_bytes())
-        self.assertEqual(len(report['cases']), 9)
+        self.assertEqual(len(report['cases']), 11)
         self.assertGreater(report['native_instructions'], 100)
         self.assertFalse(report['graphics_APIs_executed'])
         self.assertFalse(report['game_started'])
         for case in report['cases'][:5]:
             self.assertEqual(case['local_position'][:2], tuple(case['click']))
             self.assertEqual(case['prepared_position'], case['local_position'])
-        self.assertEqual(report['cases'][-1]['old_render_order'], -1)
-        self.assertEqual(report['cases'][-1]['current_render_order'], 0)
+        self.assertEqual(report['cases'][8]['old_render_order'], -1)
+        self.assertEqual(report['cases'][8]['current_render_order'], 0)
+        self.assertEqual(report['cases'][9]['result'], 'returns_without_graphics_setup')
+        self.assertEqual(report['cases'][10]['boundary'], 'before_graphics_setup_48445')

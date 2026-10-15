@@ -15,6 +15,7 @@ class NativeCursor(NativeTitle):
     def __init__(self, image):
         super().__init__(image)
         self.stop_at_matrix = False
+        self.stop_at_render = False
         self.matrix_receiver = None
         for obj in [CURSOR, OTHER]:
             self.write(obj, BASE+0xbe374)
@@ -23,13 +24,13 @@ class NativeCursor(NativeTitle):
         self.write(BASE+0xf2360, OTHER)
 
     def _instruction(self, cpu, address, size, user):
-        if self.stop_at_matrix and address == BASE+0x4846b:
+        if (self.stop_at_matrix and address == BASE+0x4846b) or (self.stop_at_render and address == BASE+0x48445):
             self.matrix_receiver = cpu.reg_read(self.regs[0])
             cpu.emu_stop()
             return
         super()._instruction(cpu, address, size, user)
 
-    def invoke(self, rva, *arguments, matrix_boundary=False):
+    def invoke(self, rva, *arguments, matrix_boundary=False, render_boundary=False):
         ecx, esp, eip, eax = self.regs
         stack = 0x3001f000
         self.write(stack, STOP)
@@ -37,11 +38,13 @@ class NativeCursor(NativeTitle):
             self.write(stack+4+index*4, value)
         self.cpu.reg_write(esp, stack)
         self.stop_at_matrix = matrix_boundary
+        self.stop_at_render = render_boundary
         self.matrix_receiver = None
         self.cpu.emu_start(BASE+rva, STOP, timeout=500000, count=20000)
-        if matrix_boundary:
-            _require(self.cpu.reg_read(eip) == BASE+0x4846b and self.matrix_receiver == self.read(BASE+0xf2388),
-                     'Cursor must reach matrix preparation with the current cursor object')
+        if matrix_boundary or render_boundary:
+            boundary = 0x4846b if matrix_boundary else 0x48445
+            _require(self.cpu.reg_read(eip) == BASE+boundary and self.matrix_receiver == self.read(BASE+0xf2388),
+                     'Cursor must reach the requested preparation boundary with the current object')
         else:
             _require(self.cpu.reg_read(eip) == STOP and self.cpu.reg_read(esp) == stack+4,
                      'Cursor call did not return with cdecl stack balance')
@@ -81,6 +84,17 @@ def run_replay(image):
              n.read(OTHER+0x118) == 0xffffffff and n.read(BASE+0xd9c3c) == 1,
              'Visible type switch must hide old object and show new one')
     cases.append({'name': 'visible_type_switch', 'old_render_order': -1, 'current_render_order': 0})
+    instructions += n.instructions
+    n = NativeCursor(image)
+    n.write(CURSOR+0x118, 0xffffffff)
+    n.cpu.reg_write(n.regs[0], CURSOR)
+    n.invoke(0x48774)
+    cases.append({'name': 'hidden_original_render', 'result': 'returns_without_graphics_setup'})
+    instructions += n.instructions
+    n = NativeCursor(image)
+    n.cpu.reg_write(n.regs[0], CURSOR)
+    n.invoke(0x48774, render_boundary=True)
+    cases.append({'name': 'visible_original_render', 'boundary': 'before_graphics_setup_48445'})
     instructions += n.instructions
     return {'schema': 1, 'sample_sha256': SUPPORTED_SHA, 'cases': cases,
             'native_instructions': instructions, 'native_bytes_emulated': True,
