@@ -131,3 +131,6 @@ python tools/prepare_map_trial.py --workspace build/configurable-modern-game --n
 Developer-only dependency: `python -m pip install -r tools/requirements-native-replay.txt`.
 Run `python -O tools/replay_native_title.py --sample runtime/data/MCAlpha.dll --report build/native-title-report.json`.
 Requires the supported user-supplied image; no game binaries are distributed. See [native admission evidence](docs/GAMEPAD_NATIVE_ADMISSION.md).
+
+Cursor preparation/visibility-state replay: `python -O tools/replay_native_cursor.py --sample runtime/data/MCAlpha.dll --report build/native-cursor-report.json`.
+This stops before external matrix/graphics APIs and does not verify rendered pixels; see [cursor path evidence](docs/GAMEPAD_NATIVE_CURSOR_PATH.md).
