@@ -6,13 +6,14 @@
 #include <set>
 #include <cmath>
 #include <cstring>
+#include <cwchar>
 namespace {
 constexpr unsigned slots[]={0xbee50,0xbf048,0xbf240,0xbf438,0xbf630,0xbf828,0xbfa20,0xbfc18,0xbfeb4,0xc00ac,0xc02a4,0xc049c,0xc06b0,0xc08c4,0xc0adc,0xc0cf0,0xc1560,0xc1da8,0xc1fa0,0xc2204,0xc2508};
 constexpr BYTE prefix[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xf8};
 constexpr BYTE cancelPrefix[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc};
 using Draw=void(__thiscall*)(void*);Draw originalCursorDraw=nullptr;
 using Dispatch=int(__thiscall*)(void*);Dispatch original=nullptr;BYTE* engine=nullptr;
-thread_local unsigned depth=0;DWORD consumed=0,lastRepeat=0,maskedSerial=0,lastDirectionSerial=0;unsigned maskedDirections=0,previousVirtualDirections=0;unsigned previousHeld=0;void(*trace)(const wchar_t*)=nullptr;
+thread_local unsigned depth=0;DWORD consumed=0,lastRepeat=0,maskedSerial=0,lastDirectionSerial=0;unsigned maskedDirections=0,previousVirtualDirections=0;unsigned previousHeld=0,traceEvents=0;bool traceLimited=false;void(*trace)(const wchar_t*)=nullptr;
 bool readable(const void* a,size_t n){auto p=reinterpret_cast<ULONG_PTR>(a),end=p+n;if(!p||end<p)return false;while(p<end){MEMORY_BASIC_INFORMATION m{};if(!VirtualQuery(reinterpret_cast<void*>(p),&m,sizeof(m))||m.State!=MEM_COMMIT||(m.Protect&(PAGE_GUARD|PAGE_NOACCESS)))return false;auto next=reinterpret_cast<ULONG_PTR>(m.BaseAddress)+m.RegionSize;if(next<=p)return false;p=next;}return true;}
 bool gui(BYTE* p){if(!readable(p,0x190))return false;auto vt=*reinterpret_cast<ULONG_PTR*>(p);for(auto slot:slots)if(vt==reinterpret_cast<ULONG_PTR>(engine+slot-0x1c8))return true;return false;}
 bool defaultArrows(BYTE* p){
@@ -49,6 +50,29 @@ bool collect(BYTE* p,std::vector<modern_input::FocusTarget>& out,std::set<BYTE*>
  }
  return true;
 }
+bool traceSlot(){
+ if(!trace)return false;
+ if(traceEvents<256){++traceEvents;return true;}
+ if(!traceLimited){traceLimited=true;trace(L"INPUT_UI_TRACE_LIMIT events=256 further_menu_events=omitted");}
+ return false;
+}
+void traceFocus(BYTE* root,const modern_input::FocusTarget& target,float fromX,float fromY){
+ auto widget=reinterpret_cast<BYTE*>(target.identity);
+ if(!gui(root)||!gui(widget)||!traceSlot())return;
+ wchar_t message[384];
+ swprintf_s(message,L"INPUT_UI_FOCUS serial=%lu root_class=%x root_id=%x target_class=%x target_id=%x from=%d,%d to=%d,%d rect=%d,%d,%d,%d observation=virtual_selection",
+ modernGamepadNavigation().serial,unsigned(*reinterpret_cast<ULONG_PTR*>(root)-reinterpret_cast<ULONG_PTR>(engine)),*reinterpret_cast<unsigned*>(root+4),
+ unsigned(*reinterpret_cast<ULONG_PTR*>(widget)-reinterpret_cast<ULONG_PTR>(engine)),*reinterpret_cast<unsigned*>(widget+4),
+ int(fromX),int(fromY),int((target.left+target.right)*.5f),int((target.top+target.bottom)*.5f),int(target.left),int(target.top),int(target.right),int(target.bottom));trace(message);
+}
+void traceClick(BYTE* root,DWORD serial){
+ if(!trace||!gui(root))return;
+ int left=*reinterpret_cast<int*>(engine+0xf1c9c+VK_LBUTTON*4),right=*reinterpret_cast<int*>(engine+0xf1c9c+VK_RBUTTON*4);
+ if((left!=1&&left!=-1&&right!=1&&right!=-1)||!traceSlot())return;
+ wchar_t message[256];swprintf_s(message,L"INPUT_UI_CLICK serial=%lu root_class=%x root_id=%x x=%d y=%d left=%d right=%d phase=before_mouse source=merged_input",
+ serial,unsigned(*reinterpret_cast<ULONG_PTR*>(root)-reinterpret_cast<ULONG_PTR>(engine)),*reinterpret_cast<unsigned*>(root+4),
+ *reinterpret_cast<int*>(engine+0xf20b0),*reinterpret_cast<int*>(engine+0xf20a8),left,right);trace(message);
+}
 void navigate(BYTE* root){
  auto n=modernGamepadNavigation();if(!n.active||n.serial==consumed)return;
  unsigned held=n.held&15;bool fresh=(n.pressed&15)!=0;
@@ -71,6 +95,7 @@ void navigate(BYTE* root){
  int dx=(held&4)?-1:(held&8)?1:0,dy=(held&1)?-1:(held&2)?1:0;if(dy)dx=0;
  int index=modern_input::chooseFocus(targets,x,y,dx,dy);if(index<0)return;const auto& r=targets[index];
  modernGamepadFocusCursor((r.left+r.right)*.5f,(r.top+r.bottom)*.5f);
+ traceFocus(root,r,x,y);
  consumed=n.serial;previousHeld=held;lastRepeat=fresh?n.time:n.time-250;
  static LONG calls=0;if(InterlockedIncrement(&calls)==1&&trace)trace(L"GAMEPAD_UI_FOCUS_APPLIED native_hit_rects=true click_dispatch=original modal_scope=retained");
 }
@@ -110,7 +135,7 @@ int __fastcall dispatchHook(void* root,void*){
   }
   if(mask){maskedSerial=input.serial;maskedDirections=directions;for(unsigned i=0;i<4;++i){if(!(directions&(1u<<i)))continue;int k=arrows[i];savedCounters[i]=*reinterpret_cast<int*>(engine+0xf1c9c+k*4);savedKeys[i]=engine[0xf1b94+k];*reinterpret_cast<int*>(engine+0xf1c9c+k*4)=0;engine[0xf1b94+k]&=0x7f;}}
   if(outer&&modernGamepadMenuCancellation())cancelMenuRoot(root);
-  if(outer)navigate(static_cast<BYTE*>(root));result=original(root);
+  if(outer){traceClick(static_cast<BYTE*>(root),input.serial);navigate(static_cast<BYTE*>(root));}result=original(root);
   // Original return 1 means native input consumed, including keyboard-only roots
   // with no directional hit target. Do not navigate a second root for that serial.
   if(outer&&result==1&&input.active)consumed=input.serial;
@@ -135,7 +160,7 @@ bool set(BYTE* p,bool enabled,void(*logger)(const wchar_t*),bool dry=false){
  allBase&=*reinterpret_cast<DWORD*>(p+0xbe38c)==drawBase;allHook&=*reinterpret_cast<DWORD*>(p+0xbe38c)==drawHook;
  if(!allBase&&!(allHook&&engine==p))return false;if(enabled&&allHook)return true;if(!enabled&&allBase)return true;
  if(dry)return true;
- if(enabled){engine=p;original=reinterpret_cast<Dispatch>(base);originalCursorDraw=reinterpret_cast<Draw>(drawBase);trace=logger;}
+ if(enabled){engine=p;original=reinterpret_cast<Dispatch>(base);originalCursorDraw=reinterpret_cast<Draw>(drawBase);trace=logger;traceEvents=0;traceLimited=false;}
  unsigned done=0;for(auto r:slots){if(!write(reinterpret_cast<DWORD*>(p+r),enabled?base:hook,enabled?hook:base)){for(unsigned i=0;i<done;++i)write(reinterpret_cast<DWORD*>(p+slots[i]),enabled?hook:base,enabled?base:hook);return false;}++done;}
  if(!write(reinterpret_cast<DWORD*>(p+0xbe38c),enabled?drawBase:drawHook,enabled?drawHook:drawBase)){
   for(auto r:slots)write(reinterpret_cast<DWORD*>(p+r),enabled?hook:base,enabled?base:hook);return false;

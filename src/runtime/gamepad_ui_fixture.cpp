@@ -2,8 +2,15 @@
 #include "modern_gamepad.h"
 #include <cstdio>
 #include <cstring>
+#include <cwchar>
 static int checks=0,calls=0,originalResult=7;void require(bool v,const char* s){++checks;if(!v){fprintf(stderr,"FAIL %s\n",s);ExitProcess(1);}}
 static BYTE* replayImage=nullptr;static bool inspectArrows=false;static int greenMoves=0;
+static int focusRecords=0,clickRecords=0,traceLimits=0;static wchar_t lastFocus[512]{},lastClick[512]{};
+void capture(const wchar_t* line){
+ if(wcsncmp(line,L"INPUT_UI_FOCUS ",15)==0){++focusRecords;wcscpy_s(lastFocus,line);}
+ if(wcsncmp(line,L"INPUT_UI_CLICK ",15)==0){++clickRecords;wcscpy_s(lastClick,line);}
+ if(wcsncmp(line,L"INPUT_UI_TRACE_LIMIT ",21)==0)++traceLimits;
+}
 int __fastcall original(void*,void*){++calls;
  if(inspectArrows){const int arrows[]={VK_UP,VK_DOWN,VK_LEFT,VK_RIGHT};for(int k:arrows)if(*reinterpret_cast<int*>(replayImage+0xf1c9c+k*4)!=0||(replayImage[0xf1b94+k]&0x80))++greenMoves;}
 return originalResult;}
@@ -18,11 +25,12 @@ int main(){
  auto init=[&](BYTE* g){*reinterpret_cast<BYTE**>(g)=vt;*reinterpret_cast<int*>(g+0xe8)=1;*reinterpret_cast<int*>(g+0x160)=1;*reinterpret_cast<BYTE**>(g+0x17c)=root;};init(root);*reinterpret_cast<BYTE**>(root+0x18)=widgets[0];
  // +f8 is the list object, not its head. The engine's GetFirst accessor
  // reads list+8; a nonzero count must never be mistaken for a node pointer.
- for(int i=0;i<3;++i){init(widgets[i]);*reinterpret_cast<int**>(nodes[i])=rects[i];*reinterpret_cast<int*>(widgets[i]+0xf8)=1;*reinterpret_cast<BYTE**>(widgets[i]+0x100)=nodes[i];if(i<2)*reinterpret_cast<BYTE**>(widgets[i]+0x10)=widgets[i+1];}
+ for(int i=0;i<3;++i){init(widgets[i]);*reinterpret_cast<unsigned*>(widgets[i]+4)=0x200+i;*reinterpret_cast<int**>(nodes[i])=rects[i];*reinterpret_cast<int*>(widgets[i]+0xf8)=1;*reinterpret_cast<BYTE**>(widgets[i]+0x100)=nodes[i];if(i<2)*reinterpret_cast<BYTE**>(widgets[i]+0x10)=widgets[i+1];}
  *reinterpret_cast<int*>(image+0xf1b48)=800;*reinterpret_cast<int*>(image+0xf1b4c)=600;auto x=reinterpret_cast<int*>(image+0xf20b0),y=reinterpret_cast<int*>(image+0xf20a8);*x=400;*y=300;*reinterpret_cast<BYTE**>(image+0xf220c)=manager;
- require(installGamepadUi(reinterpret_cast<HMODULE>(image),nullptr),"install all known classes");require(installGamepadUi(reinterpret_cast<HMODULE>(image),nullptr),"idempotence");
+ require(installGamepadUi(reinterpret_cast<HMODULE>(image),&capture),"install all known classes");require(installGamepadUi(reinterpret_cast<HMODULE>(image),nullptr),"idempotence");
  auto invoke=[&](GamepadNavigation n){configureModernNavigationFixture(image,n);return reinterpret_cast<int(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(vt+0x1c8))(root);};
  require(invoke({2,2,1,100,true})==7&&*x==400&&*y==420,"first downward focus and original dispatcher return");
+ require(focusRecords==1&&wcsstr(lastFocus,L"target_id=200")&&wcsstr(lastFocus,L"root_class=bec88")&&wcsstr(lastFocus,L"to=400,420"),"selected target identity and native coordinates must be observable, not only first-use readiness");
  invoke({2,0,2,200,true});require(*y==420,"repeat initial delay");invoke({2,0,3,500,true});require(*y==470,"repeat advances after delay");invoke({2,2,4,700,true});require(*y==520,"next focus");invoke({2,2,5,800,true});require(*y==420,"wrap focus");
  require(calls==5,"original dispatcher once each call");
  *reinterpret_cast<int*>(widgets[1]+0x160)=0;invoke({2,2,6,900,true});require(*y==520,"disabled widgets skipped");*reinterpret_cast<int*>(widgets[1]+0x160)=1;
@@ -77,6 +85,12 @@ int main(){
  invokeAt(nativeRoot,{2,0,27,3100,true});require(*y==300&&greenMoves==3,"next-frame focused native control owns direction without sidebar movement");
  *reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x55f3c);*downCounter=0;image[0xf1b94+VK_DOWN]=0;inspectArrows=false;
  printf("GAMEPAD_DIRECTION_OWNER_REPLAY PASS sidebar=exclusive green_control=native repeat=exclusive release=exclusive physical_keyboard=preserved state_restore=exact game_started=false\n");
+ auto leftState=reinterpret_cast<int*>(image+0xf1c9c+VK_LBUTTON*4);*leftState=1;
+ invokeAt(root,{0,0,30,3200,true});require(clickRecords==1&&wcsstr(lastClick,L"left=1")&&wcsstr(lastClick,L"phase=before_mouse"),"click-edge evidence records merged native counter without claiming transition execution");
+ require(*leftState==1,"event evidence must preserve click counter");*leftState=0;
+ for(unsigned i=0;i<300;++i)invokeAt(root,{2,2,31+i,3300+i*40,true});
+ require(focusRecords+clickRecords==256&&traceLimits==1,"bounded menu event evidence emits one explicit limit, never unbounded logs");
+ printf("GAMEPAD_MENU_EVIDENCE_REPLAY PASS target_identity=true native_coordinates=true click_phase=before_mouse state=unchanged limit=256 limit_notice=once game_started=false\n");
  auto changed=*reinterpret_cast<DWORD*>(image+0xc2508);*reinterpret_cast<DWORD*>(image+0xc2508)=1;require(!removeGamepadUi(reinterpret_cast<HMODULE>(image)),"unknown slot rejects whole rollback");require(*reinterpret_cast<DWORD*>(vt+0x1c8)!=reinterpret_cast<DWORD>(image+0x55134),"rejection no partial restore");*reinterpret_cast<DWORD*>(image+0xc2508)=changed;
  require(removeGamepadUi(reinterpret_cast<HMODULE>(image)),"rollback");require(*reinterpret_cast<DWORD*>(vt+0x1c8)==reinterpret_cast<DWORD>(image+0x55134),"exact original dispatcher slot");
  require(*reinterpret_cast<DWORD*>(image+0xbe38c)==reinterpret_cast<DWORD>(image+0x38c24),"exact original cursor slot restored");

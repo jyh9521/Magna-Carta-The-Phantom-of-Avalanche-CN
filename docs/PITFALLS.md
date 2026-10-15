@@ -186,3 +186,7 @@ Native marker research: Asura SHA f81e7c458d43b77210311499b39b9be2c4895e3a3b356d
 ## A menu-axis latch must not latch the old sign
 
 A sampled input stream can jump across neutral between frames. Requiring a fully neutral sample before reversing keeps an obsolete direction active. Preserve axis hysteresis, but reverse a strong opposite component immediately; weak opposite input stops the old direction, and old-axis release permits cross-axis takeover. See GAMEPAD_STICK_REVERSAL.md.
+
+## Menu trace phases must not overclaim confirmation
+
+A merged mouse counter at the keyboard GUI hook precedes native mouse dispatch. Label it before_mouse/merged_input, not a completed A confirmation or saved-game transition. Successful virtual focus movement likewise proves only selected target/coordinates, not a rendered highlight. Bound repetitive event records and emit one explicit limit notice. See GAMEPAD_MENU_EVIDENCE.md.
