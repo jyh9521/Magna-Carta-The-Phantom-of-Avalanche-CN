@@ -12,8 +12,15 @@ uint32_t MenuDirection::update(const Sample& s,bool eligible){
     uint32_t d=s.buttons&15;
     if(d){stick=0;if((d&3)==3)d&=~3u;if((d&12)==12)d&=~12u;return (d&3)?(d&3):(d&12);}
     int x=std::abs(int(s.x)),y=std::abs(int(s.y));
-    if(x<=11000&&y<=11000)stick=0;
+    // Latch the axis, not an obsolete sign. Fast reversals can cross the
+    // neutral range entirely between native polls. Release a latched axis
+    // when its own component recenters, even if the other axis is active.
+    if(((stick&(Up|Down))&&y<=11000)||((stick&(Left|Right))&&x<=11000))stick=0;
+    if((stick==Up&&s.y<0&&y<19000)||(stick==Down&&s.y>0&&y<19000)||
+       (stick==Left&&s.x>0&&x<19000)||(stick==Right&&s.x<0&&x<19000))stick=0;
     if(!stick&&((x>y?x:y)>=19000))stick=x>y?(s.x<0?Left:Right):(s.y<0?Down:Up);
+    else if((stick&(Up|Down))&&y>=19000)stick=s.y<0?Down:Up;
+    else if((stick&(Left|Right))&&x>=19000)stick=s.x<0?Left:Right;
     return stick;
 }
 Router::Router(Config options):config(options) {

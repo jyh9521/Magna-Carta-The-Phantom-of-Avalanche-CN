@@ -140,8 +140,15 @@ int main(int argc,char** argv){
  int menuCursorDraws=cursorDraws;drawCursor(currentCursor);require(cursorDraws==menuCursorDraws+1,"menu locator calls original cursor draw at exact native hit coordinates");
  printf("GAMEPAD_MENU_LOCATOR_REPLAY PASS menu=visible exploration=hidden mouse_restore=retained native_hit_position=exact game_started=false\n");require(!(image[0xf1b94+VK_RIGHT]&0x80),"menu moderate stick drift does not move selection");
  axisX=20000;axisY=23000;run();require((image[0xf1b94+VK_UP]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"menu diagonal has exactly one dominant axis");
+ axisY=-26000;run();require((image[0xf1b94+VK_DOWN]&0x80)&&!(image[0xf1b94+VK_UP]&0x80),"fast stick reversal must reverse menu direction without requiring a sampled neutral frame");
+ axisY=23000;run();require((image[0xf1b94+VK_UP]&0x80)&&!(image[0xf1b94+VK_DOWN]&0x80),"reverse back on latched menu axis");
  axisX=25000;axisY=12000;run();require((image[0xf1b94+VK_UP]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"menu diagonal noise cannot switch a latched direction");
+ axisY=0;run();require((image[0xf1b94+VK_RIGHT]&0x80)&&!(image[0xf1b94+VK_UP]&0x80),"releasing old axis permits a new dominant axis without full-stick neutral");
  axisX=axisY=0;run();axisX=32767;run();require((image[0xf1b94+VK_RIGHT]&0x80)&&!(image[0xf1b94+VK_UP]&0x80),"recenter permits a fresh menu direction");
+ axisX=-32768;run();require((image[0xf1b94+VK_LEFT]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"horizontal menu stick reverses across full signed endpoint without sampled neutral");
+ axisX=12000;run();require(!(image[0xf1b94+VK_LEFT]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"weak opposite stick input stops obsolete direction without engaging a new one");
+ axisX=32767;run();require((image[0xf1b94+VK_RIGHT]&0x80)&&!(image[0xf1b94+VK_LEFT]&0x80),"horizontal menu reversal restores right direction");
+ printf("GAMEPAD_STICK_REVERSAL_REPLAY PASS vertical=immediate horizontal=immediate neutral_sample=not_required cross_axis_noise=latched signed_endpoint=valid game_started=false\n");
  buttons=XINPUT_GAMEPAD_DPAD_DOWN;run();require((image[0xf1b94+VK_DOWN]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"Dpad overrides held menu stick without competing keys");
  axisX=axisY=0;buttons=0;run();printf("GAMEPAD_MENU_PRECISION_REPLAY PASS engage=19000 release=11000 diagonal=one_axis direction=latched dpad=priority world_analog=unchanged game_started=false\n");
  buttons=XINPUT_GAMEPAD_A;run();require(interactions==2&&(image[0xf1b94+VK_LBUTTON]&0x80),"menu confirm clicks without exploration interaction");

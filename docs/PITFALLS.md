@@ -182,3 +182,7 @@ Moving a synthetic hit point is not input consumption. Native GUI keyboard dispa
 Do not treat hidden mouse graphics as proof of usable controller selection. Without dependable selected-widget visuals, retain a native menu locator. Snapshot input scope for later draw: worldScope is restored at tick exit, so querying it during rendering misclassifies exploration.
 
 Native marker research: Asura SHA f81e7c458d43b77210311499b39b9be2c4895e3a3b356d2e848b6e84210d2557, ASRRegRender RVA51a01 retains the vertex pointer while copying16 matrix words and4 RGBA floats. A temporary stack vertex buffer or null matrix reference is not a valid production render marker. Evidence ev_8b49744e8cca26d79f20d7aabc355954d699a2d44a41eb937ee4a43451597a17. Current menu locator reuses the original draw rather than inventing an unverified queue submission.
+
+## A menu-axis latch must not latch the old sign
+
+A sampled input stream can jump across neutral between frames. Requiring a fully neutral sample before reversing keeps an obsolete direction active. Preserve axis hysteresis, but reverse a strong opposite component immediately; weak opposite input stops the old direction, and old-axis release permits cross-axis takeover. See GAMEPAD_STICK_REVERSAL.md.
