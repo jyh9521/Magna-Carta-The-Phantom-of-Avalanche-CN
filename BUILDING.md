@@ -136,3 +136,5 @@ Cursor preparation/visibility-state replay: `python -O tools/replay_native_curso
 This stops before external matrix/graphics APIs and does not verify rendered pixels; see [cursor path evidence](docs/GAMEPAD_NATIVE_CURSOR_PATH.md).
 
 Original GUI keyboard admission and phase replay: `python -O tools/replay_native_keyboard.py --sample runtime/data/MCAlpha.dll --report build/native-keyboard-report.json`. See [keyboard admission](docs/GAMEPAD_KEYBOARD_ADMISSION.md); scene listener is a recorder boundary, not actual gameplay.
+
+Incremental offline map resources: `python tools/build_map_atlas.py --source runtime/data/MAP --output build/map-legacy-candidate --size 2048 --ids 22 31 32 39 128`. Read-only coverage: `python tools/audit_map_geometry.py --source runtime/data/MAP --report build/map-coverage.json`. Outputs must be new; see [legacy WRD geometry](docs/MAP_LEGACY_GEOMETRY.md). No active runtime deployment is implied.

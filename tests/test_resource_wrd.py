@@ -15,7 +15,15 @@ class WrdTests(unittest.TestCase):
  def test_layout(self):
   b=sample();r=parse(b);self.assertEqual(r['consumed'],len(b));self.assertEqual((r['vertices'],r['triangles']),(3,1));self.assertFalse(r['navigation_verified'])
  def test_unknown_version(self):
-  b=sample().replace(b'1.400000',b'1.300000');self.assertRaisesRegex(ValueError,'Unsupported WRD',parse,b)
+  b=sample().replace(b'1.400000',b'1.500000');self.assertRaisesRegex(ValueError,'Unsupported WRD',parse,b)
+ def test_legacy_same_native_layout_preserves_actual_version_and_hash(self):
+  import hashlib
+  b=sample().replace(b'1.400000',b'1.300000');r=parse(b)
+  self.assertEqual(r['version'],'1.300000');self.assertEqual(r['sha256'],hashlib.sha256(b).hexdigest())
+  self.assertEqual(r['consumed'],len(b));self.assertEqual((r['vertices'],r['triangles']),(3,1))
+ def test_legacy_still_rejects_malformed_indices(self):
+  b=bytearray(sample().replace(b'1.400000',b'1.300000'));off=0x108+256+8+12+24+84+76+8;struct.pack_into('<H',b,off,3)
+  self.assertRaisesRegex(ValueError,'index',parse,bytes(b))
  def test_truncated(self):
   for n in [0,263,len(sample())-1]:self.assertRaises(ValueError,parse,sample()[:n])
  def test_extra_data(self):self.assertRaisesRegex(ValueError,'trailing',parse,sample()+b'x')

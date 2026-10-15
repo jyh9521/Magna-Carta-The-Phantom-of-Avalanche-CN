@@ -1,10 +1,11 @@
-"""Read version-1.4 WRD geometry from the verified native loader layout.
+"""Read version-1.3/1.4 WRD geometry from the verified native loader layout.
 Read-only; unknown versions and malformed ranges are rejected. Raw model XY
 is a research preview, not a verified walkable/navigation map.
 """
 import argparse,hashlib,json,math,struct
 from pathlib import Path
 VERSION=b'MC File Version 1.400000\0'
+SUPPORTED_VERSIONS={VERSION:'1.400000',b'MC File Version 1.300000\0':'1.300000'}
 class Reader:
  def __init__(self,data):self.data=data;self.pos=0
  def take(self,n):
@@ -18,7 +19,8 @@ class Reader:
 
 def parse(data):
  r=Reader(data);header=bytes(r.take(0x108))
- if not header.startswith(VERSION):raise ValueError('Unsupported WRD version; expected 1.400000')
+ version=next((text for signature,text in SUPPORTED_VERSIONS.items() if header.startswith(signature)),None)
+ if version is None:raise ValueError('Unsupported WRD version; expected 1.300000 or 1.400000')
  texture_count=struct.unpack_from('<I',header,0x104)[0]
  if texture_count>4096:raise ValueError('Too many WRD textures')
  texture_ids=[]
@@ -41,7 +43,7 @@ def parse(data):
      indices=r.take(faces*6)
      for i in range(faces):
       tri=struct.unpack_from('<3H',indices,i*6)
-      if any(v>=vertices for v in tri):raise ValueError('Triangle index outside vertex array')
+      if any(v>=vertices for v in tri):raise ValueError(f'Triangle index outside vertex array at {r.pos-faces*6+i*6}: group={group} part={part} polygon={polygon} vertices={vertices} indices={tri}')
       triangles.append(tri)
    triangle_total+=len(triangles)
    meshes.append(dict(group=group,part=part,kind=kind,material_base=material_base,points=points,triangles=triangles))
@@ -56,7 +58,7 @@ def parse(data):
  if r.pos!=len(data):raise ValueError(f'Unexpected WRD trailing data: {len(data)-r.pos}')
  points=[p for m in meshes for p in m['points']]
  bounds=[min(p[k] for p in points) for k in range(3)]+[max(p[k] for p in points) for k in range(3)] if points else None
- return dict(schema=1,version='1.400000',sha256=hashlib.sha256(data).hexdigest(),size=len(data),consumed=r.pos,groups=groups,texture_count=texture_count,vertices=len(points),triangles=triangle_total,raw_bounds=bounds,meshes=meshes,instances=instances,navigation_verified=False)
+ return dict(schema=1,version=version,sha256=hashlib.sha256(data).hexdigest(),size=len(data),consumed=r.pos,groups=groups,texture_count=texture_count,vertices=len(points),triangles=triangle_total,raw_bounds=bounds,meshes=meshes,instances=instances,navigation_verified=False)
 
 def preview_svg(result,width=1200,height=900):
  b=result['raw_bounds']

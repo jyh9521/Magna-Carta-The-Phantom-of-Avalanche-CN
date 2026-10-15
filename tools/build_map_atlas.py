@@ -46,11 +46,19 @@ def raster(meshes,bounds,size):
         draw.polygon(points,fill=(65,86,84));draw.line(points+[points[0]],fill=(99,119,110),width=max(1,size//512))
     return image,(origin[0],origin[1],scale)
 
-def build(source,output,size=512):
+def build(source,output,size=512,identifiers=None):
     source=source.resolve(strict=True);output=output.resolve()
     if output.exists() or output.is_relative_to(source) or source.is_relative_to(output):raise ValueError('New independent map asset directory required')
+    paths=sorted(source.glob('*.wrd'))
+    selected=None
+    if identifiers is not None:
+        selected=set(identifiers)
+        if not selected or any(isinstance(i,bool) or not isinstance(i,int) or not 0<=i<=9999 for i in selected):
+            raise ValueError('Map identifiers must be nonempty integers from 0 to 9999')
+        paths=[p for p in paths if p.stem.isdigit() and int(p.stem) in selected]
+        if {int(p.stem) for p in paths} != selected:raise ValueError('Requested map identifiers are missing')
     output.mkdir(parents=True);accepted=[];rejected=[]
-    for path in sorted(source.glob('*.wrd')):
+    for path in paths:
         before=path.read_bytes();source_hash=hashlib.sha256(before).hexdigest()
         try:
             result=parse(before);meshes,bounds=project_scene(result);image,viewport=raster(meshes,bounds,size)
@@ -60,12 +68,13 @@ def build(source,output,size=512):
         metadata=output/f'{identifier:04d}.map'
         metadata.write_bytes(struct.pack('<4sII7f',b'MCM1',size,size,*bounds,*viewport))
         if hashlib.sha256(path.read_bytes()).hexdigest()!=source_hash:raise ValueError('Source changed while generating map')
-        accepted.append(dict(id=identifier,source_sha256=source_hash,png_sha256=hashlib.sha256(png.read_bytes()).hexdigest(),metadata_sha256=hashlib.sha256(metadata.read_bytes()).hexdigest(),bounds=bounds,vertices=result['vertices'],triangles=result['triangles']))
+        accepted.append(dict(id=identifier,source_version=result['version'],source_sha256=source_hash,png_sha256=hashlib.sha256(png.read_bytes()).hexdigest(),metadata_sha256=hashlib.sha256(metadata.read_bytes()).hexdigest(),bounds=bounds,vertices=result['vertices'],triangles=result['triangles']))
     manifest=dict(schema=1,size=size,projection='first_instance_frame_column_major_XY',navigation_verified=False,accepted=accepted,rejected=rejected,source_unchanged=True)
+    if selected is not None:manifest['selected_ids']=sorted(selected)
     (output/'manifest.json').write_bytes((json.dumps(manifest,indent=2)+'\n').encode('utf8'))
     return manifest
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--source',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--size',type=int,default=512);a=p.parse_args()
-    result=build(a.source,a.output,a.size)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--source',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--size',type=int,default=512);p.add_argument('--ids',type=int,nargs='+',help='Generate only these map identifiers; omit for a full build');a=p.parse_args()
+    result=build(a.source,a.output,a.size,a.ids)
     print(f"MAP_ATLAS PASS accepted={len(result['accepted'])} rejected={len(result['rejected'])} source_unchanged=true navigation_verified=false")

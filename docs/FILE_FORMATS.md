@@ -83,3 +83,7 @@ Verified：LPD1魔数后是zlib流；解压数据含u64目标长度、u32操作�
 Field当前版本的显示标签：offset252、容量18字节含NUL，对应FieldInfo+0x110，Level+0x10cc+0x110=0x11dc；新保存版本4后18字节为同一标签。其余Field布局未全面重解释，构建只锁定该槽及整份源SHA，见[UI_READABILITY_FIX.md](UI_READABILITY_FIX.md)。
 
 翻页284/285/423/424的原128×128源像素中，非零alpha外框为91×21；存储尺寸与原标签绘图区分别记录，包装/动画元数据不改。源像素与截图对照见[UI_ALIGNMENT_FIX.md](UI_ALIGNMENT_FIX.md)。
+
+## WRD 1.3 geometry subset and incremental atlas (2026-10-15)
+
+The bounded reader explicitly accepts 1.300000 and 1.400000 headers with actual source version/hash retained; identical observed native field-read paths and complete EOF checks are documented in MAP_LEGACY_GEOMETRY.md. Five additional local 1.3 resources pass; two still fail index validation and are not silently repaired. Geometry coverage is not navigation coverage. Incremental atlas manifests record selected_ids and each accepted source_version.
