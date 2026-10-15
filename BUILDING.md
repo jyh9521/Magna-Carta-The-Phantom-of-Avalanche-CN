@@ -142,3 +142,5 @@ Incremental offline map resources: `python tools/build_map_atlas.py --source run
 Field static-prefix audit: `python tools/resource_field.py --source runtime/data/Field --maps runtime/data/MAP --engine runtime/data/MCAlpha.dll --report build/field-prefix-report.json`. Requires supported local loader hash, new report outside data; see [Field prefix](docs/FIELD_STATIC_PREFIX.md). No game startup or runtime deployment.
 
 Optional offline height cutaway: append `--clip-z-max 30` to an incremental atlas build. Full-scene viewport remains unchanged; this is not automatic floor or navigation detection. See [height cutaway](docs/MAP_HEIGHT_CUTAWAY.md).
+
+Native cutaway overlay replay uses the owned map_overlay_fixture target with `ASSETS OUTPUT.png [--mini]`; it reports the actual mode and renders the production GDI+ canvas without a game launch. See [native cutaway replay](docs/MAP_CUTAWAY_NATIVE_REPLAY.md).
