@@ -34,4 +34,20 @@ function Write-EnhancementSettings([string]$Path,$Value) {
   $result
  }finally{if(Test-Path -LiteralPath $temp){Remove-Item -LiteralPath $temp}}
 }
-Export-ModuleMember -Function New-EnhancementSettings,Test-EnhancementSettings,Read-EnhancementSettings,Write-EnhancementSettings
+function Get-EnhancementLaunchSpec([string]$ConfigDirectory,[string]$SettingsFile,[bool]$VerifyOnly=$false) {
+ $directory=[IO.Path]::GetFullPath($ConfigDirectory)
+ if(-not $SettingsFile){$SettingsFile=Join-Path $directory 'enhancements.json'}
+ $settings=[IO.Path]::GetFullPath($SettingsFile)
+ $root=Split-Path -Parent $directory
+ if(Test-Path -LiteralPath (Join-Path $root 'runtime.json') -PathType Leaf){
+  $entry=Join-Path $root 'Start.ps1';$parameters=@('-Recipe','configured','-SettingsFile',$settings)
+  $layout='shared';$log=Join-Path $root 'cache/profile.log'
+ }else{
+  $entry=Join-Path $directory 'StartEnhanced.ps1';$parameters=@('-SettingsFile',$settings)
+  $layout='legacy';$log=Join-Path $directory 'session-*/profile.log'
+ }
+ if(-not (Test-Path -LiteralPath $entry -PathType Leaf)){throw ('Configuration entry is missing: '+$entry)}
+ if($VerifyOnly){$parameters+='-VerifyOnly'}
+ [pscustomobject]@{Entry=$entry;Arguments=$parameters;LogPath=$log;Layout=$layout}
+}
+Export-ModuleMember -Function New-EnhancementSettings,Test-EnhancementSettings,Read-EnhancementSettings,Write-EnhancementSettings,Get-EnhancementLaunchSpec

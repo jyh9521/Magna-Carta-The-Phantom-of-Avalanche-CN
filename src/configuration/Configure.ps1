@@ -1,5 +1,7 @@
-param([switch]$SelfTest,[string]$SettingsFile='',[string]$PreviewPath='')
+param([switch]$SelfTest,[string]$SettingsFile='',[string]$PreviewPath='',[switch]$VerifyEntry)
 $ErrorActionPreference='Stop'
+if($VerifyEntry -and -not $SelfTest){throw 'VerifyEntry is only supported with SelfTest'}
+if($VerifyEntry -and (-not $SettingsFile -or [IO.Path]::GetFullPath($SettingsFile) -eq [IO.Path]::GetFullPath((Join-Path $PSScriptRoot 'enhancements.json')))){throw 'VerifyEntry requires a separate explicit fixture settings path'}
 Import-Module (Join-Path $PSScriptRoot 'EnhancementSettings.psm1') -Force
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing
@@ -32,10 +34,11 @@ $save.add_Click({try{$null=Write-EnhancementSettings $SettingsFile (Get-Controls
 $defaults.add_Click({try{$s=New-EnhancementSettings;$null=Write-EnhancementSettings $SettingsFile $s;Set-Controls $s;$status.Text=$text.default_note}catch{Report-Error $_}})
 $script:child=$null
 function Run-Entry([bool]$Check){
+ $launch=Get-EnhancementLaunchSpec $PSScriptRoot $SettingsFile $Check
  $null=Write-EnhancementSettings $SettingsFile (Get-Controls)
- $entry=Join-Path $PSScriptRoot 'StartEnhanced.ps1'
- $args=@('-NoProfile','-ExecutionPolicy','Bypass','-File',('"'+$entry+'"'),'-SettingsFile',('"'+$SettingsFile+'"'))
- if($Check){$args+='-VerifyOnly'}
+ $args=@('-NoProfile','-ExecutionPolicy','Bypass','-File',$launch.Entry)+$launch.Arguments
+ $args=@($args|ForEach-Object {'"'+$_+'"'})
+ $script:launchLogPath=$launch.LogPath
  $script:child=Start-Process -FilePath (Join-Path $PSHOME 'powershell.exe') -ArgumentList $args -WindowStyle Hidden -PassThru
  $save.Enabled=$defaults.Enabled=$verify.Enabled=$play.Enabled=$profile.Enabled=$motion.Enabled=$gamepad.Enabled=$false
  $status.Text=$text.running
@@ -43,13 +46,20 @@ function Run-Entry([bool]$Check){
 $verify.add_Click({try{Run-Entry $true}catch{Report-Error $_}})
 $play.add_Click({try{Run-Entry $false}catch{Report-Error $_}})
 $timer=New-Object Windows.Forms.Timer;$timer.Interval=1000
-$timer.add_Tick({if($script:child -and $script:child.HasExited){$status.Text=if($script:child.ExitCode -eq 0){$text.finished}else{[string]::Format($text.failed,$script:child.ExitCode)};$save.Enabled=$defaults.Enabled=$verify.Enabled=$play.Enabled=$profile.Enabled=$gamepad.Enabled=$true;$motion.Enabled=$profile.SelectedIndex -in @(3,4);$script:child.Dispose();$script:child=$null}})
+$timer.add_Tick({if($script:child -and $script:child.HasExited){$status.Text=if($script:child.ExitCode -eq 0){[string]::Format($text.finished,$script:launchLogPath)}else{[string]::Format($text.failed,$script:child.ExitCode,$script:launchLogPath)};$save.Enabled=$defaults.Enabled=$verify.Enabled=$play.Enabled=$profile.Enabled=$gamepad.Enabled=$true;$motion.Enabled=$profile.SelectedIndex -in @(3,4);$script:child.Dispose();$script:child=$null}})
 if($SelfTest){
  if($profile.SelectedIndex -ne [array]::IndexOf($keys,$settings.display_profile)){throw 'GUI selection mismatch'}
  $profile.SelectedIndex=4;$motion.Checked=$true;$gamepad.Checked=$true;$v=Get-Controls
  if($v.display_profile -ne 'combined' -or -not $v.motion60 -or -not $v.native_gamepad){throw 'GUI values mismatch'}
  $profile.SelectedIndex=2;if($motion.Enabled -or $motion.Checked){throw 'Unsupported motion switch remains enabled'}
  if($form.Visible){throw 'Self-test must not show a window'}
+ if($VerifyEntry){
+  Run-Entry $true
+  if(-not $script:child.WaitForExit(30000)){throw 'Verify-only entry timed out'}
+  $script:child.Refresh();if($script:child.ExitCode -ne 0){throw ('Verify-only entry failed: '+$script:child.ExitCode)}
+  $script:child.Dispose();$script:child=$null
+  Write-Output 'ENHANCEMENT_GUI_ENTRY_SELFTEST PASS verify_only=true visible=false game_started=false'
+ }
  if($PreviewPath){
   Set-Controls $settings;$form.CreateControl();$bitmap=New-Object Drawing.Bitmap($form.ClientSize.Width,$form.ClientSize.Height);$graphics=[Drawing.Graphics]::FromImage($bitmap)
   try {

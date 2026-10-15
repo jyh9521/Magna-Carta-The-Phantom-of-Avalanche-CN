@@ -1,5 +1,7 @@
 # 增强配置工具
 
+> 当前共享布局的入口连接修正、现用配置入口与验证边界见 [共享配置入口](CONFIGURATION_SHARED_ENTRY.md)。以下独立副本路径是历史实验记录，不用于新交付。
+
 2026-10-14。Windows自带PowerShell与Windows Forms界面，独立运行副本，不引入额外GUI运行库。通用设置逻辑在`src/configuration`，界面语言数据在`locales/<locale>/configuration-ui.json`；不修改游戏汉化数据。
 
 ## 有效选项

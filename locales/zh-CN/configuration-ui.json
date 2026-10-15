@@ -10,15 +10,15 @@
   "gamepad": "启用现代Xbox / XInput手柄候选",
   "quality": "高清标题已启用；无边框显示；汉化保持当前版本。",
   "pending": "动作插值和手柄仍待游戏验收；候选开关可独立关闭。",
-  "controls": "左摇杆：镜头相对移动／界面导航\n右摇杆：游戏指针　A：交互／确认　B、Start：取消／菜单\nX：指针点击　Y：原Tab　LB/RB：界面左右　LT/RT：界面滚动",
+  "controls": "左摇杆：镜头相对移动／菜单导航　右摇杆：菜单指针\nA：交互／确认　B、Start：返回／菜单　X：空格（交互／对话）\nY：Tab　LB/RB：菜单左右　LT/RT：滚动\n菜单显示定位指针；探索时动鼠标可恢复指针。",
   "save": "保存设置",
   "defaults": "恢复默认",
   "verify": "检查入口",
   "play": "启动游戏",
   "saved": "设置已保存。",
   "running": "入口正在运行；结束后可继续配置。",
-  "finished": "入口已结束；日志位于本副本 .advanced-runtime/session-*。",
-  "failed": "入口失败（退出码{0}）；请查看本副本 .advanced-runtime/session-* 日志。",
+  "finished": "入口已结束；日志：{0}",
+  "failed": "入口失败（退出码{0}）；日志：{1}",
   "error": "配置错误",
   "default_note": "默认：4K宽屏、30FPS、键鼠；不会覆盖存档。"
 }

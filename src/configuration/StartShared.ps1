@@ -1,4 +1,4 @@
-param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','motion-gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='')
+param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','motion-gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='',[string]$SettingsFile='')
 $ErrorActionPreference='Stop'
 $runtimeRoot=$PSScriptRoot
 $manifest=Get-Content -LiteralPath (Join-Path $runtimeRoot 'runtime.json') -Raw | ConvertFrom-Json
@@ -10,7 +10,8 @@ function Hash($p){$s=[IO.File]::OpenRead($p);$h=[Security.Cryptography.SHA256]::
 foreach($p in $manifest.data.PSObject.Properties){if((Hash (Join-Path $game $p.Name)) -ne $p.Value){throw ('Game input changed: '+$p.Name)}}
 foreach($p in $manifest.files.PSObject.Properties){if((Hash (Join-Path $runtimeRoot $p.Name)) -ne $p.Value){throw ('Runtime input changed: '+$p.Name)}}
 Import-Module (Join-Path $runtimeRoot 'config/EnhancementSettings.psm1') -Force
-$settings=Read-EnhancementSettings (Join-Path $runtimeRoot 'config/enhancements.json')
+if(-not $SettingsFile){$SettingsFile=Join-Path $runtimeRoot 'config/enhancements.json'}
+$settings=Read-EnhancementSettings $SettingsFile
 $selected=$manifest.recipes.$Recipe
 if($selected.settings){$settings=Test-EnhancementSettings $selected.settings}
 $module=$selected.module
