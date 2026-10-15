@@ -134,3 +134,5 @@ Requires the supported user-supplied image; no game binaries are distributed. Se
 
 Cursor preparation/visibility-state replay: `python -O tools/replay_native_cursor.py --sample runtime/data/MCAlpha.dll --report build/native-cursor-report.json`.
 This stops before external matrix/graphics APIs and does not verify rendered pixels; see [cursor path evidence](docs/GAMEPAD_NATIVE_CURSOR_PATH.md).
+
+Original GUI keyboard admission and phase replay: `python -O tools/replay_native_keyboard.py --sample runtime/data/MCAlpha.dll --report build/native-keyboard-report.json`. See [keyboard admission](docs/GAMEPAD_KEYBOARD_ADMISSION.md); scene listener is a recorder boundary, not actual gameplay.

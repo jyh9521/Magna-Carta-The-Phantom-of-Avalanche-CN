@@ -8,3 +8,8 @@ class NativeAdmissionTests(unittest.TestCase):
         r=subprocess.run([str(EXE)],capture_output=True,text=True,timeout=20)
         self.assertEqual(r.returncode,0,r.stdout+r.stderr)
         self.assertIn('GAMEPAD_NATIVE_ADMISSION_REPLAY PASS nonmodal_mode2=skipped exact_modal_owner=admitted ordinary_descendant=rejected source_mouse_contract=matched game_started=false',r.stdout)
+
+    def test_mouse_only_control_does_not_steal_keyboard_ownership(self):
+        r=subprocess.run([str(EXE)],capture_output=True,text=True,timeout=20)
+        self.assertEqual(r.returncode,0,r.stdout+r.stderr)
+        self.assertIn('GAMEPAD_KEYBOARD_ADMISSION_REPLAY PASS mouse_mode1=virtual keyboard_mode0=native modal=exact_owner game_started=false',r.stdout)

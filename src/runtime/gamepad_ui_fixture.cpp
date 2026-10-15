@@ -31,6 +31,9 @@ int main(){
  require(!installGamepadUi(reinterpret_cast<HMODULE>(image),&capture),"unknown cursor preparation slot rejects render hook installation");
  require(*reinterpret_cast<DWORD*>(image+0xbe380)==reinterpret_cast<DWORD>(image+0x48774),"preparation guard rejects before writing render slot");
  *reinterpret_cast<DWORD*>(image+0xbe38c)=reinterpret_cast<DWORD>(image+0x38c24);
+ auto keyboardAdmissionSlot=reinterpret_cast<DWORD*>(vt+0x1d0);*keyboardAdmissionSlot=reinterpret_cast<DWORD>(image+0x565d3);
+ require(!installGamepadUi(reinterpret_cast<HMODULE>(image),&capture),"unknown native keyboard admission rejects before hook installation");
+ require(*reinterpret_cast<DWORD*>(vt+0x1c8)==reinterpret_cast<DWORD>(image+0x55134),"keyboard admission guard preserves input dispatch slot");*keyboardAdmissionSlot=reinterpret_cast<DWORD>(image+0x565d2);
  auto admissionSlot=reinterpret_cast<DWORD*>(vt+0x1dc);*admissionSlot=reinterpret_cast<DWORD>(image+0x56640);
  require(!installGamepadUi(reinterpret_cast<HMODULE>(image),&capture),"unknown native admission implementation rejects before patching");
  require(*reinterpret_cast<DWORD*>(vt+0x1c8)==reinterpret_cast<DWORD>(image+0x55134),"admission guard rejection preserves original input slot");
@@ -44,6 +47,10 @@ int main(){
  require(calls==5,"original dispatcher once each call");
  *reinterpret_cast<int*>(widgets[1]+0x164)=2;invoke({2,2,4096,850,true});require(*y==520,"virtual focus must skip nonmodal input mode rejected by original native mouse eligibility");
  *reinterpret_cast<int*>(widgets[1]+0x164)=0;*y=420;
+ *reinterpret_cast<int*>(widgets[0]+0x164)=1;*reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x12345);
+ invoke({2,2,4098,875,true});require(*y==470,"mouse-only custom control must not take native keyboard ownership and trap virtual navigation");
+ *reinterpret_cast<int*>(widgets[0]+0x164)=0;*reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x55f3c);*y=420;
+
  *reinterpret_cast<int*>(widgets[1]+0x160)=0;invoke({2,2,6,900,true});require(*y==520,"disabled widgets skipped");*reinterpret_cast<int*>(widgets[1]+0x160)=1;
  *reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x12345);invoke({1,1,7,1000,true});require(*y==520,"native arrow consumer left untouched");*reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x55f3c);
  *reinterpret_cast<int*>(manager+0x38)=1;*reinterpret_cast<BYTE**>(manager+0x3c)=exclusive;*reinterpret_cast<BYTE**>(exclusive)=widgets[1];invoke({1,1,8,1100,true});require(*y==470,"exclusive modal restricts focus");
@@ -51,6 +58,7 @@ int main(){
  *reinterpret_cast<BYTE**>(widgets[1]+0x18)=modalChild;*reinterpret_cast<int*>(widgets[1]+0x164)=2;*y=520;
  invoke({1,1,4097,1150,true});require(*y==470,"exclusive owner overrides local mode but its ordinary descendants must not steal virtual focus");
  *reinterpret_cast<BYTE**>(widgets[1]+0x18)=nullptr;*reinterpret_cast<int*>(widgets[1]+0x164)=0;
+ printf("GAMEPAD_KEYBOARD_ADMISSION_REPLAY PASS mouse_mode1=virtual keyboard_mode0=native modal=exact_owner game_started=false\n");
  printf("GAMEPAD_NATIVE_ADMISSION_REPLAY PASS nonmodal_mode2=skipped exact_modal_owner=admitted ordinary_descendant=rejected source_mouse_contract=matched game_started=false\n");
  *reinterpret_cast<int*>(manager+0x38)=0;BYTE decoration[0x190]{};init(decoration);*reinterpret_cast<void**>(decoration+0x17c)=nullptr;*reinterpret_cast<int*>(decoration+0x160)=0;
  *reinterpret_cast<BYTE**>(widgets[0]+0x18)=decoration;*x=400;*y=300;
@@ -96,7 +104,8 @@ int main(){
  *downCounter=1;image[0xf1b94+VK_DOWN]=0x80;invokeAt(root,{2,2,24,2800,false});require(greenMoves==1,"physical keyboard priority bypasses controller direction mask");
  *reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x12345);*y=420;
  invokeAt(root,{2,2,25,2900,true});require(greenMoves==2&&*y==420,"focused native arrow control receives controller input without moving sidebar focus");
- *y=50;invokeAt(nativeRoot,{2,2,26,3000,true});require(*y==300&&greenMoves==2,"controller can enter native control without applying its arrow action on entry");
+ // A native keyboard consumer must use mode 0 (mode 1 is mouse-only).
+ *reinterpret_cast<int*>(nativeRoot+0x164)=0;*y=50;invokeAt(nativeRoot,{2,2,26,3000,true});require(*y==300&&greenMoves==2,"controller can enter native control without applying its arrow action on entry");
  invokeAt(nativeRoot,{2,2,26,3000,true});require(greenMoves==2,"same-frame second root cannot replay direction after virtual focus entry");
  invokeAt(nativeRoot,{2,0,27,3100,true});require(*y==300&&greenMoves==3,"next-frame focused native control owns direction without sidebar movement");
  *reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x55f3c);*downCounter=0;image[0xf1b94+VK_DOWN]=0;inspectArrows=false;
