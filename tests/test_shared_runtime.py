@@ -74,6 +74,10 @@ class SharedRuntimeTests(unittest.TestCase):
             self.assertEqual(m['configured_modules']['combined'],'input-diagnostics')
             self.assertEqual(m['files']['modules/motion-space.dll'],tool.sha(motion))
             self.assertEqual(m['files']['modules/input-diagnostics.dll'],tool.sha(pad))
+            for recipe in ['gamepad','motion-gamepad','camera-gamepad','maps-gamepad']:
+                self.assertEqual(m['recipes'][recipe]['module'],'input-diagnostics',recipe)
+            self.assertEqual(m['recipes']['camera']['module'],'camera')
+            self.assertEqual(m['recipes']['maps']['module'],'maps')
 
     def test_motion_gamepad_recipe_has_both_controls_without_camera(self):
         with tempfile.TemporaryDirectory() as directory:

@@ -219,3 +219,5 @@ Xbox焦点收集已修正隐藏/禁用GUI子节点导致父按钮漏选的受控
 菜单定位、分区和手柄手感仍待玩家反馈。当前输入候选增加有上限的目标ID/RVA、位置和确认输入边沿日志，不改操作映射；这些输入观察不等于原生转场成功。48项GUI受控检查通过，见 GAMEPAD_MENU_EVIDENCE.md。
 
 - 2026-10-15: native mouse eligibility and virtual focus admission now match mode/exclusive-owner rules. Offline instruction replay is not rendered-pointer or physical-controller acceptance; see GAMEPAD_NATIVE_ADMISSION.md.
+
+- 2026-10-15: camera-gamepad/maps-gamepad previously loaded historical input code. All four explicit controller recipes now select the current input candidate when supplied. Pointer visibility remains pending in-game confirmation; see GAMEPAD_ENTRY_CONSISTENCY.md.

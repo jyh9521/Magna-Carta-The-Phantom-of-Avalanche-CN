@@ -78,9 +78,12 @@ def prepare(source, modules, atlas, output):
     recipes['motion-gamepad']=dict(module=gamepad,settings=settings('combined',True,True))
     recipes['texture']=dict(module='texture',settings=settings(),texture=True)
     recipes['camera']=dict(module='camera',settings=settings('combined',True),camera=True)
-    recipes['camera-gamepad']=dict(module='camera',settings=settings('combined',True,True),camera=True)
+    # Current profile shim includes the optional camera/map observers. Keep all
+    # controller recipes on that same input revision, not historical role DLLs.
+    # Older packages without an explicit input candidate retain their role DLLs.
+    recipes['camera-gamepad']=dict(module=gamepad if 'input-diagnostics' in modules else 'camera',settings=settings('combined',True,True),camera=True)
     recipes['maps']=dict(module='maps',settings=settings(),maps=True)
-    recipes['maps-gamepad']=dict(module='maps',settings=settings(pad=True),maps=True)
+    recipes['maps-gamepad']=dict(module=gamepad if 'input-diagnostics' in modules else 'maps',settings=settings(pad=True),maps=True)
     atlas_manifest=json.loads((atlas/'manifest.json').read_text(encoding='utf8'))
     if atlas_manifest.get('schema')!=1 or atlas_manifest.get('navigation_verified') is not False:
         raise ValueError('Unsupported map atlas')
