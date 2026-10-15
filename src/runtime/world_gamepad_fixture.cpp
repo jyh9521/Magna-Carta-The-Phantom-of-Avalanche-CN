@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cmath>
+#include <cwchar>
 static BYTE* image=nullptr;static BYTE world[0x15c4],actor[0x340],gui[0x194],cameraData[0xc0];
 static int physicalX=0,physicalY=0;static DWORD controllerSlot=0;
 static bool connected=true,physical=false,rawUp=false,physicalMouseDown=false,physicalRightDown=false;static SHORT axisX=0,axisY=0,rightX=0;static WORD buttons=0;static int checks=0,forwardCalls=0,turnCalls=0,interactions=0;static int observations=0;static bool observationControlled=false;
@@ -15,6 +16,8 @@ void observe(BYTE* s,bool controlled){if(s==world){++observations;observationCon
 void require(bool v,const char* s){++checks;if(!v){fprintf(stderr,"FAIL %s\n",s);ExitProcess(1);}}
 BOOL WINAPI keyboard(PBYTE keys){*reinterpret_cast<int*>(image+0xf20b0)=physicalX;*reinterpret_cast<int*>(image+0xf20a8)=physicalY;memset(keys,0,256);keys[VK_SPACE]=1;if(rawUp)keys[VK_UP]=0x80;if(physical)keys[VK_LEFT]=0x80;if(physicalMouseDown)keys[VK_LBUTTON]=0x80;if(physicalRightDown)keys[VK_RBUTTON]=0x80;return TRUE;}
 DWORD WINAPI poll(DWORD slot,XINPUT_STATE* s){if(slot!=controllerSlot||!connected)return ERROR_DEVICE_NOT_CONNECTED;*s={};s->Gamepad.sThumbLX=axisX;s->Gamepad.sThumbLY=axisY;s->Gamepad.sThumbRX=rightX;s->Gamepad.wButtons=buttons;return ERROR_SUCCESS;}
+static int cursorRecords=0,cursorLimits=0;static wchar_t lastCursorRecord[512]{};
+void captureCursor(const wchar_t* line){if(wcsncmp(line,L"INPUT_CURSOR_DRAW ",18)==0){++cursorRecords;wcscpy_s(lastCursorRecord,line);}if(wcsncmp(line,L"INPUT_CURSOR_TRACE_LIMIT ",25)==0)++cursorLimits;}
 static int cursorPrepares=0;void __fastcall cursorPrepare(void*,void*){++cursorPrepares;}
 static int cursorDraws=0;void __fastcall cursorDraw(void*,void*){++cursorDraws;}
 void __fastcall clearNativePress(void* button,void*){*reinterpret_cast<int*>(static_cast<BYTE*>(button)+0x19c)=0;}
@@ -102,7 +105,7 @@ int main(int argc,char** argv){
  rawUp=true;*reinterpret_cast<float*>(actor+0x148)=1;reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(image+0xc12c0))(world);
  require(*reinterpret_cast<float*>(actor+0x16c)==30&&turnCalls==0&&*iat==oldIat,"passive observer preserves native keyboard movement and IAT");rawUp=false;
  require(removeWorldGamepad(reinterpret_cast<HMODULE>(image)),"passive observer exact hook rollback");
- SetEnvironmentVariableW(L"MC_MAP_OVERLAY",L"1");SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",L"1");require(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr),"integrated installer");require(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr),"idempotence");configureModernGamepadFixture(keyboard,poll,true);
+ SetEnvironmentVariableW(L"MC_MAP_OVERLAY",L"1");SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",L"1");require(installModernGamepad(reinterpret_cast<HMODULE>(image),captureCursor),"integrated installer");require(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr),"idempotence");configureModernGamepadFixture(keyboard,poll,true);
  auto run=[](){reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(image+0xc12c0))(world);};
  setWorldTickObserver(&observe);run();require(observations==1&&observationControlled,"read-only observer runs after native tick");setWorldTickObserver(nullptr);run();require(observations==1,"observer removal preserves native tick");
  BYTE currentCursor[0x144]{},otherSprite[0x144]{};*reinterpret_cast<BYTE**>(image+0xf2388)=currentCursor;
@@ -110,8 +113,11 @@ int main(int argc,char** argv){
  require(modernGamepadCursorHidden(),"detected armed controller hides game cursor");
  reinterpret_cast<void(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(image+0xbe38c))(currentCursor);require(cursorPrepares==1,"hidden cursor still executes original position preparation");
  drawCursor(currentCursor);require(cursorDraws==0,"current game cursor rendering suppressed");
+ require(cursorRecords==1&&wcsstr(lastCursorRecord,L"decision=skip")&&wcsstr(lastCursorRecord,L"observation=draw_entry"),"cursor decision evidence must distinguish actual draw entry from input readiness");
  drawCursor(otherSprite);require(cursorDraws==1,"shared cursor class unrelated sprite draws preserved");
+ require(cursorRecords==1,"unrelated sprite must not produce current-cursor evidence");drawCursor(currentCursor);require(cursorRecords==1,"unchanged draw state must not repeat cursor evidence");
  physicalX=1;run();require(!modernGamepadCursorHidden(),"raw physical mouse motion restores game cursor in same poll");drawCursor(currentCursor);require(cursorDraws==2,"mouse-restored cursor calls original draw");
+ require(cursorRecords==2&&wcsstr(lastCursorRecord,L"decision=original")&&wcsstr(lastCursorRecord,L"native_blocked=0")&&wcsstr(lastCursorRecord,L"pixels=not_observed"),"mouse restore evidence records original entry not visible pixels");
  run();require(!modernGamepadCursorHidden(),"idle connected controller does not steal mouse mode back");
  buttons=XINPUT_GAMEPAD_DPAD_UP;run();require(modernGamepadCursorHidden(),"fresh controller action hides cursor again");buttons=0;run();
  physicalMouseDown=true;run();require(!modernGamepadCursorHidden(),"physical mouse click restores cursor without movement");
@@ -141,6 +147,20 @@ int main(int argc,char** argv){
  axisX=13000;axisY=0;run();
  require(!modernGamepadCursorHidden(),"menu must expose its exact native click position instead of hiding all focus feedback");
  int menuCursorDraws=cursorDraws;drawCursor(currentCursor);require(cursorDraws==menuCursorDraws+1,"menu locator calls original cursor draw at exact native hit coordinates");
+ *reinterpret_cast<int*>(currentCursor+0x118)=-1;*reinterpret_cast<float*>(currentCursor+0x24)=123.5f;*reinterpret_cast<float*>(currentCursor+0x28)=456.25f;
+ BYTE cursorSnapshot[sizeof(currentCursor)];memcpy(cursorSnapshot,currentCursor,sizeof(currentCursor));drawCursor(currentCursor);
+ require(wcsstr(lastCursorRecord,L"native_order=-1")&&wcsstr(lastCursorRecord,L"native_blocked=1")&&wcsstr(lastCursorRecord,L"sprite_x=123.500"),"original native hide state and sprite position must be observable separately from hook decision");
+ require(!memcmp(cursorSnapshot,currentCursor,sizeof(currentCursor)),"cursor evidence cannot change original object or visibility state");
+ *reinterpret_cast<int*>(currentCursor+0x118)=0;
+ *reinterpret_cast<float*>(currentCursor+0x24)=std::nanf("");drawCursor(currentCursor);
+ require(wcsstr(lastCursorRecord,L"sprite_finite=0"),"nonfinite cursor position is explicitly marked in evidence");
+ require(std::isnan(*reinterpret_cast<float*>(currentCursor+0x24)),"nonfinite normalization must affect the log only");*reinterpret_cast<float*>(currentCursor+0x24)=123.5f;
+ for(int i=0;i<300;++i){*reinterpret_cast<int*>(image+0xf20b0)=i;drawCursor(currentCursor);}
+ require(cursorRecords==64&&cursorLimits==1,"cursor evidence is bounded to 64 changed states and one explicit limit");
+ require(installGamepadUi(reinterpret_cast<HMODULE>(image),captureCursor),"idempotent GUI install retains trace budget");
+ *reinterpret_cast<int*>(image+0xf20b0)=999;drawCursor(currentCursor);require(cursorRecords==64&&cursorLimits==1,"idempotence must not reset or repeat cursor trace limit");
+ printf("GAMEPAD_CURSOR_EVIDENCE_REPLAY PASS draw_entry=true original_flags=true unchanged_state=deduplicated object=unchanged limit=64 limit_notice=once pixels=not_observed game_started=false\n");
+
  printf("GAMEPAD_MENU_LOCATOR_REPLAY PASS menu=visible exploration=hidden mouse_restore=retained native_hit_position=exact game_started=false\n");require(!(image[0xf1b94+VK_RIGHT]&0x80),"menu moderate stick drift does not move selection");
  axisX=20000;axisY=23000;run();require((image[0xf1b94+VK_UP]&0x80)&&!(image[0xf1b94+VK_RIGHT]&0x80),"menu diagonal has exactly one dominant axis");
  axisY=-26000;run();require((image[0xf1b94+VK_DOWN]&0x80)&&!(image[0xf1b94+VK_UP]&0x80),"fast stick reversal must reverse menu direction without requiring a sampled neutral frame");

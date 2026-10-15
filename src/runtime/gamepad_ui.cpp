@@ -14,6 +14,8 @@ constexpr BYTE cancelPrefix[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc};
 using Draw=void(__thiscall*)(void*);Draw originalCursorDraw=nullptr;
 using Dispatch=int(__thiscall*)(void*);Dispatch original=nullptr;BYTE* engine=nullptr;
 thread_local unsigned depth=0;DWORD consumed=0,lastRepeat=0,maskedSerial=0,lastDirectionSerial=0;unsigned maskedDirections=0,previousVirtualDirections=0;unsigned previousHeld=0,traceEvents=0;bool traceLimited=false;void(*trace)(const wchar_t*)=nullptr;
+struct CursorObservation {int x,y,inputHidden,nativeBlock,nativeOrder;float spriteX,spriteY;int finite;};
+CursorObservation lastCursorObservation{};void* lastCursorObject=nullptr;unsigned cursorTraceEvents=0;bool cursorTraceLimited=false,cursorTraceKnown=false;
 bool readable(const void* a,size_t n){auto p=reinterpret_cast<ULONG_PTR>(a),end=p+n;if(!p||end<p)return false;while(p<end){MEMORY_BASIC_INFORMATION m{};if(!VirtualQuery(reinterpret_cast<void*>(p),&m,sizeof(m))||m.State!=MEM_COMMIT||(m.Protect&(PAGE_GUARD|PAGE_NOACCESS)))return false;auto next=reinterpret_cast<ULONG_PTR>(m.BaseAddress)+m.RegionSize;if(next<=p)return false;p=next;}return true;}
 bool gui(BYTE* p){if(!readable(p,0x190))return false;auto vt=*reinterpret_cast<ULONG_PTR*>(p);for(auto slot:slots)if(vt==reinterpret_cast<ULONG_PTR>(engine+slot-0x1c8))return true;return false;}
 bool defaultArrows(BYTE* p){
@@ -152,10 +154,26 @@ int __fastcall dispatchHook(void* root,void*){
  __finally {if(mask)for(unsigned i=0;i<4;++i){if(!(directions&(1u<<i)))continue;int k=arrows[i];*reinterpret_cast<int*>(engine+0xf1c9c+k*4)=savedCounters[i];engine[0xf1b94+k]=savedKeys[i];}--depth;}
  return result;
 }
+void traceCursorDraw(void* value,bool skip){
+ if(!trace||!readable(value,0x11c))return;
+ auto p=static_cast<BYTE*>(value);CursorObservation o{};
+ o.x=*reinterpret_cast<int*>(engine+0xf20b0);o.y=*reinterpret_cast<int*>(engine+0xf20a8);o.inputHidden=skip;
+ o.nativeBlock=*reinterpret_cast<int*>(p+0x114);o.nativeOrder=*reinterpret_cast<int*>(p+0x118);
+ o.spriteX=*reinterpret_cast<float*>(p+0x24);o.spriteY=*reinterpret_cast<float*>(p+0x28);
+ o.finite=std::isfinite(o.spriteX)&&std::isfinite(o.spriteY);if(!o.finite)o.spriteX=o.spriteY=0;
+ if(cursorTraceKnown&&lastCursorObject==value&&!memcmp(&o,&lastCursorObservation,sizeof(o)))return;
+ cursorTraceKnown=true;lastCursorObject=value;lastCursorObservation=o;
+ if(cursorTraceEvents>=64){if(!cursorTraceLimited){cursorTraceLimited=true;trace(L"INPUT_CURSOR_TRACE_LIMIT events=64 further_cursor_events=omitted");}return;}
+ ++cursorTraceEvents;wchar_t line[384];
+ swprintf_s(line,L"INPUT_CURSOR_DRAW decision=%ls x=%d y=%d sprite_x=%.3f sprite_y=%.3f sprite_finite=%d native_block=%d native_order=%d native_blocked=%d observation=draw_entry pixels=not_observed",
+ skip?L"skip":L"original",o.x,o.y,double(o.spriteX),double(o.spriteY),o.finite,o.nativeBlock,o.nativeOrder,o.nativeBlock!=0||o.nativeOrder!=0);trace(line);
+}
 void __fastcall cursorDrawHook(void* value,void*){
  // Suppress only actual sprite submission (+0xc), never position preparation (+0x18).
  // Other instances of the shared sprite class keep their original drawing.
- if(value==*reinterpret_cast<void**>(engine+0xf2388)&&modernGamepadCursorHidden())return;
+ if(value==*reinterpret_cast<void**>(engine+0xf2388)){
+  bool skip=modernGamepadCursorHidden();traceCursorDraw(value,skip);if(skip)return;
+ }
  originalCursorDraw(value);
 }
 bool write(DWORD* p,DWORD from,DWORD to){if(*p!=from)return false;DWORD old;if(!VirtualProtect(p,4,PAGE_READWRITE,&old))return false;bool good=InterlockedCompareExchange(reinterpret_cast<LONG*>(p),to,from)==static_cast<LONG>(from);DWORD ignored;if(!VirtualProtect(p,4,old,&ignored)){if(good)InterlockedCompareExchange(reinterpret_cast<LONG*>(p),from,to);VirtualProtect(p,4,old,&ignored);return false;}return good;}
@@ -172,7 +190,7 @@ bool set(BYTE* p,bool enabled,void(*logger)(const wchar_t*),bool dry=false){
  allBase&=*reinterpret_cast<DWORD*>(p+0xbe380)==drawBase;allHook&=*reinterpret_cast<DWORD*>(p+0xbe380)==drawHook;
  if(!allBase&&!(allHook&&engine==p))return false;if(enabled&&allHook)return true;if(!enabled&&allBase)return true;
  if(dry)return true;
- if(enabled){engine=p;original=reinterpret_cast<Dispatch>(base);originalCursorDraw=reinterpret_cast<Draw>(drawBase);trace=logger;traceEvents=0;traceLimited=false;}
+ if(enabled){engine=p;original=reinterpret_cast<Dispatch>(base);originalCursorDraw=reinterpret_cast<Draw>(drawBase);trace=logger;traceEvents=0;traceLimited=false;cursorTraceEvents=0;cursorTraceKnown=cursorTraceLimited=false;lastCursorObject=nullptr;}
  unsigned done=0;for(auto r:slots){if(!write(reinterpret_cast<DWORD*>(p+r),enabled?base:hook,enabled?hook:base)){for(unsigned i=0;i<done;++i)write(reinterpret_cast<DWORD*>(p+slots[i]),enabled?hook:base,enabled?base:hook);return false;}++done;}
  if(!write(reinterpret_cast<DWORD*>(p+0xbe380),enabled?drawBase:drawHook,enabled?drawHook:drawBase)){
   for(auto r:slots)write(reinterpret_cast<DWORD*>(p+r),enabled?hook:base,enabled?base:hook);return false;

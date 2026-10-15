@@ -30,3 +30,5 @@ GUI48项：已知目标ID和RVA、精确坐标、点击阶段标签、原计数�
 优先观察定位指针是否可见、A是否命中所指选项，以及状态页绿色箭头/右侧菜单是否独立。
 如果还有异常，只需描述出错的选项和操作；维护时直接读取本地profile.log，不要求额外启动诊断程序。
 只更新input-diagnostics.dll，四个已验收角色模块、游戏数据、汉化、Alt+Tab及默认设置不变。商业游戏启动0次。
+
+Actual cursor draw entry and native hide-state observations now have a separate bounded 64-state budget; see [cursor draw evidence](GAMEPAD_CURSOR_DRAW_EVIDENCE.md). These observations still do not prove displayed pixels.
