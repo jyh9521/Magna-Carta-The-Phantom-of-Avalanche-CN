@@ -1,0 +1,2 @@
+# Optional developer-only x86 instruction emulator; no player dependency.
+unicorn==2.1.4

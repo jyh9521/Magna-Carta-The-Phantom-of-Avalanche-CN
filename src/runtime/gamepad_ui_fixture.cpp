@@ -27,15 +27,26 @@ int main(){
  // reads list+8; a nonzero count must never be mistaken for a node pointer.
  for(int i=0;i<3;++i){init(widgets[i]);*reinterpret_cast<unsigned*>(widgets[i]+4)=0x200+i;*reinterpret_cast<int**>(nodes[i])=rects[i];*reinterpret_cast<int*>(widgets[i]+0xf8)=1;*reinterpret_cast<BYTE**>(widgets[i]+0x100)=nodes[i];if(i<2)*reinterpret_cast<BYTE**>(widgets[i]+0x10)=widgets[i+1];}
  *reinterpret_cast<int*>(image+0xf1b48)=800;*reinterpret_cast<int*>(image+0xf1b4c)=600;auto x=reinterpret_cast<int*>(image+0xf20b0),y=reinterpret_cast<int*>(image+0xf20a8);*x=400;*y=300;*reinterpret_cast<BYTE**>(image+0xf220c)=manager;
+ auto admissionSlot=reinterpret_cast<DWORD*>(vt+0x1dc);*admissionSlot=reinterpret_cast<DWORD>(image+0x56640);
+ require(!installGamepadUi(reinterpret_cast<HMODULE>(image),&capture),"unknown native admission implementation rejects before patching");
+ require(*reinterpret_cast<DWORD*>(vt+0x1c8)==reinterpret_cast<DWORD>(image+0x55134),"admission guard rejection preserves original input slot");
+ *admissionSlot=reinterpret_cast<DWORD>(image+0x5663f);
  require(installGamepadUi(reinterpret_cast<HMODULE>(image),&capture),"install all known classes");require(installGamepadUi(reinterpret_cast<HMODULE>(image),nullptr),"idempotence");
  auto invoke=[&](GamepadNavigation n){configureModernNavigationFixture(image,n);return reinterpret_cast<int(__thiscall*)(void*)>(*reinterpret_cast<DWORD*>(vt+0x1c8))(root);};
  require(invoke({2,2,1,100,true})==7&&*x==400&&*y==420,"first downward focus and original dispatcher return");
  require(focusRecords==1&&wcsstr(lastFocus,L"target_id=200")&&wcsstr(lastFocus,L"root_class=bec88")&&wcsstr(lastFocus,L"to=400,420"),"selected target identity and native coordinates must be observable, not only first-use readiness");
  invoke({2,0,2,200,true});require(*y==420,"repeat initial delay");invoke({2,0,3,500,true});require(*y==470,"repeat advances after delay");invoke({2,2,4,700,true});require(*y==520,"next focus");invoke({2,2,5,800,true});require(*y==420,"wrap focus");
  require(calls==5,"original dispatcher once each call");
+ *reinterpret_cast<int*>(widgets[1]+0x164)=2;invoke({2,2,4096,850,true});require(*y==520,"virtual focus must skip nonmodal input mode rejected by original native mouse eligibility");
+ *reinterpret_cast<int*>(widgets[1]+0x164)=0;*y=420;
  *reinterpret_cast<int*>(widgets[1]+0x160)=0;invoke({2,2,6,900,true});require(*y==520,"disabled widgets skipped");*reinterpret_cast<int*>(widgets[1]+0x160)=1;
  *reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x12345);invoke({1,1,7,1000,true});require(*y==520,"native arrow consumer left untouched");*reinterpret_cast<DWORD*>(vt+0xd0)=reinterpret_cast<DWORD>(image+0x55f3c);
  *reinterpret_cast<int*>(manager+0x38)=1;*reinterpret_cast<BYTE**>(manager+0x3c)=exclusive;*reinterpret_cast<BYTE**>(exclusive)=widgets[1];invoke({1,1,8,1100,true});require(*y==470,"exclusive modal restricts focus");
+ BYTE modalChild[0x190]{},modalNode[8]{};int modalRect[]={300,550,500,590};init(modalChild);*reinterpret_cast<int**>(modalNode)=modalRect;*reinterpret_cast<BYTE**>(modalChild+0x100)=modalNode;
+ *reinterpret_cast<BYTE**>(widgets[1]+0x18)=modalChild;*reinterpret_cast<int*>(widgets[1]+0x164)=2;*y=520;
+ invoke({1,1,4097,1150,true});require(*y==470,"exclusive owner overrides local mode but its ordinary descendants must not steal virtual focus");
+ *reinterpret_cast<BYTE**>(widgets[1]+0x18)=nullptr;*reinterpret_cast<int*>(widgets[1]+0x164)=0;
+ printf("GAMEPAD_NATIVE_ADMISSION_REPLAY PASS nonmodal_mode2=skipped exact_modal_owner=admitted ordinary_descendant=rejected source_mouse_contract=matched game_started=false\n");
  *reinterpret_cast<int*>(manager+0x38)=0;BYTE decoration[0x190]{};init(decoration);*reinterpret_cast<void**>(decoration+0x17c)=nullptr;*reinterpret_cast<int*>(decoration+0x160)=0;
  *reinterpret_cast<BYTE**>(widgets[0]+0x18)=decoration;*x=400;*y=300;
  invoke({2,2,9,1200,true});require(*y==420,"decorative GUI child cannot hide actionable parent button");

@@ -25,6 +25,15 @@ bool defaultArrows(BYTE* p){
  bool generic=true,empty=true;for(unsigned i=0;i<4;++i){auto f=*reinterpret_cast<ULONG_PTR*>(vt+0xc8+i*4);generic&=f==reinterpret_cast<ULONG_PTR>(engine+forward[i]);empty&=f==reinterpret_cast<ULONG_PTR>(engine+noop[i]);}
  return generic||empty;
 }
+bool admittedMouseTarget(BYTE* p){
+ if(!*reinterpret_cast<int*>(p+0xe8)||!*reinterpret_cast<int*>(p+0x160))return false;
+ auto manager=*reinterpret_cast<BYTE**>(engine+0xf220c);
+ if(readable(manager,0x40)&&*reinterpret_cast<int*>(manager+0x38)>0){
+  auto node=*reinterpret_cast<BYTE**>(manager+0x3c);
+  return readable(node,4)&&*reinterpret_cast<BYTE**>(node)==p;
+ }
+ int mode=*reinterpret_cast<int*>(p+0x164);return mode==0||mode==1;
+}
 bool collect(BYTE* p,std::vector<modern_input::FocusTarget>& out,std::set<BYTE*>& visited,float x,float y,int w,int h,bool& nativeArrowControl){
  if(!gui(p)||visited.size()>=256||!visited.insert(p).second)return false;
  auto child=*reinterpret_cast<BYTE**>(p+0x18);bool eligibleChild=false;std::set<BYTE*> chain;
@@ -35,7 +44,7 @@ bool collect(BYTE* p,std::vector<modern_input::FocusTarget>& out,std::set<BYTE*>
  }
  // Native 55134 dispatches children before checking the parent's own eligibility.
  if(eligibleChild)return true;
- if(!*reinterpret_cast<int*>(p+0xe8)||!*reinterpret_cast<int*>(p+0x160))return false;
+ if(!admittedMouseTarget(p))return false;
  if(!*reinterpret_cast<void**>(p+0x17c))return true;
  // +f8 is the list object. GetFirst (RVA 02014) reads its +8 head;
  // dereferencing the container itself mistakes its count for a pointer.
@@ -154,6 +163,7 @@ bool set(BYTE* p,bool enabled,void(*logger)(const wchar_t*),bool dry=false){
  auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(p);if(dos->e_magic!=IMAGE_DOS_SIGNATURE||dos->e_lfanew<=0||dos->e_lfanew>4096)return false;
  auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+dos->e_lfanew);if(nt->Signature!=IMAGE_NT_SIGNATURE||nt->FileHeader.Machine!=IMAGE_FILE_MACHINE_I386||nt->OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR32_MAGIC||nt->OptionalHeader.SizeOfImage!=0x10b000)return false;
  if(memcmp(p+0x38c24,prefix,sizeof(prefix)))return false;
+ for(auto r:slots)if(*reinterpret_cast<DWORD*>(p+r+0x14)!=reinterpret_cast<DWORD>(p+0x5663f))return false;
  DWORD drawBase=reinterpret_cast<DWORD>(p+0x38c24),drawHook=reinterpret_cast<DWORD>(&cursorDrawHook);
  DWORD base=reinterpret_cast<DWORD>(p+0x55134),hook=reinterpret_cast<DWORD>(&dispatchHook);
  bool allBase=true,allHook=true;for(auto r:slots){auto v=*reinterpret_cast<DWORD*>(p+r);allBase&=v==base;allHook&=v==hook;}
@@ -172,5 +182,5 @@ bool installGamepadUi(HMODULE m,void(*logger)(const wchar_t*)){return set(reinte
 bool removeGamepadUi(HMODULE m){return set(reinterpret_cast<BYTE*>(m),false,nullptr);}
 bool canSetGamepadUi(HMODULE m,bool enabled){return set(reinterpret_cast<BYTE*>(m),enabled,nullptr,true);}
 #ifdef MODERN_INPUT_TEST
-void initializeGamepadUiFixture(BYTE* p){memcpy(p+0x38c24,prefix,sizeof(prefix));*reinterpret_cast<DWORD*>(p+0xbe38c)=reinterpret_cast<DWORD>(p+0x38c24);memcpy(p+0x5718f,cancelPrefix,sizeof(cancelPrefix));memcpy(p+0x55134,prefix,sizeof(prefix));for(auto s:slots)*reinterpret_cast<DWORD*>(p+s)=reinterpret_cast<DWORD>(p+0x55134);}
+void initializeGamepadUiFixture(BYTE* p){memcpy(p+0x38c24,prefix,sizeof(prefix));*reinterpret_cast<DWORD*>(p+0xbe38c)=reinterpret_cast<DWORD>(p+0x38c24);memcpy(p+0x5718f,cancelPrefix,sizeof(cancelPrefix));memcpy(p+0x55134,prefix,sizeof(prefix));for(auto s:slots){*reinterpret_cast<DWORD*>(p+s)=reinterpret_cast<DWORD>(p+0x55134);*reinterpret_cast<DWORD*>(p+s+0x14)=reinterpret_cast<DWORD>(p+0x5663f);}}
 #endif

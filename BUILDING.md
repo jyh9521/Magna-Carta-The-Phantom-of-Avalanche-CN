@@ -125,3 +125,9 @@ python tools/prepare_map_trial.py --workspace build/configurable-modern-game --n
 该命令只读用户本地动画、执行生产矩阵数学，不启动游戏、不导出姿态数组。
 `tests/test_bone_pose_native.py`以自有合成ANI检查截断、非有限与子引用；
 未构建原生目标时显式skip，不把skip称作已验证。
+
+## Optional offline native title replay
+
+Developer-only dependency: `python -m pip install -r tools/requirements-native-replay.txt`.
+Run `python -O tools/replay_native_title.py --sample runtime/data/MCAlpha.dll --report build/native-title-report.json`.
+Requires the supported user-supplied image; no game binaries are distributed. See [native admission evidence](docs/GAMEPAD_NATIVE_ADMISSION.md).
