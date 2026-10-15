@@ -87,3 +87,7 @@ Field当前版本的显示标签：offset252、容量18字节含NUL，对应Fiel
 ## WRD 1.3 geometry subset and incremental atlas (2026-10-15)
 
 The bounded reader explicitly accepts 1.300000 and 1.400000 headers with actual source version/hash retained; identical observed native field-read paths and complete EOF checks are documented in MAP_LEGACY_GEOMETRY.md. Five additional local 1.3 resources pass; two still fail index validation and are not silently repaired. Geometry coverage is not navigation coverage. Incremental atlas manifests record selected_ids and each accepted source_version.
+
+## Field static prefix (2026-10-15)
+
+The source-locked read-only prefix reader distinguishes file strides from runtime object strides, preserves unknown script tails and the map -1 sentinel, and never rewrites labels. Field offset0 maps to FieldInfo+4/scene+10d0 (WRD ID); offset8 is the PlayBook ID. Detailed native read evidence and bounded coverage are in FIELD_STATIC_PREFIX.md. This is not a full FLD decoder or navigation graph.
