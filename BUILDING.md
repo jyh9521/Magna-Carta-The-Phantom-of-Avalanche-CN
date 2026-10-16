@@ -1,5 +1,15 @@
 # 构建说明
 
+## 统一玩家测试补丁包（2026-10-17）
+
+`python tools/build_player_test_bundle.py --source ORIGINAL_GAME --runtime runtime --output dist/NEW_TEST_PACKAGE`
+
+原版只读；共享运行目录须通过已有摘要清单验证。构建器将原版与当前共享游戏逐文件比对，
+只为变化资源生成MCD1块增量，打包自有运行模块、地图候选、配置工具及固定版DDrawCompat许可。
+不打包原版完整文件、存档、Python或本机注册表。Windows玩家端使用自带PowerShell；
+`Install.cmd -Source ORIGINAL_GAME -Target NEW_TEST_GAME`在新目录复制并修改资源。
+包内README列出配置、各独立候选入口和回滚命令。格式和验收边界见[统一测试包](docs/PLAYER_TEST_PACKAGE.md)。
+
 增强配置界面与专用模块的当前构建、增量更新及回滚步骤见[配置工具构建](docs/CONFIGURATION_MATERIAL.md)。
 
 ## 当前运行布局（2026-10-14）
