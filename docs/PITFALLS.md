@@ -193,3 +193,9 @@ A merged mouse counter at the keyboard GUI hook precedes native mouse dispatch. 
 # Cursor preparation is not sprite submission (2026-10-15)
 
 For supported MCAlpha cursor class be374, +18/38c24 prepares position/matrices; suppressing it can leave stale transforms without suppressing sprite submission. Actual sprite drawing is +c/48774, reached by +10/38bd7 traversal. The input cursor ownership hook now targets only the actual draw slot and preserves the preparation slot. A fixture that only counts calls through +18 must not be described as rendered-pixel evidence. See GAMEPAD_CURSOR_RENDER_BOUNDARY.md and GAMEPAD_NATIVE_CURSOR_PATH.md.
+
+## 保存的窗口标志不等于运行窗口模式
+
+2026-10-16：锁定MCAlpha的RVA 0x99cf在加载设置后无条件写入ASRCreateInfo首字段1，忽略保存的窗口字节。仅修改52字节profile不能证明窗口化。当前配置候选改为在内存核对RVA 0x9a0e完整10字节指令后，仅切换立即数；原文件不改。原生执行桩证明0/1写入与精确恢复，实际窗口化画面与输入仍待验收，详见CONFIGURATION_MATERIAL.md。
+
+自由视角依赖共享时钟与相机矩阵消费者。只设置MC_FREE_VIEW但关闭60帧路径时，旧安装门槛会漏装相机钩子。专用配置模块在30帧自由视角下也接入所需时钟/相机钩子，保持30帧显示限制；开关、呈现节奏与原生逻辑应分开验证。

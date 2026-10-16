@@ -1,4 +1,4 @@
-param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','motion-gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='',[string]$SettingsFile='')
+﻿param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','motion-gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='',[string]$SettingsFile='')
 $ErrorActionPreference='Stop'
 $runtimeRoot=$PSScriptRoot
 $manifest=Get-Content -LiteralPath (Join-Path $runtimeRoot 'runtime.json') -Raw | ConvertFrom-Json
@@ -14,18 +14,22 @@ if(-not $SettingsFile){$SettingsFile=Join-Path $runtimeRoot 'config/enhancements
 $settings=Read-EnhancementSettings $SettingsFile
 $selected=$manifest.recipes.$Recipe
 if($selected.settings){$settings=Test-EnhancementSettings $selected.settings}
+$schema=$settings.schema
+$settings=Get-EnhancementRuntimeSettings $settings
+$cameraEnabled=([bool]$selected.camera -or $settings.free_view)
 $module=$selected.module
 if($module -eq 'configured'){
- $key=if($settings.motion60 -and $settings.native_gamepad){'combined'}elseif($settings.motion60){'motion'}elseif($settings.native_gamepad){'gamepad'}else{'display'}
+ $key=if($settings.motion60 -and $settings.native_gamepad){'combined'}elseif($settings.motion60 -or $settings.free_view){'motion'}elseif($settings.native_gamepad){'gamepad'}else{'display'}
  if($manifest.PSObject.Properties['configured_modules']){$module=$manifest.configured_modules.$key}else{$module=if($key -eq 'display'){'display'}else{'modern'}}
 }
+if($Recipe -eq 'configured' -and $schema -eq 2){$module='configuration'}
 $ini=Join-Path $game 'DDrawCompat-MagnaCarta.ini'
 $known=@($manifest.profiles.PSObject.Properties.Value)
 if((Hash $ini) -notin $known){throw 'Unknown active display configuration'}
 $mutex=New-Object Threading.Mutex($false,('Local\MagnaCartaShared_'+(Hash (Join-Path $runtimeRoot 'runtime.json')).Substring(0,24)))
 if(-not $mutex.WaitOne(0)){throw 'Another shared runtime entry is active'}
 $environment=@{}
-foreach($key in @('MC_MOTION60_COMPLETE','MC_TITLE_BACKGROUND4K','MC_FREE_VIEW','MC_MAP_OVERLAY','MC_MAP_ASSETS')){$environment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
+foreach($key in @('MC_MOTION60_COMPLETE','MC_TITLE_BACKGROUND4K','MC_FREE_VIEW','MC_MAP_OVERLAY','MC_MAP_ASSETS','MC_WINDOWED')){$environment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
 try{
  foreach($p in (Get-CimInstance Win32_Process -Filter "Name='MagnaCarta.exe'")){
   if(-not $p.ExecutablePath -or [IO.Path]::GetFullPath($p.ExecutablePath) -eq (Join-Path $game 'MagnaCarta.exe')){throw 'Exit game before changing shared settings'}
@@ -33,6 +37,7 @@ try{
  $profile=[IO.File]::ReadAllBytes((Join-Path $runtimeRoot 'config/profile-base.bin'))
  . (Join-Path $runtimeRoot 'config/PrepareProfile.ps1')
  $profile=Convert-CompatibilityProfile $profile
+
  $cache=Join-Path $runtimeRoot 'cache'
  if(-not (Test-Path -LiteralPath $cache)){New-Item -ItemType Directory -Path $cache | Out-Null}
  # The native launcher requires a fresh log; the shared mutex owns this cache.
@@ -45,13 +50,14 @@ try{
  }
  [IO.File]::WriteAllBytes((Join-Path $cache 'profile.bin'),$profile)
  Invoke-EnhancementDisplayTransaction $ini ([IO.File]::ReadAllBytes((Join-Path $runtimeRoot ('config/profiles/'+$settings.display_profile+'.ini')))) ([bool]$VerifyOnly) {
- $env:MC_MOTION60_COMPLETE=if($settings.motion60){'1'}else{'0'}
+ $env:MC_WINDOWED=if($settings.window_mode -eq 'windowed'){'1'}else{'0'}
+ $env:MC_MOTION60_COMPLETE=if($settings.motion60 -or $cameraEnabled){'1'}else{'0'}
  $env:MC_TITLE_BACKGROUND4K='1'
- $env:MC_FREE_VIEW=if($selected.camera){'1'}else{'0'}
+ $env:MC_FREE_VIEW=if($cameraEnabled){'1'}else{'0'}
  $env:MC_MAP_OVERLAY=if($selected.maps){'1'}else{'0'}
  $env:MC_MAP_ASSETS=if($selected.maps){Join-Path $runtimeRoot 'maps'}else{''}
  $args=@('--workspace',$game,'--shim',(Join-Path $runtimeRoot ('modules/'+$module+'.dll')),'--profile',(Join-Path $cache 'profile.bin'),'--log',$log,'--native-text-step','--system-messages','--focus-guard','--display-profile',$settings.display_profile)
- if($settings.native_gamepad){$args+='--native-gamepad'}elseif($selected.maps -or $selected.camera){$args+='--input-passthrough'}
+ if($settings.native_gamepad){$args+='--native-gamepad'}elseif($selected.maps -or $cameraEnabled){$args+='--input-passthrough'}
  if($selected.texture){$args+='--texture-lifetime'}
  if($VerifyOnly){$args+='--verify-only'}
  & (Join-Path $runtimeRoot 'modules/workspace_launcher.exe') @args 1>(Join-Path $cache 'launcher.stdout.txt') 2>(Join-Path $cache 'launcher.stderr.txt')

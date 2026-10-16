@@ -54,15 +54,16 @@ class ConfigurationLaunchRouteTests(unittest.TestCase):
     def test_gui_verify_button_path_reaches_owned_shared_script(self):
         with tempfile.TemporaryDirectory(dir=ROOT/'build', prefix='config-route-') as d:
             root = Path(d)/'space 路径'; config = root/'config'; config.mkdir(parents=True)
-            for name in ['Configure.ps1', 'EnhancementSettings.psm1']:
+            for name in ['Configure.ps1', 'Configure.xaml', 'EnhancementSettings.psm1']:
                 shutil.copyfile(ROOT/'src/configuration'/name, config/name)
             shutil.copyfile(ROOT/'locales/zh-CN/configuration-ui.json', config/'configuration-ui.json')
+            shutil.copyfile(ROOT/'locales/zh-CN/art/title-wordmark.png', config/'configuration-logo.png')
             (root/'runtime.json').write_text('{}')
             (root/'Start.ps1').write_text("""param([string]$Recipe,[string]$SettingsFile,[switch]$VerifyOnly)
 $ErrorActionPreference='Stop'
 if($Recipe -ne 'configured' -or -not $VerifyOnly){exit 81}
 $s=Get-Content -LiteralPath $SettingsFile -Raw|ConvertFrom-Json
-if($s.display_profile -ne 'wide4k' -or -not $s.native_gamepad){exit 82}
+if($s.resolution -ne '4k' -or -not $s.native_gamepad){exit 82}
 @{recipe=$Recipe;verify_only=[bool]$VerifyOnly;settings_read=$true}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $PSScriptRoot 'invoked.json') -Encoding UTF8
 """, encoding='utf-8-sig')
             result = subprocess.run(['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-STA', '-File',

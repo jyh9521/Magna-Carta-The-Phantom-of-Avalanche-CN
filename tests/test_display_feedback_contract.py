@@ -35,7 +35,8 @@ class FeedbackContracts(unittest.TestCase):
     def test_mode_scoped_runtime_modules(self):
         text = (ROOT / 'src/runtime/workspace_profile.cpp').read_text('utf8')
         self.assertIn('localizedModule && wideDisplay && !installWideUi', text)
-        self.assertIn('localizedModule && render60 && !installMotion60', text)
+        self.assertIn('localizedModule && (render60||cameraInput) && !installMotion60', text)
+        self.assertIn('(render60||cameraInput)&&!installMotion60Driver', text)
         self.assertIn('localizedModule && !installMenuVisibility', text)
 
     def test_fixtures_are_built_independently(self):

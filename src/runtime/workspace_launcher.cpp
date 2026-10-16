@@ -187,6 +187,7 @@ int wmain(int argc, wchar_t** argv) {
         }
         require(!workspace.empty(),"Missing workspace");
         if (verifyOnly) {
+            if(!displayProfile.empty()) require(advancedConfigMatches(displayProfile,sha256(workspace/L"DDrawCompat-MagnaCarta.ini")),"Advanced mode/config mismatch");
             require(!fixture,"Verification requires a version-locked game workspace");
             require(supportedExecutable(workspace/L"MagnaCarta.exe"),"Unsupported game executable");
             auto engine=sha256(workspace/L"MCAlpha.dll");
@@ -260,8 +261,8 @@ int wmain(int argc, wchar_t** argv) {
         require(!(nativeGamepad&&inputPassthrough),"Controller and input-passthrough modes are mutually exclusive");
         SetEnvironmentVariableW(L"MC_INPUT_PASSTHROUGH",inputPassthrough?L"1":L"0");
         SetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",nativeGamepad?L"1":L"0");
-        SetEnvironmentVariableW(L"MC_WIDE_DISPLAY",displayProfile==L"wide4k"||displayProfile==L"combined"?L"1":L"0");
-        SetEnvironmentVariableW(L"MC_RENDER60",displayProfile==L"fps60"||displayProfile==L"combined"?L"1":L"0");
+        SetEnvironmentVariableW(L"MC_WIDE_DISPLAY",advancedProfileWide(displayProfile)?L"1":L"0");
+        SetEnvironmentVariableW(L"MC_RENDER60",advancedProfileRender60(displayProfile)?L"1":L"0");
         SetEnvironmentVariableW(L"MC_CAPTURE_HELPER", captureException ? captureHelper.c_str() : nullptr);
         SetEnvironmentVariableW(L"MC_TEXTURE_LIFETIME", textureLifetime ? L"1" : nullptr);
         SetEnvironmentVariableW(L"MC_FOCUS_GUARD", focusGuard ? L"1" : nullptr);

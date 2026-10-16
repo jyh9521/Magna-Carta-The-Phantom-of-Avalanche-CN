@@ -1,4 +1,5 @@
 #include "advanced_display.h"
+#include "configuration_display_presets.h"
 #include <intrin.h>
 #include <cmath>
 #include <cstring>
@@ -9,7 +10,18 @@ bool advancedConfigMatches(const std::wstring& mode,const std::string& hash) {
     if(mode==L"wide4k")return hash=="558b2404afbc166d13b87dd182cfebc2cd1e0c9add5a52e82287d9b762fa5223";
     if(mode==L"fps60")return hash=="1a16654d038fe4ab2ba34db1e6ab5c495750a67eb9d66025ba4a236d0e58cb18";
     if(mode==L"combined")return hash=="6360e39cac131e79393d160ba340d23aa75278038ffe022b60173a3fbf010149";
+    for(const auto& p:configurationDisplayPresets)if(mode==p.name)return hash==p.hash;
     return false;
+}
+bool advancedProfileWide(const std::wstring& mode){
+ if(mode==L"wide4k"||mode==L"combined")return true;
+ for(const auto& p:configurationDisplayPresets)if(mode==p.name)return p.wide;
+ return false;
+}
+bool advancedProfileRender60(const std::wstring& mode){
+ if(mode==L"fps60"||mode==L"combined")return true;
+ for(const auto& p:configurationDisplayPresets)if(mode==p.name)return p.render60;
+ return false;
 }
 double expandedAspect(double original,int mode,bool enabled) {
     // Only the original 4:3 perspective. Never alter orthographic or nonstandard shots.

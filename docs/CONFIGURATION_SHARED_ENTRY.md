@@ -1,5 +1,7 @@
 # 配置工具接回共享运行入口（2026-10-15）
 
+2026-10-16：共享入口现支持schema=2与专用配置模块；新版界面、24份显示配置及验证边界见[Material配置工具](CONFIGURATION_MATERIAL.md)。
+
 入口预检对游戏显示 INI 的临时切换和恢复见 [配置预检事务](CONFIGURATION_VERIFY_TRANSACTION.md)；预检仍更新 cache 诊断文件，不等于零磁盘写入。
 
 ## Verified

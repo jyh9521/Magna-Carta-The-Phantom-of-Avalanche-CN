@@ -29,7 +29,7 @@ class SharedRuntimeTests(unittest.TestCase):
         (prior/'enhancements.json').write_text(json.dumps(tool.settings()))
         (prior/'configuration-ui.json').write_bytes(b'owned locale UI')
         native=root/'native.dll'; native.write_bytes(b'owned module')
-        modules={name:native for name in ['display','modern','texture','camera','maps','launcher']}
+        modules={name:native for name in ['display','modern','texture','camera','maps','launcher','configuration']}
         atlas=root/'atlas'; atlas.mkdir()
         (atlas/'manifest.json').write_text(json.dumps(dict(schema=1,navigation_verified=False,accepted=[])))
         (atlas/'label.txt').write_bytes(b'owned label')

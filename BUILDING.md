@@ -1,5 +1,7 @@
 # 构建说明
 
+增强配置界面与专用模块的当前构建、增量更新及回滚步骤见[配置工具构建](docs/CONFIGURATION_MATERIAL.md)。
+
 ## 当前运行布局（2026-10-14）
 
 功能更新采用[共享数据布局](docs/SHARED_RUNTIME_LAYOUT.md)：只更新运行模块与配置，不复制整套游戏。

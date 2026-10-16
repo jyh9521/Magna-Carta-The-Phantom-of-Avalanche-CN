@@ -1,6 +1,8 @@
 #pragma once
 #include <windows.h>
 #include <string>
+bool advancedProfileWide(const std::wstring&);
+bool advancedProfileRender60(const std::wstring&);
 bool advancedConfigMatches(const std::wstring&,const std::string&);
 bool setRenderWait(BYTE* image,size_t available,bool unlocked);
 bool setCameraAspect(BYTE* image,size_t available,bool enabled);

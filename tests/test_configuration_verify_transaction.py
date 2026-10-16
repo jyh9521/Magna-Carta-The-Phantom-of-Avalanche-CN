@@ -61,6 +61,8 @@ class SharedVerifyIntegrationTests(unittest.TestCase):
         cls.exe = cls.directory/'owned-verifier.exe'
         source = ('public class OwnedVerifier { public static int Main(string[] args) {'
                   'if(System.Array.IndexOf(args,"--verify-only")<0)return 88;'
+                  'string capture=System.Environment.GetEnvironmentVariable("OWNED_CAPTURE_FILE");'
+                  'if(capture!=null)System.IO.File.WriteAllText(capture,System.String.Join("|",args)+"|MC_FREE_VIEW="+System.Environment.GetEnvironmentVariable("MC_FREE_VIEW")+"|MC_WINDOWED="+System.Environment.GetEnvironmentVariable("MC_WINDOWED")+"|MC_MOTION60_COMPLETE="+System.Environment.GetEnvironmentVariable("MC_MOTION60_COMPLETE"));'
                   'string code=System.Environment.GetEnvironmentVariable("OWNED_VERIFY_EXIT");'
                   'return code=="7"?7:0; }}')
         command = "Add-Type -TypeDefinition '"+source+"' -OutputAssembly '"+str(cls.exe)+"' -OutputType ConsoleApplication"
@@ -85,6 +87,7 @@ class SharedVerifyIntegrationTests(unittest.TestCase):
             value = b'owned baseline\r\n' if name == 'baseline' else ('owned '+name+'\r\n').encode()
             (root/'config/profiles'/f'{name}.ini').write_bytes(value)
             profiles[name] = hashlib.sha256(value).hexdigest()
+        (root/'config/enhancements.json').write_text(json.dumps(dict(schema=1,display_profile='wide4k',motion60=False,native_gamepad=False)))
         (root/'config/profile-base.bin').write_bytes(bytes(52))
         (root/'config/PrepareProfile.ps1').write_text('function Convert-CompatibilityProfile([byte[]]$Value){return ,$Value}')
         (root/'runtime.json').write_text(json.dumps({'schema': 1, 'data': {}, 'files': {}, 'profiles': profiles,
@@ -107,3 +110,34 @@ class SharedVerifyIntegrationTests(unittest.TestCase):
 
     def test_real_shared_script_restores_ini_on_verifier_failure(self):
         self.run_shared(True)
+
+    def test_material_settings_reach_real_shared_entry_arguments_and_environment(self):
+        import sys
+        sys.path.insert(0, str(ROOT/'tools'))
+        from build_configuration_profiles import profiles
+        cases=[('1080p','fullscreen',30,False,False),('2k','windowed',60,True,True),
+               ('4k','borderless',30,True,False),('auto','fullscreen',60,False,True),
+               ('auto','windowed',30,False,True),('2k','borderless',60,False,False)]
+        for resolution, mode, fps, pad, camera in cases:
+            with self.subTest(resolution=resolution, mode=mode, fps=fps), tempfile.TemporaryDirectory(dir=ROOT/'build', prefix='material-entry-') as d:
+                root=Path(d);self.fixture(root)
+                manifest=json.loads((root/'runtime.json').read_text())
+                for name,data,_ in profiles():
+                    (root/'config/profiles'/(name+'.ini')).write_bytes(data)
+                    manifest['profiles'][name]=hashlib.sha256(data).hexdigest()
+                (root/'runtime.json').write_text(json.dumps(manifest))
+                (root/'config/enhancements.json').write_text(json.dumps(dict(schema=2,resolution=resolution,window_mode=mode,frame_rate=fps,native_gamepad=pad,free_view=camera)))
+                capture=root/'actual.txt';env=os.environ.copy();env['OWNED_CAPTURE_FILE']=str(capture)
+                env['MC_FREE_VIEW']='parent';env['MC_WINDOWED']='parent';env['MC_MOTION60_COMPLETE']='parent'
+                result=subprocess.run(['powershell.exe','-NoProfile','-ExecutionPolicy','Bypass','-File',str(root/'Start.ps1'),'-VerifyOnly'],capture_output=True,text=True,env=env,timeout=30)
+                self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+                actual=capture.read_text()
+                self.assertIn('module=configuration',result.stdout)
+                self.assertIn('configuration.dll',actual)
+                self.assertIn('--display-profile|md3-'+resolution+'-'+mode+'-'+str(fps),actual)
+                self.assertEqual('--native-gamepad' in actual,pad)
+                self.assertEqual('--input-passthrough' in actual,camera and not pad)
+                self.assertIn('MC_FREE_VIEW='+str(int(camera)),actual)
+                self.assertIn('MC_WINDOWED='+str(int(mode=='windowed')),actual)
+                self.assertIn('MC_MOTION60_COMPLETE='+str(int(fps==60 or camera)),actual)
+                self.assertEqual((root/'data/DDrawCompat-MagnaCarta.ini').read_bytes(),b'owned baseline\r\n')

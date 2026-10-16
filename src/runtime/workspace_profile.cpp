@@ -1,4 +1,5 @@
 #include "map_overlay.h"
+#include "window_mode.h"
 #include "world_gamepad.h"
 #include "current_texture_lifetime.h"
 #include <windows.h>
@@ -153,7 +154,7 @@ void patch(HMODULE module) {
     }
     if((wideDisplay||render60)&&!_wcsicmp(base,L"AsrD3DDrv.dll")) {
         if(!installAdvancedDriver(module,wideDisplay,render60,trace)){trace(L"ADVANCED_DRIVER_REJECTED");ExitProcess(125);}
-        if(render60&&!installMotion60Driver(module,trace)){trace(L"MOTION60_CAMERA_REJECTED");ExitProcess(125);}
+        if((render60||cameraInput)&&!installMotion60Driver(module,trace)){trace(L"MOTION60_CAMERA_REJECTED");ExitProcess(125);}
         return;
     }
     bool exceptionModule = captureHelper[0] && !_wcsicmp(base, L"Core.dll");
@@ -186,6 +187,11 @@ void patch(HMODULE module) {
         }
         trace(L"NATIVE_TEXT_STEP_READY");
     }
+    wchar_t windowMode[8]{};
+    if(!_wcsicmp(base,L"MCAlpha.dll") && GetEnvironmentVariableW(L"MC_WINDOWED",windowMode,8)==1 && windowMode[0]==L'1'){
+        if(!setNativeWindowed(reinterpret_cast<BYTE*>(module),nt->OptionalHeader.SizeOfImage,true)){trace(L"NATIVE_WINDOW_MODE_REJECTED");ExitProcess(125);}
+        trace(L"NATIVE_WINDOW_MODE windowed=true source_locked=true");
+    }
     bool localizedModule=systemMessages && !_wcsicmp(base,L"MCAlpha.dll");
     if (localizedModule && !systemMessageModuleMatches(module)) {
         trace(L"SYSTEM_MESSAGES_REJECTED");ExitProcess(125);
@@ -204,7 +210,7 @@ void patch(HMODULE module) {
     if(localizedModule && (wideDisplay||titleBackground4k) && !installTitleLayout(module,trace)) {
         trace(L"TITLE_LAYOUT_REJECTED");ExitProcess(125);
     }
-    if(localizedModule && render60 && !installMotion60(module,trace)) {
+    if(localizedModule && (render60||cameraInput) && !installMotion60(module,trace)) {
         trace(L"MOTION60_REJECTED");ExitProcess(125);
     }
 #ifdef NATIVE_FONT_DATA_HEADER

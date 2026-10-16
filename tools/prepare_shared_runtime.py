@@ -7,6 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+from build_configuration_profiles import build as build_display_profiles
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -45,15 +46,18 @@ def prepare(source, modules, atlas, output):
     for module in modules.values():
         if not module.is_file():
             raise ValueError('Missing native module')
+    if 'configuration' not in modules:
+        raise ValueError('Current configuration module is required')
     output.mkdir(parents=True)
     files={}
     def copy(path, name):
         destination=output/name; destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(path, destination); files[name]=sha(destination)
     copy(ROOT/'src/configuration/StartShared.ps1','Start.ps1')
-    for name in ['Configure.ps1','EnhancementSettings.psm1']:
+    for name in ['Configure.ps1','Configure.xaml','EnhancementSettings.psm1']:
         copy(ROOT/'src/configuration'/name,'config/'+name)
-    copy(prior/'configuration-ui.json','config/configuration-ui.json')
+    copy(ROOT/'locales/zh-CN/configuration-ui.json','config/configuration-ui.json')
+    copy(ROOT/'locales/zh-CN/art/title-wordmark.png','config/configuration-logo.png')
     copy(source/'.locale-runtime/PrepareProfile.ps1','config/PrepareProfile.ps1')
     profile_candidates=sorted((source/'.locale-runtime').glob('session-*/profile.bin'),key=lambda p:p.stat().st_mtime,reverse=True)
     profile=next((p for p in profile_candidates if p.stat().st_size==52),None)
@@ -64,6 +68,9 @@ def prepare(source, modules, atlas, output):
         if sha(prior/(name+'.ini')) != original['profiles'][name]:
             raise ValueError('Display profile drift')
         copy(prior/(name+'.ini'),'config/profiles/'+name+'.ini')
+    build_display_profiles(output/'config/profiles')
+    for path in sorted((output/'config/profiles').glob('md3-*.ini')):
+        files['config/profiles/'+path.name]=sha(path)
     for name, path in modules.items():
         copy(path,'modules/'+('workspace_launcher.exe' if name=='launcher' else name+'.dll'))
     # The accepted settings are mutable; do not lock their hash into the package.
@@ -100,7 +107,7 @@ def prepare(source, modules, atlas, output):
     title_original=b'@echo off\r\nsetlocal\r\nset MC_TITLE_STYLE=0\r\ncall "%~dp0Play.cmd"\r\n'
     (output/'Play-title-original.cmd').write_bytes(title_original)
     files['Play-title-original.cmd']=sha(output/'Play-title-original.cmd')
-    manifest=dict(schema=1,data_root='data',data=data,files=files,profiles=original['profiles'],recipes=recipes,
+    manifest=dict(schema=1,data_root='data',data=data,files=files,profiles={**original['profiles'],**{p.stem:sha(p) for p in (output/'config/profiles').glob('md3-*.ini')}},recipes=recipes,
                   configured_modules=dict(display='display',motion=motion,gamepad=gamepad,combined=gamepad))
     (output/'runtime.json').write_bytes((json.dumps(manifest,indent=2)+'\n').encode('utf8'))
     for recipe in recipes:
@@ -115,10 +122,12 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ['source','display','modern','texture','camera','maps','launcher','atlas','output']:
         parser.add_argument('--'+name,type=Path,required=True)
+    parser.add_argument('--configuration',type=Path,required=True)
     parser.add_argument('--motion',type=Path)
     parser.add_argument('--gamepad',type=Path)
     a=parser.parse_args()
     modules={name:getattr(a,name) for name in ['display','modern','texture','camera','maps','launcher']}
+    modules['configuration']=a.configuration
     if a.motion: modules['motion-space']=a.motion
     if a.gamepad: modules['input-diagnostics']=a.gamepad
     prepare(a.source,modules,a.atlas,a.output)
