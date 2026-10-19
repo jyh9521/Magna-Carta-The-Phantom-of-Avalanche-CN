@@ -1,5 +1,26 @@
 # 对话点击即时显现
 
+## 2026-10-19 启动回归修正
+
+首次实机启动停在`DIALOGUE_REVEAL_REJECTED`，启动器记录进程退出125。
+原因是整映像可读校验错误地要求一次VirtualQuery覆盖所有PE节，不是设置选项或文本资源问题。
+已改为逐个校验实际头、代码和虚表范围，保留原有版本、指令及四槽守卫。
+新增`dialogue_image_fixture`以真实Windows加载器映射当前DLL，但不执行DLL入口和游戏代码；
+同一输入由拒绝变为通过。分区、无关不可读页、目标不可读页和仅执行页分别回归。
+
+```powershell
+cmake --build build/native --config Release --target workspace_profile dialogue_reveal_fixture dialogue_image_fixture
+build/native/Release/dialogue_image_fixture.exe runtime/data/MCAlpha.dll
+python -m unittest discover -s tests -p test_dialogue_image_mapping.py
+```
+
+本机八份profile与摘要已更新，文本资源、launcher和增强设置不改。原配置入口实际启动后，
+日志记录`DIALOGUE_REVEAL_READY`，窗口标题`Magna Carta`、进程保持响应，持续记录渲染节奏，
+随后正常退出码0。
+此结果确认启动拦截消除；对白实际阅读与点击效果仍是独立验收项。
+此前下载过旧更新包的环境可使用`MagnaCarta-dialogue-startup-fix-20261019.zip`；
+完整文本更新ZIP已重新生成，避免继续分发错误校验。
+
 ## 已验证的原因与原生状态
 
 调查样本为 `runtime/data/MCAlpha.dll`，1,089,536 字节，调查时 SHA-256

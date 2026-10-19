@@ -10,7 +10,22 @@ using Tick=void(__thiscall*)(void*);
 BYTE* engine=nullptr;Event originalEvent=nullptr;Tick originalTick=nullptr,originalReveal=nullptr;
 BYTE* paused=nullptr;DWORD pausedSource=0;void(*trace)(const wchar_t*)=nullptr;
 int& field(BYTE* p,unsigned off){return *reinterpret_cast<int*>(p+off);}
-bool readable(void* p,size_t n){MEMORY_BASIC_INFORMATION m{};return p&&VirtualQuery(p,&m,sizeof(m))&&m.State==MEM_COMMIT&&!(m.Protect&(PAGE_GUARD|PAGE_NOACCESS))&&reinterpret_cast<ULONG_PTR>(p)+n<=reinterpret_cast<ULONG_PTR>(m.BaseAddress)+m.RegionSize;}
+bool readable(void* p,size_t n){
+ auto current=reinterpret_cast<ULONG_PTR>(p);
+ if(!current||!n||n>~ULONG_PTR(0)-current)return false;
+ const auto end=current+n;
+ while(current<end){
+  MEMORY_BASIC_INFORMATION m{};
+  if(!VirtualQuery(reinterpret_cast<void*>(current),&m,sizeof(m))||m.State!=MEM_COMMIT||(m.Protect&(PAGE_GUARD|PAGE_NOACCESS)))return false;
+  const DWORD access=m.Protect&0xff;
+  if(access!=PAGE_READONLY&&access!=PAGE_READWRITE&&access!=PAGE_WRITECOPY&&access!=PAGE_EXECUTE_READ&&access!=PAGE_EXECUTE_READWRITE&&access!=PAGE_EXECUTE_WRITECOPY)return false;
+  const auto base=reinterpret_cast<ULONG_PTR>(m.BaseAddress);
+  if(m.RegionSize>~ULONG_PTR(0)-base)return false;
+  const auto next=base+m.RegionSize;if(next<=current)return false;
+  current=next<end?next:end;
+ }
+ return true;
+}
 bool isPaused(BYTE* p){if(paused!=p)return false;if(field(p,0x190)==4&&DWORD(field(p,0x1e0))==pausedSource)return true;paused=nullptr;return false;}
 void __fastcall tickHook(BYTE* p,void*){if(!isPaused(p))originalTick(p);}
 int __fastcall eventHook(BYTE* p,void*,void* sender,int event,int a,int b){
@@ -32,8 +47,13 @@ int __fastcall eventHook(BYTE* p,void*,void* sender,int event,int a,int b){
 }
 bool write(DWORD* p,DWORD from,DWORD to){if(*p!=from)return false;DWORD old;if(!VirtualProtect(p,4,PAGE_READWRITE,&old))return false;*p=to;DWORD ignored;if(!VirtualProtect(p,4,old,&ignored)){*p=from;VirtualProtect(p,4,old,&ignored);return false;}return true;}
 bool set(BYTE* p,bool on,void(*logger)(const wchar_t*)){
- if(!readable(p,imageSize))return false;auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);if(d->e_magic!=IMAGE_DOS_SIGNATURE||d->e_lfanew<=0||d->e_lfanew>4096)return false;
+ // PE sections have independent page protections, and discarded sections may
+ // be unreadable. Check only the exact headers/code/slots used by this hook.
+ if(!readable(p,sizeof(IMAGE_DOS_HEADER)))return false;auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);if(d->e_magic!=IMAGE_DOS_SIGNATURE||d->e_lfanew<=0||d->e_lfanew>4096)return false;
+ if(!readable(p+d->e_lfanew,sizeof(IMAGE_NT_HEADERS32)))return false;
  auto n=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+d->e_lfanew);if(n->Signature!=IMAGE_NT_SIGNATURE||n->FileHeader.Machine!=IMAGE_FILE_MACHINE_I386||n->OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR32_MAGIC||n->OptionalHeader.SizeOfImage!=imageSize)return false;
+ if(!readable(p+0x5b1c5,sizeof(updatePrefix))||!readable(p+0x5b9c7,sizeof(revealPrefix))||!readable(p+0x5c277,0x5c306-0x5c277))return false;
+ for(auto table:tables)if(!readable(p+table+4,4)||!readable(p+table+36,4))return false;
  if(memcmp(p+0x5b1c5,updatePrefix,sizeof(updatePrefix))||memcmp(p+0x5b9c7,revealPrefix,sizeof(revealPrefix)))return false;
  unsigned hash=2166136261u;for(unsigned i=0x5c277;i<0x5c306;++i)hash=(hash^p[i])*16777619u;
 #ifndef DIALOGUE_REVEAL_TEST

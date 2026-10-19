@@ -24,5 +24,21 @@ int main(){
  check(removeDialogueReveal(HMODULE(p)),"rollback");check(!memcmp(copy,p,0x10b000),"byte exact rollback");
  p[0x5b1c5]^=1;check(!installDialogueReveal(HMODULE(p),nullptr),"mismatch rejected");p[0x5b1c5]^=1;
  *reinterpret_cast<DWORD*>(p+0xbff08)=123;check(!installDialogueReveal(HMODULE(p),nullptr),"partial table rejected");
+ *reinterpret_cast<DWORD*>(p+0xbff08)=DWORD(p+0x5c277);
+ DWORD previous=0;
+ check(VirtualProtect(p,0x1000,PAGE_READONLY,&previous)!=FALSE,"split header protection");
+ check(VirtualProtect(p+0x5b000,0x2000,PAGE_EXECUTE_READ,&previous)!=FALSE,"split code protection");
+ check(VirtualProtect(p+0xbf000,0x1000,PAGE_READONLY,&previous)!=FALSE,"split vtable protection");
+ check(VirtualProtect(p+0x100000,0x1000,PAGE_NOACCESS,&previous)!=FALSE,"discarded unrelated section");
+ check(installDialogueReveal(HMODULE(p),nullptr),"split PE sections admitted");
+ check(removeDialogueReveal(HMODULE(p)),"split PE rollback");
+ check(VirtualProtect(p+0xbf000,0x1000,PAGE_NOACCESS,&previous)!=FALSE,"guard target table");
+ check(!installDialogueReveal(HMODULE(p),nullptr),"unreadable target table rejected");
+ check(VirtualProtect(p+0xbf000,0x1000,PAGE_READONLY,&previous)!=FALSE,"restore target table");
+ check(VirtualProtect(p+0x5c000,0x1000,PAGE_EXECUTE,&previous)!=FALSE,"execute-only code");
+ check(!installDialogueReveal(HMODULE(p),nullptr),"execute-only target rejected");
+ check(VirtualProtect(p,0x10b000,PAGE_READWRITE,&previous)!=FALSE,"restore image access");
+ check(!memcmp(copy,p,0x10b000),"split image byte exact rollback");
+ puts("DIALOGUE_MEMORY_REGRESSION PASS split_sections=admitted unrelated_noaccess=ignored target_noaccess=rejected execute_only=rejected rollback=exact");
  puts("DIALOGUE_REVEAL_FIXTURE PASS inputs=mouse_space reveal=complete advance=separate long_page=paused_resume bounds=4096 rollback=exact guards=2 game_started=false");VirtualFree(p,0,MEM_RELEASE);free(copy);return 0;
 }
