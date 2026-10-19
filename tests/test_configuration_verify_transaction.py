@@ -62,7 +62,7 @@ class SharedVerifyIntegrationTests(unittest.TestCase):
         source = ('public class OwnedVerifier { public static int Main(string[] args) {'
                   'if(System.Array.IndexOf(args,"--verify-only")<0)return 88;'
                   'string capture=System.Environment.GetEnvironmentVariable("OWNED_CAPTURE_FILE");'
-                  'if(capture!=null)System.IO.File.WriteAllText(capture,System.String.Join("|",args)+"|MC_FREE_VIEW="+System.Environment.GetEnvironmentVariable("MC_FREE_VIEW")+"|MC_WINDOWED="+System.Environment.GetEnvironmentVariable("MC_WINDOWED")+"|MC_MOTION60_COMPLETE="+System.Environment.GetEnvironmentVariable("MC_MOTION60_COMPLETE"));'
+                  'if(capture!=null)System.IO.File.WriteAllText(capture,System.String.Join("|",args)+"|MC_FREE_VIEW="+System.Environment.GetEnvironmentVariable("MC_FREE_VIEW")+"|MC_WINDOWED="+System.Environment.GetEnvironmentVariable("MC_WINDOWED")+"|MC_WINDOW_RESOLUTION="+System.Environment.GetEnvironmentVariable("MC_WINDOW_RESOLUTION")+"|MC_MOTION60_COMPLETE="+System.Environment.GetEnvironmentVariable("MC_MOTION60_COMPLETE"));'
                   'string code=System.Environment.GetEnvironmentVariable("OWNED_VERIFY_EXIT");'
                   'return code=="7"?7:0; }}')
         command = "Add-Type -TypeDefinition '"+source+"' -OutputAssembly '"+str(cls.exe)+"' -OutputType ConsoleApplication"
@@ -126,7 +126,8 @@ class SharedVerifyIntegrationTests(unittest.TestCase):
                     (root/'config/profiles'/(name+'.ini')).write_bytes(data)
                     manifest['profiles'][name]=hashlib.sha256(data).hexdigest()
                 (root/'runtime.json').write_text(json.dumps(manifest))
-                (root/'config/enhancements.json').write_text(json.dumps(dict(schema=2,resolution=resolution,window_mode=mode,frame_rate=fps,native_gamepad=pad,free_view=camera)))
+                window_size='1600x900' if resolution=='2k' else '1280x720'
+                (root/'config/enhancements.json').write_text(json.dumps(dict(schema=2,resolution=resolution,window_mode=mode,window_resolution=window_size,frame_rate=fps,native_gamepad=pad,free_view=camera)))
                 capture=root/'actual.txt';env=os.environ.copy();env['OWNED_CAPTURE_FILE']=str(capture)
                 env['MC_FREE_VIEW']='parent';env['MC_WINDOWED']='parent';env['MC_MOTION60_COMPLETE']='parent'
                 result=subprocess.run(['powershell.exe','-NoProfile','-ExecutionPolicy','Bypass','-File',str(root/'Start.ps1'),'-VerifyOnly'],capture_output=True,text=True,env=env,timeout=30)
@@ -139,5 +140,6 @@ class SharedVerifyIntegrationTests(unittest.TestCase):
                 self.assertEqual('--input-passthrough' in actual,camera and not pad)
                 self.assertIn('MC_FREE_VIEW='+str(int(camera)),actual)
                 self.assertIn('MC_WINDOWED='+str(int(mode=='windowed')),actual)
+                self.assertIn('MC_WINDOW_RESOLUTION='+(window_size if mode=='windowed' else '')+'|',actual)
                 self.assertIn('MC_MOTION60_COMPLETE='+str(int(fps==60 or camera)),actual)
                 self.assertEqual((root/'data/DDrawCompat-MagnaCarta.ini').read_bytes(),b'owned baseline\r\n')

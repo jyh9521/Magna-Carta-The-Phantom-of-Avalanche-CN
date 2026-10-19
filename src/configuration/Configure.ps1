@@ -13,7 +13,7 @@ if(-not [Windows.SystemParameters]::ClientAreaAnimation){$markup=[regex]::Replac
 $form=[Windows.Markup.XamlReader]::Load([Xml.XmlNodeReader]::new($xaml))
 $form.Title=$text.title
 if(-not $SelfTest){$form.Width=[Math]::Min($form.Width,[Windows.SystemParameters]::WorkArea.Width-32);$form.Height=[Math]::Min($form.Height,[Windows.SystemParameters]::WorkArea.Height-48)}
-$labels=@{Eyebrow='eyebrow';Subtitle='subtitle';Quality='quality';DisplayTitle='display';ResolutionLabel='resolution';ResolutionNote='resolution_note';WindowLabel='window_mode';FrameLabel='frame_rate';FrameNote='frame_note';InputTitle='input_title';GamepadLabel='gamepad';GamepadNote='gamepad_note';CameraLabel='free_view';CameraNote='free_view_note';Pending='pending'}
+$labels=@{Eyebrow='eyebrow';Subtitle='subtitle';Quality='quality';DisplayTitle='display';ResolutionLabel='resolution';ResolutionNote='resolution_note';WindowLabel='window_mode';WindowResolutionLabel='window_resolution';WindowResolutionNote='window_resolution_note';FrameLabel='frame_rate';FrameNote='frame_note';InputTitle='input_title';GamepadLabel='gamepad';GamepadNote='gamepad_note';CameraLabel='free_view';CameraNote='free_view_note';Pending='pending'}
 foreach($name in $labels.Keys){$form.FindName($name).Text=$text.($labels[$name])}
 $logo=Join-Path $PSScriptRoot 'configuration-logo.png'
 if(-not (Test-Path -LiteralPath $logo -PathType Leaf)){throw 'Configuration logo is missing'}
@@ -32,16 +32,26 @@ foreach($field in $panels.Keys){
   $radio=[Windows.Controls.RadioButton]::new();$radio.Style=$form.Resources['Segment']
   $radio.GroupName=$field;$radio.Tag=$option.Name;$radio.Content=$option.Value
   [Windows.Automation.AutomationProperties]::SetName($radio,($text.choices.$field.($option.Name)))
-  $radio.add_Checked({if(-not $script:loading){$status.Text=$text.dirty}})
+  $radio.add_Checked({if(-not $script:loading){$status.Text=$text.dirty;Update-WindowResolutionVisibility}})
   $null=$form.FindName($panels[$field]).Children.Add($radio);$buttons[$option.Name]=$radio
  }
  $script:groups[$field]=$buttons
+}
+$windowResolution=$form.FindName('WindowResolutionChoices')
+foreach($option in $text.choices.window_resolution.PSObject.Properties){
+ $item=[Windows.Controls.ComboBoxItem]::new();$item.Tag=$option.Name;$item.Content=$option.Value
+ $null=$windowResolution.Items.Add($item)
+}
+[Windows.Automation.AutomationProperties]::SetName($windowResolution,$text.window_resolution)
+$windowResolution.add_SelectionChanged({if(-not $script:loading){$status.Text=$text.dirty}})
+function Update-WindowResolutionVisibility{
+ $form.FindName('WindowResolutionPanel').Visibility=if($script:groups.window_mode['windowed'].IsChecked){'Visible'}else{'Collapsed'}
 }
 $save=$form.FindName('Save');$defaults=$form.FindName('Defaults');$verify=$form.FindName('Verify');$play=$form.FindName('Play')
 $save.Content=$text.save;$defaults.Content=$text.defaults;$verify.Content=$text.verify;$play.Content=$text.play
 function Set-Controls($s){
  $s=Convert-EnhancementSettings $s;$script:loading=$true
- try{foreach($field in $script:groups.Keys){$key=([string]$s.$field).ToLowerInvariant();$script:groups[$field][$key].IsChecked=$true}}finally{$script:loading=$false}
+ try{foreach($field in $script:groups.Keys){$key=([string]$s.$field).ToLowerInvariant();$script:groups[$field][$key].IsChecked=$true};$windowResolution.SelectedItem=@($windowResolution.Items|Where-Object {$_.Tag -eq $s.window_resolution})[0];Update-WindowResolutionVisibility}finally{$script:loading=$false}
 }
 function Get-Controls{
  $value=[ordered]@{schema=2}
@@ -51,6 +61,8 @@ function Get-Controls{
   $raw=[string]$selected[0].Tag
   $value[$field]=switch($field){'frame_rate'{[int]$raw};'native_gamepad'{[bool]::Parse($raw)};'free_view'{[bool]::Parse($raw)};default{$raw}}
  }
+ if($null -eq $windowResolution.SelectedItem){throw 'Window resolution is required'}
+ $value.window_resolution=[string]$windowResolution.SelectedItem.Tag
  Test-EnhancementSettings ([pscustomobject]$value)
 }
 function Notify([string]$message){
@@ -64,7 +76,7 @@ function Report-Error($error){Notify ($text.error+': '+$error.Exception.Message)
 $save.add_Click({try{$null=Write-EnhancementSettings $SettingsFile (Get-Controls);Notify $text.saved}catch{Report-Error $_}})
 $defaults.add_Click({try{$s=New-EnhancementSettings;$null=Write-EnhancementSettings $SettingsFile $s;Set-Controls $s;Notify $text.default_note}catch{Report-Error $_}})
 $script:child=$null
-function Set-Busy([bool]$busy){foreach($b in @($save,$defaults,$verify,$play)+@($script:groups.Values|ForEach-Object {$_.Values})){$b.IsEnabled=-not $busy}}
+function Set-Busy([bool]$busy){foreach($b in @($save,$defaults,$verify,$play,$windowResolution)+@($script:groups.Values|ForEach-Object {$_.Values})){$b.IsEnabled=-not $busy}}
 function Run-Entry([bool]$Check){
  $launch=Get-EnhancementLaunchSpec $PSScriptRoot $SettingsFile $Check
  $null=Write-EnhancementSettings $SettingsFile (Get-Controls)
@@ -91,6 +103,18 @@ $form.add_Loaded({
 })
 if($SelfTest){
  $checks=0
+ $script:groups.window_mode['windowed'].IsChecked=$true
+ if($form.FindName('WindowResolutionPanel').Visibility -ne 'Visible'){throw 'Window size dropdown hidden'}
+ foreach($item in $windowResolution.Items){
+  $windowResolution.SelectedItem=$item;$value=Get-Controls
+  if($value.window_resolution -ne $item.Tag){throw 'Window resolution mismatch'}
+  $fixture=Join-Path ([IO.Path]::GetTempPath()) ([guid]::NewGuid().ToString('N')+'.json')
+  try{$null=Write-EnhancementSettings $fixture $value;Set-Controls (Read-EnhancementSettings $fixture);if((Get-Controls).window_resolution -ne $item.Tag){throw 'Window resolution save/load mismatch'}}finally{if(Test-Path $fixture){Remove-Item -LiteralPath $fixture}}
+ }
+ foreach($mode in @('fullscreen','borderless')){$script:groups.window_mode[$mode].IsChecked=$true;if($form.FindName('WindowResolutionPanel').Visibility -ne 'Collapsed'){throw 'Window size dropdown visible outside windowed mode'}}
+ Set-Busy $true;if($windowResolution.IsEnabled){throw 'Busy dropdown remains enabled'};Set-Busy $false
+ Write-Output 'ENHANCEMENT_WINDOW_SIZE_SELFTEST PASS sizes=5 visibility=windowed_only persistence=exact busy=disabled'
+ Set-Controls $settings
  $surface=$form.Content;$surface.Measure([Windows.Size]::new($form.Width-48,$form.Height-32));$surface.Arrange([Windows.Rect]::new(0,0,$form.Width-48,$form.Height-32));$surface.UpdateLayout()
  foreach($field in $script:groups.Keys){
   foreach($key in $script:groups[$field].Keys){

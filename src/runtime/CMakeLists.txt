@@ -193,3 +193,5 @@ add_executable(dialogue_image_fixture dialogue_image_fixture.cpp dialogue_reveal
 target_compile_options(dialogue_image_fixture PRIVATE /W4 /utf-8)
 set_property(TARGET dialogue_image_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded")
 target_link_libraries(dialogue_image_fixture PRIVATE user32)
+
+target_compile_definitions(configuration_display_fixture PRIVATE WINDOW_SIZE_TEST)

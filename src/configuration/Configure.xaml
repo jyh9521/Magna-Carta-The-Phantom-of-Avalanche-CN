@@ -88,6 +88,13 @@
      <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="112"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
       <TextBlock Name="WindowLabel" VerticalAlignment="Center"/><WrapPanel Name="WindowChoices" Grid.Column="1"/>
      </Grid>
+     <StackPanel Name="WindowResolutionPanel" Visibility="Collapsed" Margin="0,14,0,0">
+      <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="112"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+       <TextBlock Name="WindowResolutionLabel" VerticalAlignment="Center"/>
+       <ComboBox Name="WindowResolutionChoices" Grid.Column="1" Height="38" MinWidth="240" HorizontalAlignment="Left" VerticalContentAlignment="Center" Padding="12,4" FontSize="14"/>
+      </Grid>
+      <TextBlock Name="WindowResolutionNote" Style="{StaticResource Hint}" Margin="112,8,0,0"/>
+     </StackPanel>
      <Border Height="1" Background="#E4EBEF" Margin="0,16,0,14"/>
      <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="112"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
       <TextBlock Name="FrameLabel" VerticalAlignment="Center"/><WrapPanel Name="FrameChoices" Grid.Column="1"/>

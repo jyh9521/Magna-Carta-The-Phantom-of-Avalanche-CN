@@ -29,7 +29,7 @@ if((Hash $ini) -notin $known){throw 'Unknown active display configuration'}
 $mutex=New-Object Threading.Mutex($false,('Local\MagnaCartaShared_'+(Hash (Join-Path $runtimeRoot 'runtime.json')).Substring(0,24)))
 if(-not $mutex.WaitOne(0)){throw 'Another shared runtime entry is active'}
 $environment=@{}
-foreach($key in @('MC_MOTION60_COMPLETE','MC_TITLE_BACKGROUND4K','MC_FREE_VIEW','MC_MAP_OVERLAY','MC_MAP_ASSETS','MC_WINDOWED')){$environment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
+foreach($key in @('MC_MOTION60_COMPLETE','MC_TITLE_BACKGROUND4K','MC_FREE_VIEW','MC_MAP_OVERLAY','MC_MAP_ASSETS','MC_WINDOWED','MC_WINDOW_RESOLUTION')){$environment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
 try{
  foreach($p in (Get-CimInstance Win32_Process -Filter "Name='MagnaCarta.exe'")){
   if(-not $p.ExecutablePath -or [IO.Path]::GetFullPath($p.ExecutablePath) -eq (Join-Path $game 'MagnaCarta.exe')){throw 'Exit game before changing shared settings'}
@@ -50,6 +50,7 @@ try{
  }
  [IO.File]::WriteAllBytes((Join-Path $cache 'profile.bin'),$profile)
  Invoke-EnhancementDisplayTransaction $ini ([IO.File]::ReadAllBytes((Join-Path $runtimeRoot ('config/profiles/'+$settings.display_profile+'.ini')))) ([bool]$VerifyOnly) {
+ $env:MC_WINDOW_RESOLUTION=if($schema -eq 2 -and $settings.window_mode -eq 'windowed'){$settings.window_resolution}else{''}
  $env:MC_WINDOWED=if($settings.window_mode -eq 'windowed'){'1'}else{'0'}
  $env:MC_MOTION60_COMPLETE=if($settings.motion60 -or $cameraEnabled){'1'}else{'0'}
  $env:MC_TITLE_BACKGROUND4K='1'

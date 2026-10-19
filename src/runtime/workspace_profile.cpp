@@ -153,6 +153,10 @@ void patch(HMODULE module) {
         trace(L"TEXTURE_LIFETIME_READY");
         if(!(wideDisplay||render60))return;
     }
+    if(!_wcsicmp(base,L"AsrD3DDrv.dll")){
+        wchar_t size[40]{};
+        if(GetEnvironmentVariableW(L"MC_WINDOW_RESOLUTION",size,40)&&!installWindowPresentation(reinterpret_cast<BYTE*>(module),0x2c000)){trace(L"WINDOW_PRESENTATION_REJECTED");ExitProcess(125);}
+    }
     if((wideDisplay||render60)&&!_wcsicmp(base,L"AsrD3DDrv.dll")) {
         if(!installAdvancedDriver(module,wideDisplay,render60,trace)){trace(L"ADVANCED_DRIVER_REJECTED");ExitProcess(125);}
         if((render60||cameraInput)&&!installMotion60Driver(module,trace)){trace(L"MOTION60_CAMERA_REJECTED");ExitProcess(125);}
@@ -193,6 +197,9 @@ void patch(HMODULE module) {
     wchar_t windowMode[8]{};
     if(!_wcsicmp(base,L"MCAlpha.dll") && GetEnvironmentVariableW(L"MC_WINDOWED",windowMode,8)==1 && windowMode[0]==L'1'){
         if(!setNativeWindowed(reinterpret_cast<BYTE*>(module),nt->OptionalHeader.SizeOfImage,true)){trace(L"NATIVE_WINDOW_MODE_REJECTED");ExitProcess(125);}
+        wchar_t size[40]{};int width=0,height=0;
+        DWORD length=GetEnvironmentVariableW(L"MC_WINDOW_RESOLUTION",size,40);
+        if(length&&(length>=40||!parseWindowResolution(size,width,height)||!installWindowSizing(reinterpret_cast<BYTE*>(module),nt->OptionalHeader.SizeOfImage,width,height,trace))){trace(L"WINDOW_SIZE_REJECTED");ExitProcess(125);}
         trace(L"NATIVE_WINDOW_MODE windowed=true source_locked=true");
     }
     bool localizedModule=systemMessages && !_wcsicmp(base,L"MCAlpha.dll");

@@ -1,7 +1,8 @@
 ﻿Set-StrictMode -Version Latest
 $profiles=@('baseline','render4k','wide4k','fps60','combined')
+$windowResolutions=@('960x540','1280x720','1600x900','1920x1080','2560x1440')
 function New-EnhancementSettings {
- [pscustomobject]@{schema=2;resolution='4k';window_mode='borderless';frame_rate=30;native_gamepad=$false;free_view=$false}
+ [pscustomobject]@{schema=2;resolution='4k';window_mode='borderless';window_resolution='1280x720';frame_rate=30;native_gamepad=$false;free_view=$false}
 }
 function Test-EnhancementSettings($Value) {
  if($null -eq $Value){throw 'Settings must be an object'}
@@ -13,7 +14,8 @@ function Test-EnhancementSettings($Value) {
   if($Value.motion60 -isnot [bool] -or $Value.native_gamepad -isnot [bool]){throw 'Feature switches must be boolean'}
   if($Value.motion60 -and $Value.display_profile -notin @('fps60','combined')){throw 'Motion interpolation requires a 60Hz profile'}
  }elseif($Value.schema -eq 2){
-  if(($names -join ',') -ne 'frame_rate,free_view,native_gamepad,resolution,schema,window_mode'){throw 'Unknown or missing setting fields'}
+  if(($names -join ',') -notin @('frame_rate,free_view,native_gamepad,resolution,schema,window_mode','frame_rate,free_view,native_gamepad,resolution,schema,window_mode,window_resolution')){throw 'Unknown or missing setting fields'}
+  if($Value.PSObject.Properties['window_resolution'] -and ($Value.window_resolution -isnot [string] -or $Value.window_resolution -notin $windowResolutions)){throw 'Unsupported window resolution'}
   if($Value.resolution -isnot [string] -or $Value.resolution -notin @('1080p','2k','4k','auto')){throw 'Unsupported resolution'}
   if($Value.window_mode -isnot [string] -or $Value.window_mode -notin @('fullscreen','windowed','borderless')){throw 'Unsupported window mode'}
   if($Value.frame_rate -is [bool] -or $Value.frame_rate -is [string] -or $Value.frame_rate -notin @(30,60)){throw 'Unsupported frame rate'}
@@ -23,7 +25,10 @@ function Test-EnhancementSettings($Value) {
 }
 function Convert-EnhancementSettings($Value){
  $s=Test-EnhancementSettings $Value
- if($s.schema -eq 2){return $s}
+ if($s.schema -eq 2){
+  if(-not $s.PSObject.Properties['window_resolution']){$s=$s.PSObject.Copy();$s|Add-Member window_resolution '1280x720'}
+  return $s
+ }
  $v=New-EnhancementSettings
  $v.resolution=if($s.display_profile -in @('baseline','fps60')){'1080p'}else{'4k'}
  $v.frame_rate=if($s.display_profile -in @('fps60','combined')){60}else{30}
@@ -33,7 +38,8 @@ function Convert-EnhancementSettings($Value){
 function Get-EnhancementRuntimeSettings($Value){
  $s=Test-EnhancementSettings $Value
  if($s.schema -eq 1){return [pscustomobject]@{display_profile=$s.display_profile;motion60=$s.motion60;native_gamepad=$s.native_gamepad;free_view=$false;window_mode='borderless'}}
- [pscustomobject]@{display_profile=('md3-'+$s.resolution+'-'+$s.window_mode+'-'+$s.frame_rate);motion60=($s.frame_rate -eq 60);native_gamepad=$s.native_gamepad;free_view=$s.free_view;window_mode=$s.window_mode}
+ $windowResolution=if($s.PSObject.Properties['window_resolution']){$s.window_resolution}else{'1280x720'}
+ [pscustomobject]@{window_resolution=$windowResolution;display_profile=('md3-'+$s.resolution+'-'+$s.window_mode+'-'+$s.frame_rate);motion60=($s.frame_rate -eq 60);native_gamepad=$s.native_gamepad;free_view=$s.free_view;window_mode=$s.window_mode}
 }
 function Read-EnhancementSettings([string]$Path) {
  if(-not (Test-Path -LiteralPath $Path)){return New-EnhancementSettings}
