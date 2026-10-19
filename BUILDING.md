@@ -2,6 +2,8 @@
 
 ## 换区前Loading呈现候选（2026-10-19）
 
+该自绘占位候选已撤回，正常共享入口恢复原状态；目标改为提前显示游戏自带Loading。
+以下目标及脚本仅保留研究与回滚记录，不作为当前玩家方案。
 Win32目标`workspace_profile scene_loading_fixture`；共享目录重建支持`--scene-loading DLL`。
 离线顺序验证、现有入口整合和单项撤回见[场景Loading呈现](docs/SCENE_LOADING_PRESENTATION.md)。
 实机待验收；场景切换崩溃不计作修复。

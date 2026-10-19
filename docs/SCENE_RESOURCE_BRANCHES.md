@@ -105,8 +105,8 @@ python tests/check_runtime_docs.py --expect modified
 
 ## 补充症状：旧场景停留，Loading迟到
 
-后续已实现独立[Loading呈现候选](SCENE_LOADING_PRESENTATION.md)，通过离线验证并整合共享入口。
-以下为原调查依据；末尾“未安装呈现补丁”描述该调查时点，最新候选仍待实机验收。
+后续自绘[Loading呈现候选](SCENE_LOADING_PRESENTATION.md)已撤回：需求为提前显示游戏自带Loading，
+不是插入替代画面。共享入口已恢复，后续先追踪原生Loading资源及调用时序；原生修复尚未交付。
 
 玩家补充：每次换区都可能短暂停在上一个场景，而不是立即显示Loading。
 这属于呈现时序／响应性问题，单独记录，不自动归入访问违规或队列死锁。
