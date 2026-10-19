@@ -9,6 +9,7 @@
 #include "focus_guard.h"
 #include "native_text_step.h"
 #include "dialogue_reveal.h"
+#include "field_return_height.h"
 #include "native_font.h"
 #include "system_messages.h"
 #include "modern_gamepad.h"
@@ -201,6 +202,10 @@ void patch(HMODULE module) {
         DWORD length=GetEnvironmentVariableW(L"MC_WINDOW_RESOLUTION",size,40);
         if(length&&(length>=40||!parseWindowResolution(size,width,height)||!installWindowSizing(reinterpret_cast<BYTE*>(module),nt->OptionalHeader.SizeOfImage,width,height,trace))){trace(L"WINDOW_SIZE_REJECTED");ExitProcess(125);}
         trace(L"NATIVE_WINDOW_MODE windowed=true source_locked=true");
+    }
+    wchar_t fieldReturnFlag[8]{};
+    if(!_wcsicmp(base,L"MCAlpha.dll") && GetEnvironmentVariableW(L"MC_FIELD_RETURN_HEIGHT",fieldReturnFlag,8)==1 && fieldReturnFlag[0]==L'1'){
+        if(!installFieldReturnHeight(module,trace)){trace(L"FIELD_RETURN_HEIGHT_REJECTED");ExitProcess(125);}
     }
     bool localizedModule=systemMessages && !_wcsicmp(base,L"MCAlpha.dll");
     if (localizedModule && !systemMessageModuleMatches(module)) {

@@ -195,3 +195,9 @@ set_property(TARGET dialogue_image_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiT
 target_link_libraries(dialogue_image_fixture PRIVATE user32)
 
 target_compile_definitions(configuration_display_fixture PRIVATE WINDOW_SIZE_TEST)
+
+target_sources(workspace_profile PRIVATE field_return_height.cpp)
+add_executable(field_return_height_fixture field_return_height_fixture.cpp field_return_height.cpp)
+target_compile_definitions(field_return_height_fixture PRIVATE FIELD_RETURN_HEIGHT_TEST)
+target_compile_options(field_return_height_fixture PRIVATE /W4 /utf-8)
+set_property(TARGET field_return_height_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded")

@@ -1,5 +1,13 @@
 # 构建说明
 
+## 总部楼梯返回高度候选（2026-10-19）
+
+沿用已有Win32生成头与CMake配置，构建`workspace_profile field_return_height_fixture`。
+`--baseline`夹具预期退出1，候选及真实PE分页安装/回滚分别验证。
+使用`tools/prepare_field_return_trial.py`安装独立可选入口，正常模块与游戏资源不替换。
+完整命令、触发链、原生指令回放及实际软锁尚未验收的边界见
+[楼梯退回高度](docs/STAIRWELL_RETURN_HEIGHT.md)。
+
 ## 提示文本与对话显示修正（2026-10-19）
 
 提示文本规则保存在 `locales/zh-CN/prompt-punctuation-policy.json`，
