@@ -156,3 +156,29 @@ Field static-prefix audit: `python tools/resource_field.py --source runtime/data
 Optional offline height cutaway: append `--clip-z-max 30` to an incremental atlas build. Full-scene viewport remains unchanged; this is not automatic floor or navigation detection. See [height cutaway](docs/MAP_HEIGHT_CUTAWAY.md).
 
 Native cutaway overlay replay uses the owned map_overlay_fixture target with `ASSETS OUTPUT.png [--mini]`; it reports the actual mode and renders the production GDI+ canvas without a game launch. See [native cutaway replay](docs/MAP_CUTAWAY_NATIVE_REPLAY.md).
+
+## Locale-bound opening centering data
+
+Opening ink positions belong to locale data, not generic runtime code. Generate the header
+from version/hash-verified localized resources before building:
+
+```powershell
+python tools/build_opening_layout.py --source runtime/data --metadata locales/zh-CN/opening-layout.json --output runtime/build-inputs/opening_layout_data.h
+$openingHeader=(Resolve-Path runtime/build-inputs/opening_layout_data.h).Path.Replace('\','/')
+cmake -S src/runtime -B build/native -A Win32 "-DOPENING_LAYOUT_DATA_HEADER=$openingHeader"
+cmake --build build/native --config Release --target workspace_profile title_layout_fixture
+build/native/Release/title_layout_fixture.exe --opening-center-check
+```
+
+Retain existing `NATIVE_FONT_DATA_HEADER` and other build options. The generator validates
+every recorded FDI/BGR SHA256 and remeasures actual ink bounds/centers before writing output;
+unknown/drifted sources fail rather than falling back. No header means an empty runtime table
+and no locale-specific opening adjustment. Another locale supplies its own metadata file.
+See [opening centering evidence](docs/OPENING_CENTER_REPAIR.md).
+
+## 刚性附件与开场居中回归（2026-10-19）
+
+见 [混合动画相位](docs/RIGID_MOTION_PHASE.md) 与 [开场居中](docs/OPENING_CENTER_REPAIR.md)。
+新增目标 `rigid_motion_fixture`；必须同时运行原 `motion60_fixture` 与 `title_layout_fixture`。
+
+小型运行模块更新包的构建、安装和回滚见 [2026-10-19 热修候选](docs/RUNTIME_HOTFIX_20261019.md)。

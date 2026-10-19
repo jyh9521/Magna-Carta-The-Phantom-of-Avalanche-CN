@@ -223,3 +223,8 @@ Xbox焦点收集已修正隐藏/禁用GUI子节点导致父按钮漏选的受控
 - 2026-10-15: native mouse eligibility and virtual focus admission now match mode/exclusive-owner rules. Offline instruction replay is not rendered-pointer or physical-controller acceptance; see GAMEPAD_NATIVE_ADMISSION.md.
 
 - 2026-10-15: camera-gamepad/maps-gamepad previously loaded historical input code. All four explicit controller recipes now select the current input candidate when supplied. Pointer visibility remains pending in-game confirmation; see GAMEPAD_ENTRY_CONSISTENCY.md.
+
+## 2026-10-19 玩家反馈
+
+60帧移动眼部外突：已补齐另一刚性动画renderer的相位钩子并通过混合绘制回归，实际眼球模型归属及画面待复验，见RIGID_MOTION_PHASE.md。
+2880×1800开场文字偏移：已将两套实际FDI图块按当前画布中心定位，坐标回放通过，笔记本最终显示待复验，见OPENING_CENTER_REPAIR.md。

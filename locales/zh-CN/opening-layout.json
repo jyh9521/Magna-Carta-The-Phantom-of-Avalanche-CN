@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "locale": "zh-CN",
+  "layouts": [
+    {
+      "layout": 236,
+      "threshold": 160,
+      "ink_xyxy": [
+        155,
+        107,
+        612,
+        351
+      ],
+      "ink_center": [
+        383.5,
+        229.0
+      ],
+      "sha256": {
+        "FrameData/0236.fdi": "0702c92382460fa7f4894bdd2b275703171582d4d081192b3db2ae4e76586ccf",
+        "BGR/0311.BGR": "74059335de203276f1f1728030d35a2354b6f77baeae95a84e1b758e0208ea9b",
+        "BGR/0312.BGR": "27f7ed3f6b4acb57e6d752c214282418aca4abc9122f92a2612c01292a9d4120",
+        "BGR/0313.BGR": "11d16563cb7bc05552d6201c1325b71932d5b50b514628e55be278791f2e865d",
+        "BGR/0314.BGR": "bd91ea49d6aabf781d45a03d5dbe69952b655f53db7342129c7e00835466f7d7",
+        "BGR/0315.BGR": "0530fc757e9297b8236206e9561bf9a7290e56c1330678259e2141c080e25a25",
+        "BGR/0316.BGR": "e67f31022eda09501a74e0dd940d860693cd74db20fc8156489044b7f1e83895"
+      }
+    },
+    {
+      "layout": 237,
+      "threshold": 160,
+      "ink_xyxy": [
+        79,
+        147,
+        559,
+        450
+      ],
+      "ink_center": [
+        319.0,
+        298.5
+      ],
+      "sha256": {
+        "FrameData/0237.fdi": "d349d239c0c5aaed1509d4aa00d8d9e9e4d0d4d0df18497159ce2633fb6c7878",
+        "BGR/0299.BGR": "c20f94fb57dc479b99cdac8ae177f533717512c211c07af8c3721de025b3694d",
+        "BGR/0300.BGR": "dbd2ce7e81ab3831c7063c3ddf4ed9eae4043fe0dc45d6531e99b4b558ec2d8a",
+        "BGR/0301.BGR": "de799f5fbf6671fe29f91c34a7148882f68e7c7f3890237976e4b9d72621c18e",
+        "BGR/0302.BGR": "343ef4a2a58f21a8d435b64990dfe8235cec00f7fb5f4f6cb088d0d6004b3d19",
+        "BGR/0303.BGR": "ba1a746a2b53a4b3e235f901f6f8d3ddf28c052a405afcc02c85a751925eb9d5",
+        "BGR/0304.BGR": "b0f7087eb64a35cd5379f1e8848cb97f3a00c1d23d7f68b67369c7558a77e5e5",
+        "BGR/0305.BGR": "4a4b4fb2eede11edc19afac9b3af5734c7134aba08ebed0508eb0f95db193e9d",
+        "BGR/0306.BGR": "343ef4a2a58f21a8d435b64990dfe8235cec00f7fb5f4f6cb088d0d6004b3d19",
+        "BGR/0307.BGR": "8983f0d5ad3e634785455b6b9c58e1f557ef74250e5ea226dc1654b7dcbf223f",
+        "BGR/0308.BGR": "09fe331c87fe654a5cdfdde21d17768b4713a6b6002ca97e3fa33cec41a440b5",
+        "BGR/0309.BGR": "94286001538fb6f9e4608efa3b86ce12543a6a8b12ee7304ffe7c4270101557a",
+        "BGR/0310.BGR": "343ef4a2a58f21a8d435b64990dfe8235cec00f7fb5f4f6cb088d0d6004b3d19"
+      }
+    }
+  ]
+}

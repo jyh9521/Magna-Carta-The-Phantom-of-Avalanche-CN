@@ -1,14 +1,21 @@
 #include "title_layout.h"
 #include "wide_ui.h"
 #include <cstring>
+#include <array>
 #ifndef TITLE_LAYOUT_TEST
 #include "title_texture.h"
 #endif
 namespace {
+struct OpeningLayoutEntry{int layout;float inkCenterX,inkCenterY;};
+#ifdef OPENING_LAYOUT_DATA_HEADER
+#include OPENING_LAYOUT_DATA_HEADER
+#else
+constexpr std::array<OpeningLayoutEntry,0> openingLayouts{};
+#endif
 bool hdBackground=false;BYTE* titleEngine=nullptr;
 ULONG_PTR bgCompareResume=0,menuCompareResume=0,buttonResume=0,tileResume=0,tileSetter=0;
 #ifdef TITLE_LAYOUT_TEST
-int fixturePhysical=640,fixtureCanvas=853;
+int fixturePhysical=640,fixtureCanvas=853,fixtureHeight=600;
 #endif
 int __cdecl physical(){
 #ifdef TITLE_LAYOUT_TEST
@@ -52,6 +59,22 @@ __declspec(naked) void buttonPoint(){__asm {
 // GUI decorations are independent render nodes. Their local +0x24 vector,
 // not the container's constructor point, feeds the BGR render transform.
 void __cdecl centerTile(int id,float* position,void* node){
+ // Locale-specific ink bounds come only from verified generated metadata.
+ // Translate every child equally; retain seams, depth, fade and glyph scale.
+ for(const auto& opening:openingLayouts)if(id==opening.layout){
+#ifdef TITLE_LAYOUT_TEST
+  int canvas=fixtureCanvas,height=fixtureHeight;
+#else
+  int canvas=wideUiCanvasWidth();
+  if(canvas<=0&&titleEngine)canvas=*reinterpret_cast<int*>(titleEngine+0xf1b48);
+  int height=titleEngine?*reinterpret_cast<int*>(titleEngine+0xf1b4c):0;
+#endif
+  if(canvas>0&&height>0){
+   position[0]+=canvas*0.5f-opening.inkCenterX;
+   position[1]+=height*0.5f-opening.inkCenterY;
+  }
+  return;
+ }
  if(id!=209&&id!=210)return;
  if(!hdBackground){position[0]+=static_cast<float>(centerOffset());return;}
  // Six overlapping power-of-two tiles cover the 3840x2160 master.
@@ -101,5 +124,6 @@ bool ok=setTitleLayout(reinterpret_cast<BYTE*>(module),0x10b000,true);if(ok&&log
 #ifdef TITLE_LAYOUT_TEST
 void initializeTitleLayoutFixture(BYTE* p){memset(p,0,0x10b000);auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);d->e_magic=IMAGE_DOS_SIGNATURE;d->e_lfanew=0x80;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+0x80);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;expected(p);for(auto& s:sites)memcpy(p+s.rva,s.original,s.count);}
 void configureTitleLayoutFixture(int p,int c){fixturePhysical=p;fixtureCanvas=c;}
+void configureOpeningHeightFixture(int height){fixtureHeight=height;}
 void configureTitleBackgroundFixture(bool enabled){hdBackground=enabled;}
 #endif

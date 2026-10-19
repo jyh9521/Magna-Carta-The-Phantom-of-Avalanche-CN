@@ -19,6 +19,10 @@ add_executable(title_layout_fixture title_layout_fixture.cpp title_layout.cpp wi
 target_compile_definitions(title_layout_fixture PRIVATE TITLE_LAYOUT_TEST)
 set_property(TARGET title_layout_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 target_compile_options(title_layout_fixture PRIVATE /W4 /utf-8)
+if(OPENING_LAYOUT_DATA_HEADER)
+  target_compile_definitions(workspace_profile PRIVATE OPENING_LAYOUT_DATA_HEADER="${OPENING_LAYOUT_DATA_HEADER}")
+  target_compile_definitions(title_layout_fixture PRIVATE OPENING_LAYOUT_DATA_HEADER="${OPENING_LAYOUT_DATA_HEADER}")
+endif()
 
 add_executable(wide_ui_fixture wide_ui_fixture.cpp wide_ui.cpp)
 target_compile_definitions(wide_ui_fixture PRIVATE WIDE_UI_TEST)
@@ -172,3 +176,8 @@ add_executable(configuration_display_fixture configuration_display_fixture.cpp a
 target_link_libraries(configuration_display_fixture PRIVATE user32)
 target_compile_options(configuration_display_fixture PRIVATE /W4 /utf-8)
 set_property(TARGET configuration_display_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+add_executable(rigid_motion_fixture rigid_motion_fixture.cpp motion60.cpp render_timeline.cpp free_view.cpp)
+target_compile_definitions(rigid_motion_fixture PRIVATE MOTION60_TEST)
+set_property(TARGET rigid_motion_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+target_compile_options(rigid_motion_fixture PRIVATE /W4 /utf-8)

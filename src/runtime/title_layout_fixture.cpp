@@ -37,8 +37,38 @@ int main(int argc,char** argv){try{
  memcpy(e+0x500,tileFrame,12);e[0x50c]=0xb9;*reinterpret_cast<DWORD*>(e+0x50d)=reinterpret_cast<DWORD>(tileNode);jump(e+0x511,e+0x4e370);
  jump(e+0x4d3f0,reinterpret_cast<BYTE*>(&tilePosition));e[0x4e375]=0xc9;e[0x4e376]=0xc3;
  using Tile=void(__cdecl*)(float,float,int,float);auto tile=reinterpret_cast<Tile>(e+0x500);
+ bool openingRollback=argc==2&&!strcmp(argv[1],"--opening-rollback-check");
+ if(openingRollback)check(setTitleLayout(e,0x10b000,false));
+ if(openingRollback||(argc==2&&!strcmp(argv[1],"--opening-center-check"))){
+  tile(0.f,0.f,237,7.f);
+  bool centered=std::abs(tileX+319.f-426.5f)<0.001f&&std::abs(tileY+298.5f-300.f)<0.001f;
+  std::cout<<"OPENING_CENTER "<<(centered?"PASS":"FAIL")<<" layout=237 canvas=853x600 content_center="<<tileX+319.f<<","<<tileY+298.5f<<" expected=426.5,300 game_started=false\n";
+  if(openingRollback){bool restored=tileX==0.f&&tileY==0.f&&tileZ==7.f;std::cout<<"OPENING_ROLLBACK "<<(restored?"PASS":"FAIL")<<" original_child=0,0,7 restored=true\n";return restored?0:1;}
+  return centered?0:1;
+ }
  for(int id:{209,210})for(float x:{0.f,256.f,512.f}){tile(x,240.f,id,7.f);check(tileX==x+107.f&&tileY==240.f&&tileZ==7.f);}
  tile(17.f,31.f,208,9.f);check(tileX==17.f&&tileY==31.f&&tileZ==9.f);
+ // Same final setter as production. Logical center maps to physical center
+ // under 4:3, 16:9, 16:10 and ultrawide presentation, without pixel-size rules.
+#ifdef OPENING_LAYOUT_DATA_HEADER
+ for(int canvas:{640,800,853,1067,1280})for(int height:{480,600,720}){
+  configureTitleLayoutFixture(800,canvas);configureOpeningHeightFixture(height);
+  for(int id:{236,237})for(float x:{0.f,256.f,512.f,768.f}){
+   float inkX=id==237?319.f:383.5f,inkY=id==237?298.5f:229.f;
+   tile(x,256.f,id,7.f);
+   check(std::abs(tileX-x+inkX-canvas*.5f)<.001f);
+   check(std::abs(tileY-256.f+inkY-height*.5f)<.001f&&tileZ==7.f);
+   auto scale=reinterpret_cast<float*>(tileNode+0x40);check(scale[0]==0.f&&scale[1]==0.f);
+   for(int outputWidth:{1920,2560,2880,3440,3840}){
+    float px=(tileX-x+inkX)*outputWidth/canvas;
+    check(std::abs(px-outputWidth*.5f)<.001f);
+   }
+  }
+ }
+ configureTitleLayoutFixture(640,853);configureOpeningHeightFixture(600);
+#else
+ for(int id:{236,237}){tile(17.f,31.f,id,9.f);check(tileX==17.f&&tileY==31.f&&tileZ==9.f);}
+#endif
  check(292+3*30+34<=480);check(107+640<=853);
  configureTitleLayoutFixture(800,1067);*reinterpret_cast<int*>(e+0xf1b48)=1067;check(bg()==1&&menu()==1);tile(256.f,0.f,210,3.f);check(tileX==390.f&&tileY==0.f&&tileZ==3.f);check(buttonCall()==395);check(362+3*35+34<=600);
  configureTitleLayoutFixture(640,640);*reinterpret_cast<int*>(e+0xf1b48)=640;check(bg()==0&&menu()==0);tile(256.f,0.f,209,0.f);check(tileX==256.f);check(buttonCall()==261);

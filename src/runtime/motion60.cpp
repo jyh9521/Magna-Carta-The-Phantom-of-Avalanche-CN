@@ -16,6 +16,7 @@ using Matrix=motion::Matrix;
 using motion::blend;
 using Render=void(__thiscall*)(void*,int,Matrix*,int,int,int,int,int);
 using Absolute=void(__cdecl*)(void*,unsigned,Matrix*,Matrix*);
+Render originalRigidRender=nullptr;
 Render originalRender=nullptr;Absolute originalAbsolute=nullptr;BYTE* engineBase=nullptr;
 void(*trace)(const wchar_t*)=nullptr;
 bool complete=false;
@@ -113,7 +114,7 @@ void prepareHistory(void* value,int frame){
 #ifdef MOTION60_TEST
 bool fixtureClock=false;LONGLONG fixtureTicks=0;
 #endif
-struct Context{void* object;int frame;Matrix* pose=nullptr;std::vector<Matrix> baseline;Context* parent;Matrix* world=nullptr;Matrix baselineWorld{};bool hasParent=false;};
+struct Context{void* object;int frame;Matrix* pose=nullptr;std::vector<Matrix> baseline;Context* parent;Matrix* world=nullptr;Matrix baselineWorld{};bool hasParent=false;bool rigidModel=false;};
 thread_local Context* active=nullptr;volatile LONG changes=0;
 motion::Phase renderPhase(){return timelineThread==GetCurrentThreadId()?timeline.phase():motion::Phase{};}
 constexpr unsigned sceneCameraReturn=0x1da26;
@@ -164,6 +165,7 @@ bool sourceCall(void* caller){
 #ifdef MOTION60_TEST
 (void)caller;return true;
 #else
+if(active&&active->rigidModel)return reinterpret_cast<BYTE*>(caller)==engineBase+0x3d534;
 return reinterpret_cast<BYTE*>(caller)==engineBase+0x3b801;
 #endif
 }
@@ -189,11 +191,18 @@ bool skeletonLayout(void* bones,unsigned count,std::vector<unsigned>& out){
 void __cdecl absoluteHook(void* bones,unsigned root,Matrix* poses,Matrix* parent){
  auto phase=renderPhase();
  if(complete&&!phase.valid){originalAbsolute(bones,root,poses,parent);return;}
- if(!active||!sourceCall(_ReturnAddress())||root||parent||!readable(active->object,0x100)){originalAbsolute(bones,root,poses,parent);return;}
+ if(!active||!sourceCall(_ReturnAddress())||root||parent||!readable(active->object,active->rigidModel?0xd8:0x100)){originalAbsolute(bones,root,poses,parent);return;}
  BYTE* object=static_cast<BYTE*>(active->object);void* action=*reinterpret_cast<void**>(object+0xa0);
  if(!readable(action,0x20)||*reinterpret_cast<Matrix**>(object+0x8c)!=poses){originalAbsolute(bones,root,poses,parent);return;}
  // Current frame's resource record is the renderer's validated local [ebp-4].
- auto sequence=*reinterpret_cast<BYTE**>(static_cast<BYTE*>(action)+0x18);unsigned sample=*reinterpret_cast<unsigned*>(object+0xf8);
+ auto sequence=*reinterpret_cast<BYTE**>(static_cast<BYTE*>(action)+0x18);
+ // The rigid renderer has no +f8/+f0 history fields. Its normalized sample is
+ // a stack local; derive it from the same guarded action length and stride.
+ unsigned sample=0;
+ if(active->rigidModel){unsigned length=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+4),stride=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+8);
+  if(!length||!stride||active->frame<0){originalAbsolute(bones,root,poses,parent);return;}
+  sample=(unsigned(active->frame)%length)/stride;
+ }else sample=*reinterpret_cast<unsigned*>(object+0xf8);
  if(sample>65535||!readable(sequence,(sample+1)*sizeof(void*))){originalAbsolute(bones,root,poses,parent);return;}
  auto record=*reinterpret_cast<BYTE**>(sequence+sample*sizeof(void*));
  if(!readable(record,8)){originalAbsolute(bones,root,poses,parent);return;}auto data=*reinterpret_cast<BYTE**>(record+4);
@@ -264,18 +273,23 @@ unsigned clipLength=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+4),s
  active->baseline.resize(count);originalAbsolute(bones,root,poses,parent);memcpy(active->baseline.data(),poses,count*sizeof(Matrix));active->pose=poses;
  memcpy(poses,interpolated.data(),count*sizeof(Matrix));originalAbsolute(bones,root,poses,parent);
  if(worldValid)*world=interpolatedWorld;
- static LONG localChanges=0,composedChanges=0;
+ static LONG localChanges=0,composedChanges=0,rigidChanges=0;
+ if(active->rigidModel&&InterlockedIncrement(&rigidChanges)==1&&trace)trace(L"MOTION60_RIGID_APPLIED renderer_rva=3d12f phase=shared pose_world_restore=exact");
  if(worldValid&&InterlockedIncrement(active->hasParent?&composedChanges:&localChanges)==1&&trace)
   trace(active->hasParent?L"MOTION60_WORLD_APPLIED source_space=queued_world parent=non_null camera_conversion=false restore=exact_world":L"MOTION60_WORLD_APPLIED source_space=local parent=null camera_conversion=false restore=exact_local");
  if(InterlockedIncrement(&changes)==1&&trace)trace(complete?L"MOTION60_POSE_APPLIED phase=engine_remainder world_camera=interpolated latency_ticks=1":L"MOTION60_POSE_APPLIED scope=skeletal_local_pose logic_interval_ms=33 world_camera=unchanged latency_ticks=1");
 }
 void renderScoped(Context* ctx,void* object,int frame,Matrix* world,int a,int b,int c,int d,int e){
- __try {active=ctx;originalRender(object,frame,world,a,b,c,d,e);}
+ __try {active=ctx;(ctx->rigidModel?originalRigidRender:originalRender)(object,frame,world,a,b,c,d,e);}
  __finally {if(ctx->pose&&!ctx->baseline.empty())memcpy(ctx->pose,ctx->baseline.data(),ctx->baseline.size()*sizeof(Matrix));if(ctx->world)*ctx->world=ctx->baselineWorld;active=ctx->parent;}
 }
 void __fastcall renderHook(void* object,void*,int frame,Matrix* world,int a,int b,int c,int d,int e){
  prepareHistory(object,frame);
  Context ctx{object,frame,nullptr,{},active};ctx.hasParent=world!=nullptr;renderScoped(&ctx,object,frame,world,a,b,c,d,e);
+}
+void __fastcall rigidRenderHook(void* object,void*,int frame,Matrix* world,int a,int b,int c,int d,int e){
+ Context ctx{object,frame,nullptr,{},active};ctx.hasParent=world!=nullptr;ctx.rigidModel=true;
+ renderScoped(&ctx,object,frame,world,a,b,c,d,e);
 }
 bool write(void* p,DWORD value){DWORD old;if(!VirtualProtect(p,4,PAGE_READWRITE,&old))return false;DWORD before=*static_cast<DWORD*>(p);*static_cast<DWORD*>(p)=value;DWORD unused;if(VirtualProtect(p,4,old,&unused))return true;*static_cast<DWORD*>(p)=before;VirtualProtect(p,4,old,&unused);return false;}
 bool timerMatches(BYTE* p){
@@ -295,29 +309,38 @@ bool timerPatch(BYTE* p,bool enabled){
 }
 namespace {
 bool headerMatches(BYTE* p,size_t n){if(!readable(p,n)||n<0x10b000)return false;auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);if(d->e_magic!=IMAGE_DOS_SIGNATURE||d->e_lfanew<=0||d->e_lfanew>4096)return false;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+d->e_lfanew);return nt->Signature==IMAGE_NT_SIGNATURE&&nt->FileHeader.Machine==IMAGE_FILE_MACHINE_I386&&nt->OptionalHeader.Magic==IMAGE_NT_OPTIONAL_HDR32_MAGIC&&nt->OptionalHeader.SizeOfImage==0x10b000;}
+bool rigidSourceMatches(BYTE* p){
+ const BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0xec,0x01,0,0,0x56,0x57};
+ BYTE call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);
+ return !memcmp(p+0x3d12f,prefix,sizeof(prefix))&&!memcmp(p+0x3d52e,call,sizeof(call));
+}
 bool mappedMatches(BYTE* p,size_t n,Absolute absolute){
- if(!headerMatches(p,n)||!absolute)return false;
+ if(!headerMatches(p,n)||!absolute||!rigidSourceMatches(p))return false;
  BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0x04,0x03,0x00,0x00,0x56,0x57},call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);
  if(memcmp(p+0x3b0c0,prefix,sizeof(prefix))||memcmp(p+0x3b7fb,call,sizeof(call)))return false;
  DWORD slot=*reinterpret_cast<DWORD*>(p+0xbd9f8),iat=*reinterpret_cast<DWORD*>(p+0xbd0a4);
- return (slot==reinterpret_cast<DWORD>(p+0x3b0c0)&&iat==reinterpret_cast<DWORD>(absolute))||
- (slot==reinterpret_cast<DWORD>(&renderHook)&&iat==reinterpret_cast<DWORD>(&absoluteHook)&&engineBase==p&&originalAbsolute==absolute);
+ return (slot==reinterpret_cast<DWORD>(p+0x3b0c0)&&*reinterpret_cast<DWORD*>(p+0xbda18)==reinterpret_cast<DWORD>(p+0x3d12f)&&iat==reinterpret_cast<DWORD>(absolute))||
+ (slot==reinterpret_cast<DWORD>(&renderHook)&&*reinterpret_cast<DWORD*>(p+0xbda18)==reinterpret_cast<DWORD>(&rigidRenderHook)&&iat==reinterpret_cast<DWORD>(&absoluteHook)&&engineBase==p&&originalAbsolute==absolute);
 }
 bool setMapped(BYTE* p,size_t n,Absolute absolute,bool enabled,void(*logger)(const wchar_t*)){
- if(!headerMatches(p,n)||!absolute)return false;
+ if(!headerMatches(p,n)||!absolute||!rigidSourceMatches(p))return false;
  BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0x04,0x03,0x00,0x00,0x56,0x57};BYTE call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);
  if(memcmp(p+0x3b0c0,prefix,sizeof(prefix))||memcmp(p+0x3b7fb,call,sizeof(call)))return false;
+ auto rigidSlot=reinterpret_cast<DWORD*>(p+0xbda18);
  auto slot=reinterpret_cast<DWORD*>(p+0xbd9f8);auto iat=reinterpret_cast<DWORD*>(p+0xbd0a4);
  DWORD expectedRender=reinterpret_cast<DWORD>(p+0x3b0c0),expectedAbsolute=reinterpret_cast<DWORD>(absolute);
  DWORD renderPatched=reinterpret_cast<DWORD>(&renderHook),absolutePatched=reinterpret_cast<DWORD>(&absoluteHook);
- bool clean=*slot==expectedRender&&*iat==expectedAbsolute;
- bool patched=*slot==renderPatched&&*iat==absolutePatched&&engineBase==p&&originalAbsolute==absolute;
+ DWORD expectedRigid=reinterpret_cast<DWORD>(p+0x3d12f),patchedRigid=reinterpret_cast<DWORD>(&rigidRenderHook);
+ bool clean=*slot==expectedRender&&*rigidSlot==expectedRigid&&*iat==expectedAbsolute;
+ bool patched=*slot==renderPatched&&*rigidSlot==patchedRigid&&*iat==absolutePatched&&engineBase==p&&originalAbsolute==absolute;
  if(!clean&&!patched)return false;
  if(enabled&&patched)return true;if(!enabled&&clean)return true;
- if(enabled){LARGE_INTEGER f{};if(!QueryPerformanceFrequency(&f))return false;frequency=f.QuadPart;engineBase=p;trace=logger;originalRender=reinterpret_cast<Render>(expectedRender);originalAbsolute=absolute;
+ if(enabled){LARGE_INTEGER f{};if(!QueryPerformanceFrequency(&f))return false;frequency=f.QuadPart;engineBase=p;trace=logger;originalRender=reinterpret_cast<Render>(expectedRender);originalRigidRender=reinterpret_cast<Render>(expectedRigid);originalAbsolute=absolute;
  if(!write(iat,absolutePatched))return false;if(!write(slot,renderPatched)){write(iat,expectedAbsolute);return false;}
+ if(!write(rigidSlot,patchedRigid)){write(slot,expectedRender);write(iat,expectedAbsolute);return false;}
  if(trace)trace(L"MOTION60_READY skeletal_pose=source_locked logic_events=unchanged world_camera=unchanged");return true;}
- if(!write(slot,expectedRender))return false;if(!write(iat,expectedAbsolute)){write(slot,renderPatched);return false;}
+ if(!write(rigidSlot,expectedRigid))return false;
+ if(!write(slot,expectedRender)){write(rigidSlot,patchedRigid);return false;}if(!write(iat,expectedAbsolute)){write(slot,renderPatched);write(rigidSlot,patchedRigid);return false;}
  AcquireSRWLockExclusive(&cacheLock);caches.clear();ReleaseSRWLockExclusive(&cacheLock);return true;
 }
 }
@@ -366,7 +389,7 @@ bool installMotion60Driver(HMODULE module,void(*logger)(const wchar_t*)){
 bool removeMotion60Driver(HMODULE module){return setDriver(reinterpret_cast<BYTE*>(module),false,nullptr);}
 #ifdef MOTION60_TEST
 bool motion60TestSetMapped(BYTE* p,size_t n,MotionAbsoluteFn a,bool enabled){return setMapped(p,n,reinterpret_cast<Absolute>(a),enabled,nullptr);}
-void motion60TestInitialize(BYTE* p,MotionAbsoluteFn a){memset(p,0,0x10b000);memcpy(p+0x1da20,sceneCameraCall,sizeof(sceneCameraCall));auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);d->e_magic=IMAGE_DOS_SIGNATURE;d->e_lfanew=0x100;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+0x100);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0x04,0x03,0x00,0x00,0x56,0x57};memcpy(p+0x3b0c0,prefix,sizeof(prefix));BYTE call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);memcpy(p+0x3b7fb,call,sizeof(call));*reinterpret_cast<DWORD*>(p+0xbd9f8)=reinterpret_cast<DWORD>(p+0x3b0c0);*reinterpret_cast<DWORD*>(p+0xbd0a4)=reinterpret_cast<DWORD>(a);}
+void motion60TestInitialize(BYTE* p,MotionAbsoluteFn a){memset(p,0,0x10b000);memcpy(p+0x1da20,sceneCameraCall,sizeof(sceneCameraCall));auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);d->e_magic=IMAGE_DOS_SIGNATURE;d->e_lfanew=0x100;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+0x100);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;BYTE rigidPrefix[]={0x55,0x8b,0xec,0x81,0xec,0xec,0x01,0,0,0x56,0x57};memcpy(p+0x3d12f,rigidPrefix,sizeof(rigidPrefix));*reinterpret_cast<DWORD*>(p+0xbda18)=reinterpret_cast<DWORD>(p+0x3d12f);BYTE rigidCall[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(rigidCall+2)=reinterpret_cast<DWORD>(p+0xbd0a4);memcpy(p+0x3d52e,rigidCall,sizeof(rigidCall));BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0x04,0x03,0x00,0x00,0x56,0x57};memcpy(p+0x3b0c0,prefix,sizeof(prefix));BYTE call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);memcpy(p+0x3b7fb,call,sizeof(call));*reinterpret_cast<DWORD*>(p+0xbd9f8)=reinterpret_cast<DWORD>(p+0x3b0c0);*reinterpret_cast<DWORD*>(p+0xbd0a4)=reinterpret_cast<DWORD>(a);}
 void motion60TestConfigure(MotionRenderFn r,MotionAbsoluteFn a){originalRender=reinterpret_cast<Render>(r);originalAbsolute=reinterpret_cast<Absolute>(a);LARGE_INTEGER f{};QueryPerformanceFrequency(&f);frequency=f.QuadPart;caches.clear();}
 void motion60TestSetTime(double milliseconds){fixtureClock=true;fixtureTicks=static_cast<LONGLONG>(milliseconds*frequency/1000.0);}
 void motion60TestRender(void* o,int f){renderHook(o,nullptr,f,nullptr,0,0,0,0,0);}

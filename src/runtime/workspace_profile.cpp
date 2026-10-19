@@ -207,7 +207,7 @@ void patch(HMODULE module) {
     if(localizedModule && wideDisplay && !installWideUi(module,trace)) {
         trace(L"WIDE_UI_REJECTED");ExitProcess(125);
     }
-    if(localizedModule && (wideDisplay||titleBackground4k) && !installTitleLayout(module,trace)) {
+    if(localizedModule && !installTitleLayout(module,trace)) {
         trace(L"TITLE_LAYOUT_REJECTED");ExitProcess(125);
     }
     if(localizedModule && (render60||cameraInput) && !installMotion60(module,trace)) {

@@ -9,9 +9,9 @@ import render_candidate
 
 
 class FeedbackContracts(unittest.TestCase):
-    def test_title_layout_is_only_enabled_with_wide_canvas(self):
+    def test_opening_layout_is_enabled_for_every_localized_canvas(self):
         text = (ROOT / 'src/runtime/workspace_profile.cpp').read_text('utf8')
-        self.assertIn('localizedModule && (wideDisplay||titleBackground4k) && !installTitleLayout', text)
+        self.assertIn('localizedModule && !installTitleLayout', text)
         source = (ROOT / 'src/runtime/title_layout.cpp').read_text('utf8')
         self.assertIn('wideUiPhysicalWidth()', source)
         self.assertIn('wideUiCanvasWidth()', source)
@@ -52,6 +52,8 @@ class FeedbackContracts(unittest.TestCase):
         self.assertNotIn('0x3ea50', text)
         self.assertIn('__finally', text)
         self.assertIn('engineBase+0x3b801', text)
+        self.assertIn('engineBase+0x3d534', text)
+        self.assertIn('rigidSourceMatches(p)', text)
 
 
 if __name__ == '__main__':

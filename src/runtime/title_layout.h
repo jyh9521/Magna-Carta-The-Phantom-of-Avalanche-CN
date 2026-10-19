@@ -7,4 +7,5 @@ bool installTitleLayout(HMODULE,void(*logger)(const wchar_t*));
 void initializeTitleLayoutFixture(BYTE*);
 void configureTitleBackgroundFixture(bool enabled);
 void configureTitleLayoutFixture(int physical,int canvas);
+void configureOpeningHeightFixture(int height);
 #endif
