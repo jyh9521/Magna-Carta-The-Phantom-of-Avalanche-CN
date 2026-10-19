@@ -32,7 +32,15 @@ def validate_engine_fixes(runtime, manifest):
         raise ValueError('Unified package requires the default GUI parent-guard integration')
     if b'# GUI_PARENT_DEFAULT_ROUTE:' not in (runtime/'Start.ps1').read_bytes():
         raise ValueError('Default GUI parent route missing')
-    return dict(field_return_height=dict(default_enabled=True,baseline_recipe='baseline',
+    presentation=manifest.get('scene_loading')
+    if presentation is not None:
+        if (presentation!=dict(schema=1,enabled=True,module='scene-loading')
+                or 'modules/scene-loading.dll' not in manifest['files']
+                or b'# SCENE_LOADING_DEFAULT_ROUTE:' not in (runtime/'Start.ps1').read_bytes()):
+            raise ValueError('Invalid scene-loading integration')
+    return dict(scene_loading=dict(default_enabled=presentation is not None,in_game_verified=False,
+                                   scope='Field to Field; owned loading prelude before cleanup'),
+                field_return_height=dict(default_enabled=True,baseline_recipe='baseline',
                                         in_game_verified=False,scope='Field0757/event2'),
                 gui_parent_guard=dict(default_enabled=True,baseline_recipe='baseline',
                                       in_game_verified=False,scope='startup generic GUI root parent bounds'),

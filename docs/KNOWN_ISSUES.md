@@ -260,6 +260,10 @@ Xbox焦点收集已修正隐藏/禁用GUI子节点导致父按钮漏选的受控
 不等同真实换区或崩溃验收；现有启动GUI守卫另行归类。手动步骤与证据门槛见
 [场景资源分支调查](SCENE_RESOURCE_BRANCHES.md)。
 
+旧场景停留／Loading迟到已加入独立呈现候选：Field→Field清理前先绘制并呈现自有提示帧。
+离线像素、顺序和回滚通过，真实画面及等待时长仍待验收；不计作上述崩溃修复。
+单项关闭与手动步骤见[场景Loading呈现](SCENE_LOADING_PRESENTATION.md)。
+
 60帧移动眼部外突：已补齐另一刚性动画renderer的相位钩子并通过混合绘制回归，实际眼球模型归属及画面待复验，见RIGID_MOTION_PHASE.md。
 2880×1800开场文字偏移：已将两套实际FDI图块按当前画布中心定位，坐标回放通过，笔记本最终显示待复验，见OPENING_CENTER_REPAIR.md。
 

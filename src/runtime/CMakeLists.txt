@@ -198,6 +198,13 @@ target_compile_definitions(configuration_display_fixture PRIVATE WINDOW_SIZE_TES
 
 target_sources(workspace_profile PRIVATE field_return_height.cpp)
 target_sources(workspace_profile PRIVATE gui_parent_guard.cpp)
+target_sources(workspace_profile PRIVATE scene_loading.cpp)
+target_link_libraries(workspace_profile PRIVATE gdi32)
+add_executable(scene_loading_fixture scene_loading_fixture.cpp scene_loading.cpp)
+target_compile_definitions(scene_loading_fixture PRIVATE SCENE_LOADING_TEST)
+target_compile_options(scene_loading_fixture PRIVATE /W4 /utf-8)
+target_link_libraries(scene_loading_fixture PRIVATE user32 gdi32)
+set_property(TARGET scene_loading_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded")
 add_executable(gui_parent_guard_fixture gui_parent_guard_fixture.cpp gui_parent_guard.cpp)
 target_compile_definitions(gui_parent_guard_fixture PRIVATE GUI_PARENT_GUARD_TEST)
 target_compile_options(gui_parent_guard_fixture PRIVATE /W4 /utf-8)

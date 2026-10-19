@@ -1,5 +1,11 @@
 # 构建说明
 
+## 换区前Loading呈现候选（2026-10-19）
+
+Win32目标`workspace_profile scene_loading_fixture`；共享目录重建支持`--scene-loading DLL`。
+离线顺序验证、现有入口整合和单项撤回见[场景Loading呈现](docs/SCENE_LOADING_PRESENTATION.md)。
+实机待验收；场景切换崩溃不计作修复。
+
 ## 启动GUI越界修正（2026-10-19）
 
 启动GUI守卫沿用 Win32 构建 `workspace_profile gui_parent_guard_fixture`；验证、默认整合及回滚见 [GUI父节点守卫](docs/GUI_PARENT_GUARD.md)。共享目录重建支持 `--gui-parent-guard`，统一包要求此默认整合，场景崩溃未计作修复。
