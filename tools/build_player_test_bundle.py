@@ -18,6 +18,18 @@ def sha(p):
     with p.open('rb') as f:
         return hashlib.file_digest(f, 'sha256').hexdigest()
 
+def validate_engine_fixes(runtime, manifest):
+    fix=manifest.get('field_return_height')
+    if fix!=dict(schema=1,enabled=True,module='field-return-height'):
+        raise ValueError('Unified package requires the default field return-height integration')
+    if ('field_return_height_module' in manifest or (runtime/'Play-stairwell-fix.cmd').exists()
+            or 'modules/field-return-height.dll' not in manifest['files']):
+        raise ValueError('Separate or missing stairwell entry/module rejected')
+    if b'# FIELD_RETURN_DEFAULT_ROUTE:' not in (runtime/'Start.ps1').read_bytes():
+        raise ValueError('Default field return route missing')
+    return dict(field_return_height=dict(default_enabled=True,baseline_recipe='baseline',
+                                        in_game_verified=False,scope='Field0757/event2'))
+
 def build(source, runtime, output):
     source = source.resolve(strict=True)
     runtime = runtime.resolve(strict=True)
@@ -32,6 +44,7 @@ def build(source, runtime, output):
         if sha(source/name) != digest:
             raise ValueError('unsupported original version: '+name)
     m = json.loads((runtime/'runtime.json').read_text())
+    engine_fixes=validate_engine_fixes(runtime,m)
     for collection, base in [('data', runtime/'data'), ('files', runtime)]:
         for name, digest in m[collection].items():
             if sha(base/name) != digest:
@@ -94,6 +107,7 @@ def build(source, runtime, output):
                     payload={p.relative_to(payload).as_posix():sha(p) for p in payload.rglob('*') if p.is_file()},
                     source_commit=__import__('subprocess').check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                     in_game_verified=False, original_unchanged=True,
+                    engine_fixes=engine_fixes,
                     disc_gate=dict(offset='0x1025',before='BB41000000',after='E9A7000000'),
                     ddraw_license=license_url)
     (output/'package.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf8')

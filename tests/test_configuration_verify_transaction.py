@@ -62,7 +62,7 @@ class SharedVerifyIntegrationTests(unittest.TestCase):
         source = ('public class OwnedVerifier { public static int Main(string[] args) {'
                   'if(System.Array.IndexOf(args,"--verify-only")<0)return 88;'
                   'string capture=System.Environment.GetEnvironmentVariable("OWNED_CAPTURE_FILE");'
-                  'if(capture!=null)System.IO.File.WriteAllText(capture,System.String.Join("|",args)+"|MC_FREE_VIEW="+System.Environment.GetEnvironmentVariable("MC_FREE_VIEW")+"|MC_WINDOWED="+System.Environment.GetEnvironmentVariable("MC_WINDOWED")+"|MC_WINDOW_RESOLUTION="+System.Environment.GetEnvironmentVariable("MC_WINDOW_RESOLUTION")+"|MC_MOTION60_COMPLETE="+System.Environment.GetEnvironmentVariable("MC_MOTION60_COMPLETE"));'
+                  'if(capture!=null)System.IO.File.WriteAllText(capture,System.String.Join("|",args)+"|MC_FREE_VIEW="+System.Environment.GetEnvironmentVariable("MC_FREE_VIEW")+"|MC_WINDOWED="+System.Environment.GetEnvironmentVariable("MC_WINDOWED")+"|MC_WINDOW_RESOLUTION="+System.Environment.GetEnvironmentVariable("MC_WINDOW_RESOLUTION")+"|MC_MOTION60_COMPLETE="+System.Environment.GetEnvironmentVariable("MC_MOTION60_COMPLETE")+"|MC_FIELD_RETURN_HEIGHT="+System.Environment.GetEnvironmentVariable("MC_FIELD_RETURN_HEIGHT"));'
                   'string code=System.Environment.GetEnvironmentVariable("OWNED_VERIFY_EXIT");'
                   'return code=="7"?7:0; }}')
         command = "Add-Type -TypeDefinition '"+source+"' -OutputAssembly '"+str(cls.exe)+"' -OutputType ConsoleApplication"

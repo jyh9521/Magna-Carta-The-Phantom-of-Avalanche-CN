@@ -55,6 +55,17 @@ class SharedRuntimeTests(unittest.TestCase):
             self.assertEqual(tool.sha(out/'Play-title-original.cmd'),m['files']['Play-title-original.cmd'])
             self.assertRaises(ValueError,tool.prepare,game,modules,atlas,out)
 
+    def test_optional_height_module_sets_default_route_preserving_original_roles(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);game,modules,atlas=self.inputs(root)
+            modules['field-return-height']=modules['display']
+            out=root/'runtime';m=tool.prepare(game,modules,atlas,out)
+            self.assertEqual(m['field_return_height'],dict(schema=1,enabled=True,module='field-return-height'))
+            self.assertEqual(m['recipes']['baseline']['module'],'display')
+            self.assertIn('modules/display.dll',m['files'])
+            self.assertIn('modules/field-return-height.dll',m['files'])
+            self.assertFalse((out/'Play-stairwell-fix.cmd').exists())
+
     def test_source_hash_drift_rejected_before_output(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory); game,modules,atlas=self.inputs(root)

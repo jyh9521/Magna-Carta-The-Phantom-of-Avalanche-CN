@@ -109,6 +109,8 @@ def prepare(source, modules, atlas, output):
     files['Play-title-original.cmd']=sha(output/'Play-title-original.cmd')
     manifest=dict(schema=1,data_root='data',data=data,files=files,profiles={**original['profiles'],**{p.stem:sha(p) for p in (output/'config/profiles').glob('md3-*.ini')}},recipes=recipes,
                   configured_modules=dict(display='display',motion=motion,gamepad=gamepad,combined=gamepad))
+    if 'field-return-height' in modules:
+        manifest['field_return_height']=dict(schema=1,enabled=True,module='field-return-height')
     (output/'runtime.json').write_bytes((json.dumps(manifest,indent=2)+'\n').encode('utf8'))
     for recipe in recipes:
         entry='Play.cmd' if recipe=='configured' else 'Play-'+recipe+'.cmd'
@@ -125,10 +127,12 @@ if __name__=='__main__':
     parser.add_argument('--configuration',type=Path,required=True)
     parser.add_argument('--motion',type=Path)
     parser.add_argument('--gamepad',type=Path)
+    parser.add_argument('--field-return-height',type=Path)
     a=parser.parse_args()
     modules={name:getattr(a,name) for name in ['display','modern','texture','camera','maps','launcher']}
     modules['configuration']=a.configuration
     if a.motion: modules['motion-space']=a.motion
     if a.gamepad: modules['input-diagnostics']=a.gamepad
+    if a.field_return_height: modules['field-return-height']=a.field_return_height
     prepare(a.source,modules,a.atlas,a.output)
     print('SHARED_PACKAGE PASS copied_game_data=false data_move_pending=true')

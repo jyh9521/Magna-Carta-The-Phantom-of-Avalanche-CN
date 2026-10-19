@@ -4,7 +4,9 @@
 
 沿用已有Win32生成头与CMake配置，构建`workspace_profile field_return_height_fixture`。
 `--baseline`夹具预期退出1，候选及真实PE分页安装/回滚分别验证。
-使用`tools/prepare_field_return_trial.py`安装独立可选入口，正常模块与游戏资源不替换。
+使用`tools/integrate_field_return.py`接入正常入口，保留原8份模块和游戏资源。
+共享目录重建传`prepare_shared_runtime.py --field-return-height DLL`；统一包要求默认整合。
+baseline与维护开关`-WithoutFieldReturnHeight`保留原路由，事务记录支持完整恢复。
 完整命令、触发链、原生指令回放及实际软锁尚未验收的边界见
 [楼梯退回高度](docs/STAIRWELL_RETURN_HEIGHT.md)。
 

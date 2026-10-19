@@ -1,4 +1,4 @@
-《真名法典：冰之魅影》统一测试补丁 2026-10-17
+《真名法典：冰之魅影》统一测试补丁 2026-10-19
 
 包含当前汉化（正文、图片、字体、系统提示、视频字幕）、免CD启动、
 现代Windows隔离启动/焦点保护、正常驱动与DDrawCompat 0.7.1、高清标题、
@@ -16,7 +16,13 @@ XInput手柄、自由视角、区域地图和独立纹理生命周期修复入�
 安装完成：打开新测试目录，双击 Configure.cmd。
 先用默认1080P、无边框、30帧、键鼠、自由视角关闭测试中文与读档；
 再逐项开启60帧、手柄和自由视角，方便定位差异。
-Play.cmd使用保存设置。Play-texture.cmd单独测试纹理生命周期修复；
+Play.cmd使用保存设置，默认整合总部楼梯退回高度修正；Configure启动同样生效。
+沿正常流程游玩即可，到楼梯再观察，不需要换入口或提前准备存档。
+此修正已过自动验证，实际碰撞/对话/软锁消失仍待正常游玩确认。
+Play-baseline.cmd保留原模块对照，8份旧模块及原始安装保留。
+维护可用powershell -NoProfile -ExecutionPolicy Bypass -File Start.ps1 -WithoutFieldReturnHeight
+临时关闭楼梯修正并沿用保存设置，不改配置或存档。
+Play-texture.cmd单独测试纹理生命周期修复；
 Play-maps.cmd/Play-maps-gamepad.cmd测试区域地图；
 Play-motion.cmd/Play-gamepad.cmd/Play-motion-gamepad.cmd提供独立对照。
 各固定配方有自己的预设，不一定使用Configure保存的显示设置。

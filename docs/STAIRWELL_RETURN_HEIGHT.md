@@ -3,12 +3,13 @@
 ## 当前结论
 
 已定位 `0751 → 0757` 的总部走廊／地下牢梯间，以及0757的下层退回事件。
-已在原生指令回放中验证一个确定的坐标写回问题，并实现**独立可选**修正。
-正常入口、现有运行模块、游戏资源、翻译、配置与存档保持原状。
+已在原生指令回放中验证一个确定的坐标写回问题，并实现限定事件的修正。
+按用户要求，修正已整合至正常Play.cmd、配置工具启动及统一测试包，不另换入口。
+原8份模块和Play-baseline.cmd保留；游戏资源、翻译、配置与存档不因本修正改变。
 
 **此轮没有复现实际游戏软锁。** 回放不运行碰撞与真实对话输入：原版和候选均能走到原生
 解锁命令，不能以“新测试通过”声称实际软锁已经根治。用户没有故障存档，未要求其提前游玩；
-后续正常流程走到此处时再完成实机验收。候选不作为默认运行路径。
+后续正常流程走到此处时再完成实机验收。正常入口默认加载此候选，但这不代表游戏内软锁已验收。
 
 ## Verified：来源与触发
 
@@ -81,24 +82,33 @@ mesh6/triangle17水平Z=-101.492502，另有向下斜面mesh10/triangle0。
 剧情开关、完成判断和原生锁计数不动；日志最多8条实际修正记录。
 原生场景在68BC1分配150个命令槽；夹具及回放使用该容量，扫描保留原循环的最后保留槽边界。
 
-`Play-stairwell-fix.cmd`使用单独的新模块；普通`Play.cmd`继续使用原模块。
-安装器只新增自有模块／入口并事务更新启动脚本与摘要清单，完整原件另存，支持摘要守卫回滚。
+正常Play/Configure启动及非baseline配方统一加载 `modules/field-return-height.dll`，
+设置 `MC_FIELD_RETURN_HEIGHT=1`；baseline保持原display模块、环境开关0。
+原8份角色DLL逐字节保留，旧独立楼梯入口已撤回。
 
-## 复现与验证
-
-安装自有候选模块（原始游戏数据不写入）：
+## 构建、整合与恢复
 
 ```powershell
-python tools/prepare_field_return_trial.py --runtime runtime --module build/native/Release/workspace_profile.dll --record out/stairwell-return-height-20261019
-powershell -NoProfile -File runtime/Start.ps1 -Recipe configured -FieldReturnHeight -VerifyOnly
-# 手动启动候选：runtime/Play-stairwell-fix.cmd；原Play.cmd仍是未加本修正的对照。
-# 完整撤回新增入口和启动脚本变化：
+# 仅历史独立试用迁移需要先恢复旧记录：
 python tools/prepare_field_return_trial.py --rollback out/stairwell-return-height-20261019
+# 干净基线整合到现有入口；record必须全新且位于runtime之外：
+python tools/integrate_field_return.py --runtime runtime --module build/native/Release/workspace_profile.dll --record out/stairwell-default-integration-20261019
+powershell -NoProfile -File runtime/Start.ps1 -VerifyOnly
+powershell -NoProfile -File runtime/Start.ps1 -Recipe baseline -VerifyOnly
+# 维护用临时关闭，不新建入口，不改保存设置：
+powershell -NoProfile -File runtime/Start.ps1 -WithoutFieldReturnHeight -VerifyOnly
+# 完整恢复原启动脚本/清单，撤回新增DLL：
+python tools/integrate_field_return.py --rollback out/stairwell-default-integration-20261019
 ```
 
-record必须是新目录且位于runtime之外，已有摘要或锚点变化则整批拒绝。安装记录保存两份原始
-自有控制文件；回滚先核所有候选及备份，再恢复原启动脚本／清单并删除自身新增的两份文件。
-此轮本地候选已安装但未启动游戏；不替换普通入口使用的8份旧模块。
+整合器核验原启动脚本版本、全部组件摘要及新输出路径，保存两份控制文件原件和三项摘要记录。
+回滚先核全部当前文件与原件，任一漂移拒绝整批写入；写失败补偿至事务前状态。
+可变设置、存档和原模块不覆盖。历史独立试用工具仅供旧记录恢复，不用于新包。
+干净重建共享目录时，`prepare_shared_runtime.py --field-return-height DLL` 写入相同默认路由。
+统一打包器要求该元数据/组件/路由，拒绝旧的独立楼梯入口。统一包保留原版资源回滚。
+游戏内验收等待玩家正常进度，本轮不启动游戏。
+
+## 自动验证
 
 ```powershell
 # 先按BUILDING.md配置Win32本地构建，保留已有字体/开场生成头。
@@ -118,7 +128,7 @@ CALL安装和精确恢复。合成CALL夹具实际执行相同RVA的调用槽，
 
 正常流程人工验收：从走廊进入楼梯，走到下层禁入区；应平滑退回并显示原提示，关闭后可移动、
 打开菜单、返回走廊。反复触发、绕边接近和重新进入都检查一次；观察日志是否有
-`FIELD_RETURN_HEIGHT_APPLIED`。原始入口为OFF对照，不要求玩家修改进度或存档。
+`FIELD_RETURN_HEIGHT_APPLIED`。现有baseline配方或维护开关为OFF对照，不要求玩家修改进度或存档。
 
 ## 本地研究证据与来源
 

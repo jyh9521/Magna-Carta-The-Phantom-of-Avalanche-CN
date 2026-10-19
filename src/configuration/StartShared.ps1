@@ -1,4 +1,4 @@
-﻿param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','motion-gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='',[string]$SettingsFile='')
+﻿param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','motion-gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='',[string]$SettingsFile='',[switch]$WithoutFieldReturnHeight)
 $ErrorActionPreference='Stop'
 $runtimeRoot=$PSScriptRoot
 $manifest=Get-Content -LiteralPath (Join-Path $runtimeRoot 'runtime.json') -Raw | ConvertFrom-Json
@@ -23,13 +23,21 @@ if($module -eq 'configured'){
  if($manifest.PSObject.Properties['configured_modules']){$module=$manifest.configured_modules.$key}else{$module=if($key -eq 'display'){'display'}else{'modern'}}
 }
 if($Recipe -eq 'configured' -and $schema -eq 2){$module='configuration'}
+# FIELD_RETURN_DEFAULT_ROUTE: normal entries include the scoped fix; baseline retains its original module.
+$fieldReturnEnabled=$false
+if($manifest.PSObject.Properties['field_return_height']){
+ $fix=$manifest.field_return_height
+ if($fix.schema -ne 1 -or $fix.enabled -isnot [bool] -or $fix.module -ne 'field-return-height'){throw 'Invalid field return-height integration'}
+ $fieldReturnEnabled=$fix.enabled -and $Recipe -ne 'baseline' -and -not $WithoutFieldReturnHeight
+ if($fieldReturnEnabled){$module=$fix.module}
+}
 $ini=Join-Path $game 'DDrawCompat-MagnaCarta.ini'
 $known=@($manifest.profiles.PSObject.Properties.Value)
 if((Hash $ini) -notin $known){throw 'Unknown active display configuration'}
 $mutex=New-Object Threading.Mutex($false,('Local\MagnaCartaShared_'+(Hash (Join-Path $runtimeRoot 'runtime.json')).Substring(0,24)))
 if(-not $mutex.WaitOne(0)){throw 'Another shared runtime entry is active'}
 $environment=@{}
-foreach($key in @('MC_MOTION60_COMPLETE','MC_TITLE_BACKGROUND4K','MC_FREE_VIEW','MC_MAP_OVERLAY','MC_MAP_ASSETS','MC_WINDOWED','MC_WINDOW_RESOLUTION')){$environment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
+foreach($key in @('MC_MOTION60_COMPLETE','MC_TITLE_BACKGROUND4K','MC_FREE_VIEW','MC_MAP_OVERLAY','MC_MAP_ASSETS','MC_WINDOWED','MC_WINDOW_RESOLUTION','MC_FIELD_RETURN_HEIGHT')){$environment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
 try{
  foreach($p in (Get-CimInstance Win32_Process -Filter "Name='MagnaCarta.exe'")){
   if(-not $p.ExecutablePath -or [IO.Path]::GetFullPath($p.ExecutablePath) -eq (Join-Path $game 'MagnaCarta.exe')){throw 'Exit game before changing shared settings'}
@@ -50,6 +58,7 @@ try{
  }
  [IO.File]::WriteAllBytes((Join-Path $cache 'profile.bin'),$profile)
  Invoke-EnhancementDisplayTransaction $ini ([IO.File]::ReadAllBytes((Join-Path $runtimeRoot ('config/profiles/'+$settings.display_profile+'.ini')))) ([bool]$VerifyOnly) {
+ $env:MC_FIELD_RETURN_HEIGHT=if($fieldReturnEnabled){'1'}else{'0'}
  $env:MC_WINDOW_RESOLUTION=if($schema -eq 2 -and $settings.window_mode -eq 'windowed'){$settings.window_resolution}else{''}
  $env:MC_WINDOWED=if($settings.window_mode -eq 'windowed'){'1'}else{'0'}
  $env:MC_MOTION60_COMPLETE=if($settings.motion60 -or $cameraEnabled){'1'}else{'0'}
@@ -64,7 +73,7 @@ try{
  & (Join-Path $runtimeRoot 'modules/workspace_launcher.exe') @args 1>(Join-Path $cache 'launcher.stdout.txt') 2>(Join-Path $cache 'launcher.stderr.txt')
  $code=$LASTEXITCODE
  if($code -ne 0){throw ('Shared launcher exit='+$code+'; see runtime/cache')}
- Write-Output ('SHARED_RUNTIME PASS recipe='+$Recipe+' module='+$module+' verify_only='+[bool]$VerifyOnly+' data='+$game)
+ Write-Output ('SHARED_RUNTIME PASS recipe='+$Recipe+' module='+$module+' verify_only='+[bool]$VerifyOnly+' data='+$game+' field_return_height='+[bool]$fieldReturnEnabled)
  }
 }finally{
  foreach($key in $environment.Keys){[Environment]::SetEnvironmentVariable($key,$environment[$key],'Process')}
