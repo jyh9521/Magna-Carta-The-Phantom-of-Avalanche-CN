@@ -20,6 +20,9 @@
 
 # 本作现代 Windows 与无盘运行路线
 
+场景切换资源队列的state/type分支、同步回退、worker原始指令模拟边界及手动复现步骤见
+[场景资源分支调查](docs/SCENE_RESOURCE_BRANCHES.md)。该离线结果不声明游戏崩溃根因或修复。
+
 - [正式路线](docs/MODERNIZATION_ROADMAP.md)：Windows 10/11、P0–P3、模块分离及回滚。
 - [静态调查](docs/RUNTIME_RESEARCH.md)：MC_PLAY、驱动、兼容层和来源版本。
 - [运行验收](docs/RUNTIME_TESTING.md)：窗口、显示、无盘、输入、时序和媒体。
