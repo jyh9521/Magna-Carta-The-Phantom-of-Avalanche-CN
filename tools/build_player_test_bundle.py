@@ -27,8 +27,16 @@ def validate_engine_fixes(runtime, manifest):
         raise ValueError('Separate or missing stairwell entry/module rejected')
     if b'# FIELD_RETURN_DEFAULT_ROUTE:' not in (runtime/'Start.ps1').read_bytes():
         raise ValueError('Default field return route missing')
+    gui=manifest.get('gui_parent_guard')
+    if gui!=dict(schema=1,enabled=True,module='gui-parent-guard') or 'modules/gui-parent-guard.dll' not in manifest['files']:
+        raise ValueError('Unified package requires the default GUI parent-guard integration')
+    if b'# GUI_PARENT_DEFAULT_ROUTE:' not in (runtime/'Start.ps1').read_bytes():
+        raise ValueError('Default GUI parent route missing')
     return dict(field_return_height=dict(default_enabled=True,baseline_recipe='baseline',
-                                        in_game_verified=False,scope='Field0757/event2'))
+                                        in_game_verified=False,scope='Field0757/event2'),
+                gui_parent_guard=dict(default_enabled=True,baseline_recipe='baseline',
+                                      in_game_verified=False,scope='startup generic GUI root parent bounds'),
+                scene_transition_crash_fixed=False)
 
 def build(source, runtime, output):
     source = source.resolve(strict=True)

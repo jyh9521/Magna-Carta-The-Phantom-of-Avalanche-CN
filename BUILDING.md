@@ -1,5 +1,9 @@
 # 构建说明
 
+## 启动GUI越界修正（2026-10-19）
+
+启动GUI守卫沿用 Win32 构建 `workspace_profile gui_parent_guard_fixture`；验证、默认整合及回滚见 [GUI父节点守卫](docs/GUI_PARENT_GUARD.md)。共享目录重建支持 `--gui-parent-guard`，统一包要求此默认整合，场景崩溃未计作修复。
+
 ## 总部楼梯返回高度候选（2026-10-19）
 
 沿用已有Win32生成头与CMake配置，构建`workspace_profile field_return_height_fixture`。

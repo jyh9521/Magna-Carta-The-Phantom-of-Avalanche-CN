@@ -57,6 +57,9 @@ class IntegrationTransactionTests(unittest.TestCase):
     def test_package_requires_default_route_and_rejects_old_entry(self):
         with self.assertRaises(ValueError):bundle.validate_engine_fixes(self.f.runtime,self.f.manifest)
         self.install();m=json.loads((self.f.runtime/'runtime.json').read_bytes())
+        with self.assertRaisesRegex(ValueError,'GUI parent-guard'):bundle.validate_engine_fixes(self.f.runtime,m)
+        m['gui_parent_guard']=dict(schema=1,enabled=True,module='gui-parent-guard')
+        m['files']['modules/gui-parent-guard.dll']='owned'
         self.assertTrue(bundle.validate_engine_fixes(self.f.runtime,m)['field_return_height']['default_enabled'])
         (self.f.runtime/'Play-stairwell-fix.cmd').write_bytes(b'old')
         with self.assertRaises(ValueError):bundle.validate_engine_fixes(self.f.runtime,m)

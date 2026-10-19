@@ -16,10 +16,14 @@ XInput手柄、自由视角、区域地图和独立纹理生命周期修复入�
 安装完成：打开新测试目录，双击 Configure.cmd。
 先用默认1080P、无边框、30帧、键鼠、自由视角关闭测试中文与读档；
 再逐项开启60帧、手柄和自由视角，方便定位差异。
-Play.cmd使用保存设置，默认整合总部楼梯退回高度修正；Configure启动同样生效。
+Play.cmd使用保存设置，默认整合总部楼梯退回高度修正与启动GUI父节点越界守卫；Configure启动同样生效。
+GUI守卫仅针对启动光标构造时通用根节点的空间字段越界，已过生产代码离线回放与回滚验证。
+实机由玩家自行测试；本项不代表场景切换崩溃已修复，换区问题仍在调查。
 沿正常流程游玩即可，到楼梯再观察，不需要换入口或提前准备存档。
 此修正已过自动验证，实际碰撞/对话/软锁消失仍待正常游玩确认。
-Play-baseline.cmd保留原模块对照，8份旧模块及原始安装保留。
+Play-baseline.cmd保留原模块对照，8份旧模块、上次正常楼梯模块及原始安装保留。
+维护可用powershell -NoProfile -ExecutionPolicy Bypass -File Start.ps1 -WithoutGuiParentGuard
+临时只关闭GUI守卫，保留楼梯修正、保存设置及存档；不需要更换玩家入口。
 维护可用powershell -NoProfile -ExecutionPolicy Bypass -File Start.ps1 -WithoutFieldReturnHeight
 临时关闭楼梯修正并沿用保存设置，不改配置或存档。
 Play-texture.cmd单独测试纹理生命周期修复；

@@ -45,13 +45,15 @@ def trampoline(base=BASE,address=TRAMPOLINE):
 
 
 class NativeGuiParent(NativeTitle):
-    def __init__(self,image,parent='generic_root'):
+    def __init__(self,image,parent='generic_root',bridge=None):
         if hashlib.sha256(image).hexdigest()!=SOURCE_SHA:raise ValueError('Unsupported full engine SHA256')
         super().__init__(image)
         self.cpu.mem_map(ROOT&~0xfff,0x1000)  # Ends at recorded MEM_RESERVE page0xbaf000.
         self.cpu.mem_map(CHILD&~0xfff,0x2000)
         self.cpu.mem_write(NOTIFY,b'\xc3')
-        self.cpu.mem_write(TRAMPOLINE,trampoline())
+        self.bridge=trampoline() if bridge is None else bridge
+        if self.bridge!=trampoline():raise ValueError('Production encoder output differs from reviewed guard')
+        self.cpu.mem_write(TRAMPOLINE,self.bridge)
         self.write(VTABLE+0x28,NOTIFY);self.write(VTABLE+0x2c,NOTIFY)
         self.write(CHILD,VTABLE)
         self.write(ROOT,BASE+ROOT_VTABLE);self.write(ROOT+4,2);self.write(ROOT+8,0)
@@ -74,7 +76,7 @@ class NativeGuiParent(NativeTitle):
     def _instruction(self,cpu,address,size,_):
         if address==NOTIFY:self.notifications+=1;return
         if (BASE+ENTRY<=address<BASE+0x38bd7 or BASE+0x1e940<=address<BASE+0x1e983
-            or TRAMPOLINE<=address<TRAMPOLINE+len(trampoline())):
+            or TRAMPOLINE<=address<TRAMPOLINE+len(self.bridge)):
             self.instructions+=1;return
         raise ValueError('Unexpected instruction outside bounded transform replay: '+hex(address))
 
@@ -109,15 +111,15 @@ class NativeGuiParent(NativeTitle):
                     stack_balanced=self.cpu.reg_read(esp)==0x3001f004 if completed else None)
 
 
-def replay(image):
-    n=NativeGuiParent(image)
+def replay(image,bridge=None):
+    n=NativeGuiParent(image,bridge=bridge)
     baseline=n.run();n.patch();modified=n.run();n.rollback();rollback=n.run()
     fault=dict(instruction='0x5201e94f',address='0xbaf024',bytes=4)
     if baseline['fault']!=fault or rollback['fault']!=fault:raise AssertionError('Recorded fault not replayed exactly')
     if not modified['completed'] or modified['translation']!=[10,20,30] or modified['scale']!=[2,3,4] or modified['notifications']!=2:raise AssertionError('Proposal did not preserve local transform/notifications')
     controls={}
     for parent in ('spatial','none'):
-        c=NativeGuiParent(image,parent);before=c.run();c.patch();after=c.run();c.rollback();restored=c.run()
+        c=NativeGuiParent(image,parent,bridge=bridge);before=c.run();c.patch();after=c.run();c.rollback();restored=c.run()
         if not before['completed'] or before!=after or before!=restored:raise AssertionError('Control behavior changed')
         controls[parent]=before
     return dict(schema=1,engine_sha256=SOURCE_SHA,baseline=baseline,modified=modified,rollback=rollback,
@@ -128,9 +130,9 @@ def replay(image):
                         'Emulated instructions and owned callback RET boundaries, no actual UI/resource load.',
                         'Proposal is confined to this emulator; normal runtime and unified ZIP unchanged.'])
 
-def single(image,mode):
+def single(image,mode,bridge=None):
     if mode not in ('baseline','proposal','rollback'):raise ValueError('Unknown replay mode')
-    n=NativeGuiParent(image)
+    n=NativeGuiParent(image,bridge=bridge)
     if mode in ('proposal','rollback'):n.patch()
     if mode=='rollback':n.rollback()
     return dict(mode=mode,result=n.run(),original_guard_restored=bytes(n.cpu.mem_read(BASE+SITE,6))==EXPECTED,

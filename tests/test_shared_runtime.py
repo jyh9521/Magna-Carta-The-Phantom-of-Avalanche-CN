@@ -73,6 +73,18 @@ class SharedRuntimeTests(unittest.TestCase):
             self.assertRaises(ValueError,tool.prepare,game,modules,atlas,root/'runtime')
             self.assertFalse((root/'runtime').exists())
 
+    def test_gui_guard_preserves_prior_module_and_has_no_new_entry(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);game,modules,atlas=self.inputs(root)
+            modules['gui-parent-guard']=modules['display'];out=root/'runtime'
+            with self.assertRaisesRegex(ValueError,'retained field return'):tool.prepare(game,modules,atlas,out)
+            self.assertFalse(out.exists())
+            modules['field-return-height']=modules['display'];m=tool.prepare(game,modules,atlas,out)
+            self.assertEqual(m['gui_parent_guard'],dict(schema=1,enabled=True,module='gui-parent-guard'))
+            self.assertIn('modules/field-return-height.dll',m['files']);self.assertIn('modules/gui-parent-guard.dll',m['files'])
+            self.assertEqual(m['recipes']['baseline']['module'],'display')
+            self.assertFalse((out/'Play-gui-parent-guard.cmd').exists())
+
     def test_current_candidates_are_preserved_when_repackaging(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory); game,modules,atlas=self.inputs(root)
