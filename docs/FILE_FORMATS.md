@@ -7,7 +7,7 @@
 `逻辑高度×倍数`。总长必须为 `20+count×2+count×(height×scale)^2`。
 当前逻辑高度仅14/22，倍数1..4，字形数1..4096，读取上限64MiB；未知版本/尺寸/
 重复ID/截断拒绝。外部manifest保存输入、源字体许可和每文件SHA256，覆盖按原BGRA
-source-over合成。缓存不包含原游戏字体文件，且不由当前游戏入口读取。
+source-over合成。缓存不包含原游戏字体文件；C候选从共享fonts目录读取，摘要由生成头绑定自有模块。
 试样与原生接入边界见[SCALED_FONT_COVERAGE.md](SCALED_FONT_COVERAGE.md)。
 
 ## Field事件尾部（2026-10-19）

@@ -1,4 +1,4 @@
-﻿param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','motion-gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='',[string]$SettingsFile='',[switch]$WithoutFieldReturnHeight,[switch]$WithoutGuiParentGuard,[switch]$WithoutSceneLoading,[switch]$WithoutNativeLoading)
+﻿param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','motion-gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='',[string]$SettingsFile='',[switch]$WithoutFieldReturnHeight,[switch]$WithoutGuiParentGuard,[switch]$WithoutSceneLoading,[switch]$WithoutNativeLoading,[switch]$WithoutScaledFont)
 $ErrorActionPreference='Stop'
 $runtimeRoot=$PSScriptRoot
 $manifest=Get-Content -LiteralPath (Join-Path $runtimeRoot 'runtime.json') -Raw | ConvertFrom-Json
@@ -55,13 +55,21 @@ if($manifest.PSObject.Properties['native_scene_loading']){
  $nativeLoadingEnabled=$fix.enabled -and $guiParentEnabled -and $Recipe -ne 'baseline' -and -not $WithoutNativeLoading
  if($nativeLoadingEnabled){$module=$fix.module}
 }
+# SCALED_FONT_DEFAULT_ROUTE: private 4x glyph textures; native measurements and pools retained.
+$scaledFontEnabled=$false
+if($manifest.PSObject.Properties['scaled_font']){
+ $fix=$manifest.scaled_font
+ if($fix.schema -isnot [int] -or $fix.schema -ne 1 -or $fix.enabled -isnot [bool] -or $fix.module -ne 'scaled-font' -or $fix.scale -isnot [int] -or $fix.scale -ne 4){throw 'Invalid scaled font integration'}
+ $scaledFontEnabled=$fix.enabled -and $Recipe -ne 'baseline' -and -not $WithoutScaledFont
+ if($scaledFontEnabled){$module=$fix.module}
+}
 $ini=Join-Path $game 'DDrawCompat-MagnaCarta.ini'
 $known=@($manifest.profiles.PSObject.Properties.Value)
 if((Hash $ini) -notin $known){throw 'Unknown active display configuration'}
 $mutex=New-Object Threading.Mutex($false,('Local\MagnaCartaShared_'+(Hash (Join-Path $runtimeRoot 'runtime.json')).Substring(0,24)))
 if(-not $mutex.WaitOne(0)){throw 'Another shared runtime entry is active'}
 $environment=@{}
-foreach($key in @('MC_MOTION60_COMPLETE','MC_TITLE_BACKGROUND4K','MC_FREE_VIEW','MC_MAP_OVERLAY','MC_MAP_ASSETS','MC_WINDOWED','MC_WINDOW_RESOLUTION','MC_FIELD_RETURN_HEIGHT','MC_GUI_PARENT_GUARD','MC_SCENE_LOADING','MC_NATIVE_SCENE_LOADING')){$environment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
+foreach($key in @('MC_MOTION60_COMPLETE','MC_TITLE_BACKGROUND4K','MC_FREE_VIEW','MC_MAP_OVERLAY','MC_MAP_ASSETS','MC_WINDOWED','MC_WINDOW_RESOLUTION','MC_FIELD_RETURN_HEIGHT','MC_GUI_PARENT_GUARD','MC_SCENE_LOADING','MC_NATIVE_SCENE_LOADING','MC_SCALED_FONT','MC_SCALED_FONT_ASSETS')){$environment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
 try{
  foreach($p in (Get-CimInstance Win32_Process -Filter "Name='MagnaCarta.exe'")){
   if(-not $p.ExecutablePath -or [IO.Path]::GetFullPath($p.ExecutablePath) -eq (Join-Path $game 'MagnaCarta.exe')){throw 'Exit game before changing shared settings'}
@@ -82,6 +90,8 @@ try{
  }
  [IO.File]::WriteAllBytes((Join-Path $cache 'profile.bin'),$profile)
  Invoke-EnhancementDisplayTransaction $ini ([IO.File]::ReadAllBytes((Join-Path $runtimeRoot ('config/profiles/'+$settings.display_profile+'.ini')))) ([bool]$VerifyOnly) {
+ $env:MC_SCALED_FONT=if($scaledFontEnabled){'1'}else{'0'}
+ $env:MC_SCALED_FONT_ASSETS=if($scaledFontEnabled){Join-Path $runtimeRoot 'fonts'}else{''}
  $env:MC_NATIVE_SCENE_LOADING=if($nativeLoadingEnabled){'1'}else{'0'}
  $env:MC_SCENE_LOADING=if($sceneLoadingEnabled){'1'}else{'0'}
  $env:MC_GUI_PARENT_GUARD=if($guiParentEnabled){'1'}else{'0'}
@@ -100,7 +110,7 @@ try{
  & (Join-Path $runtimeRoot 'modules/workspace_launcher.exe') @args 1>(Join-Path $cache 'launcher.stdout.txt') 2>(Join-Path $cache 'launcher.stderr.txt')
  $code=$LASTEXITCODE
  if($code -ne 0){throw ('Shared launcher exit='+$code+'; see runtime/cache')}
- Write-Output ('SHARED_RUNTIME PASS recipe='+$Recipe+' module='+$module+' verify_only='+[bool]$VerifyOnly+' data='+$game+' field_return_height='+[bool]$fieldReturnEnabled+' gui_parent_guard='+[bool]$guiParentEnabled)
+ Write-Output ('SHARED_RUNTIME PASS recipe='+$Recipe+' module='+$module+' verify_only='+[bool]$VerifyOnly+' data='+$game+' field_return_height='+[bool]$fieldReturnEnabled+' gui_parent_guard='+[bool]$guiParentEnabled+' scaled_font='+[bool]$scaledFontEnabled)
  }
 }finally{
  foreach($key in $environment.Keys){[Environment]::SetEnvironmentVariable($key,$environment[$key],'Process')}

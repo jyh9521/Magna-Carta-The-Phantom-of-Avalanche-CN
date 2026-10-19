@@ -21,7 +21,15 @@ def settings(profile='wide4k', motion=False, pad=False):
     return dict(schema=1, display_profile=profile, motion60=motion, native_gamepad=pad)
 
 
-def prepare(source, modules, atlas, output):
+def prepare(source, modules, atlas, output, scaled_font_cache=None):
+    font_files={}
+    if 'scaled-font' in modules:
+        if 'native-loading' not in modules or scaled_font_cache is None:
+            raise ValueError('Scaled font requires the retained native-loading module and coverage cache')
+        from integrate_scaled_font import payload
+        font_files=payload(scaled_font_cache)
+    elif scaled_font_cache is not None:
+        raise ValueError('Coverage cache requires the scaled font module')
     if 'native-loading' in modules:
         if 'scene-loading' in modules:
             raise ValueError('Native loading excludes withdrawn custom prelude')
@@ -80,6 +88,8 @@ def prepare(source, modules, atlas, output):
         files['config/profiles/'+path.name]=sha(path)
     for name, path in modules.items():
         copy(path,'modules/'+('workspace_launcher.exe' if name=='launcher' else name+'.dll'))
+    for name,data in font_files.items():
+        target=output/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(data);files[name]=sha(target)
     # The accepted settings are mutable; do not lock their hash into the package.
     shutil.copy2(prior/'enhancements.json',output/'config/enhancements.json')
     recipes={'configured':dict(module='configured',settings=None)}
@@ -124,6 +134,8 @@ def prepare(source, modules, atlas, output):
         manifest['scene_loading']=dict(schema=1,enabled=True,module='scene-loading')
     if 'native-loading' in modules:
         manifest['native_scene_loading']=dict(schema=1,enabled=True,module='native-loading')
+    if 'scaled-font' in modules:
+        manifest['scaled_font']=dict(schema=1,enabled=True,module='scaled-font',scale=4)
     (output/'runtime.json').write_bytes((json.dumps(manifest,indent=2)+'\n').encode('utf8'))
     for recipe in recipes:
         entry='Play.cmd' if recipe=='configured' else 'Play-'+recipe+'.cmd'
@@ -144,6 +156,8 @@ if __name__=='__main__':
     parser.add_argument('--gui-parent-guard',type=Path)
     parser.add_argument('--scene-loading',type=Path)
     parser.add_argument('--native-loading',type=Path)
+    parser.add_argument('--scaled-font',type=Path)
+    parser.add_argument('--scaled-font-cache',type=Path)
     a=parser.parse_args()
     modules={name:getattr(a,name) for name in ['display','modern','texture','camera','maps','launcher']}
     modules['configuration']=a.configuration
@@ -153,5 +167,6 @@ if __name__=='__main__':
     if a.gui_parent_guard: modules['gui-parent-guard']=a.gui_parent_guard
     if a.scene_loading: modules['scene-loading']=a.scene_loading
     if a.native_loading: modules['native-loading']=a.native_loading
-    prepare(a.source,modules,a.atlas,a.output)
+    if a.scaled_font: modules['scaled-font']=a.scaled_font
+    prepare(a.source,modules,a.atlas,a.output,a.scaled_font_cache)
     print('SHARED_PACKAGE PASS copied_game_data=false data_move_pending=true')

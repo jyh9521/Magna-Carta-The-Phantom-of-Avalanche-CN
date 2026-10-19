@@ -48,3 +48,7 @@ Play-motion.cmd/Play-gamepad.cmd/Play-motion-gamepad.cmd提供独立对照。
 回滚预检目标摘要后恢复原版资源（含EXE/驱动），不删除存档与设置。
 回滚后现代化入口会按版本锁拒绝启动；原安装始终可作原版对照。
 测试包不含完整商业游戏；原版资源须保留用于安装与回滚。
+
+含scaled_font清单的测试包沿用Play.cmd启用C高清文字候选，低分辨率保留原字模。
+单项对照：powershell -NoProfile -ExecutionPolicy Bypass -File Start.ps1 -WithoutScaledFont
+字体候选仍需游戏画面验收；排查时保留cache/profile.log中的SCALED_FONT记录。

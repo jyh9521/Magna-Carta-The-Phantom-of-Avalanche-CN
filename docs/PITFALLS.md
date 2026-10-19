@@ -282,3 +282,11 @@ See SCENE_TRANSITION_INVESTIGATION.md. Never launch a game from an offline audit
 当前12份入口已从最新统一包载荷按清单摘要恢复，未重建或改写游戏资源。
 构建研究目录还可能包含指向共享 runtime/native 的目录联接；预检必须拒绝穿越联接。
 本次只解除已核对目标的旧联接本身，之后才删除构建目录。
+
+## 高清文字纹理接入（2026-10-20）
+
+C候选保留原槽并增加独立纹理，不将共享池整体放大16倍像素。
+原D3D驱动TexImage2D的RGBA分支存在不同于子矩形上传的转换顺序；
+独立纹理采用BGRA输入，并以彩色32位alpha读回检查，不能只用白字判断通道正确。
+只提高字模清晰度而不处理槽UV、原测量、失败退回和回收，会留下布局或资源生命周期问题。
+详见[SCALED_FONT_COVERAGE.md](SCALED_FONT_COVERAGE.md)；离屏验证不替代游戏内验收。

@@ -1,4 +1,102 @@
-# 高分辨率文字：离线字模与切片试样
+# 高分辨率文字：C方案运行接入
+
+
+## 当前候选：原有Play入口（2026-10-20）
+
+C方案已接入共享运行目录的 `Play.cmd → Start.ps1 → modules/scaled-font.dll`，
+不增加另一套游戏或替换截图。保留原native-loading/GUI/楼梯模块、原游戏Font、
+资源、配置、存档、旧入口及最新统一测试ZIP。当前ZIP未重新打包。
+**已完成离线原生/GPU读回验证；游戏画面、性能和长时间稳定性仍待手动验收。**
+
+### Verified：原生接入与回收
+
+源引擎与驱动摘要及六处CALL上下文见 `assets/runtime/scaled-font-contract.json`。
+只改31bce文字缓存构建中的31d97（1ef9f）、3200e/321b3（27d21）、
+32056/321fb（27eb7），以及322de文字回收中的3235e（27e4d）。
+不修改4526e的原生文字绘制、逻辑切块/测量/渐显字段或商业模块磁盘字节。
+原生1fb39、1f86f既有覆盖钩子在限定的线程局部构建范围中记录相同五遍绘制。
+14/22像素逻辑字模改用56/88像素覆盖，字距、共享基线和描边沿用已批准C。
+ASCII/韩文/未知字形保留原生单色形状和步进，不伪称重新栅格化。
+
+每个原文字槽仍正常分配、上传并保留；高清词块另外持有28字节原生ABI槽视图，
+owner保存原逻辑尺寸的二次幂宽高，实际GPU纹理为其4倍。归一化UV与裁剪不变。
+独立纹理经原驱动Gen/Bind/TexImage2D/Parameter创建，BGRA源与32位alpha读回逐像素相等。
+不放大共享纹理池，不改变图片槽。回收先解绑设备临时引用，再删除自有纹理，
+把原槽交回原27e4d；未知或回收后的纹理ID不用于删除其它资源。
+
+- 仅支持已锁定D3D7驱动；OpenGL等路径不创建高清槽。
+- 实际渲染目标宽>=2560或高>=1440才使用高清，1080p保留原流程；不是依据桌面大小猜测。
+- 单次CPU线缓冲<=16MiB，独立GPU纹理预算64MiB、最多128槽，保留至少32个驱动空闲ID。
+- 设备纹理尺寸上限和实际分配尺寸均校验；一行后续块失败会把前面块一并退回原槽视图，避免半行两种清晰度。
+- SGC1从 `fonts/` 启动时读取一次；摘要通过生成头绑定模块，并由Start清单先校验。
+  绘制期间不读取字体文件。源字库不写入游戏数据，也不替换Loading图片。
+
+### 重建与离线验证
+
+先按后文来源锁流程重建SGC缓存，全部低分辨率单元必须与当前生成头逐字节相等。
+复用已有Win32构建目录和其它生成头；以下命令不启动游戏：
+
+```powershell
+$env:PYTHONDONTWRITEBYTECODE='1'
+$env:PYTHONPATH="$PWD/runtime/dependencies;$PWD/tools;$PWD/tests"
+python tools/integrate_scaled_font.py --cache build/scaled-font-evidence/cache --header build/scaled-font-runtime-evidence/scaled_font_binding.h
+cmake -S src/runtime -B build/native -DSCALED_FONT_DATA_HEADER=ABSOLUTE_BINDING_HEADER
+cmake --build build/native --config Release --target workspace_profile scaled_font_fixture scaled_font_runtime_fixture
+python tools/check_scaled_font_runtime.py baseline
+python tools/check_scaled_font_runtime.py modified
+python tools/check_scaled_font_runtime.py rollback
+python -m unittest discover -s tests
+```
+
+生成头目标必须为新文件，不覆盖既有证据。三态夹具在隐藏窗口的自有3840×2160
+离屏D3D7设备上运行，读取商业驱动时不执行DLL入口或加载商业Core/Asura依赖。
+只调用独立纹理函数及嵌入的D3DX转换初始化/清理；不创建游戏窗口，不切换显示模式。
+24组覆盖14/22、原高/16或32填充高及1/255/256/257/512/513宽度；
+40个高清纹理GPU读回与C参考完全一致，包含尾块、透明填充、彩色、混合ASCII、
+原上传指针、裁剪UV及释放。另验证1080p退回和第128槽耗尽后的整行退回。
+六处指令安装、拒绝未知CALL与精确撤回均在自有PE中检查。
+该证据不是游戏内画面验收，也不是整段4526e或场景切换的完整执行证明。
+
+### 事务、基线及回滚
+
+```powershell
+python tools/integrate_scaled_font.py --runtime runtime --module build/native/Release/workspace_profile.dll --cache build/scaled-font-evidence/cache --record build/scaled-font-runtime-evidence/integration
+powershell -NoProfile -ExecutionPolicy Bypass -File runtime/Start.ps1 -VerifyOnly
+```
+
+只新增一个自有DLL、两套自有覆盖缓存及OFL许可；Start与manifest备份到事务记录。
+未知基线、缓存摘要/模块绑定不一致、已有候选、已改动回滚目标均拒绝覆盖。
+受同一共享入口互斥锁保护。部分写入失败补偿；只复制涉及文件的隔离回滚验证，
+保留真实共享目录的候选。正常入口的baseline配方不启用C；只关闭C且保留其它修正：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File runtime/Start.ps1 -WithoutScaledFont
+```
+
+上条是**手动启动命令**，开发验证只加 `-VerifyOnly`。完整撤回（先退出游戏）：
+
+```powershell
+python tools/integrate_scaled_font.py --rollback build/scaled-font-runtime-evidence/integration
+```
+
+撤回恢复本轮前的Start/manifest及native-loading路由，删除新增候选文件，不覆盖存档设置。
+本地 `build/scaled-font-runtime-evidence/` 保存原始摘要、三态命令/输出/退出码、
+MODIFIED_FILE.cpp、DIFF_FILE.patch、VERIFICATION.txt及ROLLBACK.sh；ROLLBACK.sh仅操作真实事务。
+共享目录从头重建支持 `--scaled-font DLL --scaled-font-cache CACHE`，同时要求保留native-loading及其依赖。
+统一包包含自有覆盖/OFL并明确in_game_verified=false，不把候选当作画面已验收版本。
+
+### 手动验收
+
+由测试者启动原 `runtime/Play.cmd`，沿用保存设置，不运行另一测试入口。
+4K核对截图中的对白字形、14/22字号、长行256边界、渐显与点击补全、选择项、
+彩色/数字混排、存档列表、菜单、跨场景和Alt+Tab。低分辨率核对字号/换行未改变。
+保留 `runtime/cache/profile.log` 中SCALED_FONT_READY及SCALED_FONT_TEXTURE记录；
+只有READY而无TEXTURE表示尚未进入支持的高分辨率文字缓存路径，不作为高清生效证明。
+确认实际画面清晰度与C一致、布局不变后再记录游戏内通过。Loading闪回及场景崩溃仍单独跟踪。
+
+## 历史：2026-10-19离线试样
+
+以下记录仅描述接入前的原型状态，不代表当前候选尚未安装。
 
 2026-10-19。阶段为**离线试样，不是已安装的4K文字修复**。
 正常Play、原字库、存档、设置和当前Loading候选不变；没有启动游戏或另建游戏副本。

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <limits>
 #include <cstring>
+#include <sstream>
 
 namespace {
 unsigned integer(const unsigned char* p) {
@@ -17,7 +18,17 @@ bool ScaledGlyphCache::load(const char* path, std::string& error) {
     if(!input){error="missing cache";return false;}
     const auto length=input.tellg();
     if(length<20 || length>64*1024*1024){error="cache length";return false;}
-    input.seekg(0);unsigned char header[20]{};
+    input.seekg(0);std::vector<unsigned char> bytes(static_cast<size_t>(length));
+    if(!input.read(reinterpret_cast<char*>(bytes.data()),length)){error="truncated cache";return false;}
+    return loadBytes(bytes,error);
+}
+
+bool ScaledGlyphCache::loadBytes(const std::vector<unsigned char>& inputBytes,std::string& error) {
+    *this=ScaledGlyphCache{};error.clear();
+    const size_t length=inputBytes.size();
+    if(length<20 || length>64*1024*1024){error="cache length";return false;}
+    std::istringstream input(std::string(reinterpret_cast<const char*>(inputBytes.data()),inputBytes.size()),std::ios::binary);
+    unsigned char header[20]{};
     if(!input.read(reinterpret_cast<char*>(header),20)){error="truncated header";return false;}
     const unsigned h=integer(header+8),s=integer(header+12),n=integer(header+16);
     if(memcmp(header,"SGC1",4)||integer(header+4)!=1||(h!=14&&h!=22)||s<1||s>4||!n||n>4096){error="unsupported cache contract";return false;}

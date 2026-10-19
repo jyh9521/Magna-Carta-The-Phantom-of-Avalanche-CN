@@ -4,10 +4,11 @@
 #include <string>
 #include <vector>
 
-// Offline prototype only. The active game font/texture hooks do not reference this class.
+// Locale-neutral coverage decoder shared by offline checks and the runtime bridge.
 class ScaledGlyphCache {
 public:
     bool load(const char* path, std::string& error);
+    bool loadBytes(const std::vector<unsigned char>& bytes, std::string& error);
     bool draw(unsigned short pair, int x, int y, int& logicalAdvance, unsigned color,
               unsigned* pixels, size_t count, int physicalPitch) const;
     unsigned height() const { return logicalHeight; }

@@ -13,6 +13,7 @@
 #include "gui_parent_guard.h"
 #include "native_scene_loading.h"
 #include "native_font.h"
+#include "scaled_font_runtime.h"
 #include "system_messages.h"
 #include "modern_gamepad.h"
 #include "advanced_display.h"
@@ -243,6 +244,10 @@ void patch(HMODULE module) {
         trace(L"NATIVE_FONT_REJECTED");ExitProcess(125);
     }
     if (localizedModule) trace(L"NATIVE_FONT_READY");
+    wchar_t scaledFontFlag[8]{};
+    if(localizedModule && GetEnvironmentVariableW(L"MC_SCALED_FONT",scaledFontFlag,8)==1 && scaledFontFlag[0]==L'1'){
+        if(!installScaledFontRuntime(module,trace)){trace(L"SCALED_FONT_REJECTED");ExitProcess(125);}
+    }
 #endif
     auto dir = nt->OptionalHeader.DataDirectory[IMAGE_DIRECTORY_ENTRY_IMPORT];
     if (!dir.VirtualAddress || dir.VirtualAddress >= nt->OptionalHeader.SizeOfImage) return;

@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "engine_sha256": "7e8649425217d3b99d52d11c679761a88c57b125c241b331aea5c25e00e3b15e",
+  "driver_sha256": "00d443327abf56c94f9f088515ab29be63bab9650771a5cacdcef20ab85eff29",
+  "calls": [
+    {
+      "rva": 204183,
+      "target": 126879,
+      "expected_hex": "e803d2feff",
+      "context_hex": "8d60ffffff8b492ce803d2feff8b55d48955b88b45"
+    },
+    {
+      "rva": 204814,
+      "target": 163105,
+      "expected_hex": "e80e5dffff",
+      "context_hex": "0c528b8d60ffffffe80e5dffff8b4dc46bc9148b55"
+    },
+    {
+      "rva": 204886,
+      "target": 163511,
+      "expected_hex": "e85c5effff",
+      "context_hex": "08518b8d60ffffffe85c5effff8b55ac528b8d60ff"
+    },
+    {
+      "rva": 205235,
+      "target": 163105,
+      "expected_hex": "e8695bffff",
+      "context_hex": "0c518b8d60ffffffe8695bffff8b55c46bd2148b4d"
+    },
+    {
+      "rva": 205307,
+      "target": 163511,
+      "expected_hex": "e8b75cffff",
+      "context_hex": "02508b8d60ffffffe8b75cffff8b4d98518b8d60ff"
+    },
+    {
+      "rva": 205662,
+      "target": 163405,
+      "expected_hex": "e8ea5affff",
+      "context_hex": "0c8b0402508b4df0e8ea5affffebd28b4d088b510c"
+    }
+  ]
+}

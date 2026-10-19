@@ -2,6 +2,9 @@
 #include <cstring>
 #include <cstdint>
 #include <iterator>
+#ifdef SCALED_FONT_RUNTIME
+#include "scaled_font_runtime.h"
+#endif
 
 struct NativeLabel {const char* source;const char* target;};
 #ifdef NATIVE_FONT_DATA_HEADER
@@ -90,6 +93,9 @@ using TextFn=int(__thiscall*)(void*,const char*,unsigned*,int);
 GlyphFn originalGlyph=nullptr;MeasureFn originalMeasure=nullptr;TextFn originalText=nullptr;
 struct Hook {size_t rva;unsigned char expected[32];void* callback;unsigned char* site;void* trampoline;};
 int __fastcall glyphHook(void* object,void*,int x,int y,const unsigned char* text,int* advance,unsigned* pixels,int pitch) {
+#ifdef SCALED_FONT_RUNTIME
+    observeScaledGlyph(object,x,y,text,*advance,pitch,originalGlyph);
+#endif
     if(drawNativeCoverage(object,x,y,text,advance,pixels,pitch))return 2;
     return originalGlyph(object,x,y,text,advance,pixels,pitch);
 }
@@ -99,6 +105,9 @@ int __fastcall measureHook(void* object,void*,const char* text) {
     return originalMeasure(object,text);
 }
 int __fastcall textHook(void* object,void*,const char* text,unsigned* pixels,int pitch) {
+#ifdef SCALED_FONT_RUNTIME
+    beginScaledText(object,pitch);
+#endif
     std::string translated;
     try {if(translateNativeLabel(text,translated))return originalText(object,translated.c_str(),pixels,pitch);} catch (...) {}
     return originalText(object,text,pixels,pitch);
