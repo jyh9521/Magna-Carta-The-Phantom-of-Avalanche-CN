@@ -63,5 +63,3 @@ int main(){
  VirtualFree(allocation,0,MEM_RELEASE);
  printf("RIGID_MOTION PASS remainders=33 body_part_phase=equal pose_world_restore=exact seh=restored slots_rollback=exact game_started=false\n");return 0;
 }
-
-
