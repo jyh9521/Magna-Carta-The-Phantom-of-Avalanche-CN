@@ -27,10 +27,13 @@ using CreateWindowFn=decltype(&CreateWindowExA);
 using GetCursorFn=decltype(&GetCursorPos);
 using SetCursorFn=decltype(&SetCursorPos);
 using OffsetFn=decltype(&OffsetRect);
+using ClientRectFn=decltype(&GetClientRect);
 CreateWindowFn originalCreateWindow=nullptr;
 GetCursorFn originalGetCursor=nullptr;
 SetCursorFn originalSetCursor=nullptr;
 OffsetFn originalOffset=nullptr;
+ClientRectFn originalClientRect=nullptr;
+ULONG_PTR allocationCaller=0;
 HWND sizedWindow=nullptr;
 int requestedWidth=0,requestedHeight=0,logicalWidth=0,logicalHeight=0;
 ULONG_PTR presentCaller=0;
@@ -73,9 +76,21 @@ HWND WINAPI sizedCreateWindow(DWORD ex,LPCSTR cls,LPCSTR title,DWORD style,int x
  }
  return window;
 }
+BOOL WINAPI logicalClientRect(HWND window,LPRECT rect){
+ BOOL result=originalClientRect(window,rect);
+ // Only the native backbuffer allocation call, not other driver/Win32 consumers.
+ if(result&&rect&&window==sizedWindow&&logicalWidth>0&&logicalHeight>0&&reinterpret_cast<ULONG_PTR>(_ReturnAddress())==allocationCaller){
+  static bool reported=false;
+  if(windowTrace&&!reported){wchar_t line[160]{};swprintf_s(line,L"WINDOW_BACKBUFFER_SIZE logical=%dx%d physical=%ldx%ld",logicalWidth,logicalHeight,rect->right,rect->bottom);windowTrace(line);reported=true;}
+  *rect={0,0,logicalWidth,logicalHeight};
+ }
+ return result;
+}
 BOOL dispatchOffset(LPRECT rect,int x,int y,ULONG_PTR caller){
  POINT origin{};RECT client{};
  if(rect&&caller==presentCaller&&windowCoordinates(origin,client)){
+  static bool reported=false;
+  if(windowTrace&&!reported){wchar_t line[160]{};swprintf_s(line,L"WINDOW_PRESENT_SIZE source=%ldx%ld destination=%ldx%ld",rect->right-rect->left,rect->bottom-rect->top,client.right,client.bottom);windowTrace(line);reported=true;}
   rect->right=rect->left+client.right;rect->bottom=rect->top+client.bottom;
  }
  return originalOffset(rect,x,y);
@@ -117,9 +132,15 @@ bool installWindowSizing(BYTE* image,size_t available,int width,int height,void(
 bool installWindowPresentation(BYTE* image,size_t available){
  if(!imageHeader(image,available,0x2c000))return false;
  if(image[0x31f7]!=0xff||image[0x31f8]!=0x15||*reinterpret_cast<DWORD*>(image+0x31f9)!=reinterpret_cast<DWORD>(image+0x1a55c))return false;
- DWORD original=reinterpret_cast<DWORD>(GetProcAddress(GetModuleHandleW(L"user32.dll"),"OffsetRect"));
- if(!replaceSlot(reinterpret_cast<DWORD*>(image+0x1a55c),original,reinterpret_cast<DWORD>(sizedOffset)))return false;
- originalOffset=reinterpret_cast<OffsetFn>(original);presentCaller=reinterpret_cast<ULONG_PTR>(image+0x31fd);return true;
+ if(image[0x2a4c]!=0xff||image[0x2a4d]!=0x15||*reinterpret_cast<DWORD*>(image+0x2a4e)!=reinterpret_cast<DWORD>(image+0x1a560))return false;
+ const DWORD offsets[]={0x1a55c,0x1a560};
+ const char* names[]={"OffsetRect","GetClientRect"};
+ const DWORD hooks[]={reinterpret_cast<DWORD>(sizedOffset),reinterpret_cast<DWORD>(logicalClientRect)};
+ DWORD originals[2]{},previous[2]{};
+ for(int i=0;i<2;++i){originals[i]=reinterpret_cast<DWORD>(GetProcAddress(GetModuleHandleW(L"user32.dll"),names[i]));previous[i]=*reinterpret_cast<DWORD*>(image+offsets[i]);if(!originals[i]||(previous[i]!=originals[i]&&previous[i]!=hooks[i]))return false;}
+ for(int i=0;i<2;++i)if(!replaceSlot(reinterpret_cast<DWORD*>(image+offsets[i]),previous[i],hooks[i])){for(int j=i-1;j>=0;--j)replaceSlot(reinterpret_cast<DWORD*>(image+offsets[j]),hooks[j],previous[j]);return false;}
+ originalOffset=reinterpret_cast<OffsetFn>(originals[0]);originalClientRect=reinterpret_cast<ClientRectFn>(originals[1]);
+ presentCaller=reinterpret_cast<ULONG_PTR>(image+0x31fd);allocationCaller=reinterpret_cast<ULONG_PTR>(image+0x2a52);return true;
 }
 #ifdef WINDOW_SIZE_TEST
 void configureWindowApisFixture(CreateWindowFn create,GetCursorFn get,SetCursorFn set){originalCreateWindow=create;originalGetCursor=get;originalSetCursor=set;}

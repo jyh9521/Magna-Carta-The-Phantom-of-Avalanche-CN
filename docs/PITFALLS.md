@@ -224,3 +224,11 @@ MCAlpha has separate skin (3b0c0) and rigid (3d12f) animated renderers. Interpol
 ## A second renderer hook is not mixed-part world synchronization
 
 The player still observed moving eyes after the rigid-renderer candidate. The actual log did not show that renderer hook, but showed many non-rigid model-world bypasses. A rigid-only model-world gate can mix latest native placement with delayed local pose even when both objects use the same skin renderer. Test scaled/reflected model worlds without widening camera admission; keep observed callback counts separate from unobserved eye model identity.
+
+## 窗口客户区放大不等于完整画面缩放（2026-10-19）
+
+窗口创建之后、渲染设备初始化之前放大客户区，会改变驱动依据GetClientRect分配的后台面。
+本作仍只绘制原逻辑尺寸，后台面其余区域为黑色。单测只检查窗口尺寸、目标矩形与鼠标往返时，
+此错误仍会通过。须同时约束后台面分配大小和呈现目标，且通过受控真实调用点验证。
+仅直接调用返回地址适配辅助函数，既没有覆盖实际调用链，也没有覆盖渲染资源的分配阶段。
+GDI PrintWindow返回成功也不保证捕获到DirectDraw画面；空白/纯白位图不计为游戏画面证据。

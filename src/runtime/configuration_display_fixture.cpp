@@ -81,13 +81,45 @@ int main(){try{
  }
  check(!IsWindowVisible(ownedWindow));DestroyWindow(ownedWindow);ownedWindow=nullptr;configureWindowSizeFixture(nullptr,0,0,0);
  VirtualFree(e,0,MEM_RELEASE);
- auto driver=static_cast<BYTE*>(VirtualAlloc(nullptr,0x2c000,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE));check(driver!=nullptr);
+ auto driver=static_cast<BYTE*>(VirtualAlloc(nullptr,0x2c000,MEM_COMMIT|MEM_RESERVE,PAGE_EXECUTE_READWRITE));check(driver!=nullptr);
  auto dd=reinterpret_cast<IMAGE_DOS_HEADER*>(driver);dd->e_magic=IMAGE_DOS_SIGNATURE;dd->e_lfanew=0x100;
  auto dn=reinterpret_cast<IMAGE_NT_HEADERS32*>(driver+0x100);dn->Signature=IMAGE_NT_SIGNATURE;dn->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;dn->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;dn->OptionalHeader.SizeOfImage=0x2c000;
  driver[0x31f7]=0xff;driver[0x31f8]=0x15;*reinterpret_cast<DWORD*>(driver+0x31f9)=reinterpret_cast<DWORD>(driver+0x1a55c);
+ driver[0x2a4c]=0xff;driver[0x2a4d]=0x15;*reinterpret_cast<DWORD*>(driver+0x2a4e)=reinterpret_cast<DWORD>(driver+0x1a560);
+ *reinterpret_cast<DWORD*>(driver+0x1a560)=reinterpret_cast<DWORD>(&GetClientRect);
  auto offset=reinterpret_cast<DWORD*>(driver+0x1a55c);*offset=reinterpret_cast<DWORD>(&OffsetRect);
  driver[0x31f7]^=1;check(!installWindowPresentation(driver,0x2c000));check(*offset==reinterpret_cast<DWORD>(&OffsetRect));driver[0x31f7]^=1;
+ *reinterpret_cast<DWORD*>(driver+0x1a560)=0;check(!installWindowPresentation(driver,0x2c000));check(*offset==reinterpret_cast<DWORD>(&OffsetRect));*reinterpret_cast<DWORD*>(driver+0x1a560)=reinterpret_cast<DWORD>(&GetClientRect);
+ driver[0x2a4c]^=1;check(!installWindowPresentation(driver,0x2c000));check(*offset==reinterpret_cast<DWORD>(&OffsetRect));driver[0x2a4c]^=1;
  check(installWindowPresentation(driver,0x2c000));check(installWindowPresentation(driver,0x2c000));check(*offset!=reinterpret_cast<DWORD>(&OffsetRect));
+
+ // Actual x86 imported call at RVA 31f7; test the return-address-sensitive production wrapper.
+ BYTE prefix[]={0x55,0x8b,0xec,0xff,0x75,0x10,0xff,0x75,0x0c,0xff,0x75,0x08};memcpy(driver+0x31eb,prefix,sizeof(prefix));
+ BYTE suffix[]={0xc9,0xc2,0x0c,0};memcpy(driver+0x31fd,suffix,sizeof(suffix));FlushInstructionCache(GetCurrentProcess(),driver,0x2c000);
+ HWND routeWindow=CreateWindowExW(0,L"STATIC",L"hidden present route",WS_POPUP,0,0,1280,720,nullptr,nullptr,nullptr,nullptr);check(routeWindow!=nullptr);
+ configureWindowSizeFixture(routeWindow,640,480,reinterpret_cast<ULONG_PTR>(driver+0x31fd));
+ BYTE initPrefix[]={0x55,0x8b,0xec,0xff,0x75,0x0c,0xff,0x75,0x08};memcpy(driver+0x2a43,initPrefix,sizeof(initPrefix));
+ BYTE initSuffix[]={0xc9,0xc2,0x08,0};memcpy(driver+0x2a52,initSuffix,sizeof(initSuffix));FlushInstructionCache(GetCurrentProcess(),driver,0x2c000);
+ RECT backbuffer{};auto initRoute=reinterpret_cast<decltype(&GetClientRect)>(driver+0x2a43);check(initRoute(routeWindow,&backbuffer)!=FALSE);
+ std::cout<<"BACKBUFFER_ROUTE observed="<<backbuffer.right<<"x"<<backbuffer.bottom<<" expected=640x480"<<std::endl;
+ check(backbuffer.right==640&&backbuffer.bottom==480);
+ RECT presented{0,0,640,480};auto route=reinterpret_cast<decltype(&OffsetRect)>(driver+0x31eb);check(route(&presented,0,0)!=FALSE);
+ std::cout<<"PRESENT_ROUTE observed="<<presented.right<<"x"<<presented.bottom<<" expected=1280x720"<<std::endl;
+ check(presented.right==1280&&presented.bottom==720);
+ RECT ordinary{};auto ordinaryGet=reinterpret_cast<decltype(&GetClientRect)>(*reinterpret_cast<DWORD*>(driver+0x1a560));check(ordinaryGet(routeWindow,&ordinary)!=FALSE);check(ordinary.right==1280&&ordinary.bottom==720);
+ // Raster replay: engine paints only 640x480. Oversized allocation includes black padding.
+ // Use the allocation and destination returned by the real installed x86 call sites.
+ BITMAPINFO bi{};bi.bmiHeader.biSize=sizeof(BITMAPINFOHEADER);bi.bmiHeader.biWidth=backbuffer.right;bi.bmiHeader.biHeight=-backbuffer.bottom;bi.bmiHeader.biPlanes=1;bi.bmiHeader.biBitCount=32;
+ void* sourcePixels=nullptr;HDC sourceDC=CreateCompatibleDC(nullptr);check(sourceDC!=nullptr);
+ HBITMAP sourceBitmap=CreateDIBSection(sourceDC,&bi,DIB_RGB_COLORS,&sourcePixels,nullptr,0);check(sourceBitmap!=nullptr);auto oldSource=SelectObject(sourceDC,sourceBitmap);
+ auto sourceData=static_cast<DWORD*>(sourcePixels);for(int y=0;y<backbuffer.bottom;++y)for(int x=0;x<backbuffer.right;++x)sourceData[y*backbuffer.right+x]=(x<640&&y<480)?0x00345878:0;
+ bi.bmiHeader.biWidth=presented.right;bi.bmiHeader.biHeight=-presented.bottom;void* destinationPixels=nullptr;HDC destinationDC=CreateCompatibleDC(nullptr);check(destinationDC!=nullptr);
+ HBITMAP destinationBitmap=CreateDIBSection(destinationDC,&bi,DIB_RGB_COLORS,&destinationPixels,nullptr,0);check(destinationBitmap!=nullptr);auto oldDestination=SelectObject(destinationDC,destinationBitmap);
+ check(StretchBlt(destinationDC,0,0,presented.right,presented.bottom,sourceDC,0,0,backbuffer.right,backbuffer.bottom,SRCCOPY)!=FALSE);GdiFlush();
+ unsigned black=0;auto destinationData=static_cast<DWORD*>(destinationPixels);for(int i=0;i<presented.right*presented.bottom;++i)if(!(destinationData[i]&0xffffff))++black;
+ check(black==0);std::cout<<"WINDOW_RASTER_FILL PASS black_padding_pixels="<<black<<" source="<<backbuffer.right<<"x"<<backbuffer.bottom<<" destination="<<presented.right<<"x"<<presented.bottom<<" replay=owned_gdi"<<std::endl;
+ SelectObject(sourceDC,oldSource);SelectObject(destinationDC,oldDestination);DeleteObject(sourceBitmap);DeleteObject(destinationBitmap);DeleteDC(sourceDC);DeleteDC(destinationDC);
+ DestroyWindow(routeWindow);configureWindowSizeFixture(nullptr,0,0,0);
  VirtualFree(driver,0,MEM_RELEASE);
 
  std::cout<<"WINDOW_SIZE_FIXTURE PASS sizes=5 client=16:9 work_area=fit destination=scaled mouse=roundtrip unrelated=unchanged visible=false"<<std::endl;
