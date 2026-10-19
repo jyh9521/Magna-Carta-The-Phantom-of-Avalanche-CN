@@ -249,3 +249,13 @@ ID must leave no device binding is not proof of an access violation. Original, c
 and exact rollback each completed200 real COM/native Bind/Delete cycles. Preserve this
 negative result; do not promote optional unbinding as a proven scene-crash fix.
 See SCENE_TRANSITION_INVESTIGATION.md.
+
+## Generic node ancestry does not guarantee spatial layout
+
+The source-locked GUI root is allocated0x54 bytes, but spatial transform38afb
+reads any non-null parent's +f4/+100 fields. A retained startup exception binds
+that root to the exact failing read. This is layout confusion, not evidence that
+the root was released. SEH dialog snapshots capture later heap state; keep
+recovered registers and MemoryInfo snapshot timing distinct. A startup cursor
+construction fault and its offline replay do not prove a scene-transition crash.
+See SCENE_TRANSITION_INVESTIGATION.md. Never launch a game from an offline audit.

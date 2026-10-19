@@ -5,7 +5,8 @@
 **根因仍未确定，未交付新的场景崩溃修复。** 本轮不把未经验证的解绑候选、
 固定延迟或异常吞掉逻辑整合进正常启动，也不把重打包当作修复。
 现有正常Play/Configure、楼梯高度修正、8份旧模块、baseline及统一测试包保持原字节。
-没有新增玩家入口，没有启动商业游戏，没有要求玩家提前游玩或准备存档。
+没有新增玩家入口。此前“未启动游戏”仅描述首轮资源调查；后续诊断会话曾产生启动异常转储。
+用户随后明确禁止擅自启动游戏；本次续查仅离线读取既有文件，不启动游戏、不操作游戏窗口。
 
 ## 输入与报告范围
 
@@ -95,3 +96,69 @@ REA Evidence：
 - 场景清理：ev_6440612b7a38a80381aa04f212ea9acfda7cad3cff2d60c4310dc96b51cd28a9
 - 地图获取：ev_853908adb72024fceacb7e899f3047a567d5e8f35c77bdb56aa874f4875d0b18
 - 资源worker：ev_37ab928f44862a90a935f346acfdea74af305ee81c93e93256678e31d59254a6
+
+## 既有启动转储的离线续查：确定的GUI父节点类型越界
+
+### Verified：异常归属，不计作换区复现
+
+既有转储 `engine-27520-20162859.dmp` 的SHA256为
+`ad9d1520fbfa76fbac0c602529353bd8ac09635609d819d52b3232fe0c9797d0`。
+没有ExceptionStream；从异常线程栈恢复的记录为MCAlpha+1e94f读取0xbaf024。
+返回链为38b6c→38c38→38595→482a1→5ffbe→5fbcc→101f→10ee。
+5ff4b由5f7a7初始化调用，创建鼠标光标GUI节点并设置g_pMouseCursor；
+因此这份既有真实异常属于**启动光标节点构造**，不是实际Field/地图切换崩溃。
+另一既有进程退出0的记录也未记录一次实际换区，不据此声称全流程通过。
+
+### Verified：直接根因是布局混用，不是纹理释放
+
+- 0b8df为全局根节点申请0x54字节，调用8990构造，存入MCAlpha+f220c。
+- 8990设置vtable=MCAlpha+bd604、节点类型2、parent=0；这是通用节点，不含空间变换字段。
+- 5ff4b将该全局根节点作为48250的parent；384b0构造空间节点并经38c24更新变换。
+- 38afb对任何非空parent都读parent+f4的位置和+100/+104/+108的缩放，没有核对parent是否为空间节点。
+- 0x54字节的通用根节点没有这些字段。既有记录中root=0xbaef30，root+f4正是故障地址0xbaf024。
+- 快照MemoryInfo将0xbaf000页记为MEM_RESERVE/protect0；这是**采集时**页状态，不冒充独立观察的故障时刻页状态。
+
+这确定了该启动异常的类型/布局越界路径。根节点本身无需已释放，就会发生越界读；
+不能根据SEH展开后的子节点堆内容推断为纹理UAF或确定释放历史。
+同一辅助函数被其他GUI节点共用，但这还不证明用户关注的实际换区异常就是这一原因。
+
+### 离线原生指令重放与仅限模拟器的修正提案
+
+`tools/replay_native_gui_parent.py`在Unicorn中运行锁定引擎的38afb和1e940原始指令。
+用自有节点布局重现上述地址边界，两个虚通知使用明确RET桩，不启动或加载游戏DLL。
+原始路径在同一1e94f指令读同一0xbaf024失败；提案只对“parent等于全局根指针、
+原vtable bd604、type2、parent0”跳过不存在的父空间字段，保留子节点parent、
+本地平移/缩放以及两个原虚通知。普通空间父节点和空父节点与原始结果完全一致。
+撤回模拟器内6字节分支后，同一原始故障恢复。
+
+```powershell
+$env:PYTHONPATH='runtime/dependencies;tools;tests'
+python tools/audit_scene_crash_evidence.py --dump LOCAL_RETAINED_DUMP --engine runtime/data/MCAlpha.dll --report build/NEW-attribution.json
+python tools/replay_native_gui_parent.py --sample runtime/data/MCAlpha.dll --report build/NEW-replay.json
+python -m unittest test_inspect_minidump test_gui_parent_replay test_scene_crash_evidence
+```
+
+`--mode baseline`预期exit1（原越界）；`--mode proposal`预期exit0；`--mode rollback`预期exit1，
+表示模拟器内精确恢复原行为。默认verify模式核验三者及普通父节点对照后exit0。
+报告始终标记 `scene_transition_verified=false` 和 `proposal_deployed=false`。
+提案未写入运行模块/游戏磁盘文件，未合入正常启动或统一包，也不是游戏内修复验收。
+
+31项纯离线检查通过。通用minidump读取器新增严格边界的MemoryInfo查询，并明确结果属于快照时刻；
+错误步长、巨大数量、空区域、重叠区域、未知引擎及错误调用链均拒绝或保留为未知。
+本轮只解析既有转储、反编译文件及执行指令模拟/自有单元测试，无游戏启动、DLL原生加载或桌面输入。
+正常入口、楼梯模块、配置、存档及现有统一ZIP均保持原字节。
+
+离线续查REA Evidence：
+- 光标初始化：ev_c6332711fa59921f7f2b0810d877be71c9efb3f375fa1f7699b6f72f9540ffa5
+- 空间基类构造：ev_76c221ffc21aabc03d67b5f85cdfae9dff25b2becc2f6f2606bfb91e865c8ccc
+- 变换继承：ev_65de3aceccdc5779d6a6619e3486638b2023f4c3679a3b22a21aae6467dc4a32
+- 通用根构造：ev_2a21ba9cfdcd973719fd78b62d99980c71ef35565fac46fa2c08f4a85143b2f3
+- 全局根分配：ev_c70960b0e19264530ef39ec00d45723e8e893b8ca187887c49edf612fbe7264e
+
+### 有界的既有现场检索
+
+本次仅只读检查LOCALAPPDATA/CrashDumps中MagnaCarta命名转储，以及系统WER的
+ReportArchive/ReportQueue中MagnaCarta命名报告目录；这些位置未返回新的目标转储。
+Application日志按EventID1000和AppName=MagnaCarta.exe过滤，最多30条，仅返回历史PID79424的
+系统ddraw次生异常，与既有CRASH_ANALYSIS记录一致。该检索受日志保留和路径范围限制，
+不等于证明机器从未发生换区崩溃。当前仍没有把具体Field切换与首异常绑定的现场。

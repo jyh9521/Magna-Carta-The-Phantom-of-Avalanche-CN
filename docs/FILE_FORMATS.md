@@ -101,3 +101,13 @@ The bounded reader explicitly accepts 1.300000 and 1.400000 headers with actual 
 ## Field static prefix (2026-10-15)
 
 The source-locked read-only prefix reader distinguishes file strides from runtime object strides, preserves unknown script tails and the map -1 sentinel, and never rewrites labels. Field offset0 maps to FieldInfo+4/scene+10d0 (WRD ID); offset8 is the PlayBook ID. Detailed native read evidence and bounded coverage are in FIELD_STATIC_PREFIX.md. This is not a full FLD decoder or navigation graph.
+
+## Minidump MemoryInfoList (offline snapshot query)
+
+Stream16 has a16-byte minimum header: uint32 header size, uint32 entry stride,
+uint64 count. Each entry is at least48 bytes: uint64 base/allocation base,
+uint32 allocation protection,4-byte padding, uint64 region size, uint32 state,
+protection and type,4-byte padding. Validate header+stride*count within the stream,
+64-bit region bounds and unambiguous address coverage. An absent stream or uncovered
+address is unknown, not proof of free memory; region state describes capture time.
+`Dump.memory_region` never queries or attaches to a live process.

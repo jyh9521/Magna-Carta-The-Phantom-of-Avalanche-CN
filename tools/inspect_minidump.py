@@ -75,6 +75,30 @@ class Dump:
                 return self.take(at + address - base, size)
         raise ValueError('Address not captured')
 
+    def memory_region(self, address):
+        """Read snapshot-time MEMORY_INFO; never equate it with fault-time state."""
+        if not isinstance(address, int) or isinstance(address, bool) or not 0 <= address < 2**64:
+            raise ValueError('Invalid memory-info address')
+        if 16 not in self.streams:
+            return None
+        at, size = self.stream(16, 16)
+        header, stride, count = self.unpack('<IIQ', at)
+        if header < 16 or stride < 48 or header > size or header + stride * count > size:
+            raise ValueError('Malformed memory-info list')
+        match = None
+        for i in range(count):
+            base, allocation, allocation_protect, length, state, protect, kind = self.unpack(
+                '<QQI4xQIII4x', at + header + stride * i)
+            if not length or base + length > 2**64:
+                raise ValueError('Invalid memory-info region')
+            if base <= address < base + length:
+                if match is not None:
+                    raise ValueError('Ambiguous memory-info regions')
+                match = dict(base=hex(base), size=hex(length), allocation_base=hex(allocation),
+                             allocation_protect=hex(allocation_protect), state=hex(state),
+                             protect=hex(protect), type=hex(kind), timing='snapshot_only')
+        return match
+
     def location(self, address):
         for module in self.modules:
             if module['base'] <= address < module['base'] + module['size']:
