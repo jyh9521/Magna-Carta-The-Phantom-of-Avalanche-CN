@@ -33,9 +33,12 @@ class TransformTrack {
     Phase stamp_{};
     TransformObservation observation_{};
     Matrix previous_{},current_{};
+    Matrix sampleImpl(const Matrix&,Phase,bool camera,bool affine);
 public:
     void reset() { initialized_=false; observation_={}; }
     const TransformObservation& observation() const {return observation_;}
     Matrix sample(const Matrix&,Phase,bool camera=false);
+    // Models may carry scale/reflection; camera admission remains rigid-only.
+    Matrix sampleAffine(const Matrix&,Phase);
 };
 }

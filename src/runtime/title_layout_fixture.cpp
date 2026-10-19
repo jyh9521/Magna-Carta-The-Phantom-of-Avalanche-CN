@@ -46,6 +46,13 @@ int main(int argc,char** argv){try{
   if(openingRollback){bool restored=tileX==0.f&&tileY==0.f&&tileZ==7.f;std::cout<<"OPENING_ROLLBACK "<<(restored?"PASS":"FAIL")<<" original_child=0,0,7 restored=true\n";return restored?0:1;}
   return centered?0:1;
  }
+ if(argc==2&&!strcmp(argv[1],"--opening-grid")){
+  for(int id:{236,237})for(int y=0;y<=(id==237?512:256);y+=256)for(int x=0;x<=(id==237?768:512);x+=256){
+   tile(static_cast<float>(x),static_cast<float>(y),id,7.f);
+   std::cout<<"OPENING_TILE "<<id<<" "<<x<<" "<<y<<" "<<tileX<<" "<<tileY<<" "<<tileZ<<"\n";
+  }
+  return 0;
+ }
  for(int id:{209,210})for(float x:{0.f,256.f,512.f}){tile(x,240.f,id,7.f);check(tileX==x+107.f&&tileY==240.f&&tileZ==7.f);}
  tile(17.f,31.f,208,9.f);check(tileX==17.f&&tileY==31.f&&tileZ==9.f);
  // Same final setter as production. Logical center maps to physical center
@@ -54,6 +61,7 @@ int main(int argc,char** argv){try{
  for(int canvas:{640,800,853,1067,1280})for(int height:{480,600,720}){
   configureTitleLayoutFixture(800,canvas);configureOpeningHeightFixture(height);
   for(int id:{236,237})for(float x:{0.f,256.f,512.f,768.f}){
+   if(id==236&&x==768.f)continue; // FDI236 has only three actual columns.
    float inkX=id==237?319.f:383.5f,inkY=id==237?298.5f:229.f;
    tile(x,256.f,id,7.f);
    check(std::abs(tileX-x+inkX-canvas*.5f)<.001f);
@@ -64,6 +72,11 @@ int main(int argc,char** argv){try{
     check(std::abs(px-outputWidth*.5f)<.001f);
    }
   }
+ }
+ // Formerly offscreen bottom row contains a visible dark non-text remnant.
+ for(int canvas:{640,853,1067,1280})for(int height:{480,600,720}){
+  configureTitleLayoutFixture(800,canvas);configureOpeningHeightFixture(height);
+  for(float x:{0.f,256.f,512.f,768.f}){tile(x,512.f,237,7.f);check(tileX>=canvas&&tileY>=height&&tileZ==7.f);}
  }
  configureTitleLayoutFixture(640,853);configureOpeningHeightFixture(600);
 #else

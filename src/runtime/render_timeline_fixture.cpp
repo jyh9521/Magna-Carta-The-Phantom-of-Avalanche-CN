@@ -109,5 +109,26 @@ int main(){
  probePhase.tick=5;probeInput.v[12]=300;probe.sample(probeInput,probePhase);require(probe.observation().cut,"large movement reports guarded camera or actor cut");
  probeInput.v[0]=0;probe.sample(probeInput,probePhase);require(probe.observation().unsupported,"nonrigid transform observation remains bypassed");
  probe.reset();probeInput=identity();probe.sample(probeInput,probePhase);require(probe.observation().initial,"explicit reset reinitializes observation without stale counts");
+ // Affine model-world transforms must use the same phase as local bones.
+ // The old public sample/camera path deliberately retains its rigid gate.
+ for(float reflection:{1.f,-1.f}){
+  TransformTrack model;Phase modelPhase{0,400,0,true};
+  auto modelFirst=identity(0);modelFirst.v[0]=.5f*reflection;modelFirst.v[5]=.25f;modelFirst.v[10]=2;modelFirst.v[4]=.1f;
+  auto modelNext=multiply(quarter,modelFirst);modelNext.v[12]=20;
+  require(!rigid(modelFirst)&&poseInterpolatable(modelFirst),"scaled model input uses formerly skipped branch");
+  model.sampleAffine(modelFirst,modelPhase);modelPhase.tick=1;
+  auto nativeCopy=modelNext;
+  for(unsigned remainder=0;remainder<33;++remainder){
+   modelPhase.alpha=float(remainder)/33;auto displayed=model.sampleAffine(modelNext,modelPhase);
+   require(std::abs(displayed.v[12]-20*modelPhase.alpha)<.00001f,"scaled reflected model world shares native bone display phase");
+   for(int i=0;i<3;++i)for(int j=0;j<3;++j)require(std::abs(gram(displayed,i,j)-gram(modelFirst,i,j))<.00001f,"model world smoothing preserves scale shear and reflection metric");
+   require(!model.observation().unsupported&&!model.observation().reset,"stable affine model does not skip or repeatedly reset");
+   require(!memcmp(&nativeCopy,&modelNext,sizeof(modelNext)),"affine model source remains byte exact");
+  }
+  auto singular=modelNext;singular.v[0]=singular.v[1]=singular.v[2]=0;
+  auto rejected=model.sampleAffine(singular,modelPhase);require(!memcmp(&rejected,&singular,sizeof(singular))&&model.observation().unsupported,"singular model remains native bypass");
+  TransformTrack strictCamera;auto cameraBypass=strictCamera.sample(modelNext,modelPhase,true);
+  require(!memcmp(&cameraBypass,&modelNext,sizeof(modelNext))&&strictCamera.observation().unsupported,"affine model support must not widen camera admission");
+ }
  std::printf("RENDER_TIMELINE_FIXTURE PASS checks=%d world=true rotation=true camera=true phase=engine_remainder logic_events=unchanged game_started=false\n",checks);
 }

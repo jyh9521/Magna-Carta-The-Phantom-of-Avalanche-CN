@@ -252,17 +252,17 @@ unsigned clipLength=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+4),s
  for(unsigned i=0;i<count;++i)blend(c.previous[i],c.current[i],alpha,interpolated[i]);
  Matrix interpolatedWorld{};bool worldValid=false;
  auto world=reinterpret_cast<Matrix*>(object+0xc);
- if(complete&&!active->hasParent&&motion::rigid(*world)){
+ if(complete&&!active->hasParent&&motion::poseInterpolatable(*world)){
   // Original Render(NULL parent) copies local +4c into +c. No view matrix
   // exists in this value: camera removal would corrupt both draw and restore.
-  interpolatedWorld=c.localWorld.sample(*world,phase);
+  interpolatedWorld=c.localWorld.sampleAffine(*world,phase);
   if(trace&&diagnostics.enabled())diagnostics.transform(false,c.localWorld.observation());
   active->world=world;active->baselineWorld=*world;worldValid=true;
- }else if(complete&&active->hasParent&&motion::rigid(*world)){
+ }else if(complete&&active->hasParent&&motion::poseInterpolatable(*world)){
   // MCAlpha registers parent * local before the camera is applied to ASRRender.
   // Queued +c is world-space even with a non-NULL parent. Removing a camera
   // here changes the input within a held tick and corrupts exact restoration.
-  interpolatedWorld=c.world.sample(*world,phase);
+  interpolatedWorld=c.world.sampleAffine(*world,phase);
   if(trace&&diagnostics.enabled())diagnostics.transform(false,c.world.observation());
   active->world=world;active->baselineWorld=*world;worldValid=true;
  }
@@ -273,7 +273,10 @@ unsigned clipLength=*reinterpret_cast<unsigned*>(static_cast<BYTE*>(action)+4),s
  active->baseline.resize(count);originalAbsolute(bones,root,poses,parent);memcpy(active->baseline.data(),poses,count*sizeof(Matrix));active->pose=poses;
  memcpy(poses,interpolated.data(),count*sizeof(Matrix));originalAbsolute(bones,root,poses,parent);
  if(worldValid)*world=interpolatedWorld;
- static LONG localChanges=0,composedChanges=0,rigidChanges=0;
+ static LONG localChanges=0,composedChanges=0,rigidChanges=0,affineChanges=0;
+ if(worldValid&&!motion::rigid(active->baselineWorld)&&InterlockedIncrement(&affineChanges)==1&&trace){
+  wchar_t line[256];swprintf_s(line,L"MOTION60_AFFINE_WORLD_APPLIED bones=%u phase=shared native_scale_reflection=preserved restore=exact",count);trace(line);
+ }
  if(active->rigidModel&&InterlockedIncrement(&rigidChanges)==1&&trace)trace(L"MOTION60_RIGID_APPLIED renderer_rva=3d12f phase=shared pose_world_restore=exact");
  if(worldValid&&InterlockedIncrement(active->hasParent?&composedChanges:&localChanges)==1&&trace)
   trace(active->hasParent?L"MOTION60_WORLD_APPLIED source_space=queued_world parent=non_null camera_conversion=false restore=exact_world":L"MOTION60_WORLD_APPLIED source_space=local parent=null camera_conversion=false restore=exact_local");

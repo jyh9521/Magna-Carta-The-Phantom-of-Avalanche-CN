@@ -12,13 +12,14 @@ from PIL import Image
 from resource_image import parse
 
 
-def audit(source, layout, threshold=160):
+def read_tiles(source, layout):
+    """Read actual FDI children, including source pixels outside the old viewport."""
     fdi = source / 'FrameData' / f'{layout:04d}.fdi'
     data = fdi.read_bytes()
     if len(data) != 787 or data[:8] != bytes.fromhex('ba00000001000000'):
         raise ValueError('unsupported FDI layout')
-    canvas = Image.new('RGB', (1024, 768))
     digests = {str(fdi.relative_to(source)): hashlib.sha256(data).hexdigest()}
+    tiles = []
     for index in range(15):
         tile = data[157 + index * 42:157 + (index + 1) * 42]
         if tile[0] == 0:
@@ -32,7 +33,16 @@ def audit(source, layout, threshold=160):
         image = parse(raw)
         if (image.width, image.height) != (256, 256):
             raise ValueError('unsupported BGR tile dimensions')
-        canvas.paste(Image.frombytes('RGBA', (256, 256), image.rgba()).convert('RGB'), (x, y))
+        pixels = Image.frombytes('RGBA', (256, 256), image.rgba()).convert('RGB')
+        tiles.append((index, resource, x, y, pixels))
+    return tiles, digests
+
+
+def audit(source, layout, threshold=160):
+    canvas = Image.new('RGB', (1024, 768))
+    tiles, digests = read_tiles(source, layout)
+    for _, _, x, y, pixels in tiles:
+        canvas.paste(pixels, (x, y))
     box = canvas.convert('L').point(lambda pixel: 255 if pixel > threshold else 0).getbbox()
     if not box:
         raise ValueError('opening has no bright ink')

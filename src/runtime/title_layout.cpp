@@ -6,7 +6,7 @@
 #include "title_texture.h"
 #endif
 namespace {
-struct OpeningLayoutEntry{int layout;float inkCenterX,inkCenterY;};
+struct OpeningLayoutEntry{int layout;float inkCenterX,inkCenterY;int sourceLeft,sourceTop,sourceRight,sourceBottom;};
 #ifdef OPENING_LAYOUT_DATA_HEADER
 #include OPENING_LAYOUT_DATA_HEADER
 #else
@@ -60,7 +60,8 @@ __declspec(naked) void buttonPoint(){__asm {
 // not the container's constructor point, feeds the BGR render transform.
 void __cdecl centerTile(int id,float* position,void* node){
  // Locale-specific ink bounds come only from verified generated metadata.
- // Translate every child equally; retain seams, depth, fade and glyph scale.
+ // Translate body tiles equally; retain seams, depth, fade and glyph scale.
+ // Source-locked off-body tiles remain outside the viewport after recentering.
  for(const auto& opening:openingLayouts)if(id==opening.layout){
 #ifdef TITLE_LAYOUT_TEST
   int canvas=fixtureCanvas,height=fixtureHeight;
@@ -70,6 +71,10 @@ void __cdecl centerTile(int id,float* position,void* node){
   int height=titleEngine?*reinterpret_cast<int*>(titleEngine+0xf1b4c):0;
 #endif
   if(canvas>0&&height>0){
+   if(position[0]<opening.sourceLeft||position[0]>=opening.sourceRight||
+      position[1]<opening.sourceTop||position[1]>=opening.sourceBottom){
+    position[0]=static_cast<float>(canvas+256);position[1]=static_cast<float>(height+256);return;
+   }
    position[0]+=canvas*0.5f-opening.inkCenterX;
    position[1]+=height*0.5f-opening.inkCenterY;
   }

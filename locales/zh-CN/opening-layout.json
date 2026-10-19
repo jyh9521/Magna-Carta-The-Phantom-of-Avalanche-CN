@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "locale": "zh-CN",
   "layouts": [
     {
@@ -23,7 +23,13 @@
         "BGR/0314.BGR": "bd91ea49d6aabf781d45a03d5dbe69952b655f53db7342129c7e00835466f7d7",
         "BGR/0315.BGR": "0530fc757e9297b8236206e9561bf9a7290e56c1330678259e2141c080e25a25",
         "BGR/0316.BGR": "e67f31022eda09501a74e0dd940d860693cd74db20fc8156489044b7f1e83895"
-      }
+      },
+      "source_tile_bounds": [
+        0,
+        0,
+        768,
+        512
+      ]
     },
     {
       "layout": 237,
@@ -52,7 +58,13 @@
         "BGR/0308.BGR": "09fe331c87fe654a5cdfdde21d17768b4713a6b6002ca97e3fa33cec41a440b5",
         "BGR/0309.BGR": "94286001538fb6f9e4608efa3b86ce12543a6a8b12ee7304ffe7c4270101557a",
         "BGR/0310.BGR": "343ef4a2a58f21a8d435b64990dfe8235cec00f7fb5f4f6cb088d0d6004b3d19"
-      }
+      },
+      "source_tile_bounds": [
+        0,
+        0,
+        1024,
+        512
+      ]
     }
   ]
 }

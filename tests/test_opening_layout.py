@@ -29,8 +29,9 @@ class OpeningLayoutTests(unittest.TestCase):
         row = audit(root, 42)
         row['sha256'] = {key.replace('\\', '/'): value for key, value in row['sha256'].items()}
         row['ink_xyxy'] = list(row['ink_xyxy'])
+        row['source_tile_bounds'] = [0, 0, 256, 256]
         metadata = root / 'metadata.json'
-        metadata.write_text(json.dumps({'schema': 1, 'locale': 'fixture', 'layouts': [row]}), encoding='utf8')
+        metadata.write_text(json.dumps({'schema': 2, 'locale': 'fixture', 'layouts': [row]}), encoding='utf8')
         return metadata, row
 
     def test_generated_header_uses_measured_center_and_is_reproducible(self):
@@ -40,9 +41,40 @@ class OpeningLayoutTests(unittest.TestCase):
             output = root / 'generated/layout.h'
             self.assertEqual(build(root, metadata, output), 1)
             original = output.read_bytes()
-            self.assertIn(b'{42, 128.0f, 128.0f}', original)
+            self.assertIn(b'{42, 128.0f, 128.0f, 0, 0, 256, 256}', original)
             build(root, metadata, output)
             self.assertEqual(output.read_bytes(), original)
+
+    def test_bounds_must_be_whole_tiles_and_preserve_bright_ink(self):
+        for bounds, error in [([0, 0, 255, 256], 'invalid source tile bounds'),
+                              ([256, 0, 512, 256], 'exclude opening ink')]:
+            with self.subTest(bounds=bounds), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                metadata, row = self.fixture(root)
+                row['source_tile_bounds'] = bounds
+                metadata.write_text(json.dumps({'schema': 2, 'layouts': [row]}), encoding='utf8')
+                with self.assertRaisesRegex(ValueError, error):
+                    build(root, metadata, root / 'layout.h')
+                self.assertFalse((root / 'layout.h').exists())
+
+    def test_dark_offscreen_tile_is_excluded_without_color_rewriting(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            metadata, row = self.fixture(root)
+            fdi = bytearray((root / 'FrameData/0042.fdi').read_bytes())
+            fdi[199] = 1
+            struct.pack_into('<iiiii', fdi, 201, 1, 0, 256, 3, 2)
+            (root / 'FrameData/0042.fdi').write_bytes(fdi)
+            raw = (root / 'BGR/0001.BGR').read_bytes()
+            dark = raw[:42] + bytes([20, 10, 5, 255]) * (256 * 256) + raw[-26:]
+            (root / 'BGR/0002.BGR').write_bytes(dark)
+            row = audit(root, 42)
+            row['sha256'] = {k.replace('\\', '/'): v for k, v in row['sha256'].items()}
+            row['ink_xyxy'] = list(row['ink_xyxy'])
+            row['source_tile_bounds'] = [0, 0, 256, 256]
+            metadata.write_text(json.dumps({'schema': 2, 'layouts': [row]}), encoding='utf8')
+            self.assertEqual(build(root, metadata, root / 'layout.h'), 1)
+            self.assertEqual((root / 'BGR/0002.BGR').read_bytes(), dark)
 
     def test_unknown_source_hash_rejected_without_writing_output(self):
         with tempfile.TemporaryDirectory() as folder:
@@ -61,7 +93,7 @@ class OpeningLayoutTests(unittest.TestCase):
             root = Path(folder)
             metadata, row = self.fixture(root)
             row['ink_center'][0] += 1
-            metadata.write_text(json.dumps({'schema': 1, 'layouts': [row]}), encoding='utf8')
+            metadata.write_text(json.dumps({'schema': 2, 'layouts': [row]}), encoding='utf8')
             output = root / 'layout.h'
             output.write_bytes(b'existing header')
             with self.assertRaisesRegex(ValueError, 'measured ink'):
@@ -73,7 +105,7 @@ class OpeningLayoutTests(unittest.TestCase):
             root = Path(folder)
             metadata, row = self.fixture(root)
             row['sha256'].pop('BGR/0001.BGR')
-            metadata.write_text(json.dumps({'schema': 1, 'layouts': [row]}), encoding='utf8')
+            metadata.write_text(json.dumps({'schema': 2, 'layouts': [row]}), encoding='utf8')
             with self.assertRaisesRegex(ValueError, 'measured ink'):
                 build(root, metadata, root / 'layout.h')
 

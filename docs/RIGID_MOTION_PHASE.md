@@ -42,3 +42,8 @@ python -m unittest discover -s tests -p test_rigid_motion_native.py
 使用原 `runtime/Play.cmd` 保留60帧，同存档行走/转身/停止，对照30帧；
 确认眼部、武器/附件和身体同步，再测试换区、动作切换与读档。
 自动回放不是实际游戏验收。
+
+## 本轮玩家复验：尚未解决眼球症状
+
+玩家仍报告移动眼球外突；实际日志无MOTION60_RIGID_APPLIED，世界变换旁路大量存在。
+不能把本页的双renderer合成回放当成本次眼球路径。后续修正见[AFFINE_MODEL_WORLD_REPAIR.md](AFFINE_MODEL_WORLD_REPAIR.md)。

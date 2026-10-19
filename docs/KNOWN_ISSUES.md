@@ -228,3 +228,9 @@ Xbox焦点收集已修正隐藏/禁用GUI子节点导致父按钮漏选的受控
 
 60帧移动眼部外突：已补齐另一刚性动画renderer的相位钩子并通过混合绘制回归，实际眼球模型归属及画面待复验，见RIGID_MOTION_PHASE.md。
 2880×1800开场文字偏移：已将两套实际FDI图块按当前画布中心定位，坐标回放通过，笔记本最终显示待复验，见OPENING_CENTER_REPAIR.md。
+
+## 2026-10-19 再次复验
+
+上一轮眼球修正未通过玩家验收；本轮补模型world缩放/反射旁路，仍待新模块实机确认。
+开场居中露出原画布外暗色底排：真实资源像素回放12163处残留降为0，文字像素保持不变。
+入口仍为runtime/Play.cmd，设置和存档不改；见AFFINE_MODEL_WORLD_REPAIR.md和OPENING_CENTER_REPAIR.md。

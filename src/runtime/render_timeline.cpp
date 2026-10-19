@@ -27,7 +27,7 @@ bool rigid(const Matrix& m){
 }
 // Scaled Newton polar decomposition, in double precision. A shared fixed
 // reflection factor handles negative parity outside this proper-rotation path.
-// Only the bone pose gate uses this; camera/world rigid admission is unchanged.
+// Bone poses and affine model-world tracks use this; camera admission stays rigid.
 static bool rotationPart(const Matrix& input,Matrix& rotation){
  for(float v:input.v)if(!std::isfinite(v))return false;
  if(std::abs(input.v[3])+std::abs(input.v[7])+std::abs(input.v[11])>=.001f||std::abs(input.v[15]-1)>=.001f)return false;
@@ -92,9 +92,12 @@ Matrix inverseRigid(const Matrix& m){
  for(int row=0;row<3;++row){double translation=0;for(int k=0;k<3;++k)translation-=double(o.v[k*4+row])*m.v[12+k];o.v[12+row]=float(translation);}
  return o;
 }
-Matrix TransformTrack::sample(const Matrix& input,Phase p,bool camera){
+Matrix TransformTrack::sample(const Matrix& input,Phase p,bool camera){return sampleImpl(input,p,camera,false);}
+Matrix TransformTrack::sampleAffine(const Matrix& input,Phase p){return sampleImpl(input,p,false,true);}
+Matrix TransformTrack::sampleImpl(const Matrix& input,Phase p,bool camera,bool affine){
  observation_={};
- if(!p.valid||!rigid(input)){reset();observation_.reset=true;observation_.phaseReset=!p.valid;observation_.unsupported=!rigid(input);return input;}
+ const bool supported=affine?poseInterpolatable(input):rigid(input);
+ if(!p.valid||!supported){reset();observation_.reset=true;observation_.phaseReset=!p.valid;observation_.unsupported=!supported;return input;}
  Matrix value=camera?inverseRigid(input):input;
  bool cut=false;if(initialized_){float distance=0;for(int k=12;k<15;++k){float d=value.v[k]-current_.v[k];distance+=d*d;}observation_.translationStep=std::sqrt(distance);cut=distance>256.f*256.f;
  if(camera){auto a=quaternion(current_),b=quaternion(value);cut=cut||std::abs(a.x*b.x+a.y*b.y+a.z*b.z+a.w*b.w)<.5f;}}

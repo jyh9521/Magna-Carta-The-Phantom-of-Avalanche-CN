@@ -13,3 +13,11 @@ class RigidMotionTests(unittest.TestCase):
         self.assertIn('body_part_phase=equal', result.stdout)
         self.assertIn('pose_world_restore=exact', result.stdout)
         self.assertIn('seh=restored slots_rollback=exact', result.stdout)
+
+    def test_scaled_and_reflected_skin_world_phase_matches_body(self):
+        for mode in ['--affine-skin', '--reflected-skin']:
+            with self.subTest(mode=mode):
+                result = subprocess.run([str(EXE), mode], capture_output=True, text=True, timeout=15)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertIn('AFFINE_WORLD PASS scaled_skin_part_phase=equal', result.stdout)
+                self.assertIn('native_scale=preserved pose_world_restore=exact', result.stdout)

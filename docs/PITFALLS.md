@@ -203,3 +203,7 @@ For supported MCAlpha cursor class be374, +18/38c24 prepares position/matrices; 
 ## Mixed animated renderers
 
 MCAlpha has separate skin (3b0c0) and rigid (3d12f) animated renderers. Interpolating only the former leaves mixed model parts a full tick apart. Do not reuse skin-only object+f0/f8 fields for the rigid layout; derive its stack-local sample from action/frame. See RIGID_MOTION_PHASE.md.
+
+## A second renderer hook is not mixed-part world synchronization
+
+The player still observed moving eyes after the rigid-renderer candidate. The actual log did not show that renderer hook, but showed many non-rigid model-world bypasses. A rigid-only model-world gate can mix latest native placement with delayed local pose even when both objects use the same skin renderer. Test scaled/reflected model worlds without widening camera admission; keep observed callback counts separate from unobserved eye model identity.

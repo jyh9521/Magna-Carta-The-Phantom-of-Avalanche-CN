@@ -58,3 +58,39 @@ cmake --build build/native --config Release --target workspace_profile title_lay
 画布高、多块连续性、五档物理输出宽（包括 2880）、其他图块不变和精确回滚。
 `--opening-rollback-check` 在独立自有 PE 映像撤销钩子后恢复原 `child=0,0,7`。
 这证明坐标路径而非真实游戏截图；实际新游戏首屏、过渡及笔记本全屏输出仍需玩家复验。
+
+## 2026-10-19 第二次玩家反馈：左下暗条
+
+### Verified：来源与失败回归
+
+玩家新截图证明“居中夹具通过”没有覆盖实际资源的非正文像素。
+按实际 FDI 重拼资源，`0237.fdi` child 8 使用 `BGR/0307.BGR`，
+原点 `(0,512)`；该图块非黑边界为 `(0,0)..(256,49)`，灰度最高33。
+其右侧0308/0309同样含极暗尾部残留。它们不是六行誓言正文，且原先处于480高画布外。
+旧实现把所有子节点一起平移，故在较高输出画布下把整排残留带进屏幕。
+8倍提亮重拼图中的轮廓与玩家截图左下条形吻合。此来源是资源像素观察；
+没有将暗色阈值作为删除或改写像素的规则。
+
+真实资源像素回归命令（资源只读，预览写入build）：
+
+```powershell
+python tools/verify_opening_pixels.py --source runtime/data --metadata locales/zh-CN/opening-layout.json --fixture build/opening-dark-strip/baseline_fixture.exe --output build/opening-dark-strip/baseline
+python tools/verify_opening_pixels.py --source runtime/data --metadata locales/zh-CN/opening-layout.json --fixture build/opening-dark-strip/native/Release/title_layout_fixture.exe --output build/opening-dark-strip/modified
+```
+
+该工具调用夹具 `--opening-grid`，取得**最终x86 setter**的每个实际节点坐标，
+然后用FDI引用的实际BGR重拼853×600输出，并逐RGB像素与正文节点结果比较。
+旧版：`OPENING_PIXELS FAIL artifact_pixels=12163`，退出1；
+新版：`OPENING_PIXELS PASS artifact_pixels=0`，退出0。
+半像素原点在离线预览中取最近整数；此检查不是游戏驱动采样、全屏显示或淡入淡出验收。
+
+### 修复与边界
+
+元数据升级到schema 2，新增`source_tile_bounds`，仅接受256对齐的**整图块原点区域**。
+237为`[0,0,1024,512]`，236为`[0,0,768,512]`；
+不是逐像素裁切矩形，也不是根据每个像素亮暗修改图像。
+生成器仍锁定所有引用资源哈希（包括排除图块），并拒绝排除含正文亮度的图块。
+通用运行层把区域外整节点置于当前画布右下之外；区域内节点仍使用既有统一居中偏移。
+深度、淡入淡出、字形、正文像素和源资源不变；未知locale无生成表则不应用此处理。
+
+本次为源码与夹具修复；实际玩家入口的更新、原生游戏新游戏画面及不同分辨率验收由集成步骤执行。
