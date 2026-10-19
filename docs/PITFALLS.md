@@ -239,3 +239,13 @@ The player still observed moving eyes after the rigid-renderer candidate. The ac
 此错误仍会通过。须同时约束后台面分配大小和呈现目标，且通过受控真实调用点验证。
 仅直接调用返回地址适配辅助函数，既没有覆盖实际调用链，也没有覆盖渲染资源的分配阶段。
 GDI PrintWindow返回成功也不保证捕获到DirectDraw画面；空白/纯白位图不计为游戏画面证据。
+
+## Bound texture is not automatically a dangling texture
+
+The 2026-10-19 real D3D7 probe measured AddRef from1 to2 on native binding.
+Native Delete releases the application's reference; the device can legitimately retain
+its own live reference until replacement. A mock `hazard=true` or assertion that a deleted
+ID must leave no device binding is not proof of an access violation. Original, candidate
+and exact rollback each completed200 real COM/native Bind/Delete cycles. Preserve this
+negative result; do not promote optional unbinding as a proven scene-crash fix.
+See SCENE_TRANSITION_INVESTIGATION.md.

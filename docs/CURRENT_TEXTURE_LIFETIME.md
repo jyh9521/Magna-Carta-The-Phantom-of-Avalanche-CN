@@ -1,3 +1,7 @@
+> 2026-10-19复核：真实Windows D3D7使绑定surface增加引用。当前原生Bind/Delete连续200轮，
+> 原路径与解绑候选都未访问违规。此前hazard模型只证明删除时仍绑定，不证明UAF或崩溃；
+> 候选仍不默认开启。见[场景切换调查与真实COM反证](SCENE_TRANSITION_INVESTIGATION.md)。
+
 # 正常驱动纹理生命周期候选
 
 ## Verified

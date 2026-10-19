@@ -201,3 +201,8 @@ add_executable(field_return_height_fixture field_return_height_fixture.cpp field
 target_compile_definitions(field_return_height_fixture PRIVATE FIELD_RETURN_HEIGHT_TEST)
 target_compile_options(field_return_height_fixture PRIVATE /W4 /utf-8)
 set_property(TARGET field_return_height_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded")
+
+add_executable(scene_texture_probe scene_texture_probe.cpp current_texture_lifetime.cpp)
+target_link_libraries(scene_texture_probe PRIVATE dxguid user32)
+set_property(TARGET scene_texture_probe PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+target_compile_options(scene_texture_probe PRIVATE /W4 /utf-8)

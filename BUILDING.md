@@ -201,3 +201,9 @@ See [opening centering evidence](docs/OPENING_CENTER_REPAIR.md).
 新增目标 `rigid_motion_fixture`；必须同时运行原 `motion60_fixture` 与 `title_layout_fixture`。
 
 小型运行模块更新包的构建、安装和回滚见 [2026-10-19 热修候选](docs/RUNTIME_HOTFIX_20261019.md)。
+
+## 场景切换调查探针（2026-10-19）
+
+`scene_texture_probe`仅运行源锁驱动的Bind/Delete函数和真实系统D3D7，不运行游戏入口。
+三模式baseline/candidate/rollback均属资源级观察，不是完整场景切换验收；正常入口/包不改。
+命令及“不把仍绑定当UAF”的关键反证见[场景调查](docs/SCENE_TRANSITION_INVESTIGATION.md)。
