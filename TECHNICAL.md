@@ -2,7 +2,7 @@
 
 ## 原生Loading呈现（2026-10-19）
 
-FDI204/BGR354～356、退出门控、原函数/提交/清空批次顺序和精确CALL守卫见
+FDI204/BGR354～356、退出门控、正常绘制前置位、独立提交失败反例和精确CALL守卫见
 [原生Loading提前呈现](docs/NATIVE_LOADING_PRESENTATION.md)。原始指令回放、ABI夹具与实际画面验收分别记录。
 
 ## 启动GUI越界修正（2026-10-19）

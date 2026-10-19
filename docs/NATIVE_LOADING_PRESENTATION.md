@@ -1,99 +1,99 @@
-# 原生卡尔塔 Loading 提前呈现候选
+# 原生卡尔塔 Loading 正常帧候选
 
-2026-10-19。共享 `Play.cmd` 已接入离线候选，实际画面和换区稳定性待人工验收。
-不使用自绘占位图，不修改游戏图片、存档、设置、资源加载队列或玩法时钟。
-此项不是换区崩溃根治，也不承诺缩短资源读取总时间。
+2026-10-19第二轮。共享 `Play.cmd` 继续使用原生卡尔塔界面，不插入截图或自绘图。
+旧的清理前独立呈现路线已替换。实际修正效果仍待人工复测，不宣称换区崩溃已根治。
 
-## Verified：资源和触发链
+## 玩家反馈与失败路线
 
-- `FrameData/0204.fdi`（787字节）有15个42字节记录，起点157；前三个有效记录
+玩家实际观察：去新场景 → 黑屏 → 旧场景重新亮起 → Loading一闪 → 新场景；本轮未崩溃。
+最新本地日志存在多条旧 `NATIVE_LOADING_PRESENTED`，证明候选分支到达，
+不证明显示器上呈现顺序正确。旧夹具只检查函数调用顺序，遗漏了完整原生帧的状态与门控。
+
+**Verified**：旧候选在 `63075` 清理CALL前直接调用 `71085`、Render、Present、ClearRender；
+正常帧仍未设置 `scene+1730`。这增加了一个脱离正常帧的独立提交，且位于原帧末尾之后。
+正常 `631a0` 帧不仅提交图像，还包含白色光照、矩阵重置、深度状态、GUI绘制与白色颜色恢复。
+**高置信推断**：未启用正常Loading门控，加上末尾额外提交与继承的渲染状态，造成时序和回闪异常。
+尚未离线重现真实像素，不能把这个结构性缺陷称为五步画面现象的完整因果证明。
+
+## Verified：资源和正常帧调用链
+
+- `FrameData/0204.fdi`（787字节）有15个42字节记录，起点157。前三个有效记录
   `(anchor,x,y,type,id)` 为 `(1,0,0,3,354),(1,128,0,3,355),(1,256,0,3,356)`。
-  `BGR/0354.BGR`～`0356.BGR` 各128×128，完整原生组合384×128。
-  解码组合与截图黑底右下 `Access in progress...`、卡尔塔系统文字及标志一致。
-  翻译计划的 `loading-progress` 只覆盖后两张，256×128不是完整原生布局。
-- `MCAlpha+71085` 创建资源 `0xcc`（FDI204），位置为渲染尺寸减 `(365,155)`，
-  隐藏场景GUI、清屏、清空绘制批次并更新/绘制原生框架；函数本身不提交屏幕。
-- 原生 `6b3bc` 仅在模式 `scene+156c=7` 且 `scene+1730!=0` 时调用该函数。
-  场景初始化将1730清零；`71065` 设置1730后转退出模式，普通 `6e36e` 不设置1730。
-  原 `631a0` 循环先检查退出，再绘制/提交；`6e697` 退出计数为0或1时立即结束。
-- 七个原始指令离线用例验证门控和计数行为；绘制函数以ABI边界代替。
+  `BGR/0354.BGR`～`0356.BGR` 各128×128，完整组合384×128；解码匹配玩家截图。
+  翻译计划 `loading-progress` 只覆盖后两张，不代表整个原生布局。
+- `631a0`：退出检查 → 清屏/清队列 → `0cdc4` 原固定更新 → `631da CALL 63322`
+  → 原场景绘制 → 世界Render → 矩阵/深度/GUI/颜色恢复 → UI Render → 帧尾 → 原Present。
+- `63322 → scene虚表+10 → 02b60 → scene虚表+c → 6b3bc`。
+  `6b3bc` 先绘制世界根，仅在未暂停、模式7且 `scene+1730!=0` 时执行 `71085`。
+- `71085` 隐藏旧GUI、清屏/清队列、构造并绘制FDI204；定位为渲染尺寸减 `(365,155)`。
+  原生Loading进入同一帧，世界根的旧队列被清掉；随后继续原GUI和提交流程。
+- 场景初始化将1730清零；普通 `6e36e` 转模式7但不置位，专门入口 `71065` 则置位。
+  `6e697` 在下一轮检查退出计数；当前修正不修改其计数或返回值。
 
-**高置信推断**：普通退出可能未启用原生Loading，且在下一帧绘制前离开循环，
-旧画面因而留到同步清理/读取结束。这解释一个呈现缺口；实际卡顿的完整因果链、
-耗时分布和崩溃根因仍未验证，不把指令回放当真实换区复现。
+## 当前改动：只启用原生门控
 
-## 候选实现与守卫
+`src/runtime/native_scene_loading.cpp` 替换 **RVA631da** 的5字节CALL：
+`e8 43 01 00 00`，原目标 `63322`。在原固定更新之后、原绘制之前检查：
 
-`src/runtime/native_scene_loading.cpp` 只改写RVA `63075` 的CALL（原字节
-`e8 e1 00 00 00`，原目标 `6315b`）。旧作业返回、清理尚未开始时，仅当下一作业
-`f2280=1f`（Field）、旧场景虚表 `c12bc`、模式7成立时执行：
+1. 待处理作业 `f2280=1f`（下一Field），旧场景虚表为 `c12bc`，模式7，1730当前为0。
+2. 已安装原GUI父节点守卫，原GUI/保存控件及所需布局有效。
+3. 只写 `scene+1730=1`，然后调用原 `63322(job)` 一次；既有非零标志不覆盖。
 
-1. 验证已安装GUI父节点守卫、GUI/保存控件、驱动、renderer虚表及函数地址，
-   原生BeginScene标志必须为0。前置条件不满足则跳过呈现，原清理仍调用一次。
-2. 原 `71085(scene)` → Asura `ASRRender(renderer)` → 驱动原Present（虚表+14）。
-3. 原 `ASRClearRender()` → 原 `6315b(job)` 清理。
+不再直接调用71085、Render、Present或ClearRender；不在帧尾补画。
+`63075 CALL 6315b` 清理原字节必须完整；检测到旧钩子或外来改动时安装拒绝。
+所有像素、淡出、UI状态和提交继续由游戏原生帧处理，33ms逻辑时钟、更新次数、
+退出计数和加载/清理次序不改；没有Sleep或人为延长Loading。
+原生门控已经开启的路线保留；战斗、标题、菜单、新场景首启不由此候选改变。
+如果进入模式7前已离开正常帧，或者守卫跳过，这个绘制点不覆盖该路径。
 
-`ASRRender` 遍历CPU队列但不清零计数，故清空已提交批次后再删除框架，避免保留已释放
-框架数据引用。此队列不是资源加载队列。异常不吞掉；原清理前恢复LastError。
-保护页写入失败会补偿；原作业/加载次序与33ms玩法时钟不变。首启、战斗、标题、
-菜单不由此钩子覆盖。GUI/楼梯守卫保留；撤回的 `scene_loading.cpp` 不链接生产DLL。
-原生框架构造仍是同步操作；若停顿发生在本钩子之前或构造本身，候选不保证消除该段停顿。
+引擎SHA256：`7e8649425217d3b99d52d11c679761a88c57b125c241b331aea5c25e00e3b15e`。
+安装检查PE32身份 `3ed73966/10b000`、新CALL、原清理CALL、71085前缀（SEH按实际基址比较）
+和资源常量 `71136:68cc000000`；共享入口还校验文件摘要。未知输入拒绝。
+原生资源不修改、不提交；不再依赖候选代码直接调用驱动或Asura导出。
 
-| 输入 | SHA256 | PE timestamp / SizeOfImage |
-|---|---|---|
-| MCAlpha.dll | `7e8649425217d3b99d52d11c679761a88c57b125c241b331aea5c25e00e3b15e` | `3ed73966 / 10b000` |
-| AsrD3DDrv.dll | `00d443327abf56c94f9f088515ab29be63bab9650771a5cacdcef20ab85eff29` | `3c2b7d28 / 2c000` |
-| Asura.dll | `f81e7c458d43b77210311499b39b9be2c4895e3a3b356d2e848b6e84210d2557` | `3ed70009 / 74d000` |
+## 离线证据和边界
 
-安装校验引擎身份、CALL、原函数前缀（SEH按实际基址比较）及资源常量；运行检查
-Asura身份/导出RVA `516fd/4e61f`、驱动身份/虚表。入口另校验清单文件摘要，未知输入拒绝。
-不提交商业资源或DLL。
+新增回归夹具先在旧生产代码上失败：
+`FAIL loading flag must be armed BEFORE original draw, not after cleanup`，exit5。
+修正后在同一原CALL位置运行生产包装器，检查门控先于原绘制、清理CALL不变、
+旁路、既有标志、LastError和精确撤回。
 
-## 离线验证
-
-保留现有Win32配置和数据头参数：
+`tools/replay_native_loading_frame.py` 执行原631a0/63322/02b60/6b3bc/退出检查指令：
+原flag0无Loading；置位后原71085边界先于正常Present；三态均只有一次原时钟调用和正常提交（不计实际逻辑子步）。
+固定更新、绘制后端和置位用明确ABI边界，置位逻辑另由生产C++夹具验证。
+**不执行完整71085、真实资源解码、并发任务或GPU绘制；不把这些结果当成像素验收。**
 
 ```powershell
 cmake --build build/native --config Release --target workspace_profile native_scene_loading_fixture
-build/native/Release/native_scene_loading_fixture.exe baseline
-# exit 1: loading=0 present=0 cleanup=1
-build/native/Release/native_scene_loading_fixture.exe modified
-# exit 0: original_71085_render_present_clear_cleanup
-build/native/Release/native_scene_loading_fixture.exe rollback
-# exit 1: original_call=restored
+build/native/Release/native_scene_loading_fixture.exe baseline  # exit1：原门控为0
+build/native/Release/native_scene_loading_fixture.exe modified  # exit0：绘制前置位，无独立提交
+build/native/Release/native_scene_loading_fixture.exe rollback  # exit1：原门控/绘制CALL恢复
 $env:PYTHONPATH="$PWD/runtime/dependencies;$PWD/tools;$PWD/tests"
-python tools/replay_native_loading_gate.py --sample runtime/data/MCAlpha.dll --report build/native-loading-gates.json
+python tools/replay_native_loading_frame.py --sample runtime/data/MCAlpha.dll --report build/native-loading-frame.json
 python -m unittest discover -s tests -p test_native_loading.py
 ```
 
-自有内存PE/虚表/回调夹具检查执行次序、绕过分支、源漂移拒绝、精确撤回；
-**不执行完整原71085函数、不显示真实场景**。原始门控指令回放、图片解码与ABI夹具
-是三种独立证据，不等于实际呈现或崩溃修复。基线/回滚的exit1是预期的无Loading结果。
+## 人工复测、入口与回滚
 
-## 入口、人工验收与撤回
+由测试者手动启动现有 `runtime/Play.cmd`，预计3～5分钟，正常退出；不需另启动fixture。
+同一A/B场景各往返三次，目标为原生Loading出现在旧场景清理/新场景读取之前，
+期间不再闪回旧场景；记录黑屏、Loading首帧/末帧、闪屏和残影。
+不人为保证最短显示时间，快速读取时显示很短本身不判失败；重点是不回闪旧场景。
+随后检查菜单/战斗/读档、楼梯禁入返回和GUI。异常时保留最新日志，勿覆盖存档证据。
 
-复用共享运行目录，无整套游戏副本或新ZIP；旧统一ZIP摘要不变且尚不含此候选。
-清单新增 `native_scene_loading={schema:1,enabled:true,module:"native-loading"}`。
-安装仅改 `Start.ps1`、`runtime.json` 和新增模块；原角色DLL和baseline配方保留。
-
-由测试者手动启动 `runtime/Play.cmd`，先保存进度；预计3～5分钟，按正常方式退出。
-选择可稳定往返的A/B场景，各换区三次，再测菜单、战斗及读档返回：
-
-- 检查清理前是否出现同一套黑底右下原生Loading，无自绘过渡；留意闪屏、残影和位置。
-- 记录旧场景停顿、Loading开始/结束时点、地区、方向、存档与崩溃情况。
-- 检查楼梯禁入返回、GUI、配置；异常时保留最新日志，不反复覆盖。
-- `NATIVE_LOADING_PRESENTED fdi=0204 before=field_cleanup artwork=original` 仅说明
-  提交函数返回成功，不证明显示器上的画面；`NATIVE_LOADING_SKIPPED`表示守卫跳过。
-
+新日志为 `NATIVE_LOADING_ARMED flag=1730 before=native_draw standalone_present=false`，
+只证明原门控置位，不证明实际像素；旧 `NATIVE_LOADING_PRESENTED` 不应出现在新会话。
 独立对照：手动运行 `powershell -NoProfile -File runtime/Start.ps1 -Recipe configured -WithoutNativeLoading`，
-只关闭此候选，保留GUI/楼梯守卫。加 `-VerifyOnly` 则仅检查入口，不启动游戏。
+保留GUI/楼梯守卫；加 `-VerifyOnly` 只检查入口，不启动游戏。
+
+本轮仅替换共享候选模块与清单，复用原数据、入口、基线与旧ZIP；无游戏副本或新ZIP。
+完整撤回记录为本地 `build/native-loading-order-evidence/integration-verified`：
 
 ```powershell
-python tools/integrate_native_loading.py --runtime runtime --module build/native/Release/workspace_profile.dll --record build/native-loading-evidence/integration-final
-# 已安装则拒绝重复覆盖，保留事务记录。
-python tools/integrate_native_loading.py --rollback build/native-loading-evidence/integration-final
+python tools/integrate_native_loading.py --rollback build/native-loading-order-evidence/integration-verified
 ```
 
-本地 `integration-final/changes.json` 与 `original/` 保存原控制文件和前后摘要。
-回滚先验证候选及备份未漂移，再逐字节恢复入口/清单、移除候选模块，不触碰存档/设置。
-小型自有副本另行验证回滚，不复制游戏。证据位于 `build/native-loading-evidence/VERIFICATION.txt`。
+此命令在游戏退出后使用，验证候选/备份摘要后恢复原入口/清单、移除候选模块；
+存档和设置不动，下一次手动启动使用原门控。新事务以原始无Loading候选基线为起点，
+不是把已反馈异常的上一版重新设为默认。旧模块/源码/玩家日志仅在本地证据目录保留。
+验证记录、修改文件、差异和可执行回滚脚本均在 `build/native-loading-order-evidence/`。

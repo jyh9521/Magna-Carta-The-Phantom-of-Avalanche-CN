@@ -76,7 +76,7 @@ class NativeTests(unittest.TestCase):
     def test_native_baseline_modified_rollback(self):
         fixture=ROOT/'build/native/Release/native_scene_loading_fixture.exe'
         if not fixture.exists():self.skipTest('Build scene_loading_fixture first')
-        for mode,code,text in [('baseline',1,'loading=0 present=0 cleanup=1'),('modified',0,'order=original_71085_render_present_clear_cleanup'),('rollback',1,'original_call=restored')]:
+        for mode,code,text in [('baseline',1,'flag=0 draws=1 cleanup=1'),('modified',0,'flag_before_native_draw=1 normal_draws=1 standalone_presents=0'),('rollback',1,'original_gate=restored')]:
             p=subprocess.run([str(fixture),mode],capture_output=True,text=True,timeout=15)
             self.assertEqual(p.returncode,code,p.stdout+p.stderr)
             self.assertIn(text,p.stdout)
@@ -91,6 +91,7 @@ class NativeTests(unittest.TestCase):
         data=path.read_bytes();self.assertEqual(hashlib.sha256(data).hexdigest(),SOURCE_SHA)
         p=pefile.PE(data=data)
         self.assertEqual(p.get_data(0x63075,5),bytes.fromhex('e8e1000000'))
+        self.assertEqual(p.get_data(0x631da,5),bytes.fromhex('e843010000'))
         self.assertEqual(p.get_data(0x631a0,8),bytes.fromhex('558bec83ec08894d'))
 
 class RouteTests(unittest.TestCase):
@@ -123,6 +124,20 @@ class RouteTests(unittest.TestCase):
             self.assertNotEqual(p.returncode,0);self.assertIn('Invalid native scene-loading integration',p.stderr)
 
 class OriginalGateTests(unittest.TestCase):
+    def test_original_frame_keeps_one_present_and_one_update(self):
+        from replay_native_loading_frame import verify
+        path=ROOT/'runtime/data/MCAlpha.dll'
+        if not path.exists():self.skipTest('Local source required')
+        r=verify(path.read_bytes())
+        for name in ['baseline','modified','rollback']:
+            x=r[name]
+            self.assertEqual(x['normal_presents'],1)
+            self.assertEqual(x['fixed_clock_calls'],1)
+            self.assertEqual(x['standalone_presents'],0)
+            self.assertEqual(x['loading_before_normal_present'],name=='modified')
+            self.assertTrue(x['original_loop_executed'])
+            self.assertFalse(x['rendered_pixels_verified'])
+
     def test_actual_gate_and_exit_instructions(self):
         from replay_native_loading_gate import verify
         path=ROOT/'runtime/data/MCAlpha.dll'
