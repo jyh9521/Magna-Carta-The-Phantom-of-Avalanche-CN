@@ -22,6 +22,11 @@ def settings(profile='wide4k', motion=False, pad=False):
 
 
 def prepare(source, modules, atlas, output):
+    if 'native-loading' in modules:
+        if 'scene-loading' in modules:
+            raise ValueError('Native loading excludes withdrawn custom prelude')
+        if 'gui-parent-guard' not in modules or 'field-return-height' not in modules:
+            raise ValueError('Native loading requires retained GUI and field return guards')
     source=source.resolve(strict=True); output=output.resolve()
     if output.exists() or output == source or output.is_relative_to(source):
         raise ValueError('New runtime folder required; never copy game data')
@@ -117,6 +122,8 @@ def prepare(source, modules, atlas, output):
         manifest['gui_parent_guard']=dict(schema=1,enabled=True,module='gui-parent-guard')
     if 'scene-loading' in modules:
         manifest['scene_loading']=dict(schema=1,enabled=True,module='scene-loading')
+    if 'native-loading' in modules:
+        manifest['native_scene_loading']=dict(schema=1,enabled=True,module='native-loading')
     (output/'runtime.json').write_bytes((json.dumps(manifest,indent=2)+'\n').encode('utf8'))
     for recipe in recipes:
         entry='Play.cmd' if recipe=='configured' else 'Play-'+recipe+'.cmd'
@@ -136,6 +143,7 @@ if __name__=='__main__':
     parser.add_argument('--field-return-height',type=Path)
     parser.add_argument('--gui-parent-guard',type=Path)
     parser.add_argument('--scene-loading',type=Path)
+    parser.add_argument('--native-loading',type=Path)
     a=parser.parse_args()
     modules={name:getattr(a,name) for name in ['display','modern','texture','camera','maps','launcher']}
     modules['configuration']=a.configuration
@@ -144,5 +152,6 @@ if __name__=='__main__':
     if a.field_return_height: modules['field-return-height']=a.field_return_height
     if a.gui_parent_guard: modules['gui-parent-guard']=a.gui_parent_guard
     if a.scene_loading: modules['scene-loading']=a.scene_loading
+    if a.native_loading: modules['native-loading']=a.native_loading
     prepare(a.source,modules,a.atlas,a.output)
     print('SHARED_PACKAGE PASS copied_game_data=false data_move_pending=true')

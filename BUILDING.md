@@ -221,6 +221,9 @@ See [opening centering evidence](docs/OPENING_CENTER_REPAIR.md).
 
 ## 场景切换调查探针（2026-10-19）
 
+原生卡尔塔Loading的源锁候选、独立开关、离线验证与事务回滚见
+[原生Loading提前呈现](docs/NATIVE_LOADING_PRESENTATION.md)。共享入口已接入，画面待人工验收；不含自绘图片。
+
 `scene_texture_probe`仅运行源锁驱动的Bind/Delete函数和真实系统D3D7，不运行游戏入口。
 三模式baseline/candidate/rollback均属资源级观察，不是完整场景切换验收；正常入口/包不改。
 命令及“不把仍绑定当UAF”的关键反证见[场景调查](docs/SCENE_TRANSITION_INVESTIGATION.md)。

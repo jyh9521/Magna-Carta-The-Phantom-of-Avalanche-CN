@@ -1,5 +1,10 @@
 # 技术说明
 
+## 原生Loading呈现（2026-10-19）
+
+FDI204/BGR354～356、退出门控、原函数/提交/清空批次顺序和精确CALL守卫见
+[原生Loading提前呈现](docs/NATIVE_LOADING_PRESENTATION.md)。原始指令回放、ABI夹具与实际画面验收分别记录。
+
 ## 启动GUI越界修正（2026-10-19）
 
 启动GUI越界的精确类型守卫、生产桥接代码离线回放和正常入口事务见 [GUI父节点守卫](docs/GUI_PARENT_GUARD.md)。

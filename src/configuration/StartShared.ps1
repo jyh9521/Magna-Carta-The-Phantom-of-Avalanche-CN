@@ -1,4 +1,4 @@
-﻿param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','motion-gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='',[string]$SettingsFile='',[switch]$WithoutFieldReturnHeight,[switch]$WithoutGuiParentGuard,[switch]$WithoutSceneLoading)
+﻿param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','motion-gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='',[string]$SettingsFile='',[switch]$WithoutFieldReturnHeight,[switch]$WithoutGuiParentGuard,[switch]$WithoutSceneLoading,[switch]$WithoutNativeLoading)
 $ErrorActionPreference='Stop'
 $runtimeRoot=$PSScriptRoot
 $manifest=Get-Content -LiteralPath (Join-Path $runtimeRoot 'runtime.json') -Raw | ConvertFrom-Json
@@ -47,13 +47,21 @@ if($manifest.PSObject.Properties['scene_loading']){
  $sceneLoadingEnabled=$fix.enabled -and $Recipe -ne 'baseline' -and -not $WithoutSceneLoading
  if($sceneLoadingEnabled){$module=$fix.module}
 }
+# NATIVE_SCENE_LOADING_DEFAULT_ROUTE: reuse original FDI 0204 and native rendering, no replacement art.
+$nativeLoadingEnabled=$false
+if($manifest.PSObject.Properties['native_scene_loading']){
+ $fix=$manifest.native_scene_loading
+ if($fix.schema -ne 1 -or $fix.enabled -isnot [bool] -or $fix.module -ne 'native-loading' -or $sceneLoadingEnabled){throw 'Invalid native scene-loading integration'}
+ $nativeLoadingEnabled=$fix.enabled -and $guiParentEnabled -and $Recipe -ne 'baseline' -and -not $WithoutNativeLoading
+ if($nativeLoadingEnabled){$module=$fix.module}
+}
 $ini=Join-Path $game 'DDrawCompat-MagnaCarta.ini'
 $known=@($manifest.profiles.PSObject.Properties.Value)
 if((Hash $ini) -notin $known){throw 'Unknown active display configuration'}
 $mutex=New-Object Threading.Mutex($false,('Local\MagnaCartaShared_'+(Hash (Join-Path $runtimeRoot 'runtime.json')).Substring(0,24)))
 if(-not $mutex.WaitOne(0)){throw 'Another shared runtime entry is active'}
 $environment=@{}
-foreach($key in @('MC_MOTION60_COMPLETE','MC_TITLE_BACKGROUND4K','MC_FREE_VIEW','MC_MAP_OVERLAY','MC_MAP_ASSETS','MC_WINDOWED','MC_WINDOW_RESOLUTION','MC_FIELD_RETURN_HEIGHT','MC_GUI_PARENT_GUARD','MC_SCENE_LOADING')){$environment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
+foreach($key in @('MC_MOTION60_COMPLETE','MC_TITLE_BACKGROUND4K','MC_FREE_VIEW','MC_MAP_OVERLAY','MC_MAP_ASSETS','MC_WINDOWED','MC_WINDOW_RESOLUTION','MC_FIELD_RETURN_HEIGHT','MC_GUI_PARENT_GUARD','MC_SCENE_LOADING','MC_NATIVE_SCENE_LOADING')){$environment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
 try{
  foreach($p in (Get-CimInstance Win32_Process -Filter "Name='MagnaCarta.exe'")){
   if(-not $p.ExecutablePath -or [IO.Path]::GetFullPath($p.ExecutablePath) -eq (Join-Path $game 'MagnaCarta.exe')){throw 'Exit game before changing shared settings'}
@@ -74,6 +82,7 @@ try{
  }
  [IO.File]::WriteAllBytes((Join-Path $cache 'profile.bin'),$profile)
  Invoke-EnhancementDisplayTransaction $ini ([IO.File]::ReadAllBytes((Join-Path $runtimeRoot ('config/profiles/'+$settings.display_profile+'.ini')))) ([bool]$VerifyOnly) {
+ $env:MC_NATIVE_SCENE_LOADING=if($nativeLoadingEnabled){'1'}else{'0'}
  $env:MC_SCENE_LOADING=if($sceneLoadingEnabled){'1'}else{'0'}
  $env:MC_GUI_PARENT_GUARD=if($guiParentEnabled){'1'}else{'0'}
  $env:MC_FIELD_RETURN_HEIGHT=if($fieldReturnEnabled){'1'}else{'0'}

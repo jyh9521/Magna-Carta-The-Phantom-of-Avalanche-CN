@@ -38,7 +38,15 @@ def validate_engine_fixes(runtime, manifest):
                 or 'modules/scene-loading.dll' not in manifest['files']
                 or b'# SCENE_LOADING_DEFAULT_ROUTE:' not in (runtime/'Start.ps1').read_bytes()):
             raise ValueError('Invalid scene-loading integration')
-    return dict(scene_loading=dict(default_enabled=presentation is not None,in_game_verified=False,
+    native=manifest.get('native_scene_loading')
+    if native is not None:
+        if (native!=dict(schema=1,enabled=True,module='native-loading') or presentation is not None
+                or 'modules/native-loading.dll' not in manifest['files']
+                or b'# NATIVE_SCENE_LOADING_DEFAULT_ROUTE:' not in (runtime/'Start.ps1').read_bytes()):
+            raise ValueError('Invalid native scene-loading integration')
+    return dict(native_scene_loading=dict(default_enabled=native is not None,in_game_verified=False,
+                                          resource='FrameData/0204.fdi',artwork='original'),
+                scene_loading=dict(default_enabled=presentation is not None,in_game_verified=False,
                                    scope='Field to Field; owned loading prelude before cleanup'),
                 field_return_height=dict(default_enabled=True,baseline_recipe='baseline',
                                         in_game_verified=False,scope='Field0757/event2'),
