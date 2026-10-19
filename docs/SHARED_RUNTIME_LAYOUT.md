@@ -84,6 +84,7 @@ Verified: StartShared reused cache/profile.log, while workspace_launcher refuses
 删除旧包、已解压包、构建/隔离测试/回滚副本与工具、测试的 Python 缓存。
 同时间按名称升序选择，找不到统一测试 ZIP 时停止；删除前统一检查路径、链接和已跟踪文件。
 原版 `game/` 光盘与补丁、当前 `runtime/data`、存档、配置、模块、依赖及研究记录保留。
+运行清单引用的 `data/*.cmd` 等入口同样保留，不按扩展名判作旧文件。
 
 预览：`powershell -NoProfile -ExecutionPolicy Bypass -File tools/CleanupGenerated.ps1 -PlanOnly`。
 执行仍要求源码已提交并与远端 main 一致、游戏和启动器已退出、运行资源与存档摘要通过。

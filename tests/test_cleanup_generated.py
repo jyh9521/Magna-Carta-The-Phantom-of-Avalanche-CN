@@ -35,6 +35,10 @@ class CleanupTests(unittest.TestCase):
         self.keep=self.root/'dist/MagnaCarta-unified-test-new.zip'
         self.old.write_bytes(b'old-zip')
         self.keep.write_bytes(b'latest-zip')
+        (self.root/'runtime/data/current.cmd').write_bytes(b'current-entry')
+        (self.root/'runtime/data/old.log').write_bytes(b'discard-log')
+        manifest=dict(data={},files={'data/current.cmd':hashlib.sha256(b'current-entry').hexdigest()})
+        (self.root/'runtime/runtime.json').write_text(json.dumps(manifest))
         os.utime(self.old,(1000000000,1000000000))
         os.utime(self.keep,(1100000000,1100000000))
         (self.root/'.gitignore').write_text('build/\ndist/\nout/\nruntime/\n')
@@ -59,6 +63,8 @@ class CleanupTests(unittest.TestCase):
         p=self.run_cleanup()
         self.assertEqual(p.returncode,0,p.stdout+p.stderr)
         self.assertFalse((self.root/'build').exists())
+        self.assertEqual((self.root/'runtime/data/current.cmd').exists(),not BASELINE)
+        self.assertFalse((self.root/'runtime/data/old.log').exists())
         self.assertEqual(self.keep.exists(),not BASELINE)
         if not BASELINE:
             self.assertEqual(list((self.root/'dist').iterdir()),[self.keep])

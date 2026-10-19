@@ -263,3 +263,12 @@ the root was released. SEH dialog snapshots capture later heap state; keep
 recovered registers and MemoryInfo snapshot timing distinct. A startup cursor
 construction fault and its offline replay do not prove a scene-transition crash.
 See SCENE_TRANSITION_INVESTIGATION.md. Never launch a game from an offline audit.
+
+## 生成产物清理必须保留运行清单入口（2026-10-19）
+
+已验证：仅按 `.cmd`/`.ps1` 扩展名删除共享 data 根目录旧入口，会误删
+`runtime.json.files` 引用的当前兼容入口，导致 `Start.ps1 -VerifyOnly` 因缺文件停止。
+清理现排除 `manifest.data` 和 `manifest.files` 引用的根文件，测试同时覆盖当前入口保留与旧日志删除。
+当前12份入口已从最新统一包载荷按清单摘要恢复，未重建或改写游戏资源。
+构建研究目录还可能包含指向共享 runtime/native 的目录联接；预检必须拒绝穿越联接。
+本次只解除已核对目标的旧联接本身，之后才删除构建目录。

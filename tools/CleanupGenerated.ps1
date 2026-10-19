@@ -42,7 +42,7 @@ if($PlanOnly){Write-Output ('PLAN PASS targets='+$targets.Count+' files='+$files
 $freeBefore=(Get-PSDrive C).Free
 foreach($path in $targets){Remove-Item -LiteralPath $path -Recurse -Force;if(Test-Path -LiteralPath $path){throw 'Deletion incomplete'};Write-Output ('REMOVED '+$path)}
 # Remove stale launch/debug files at the data root, never resource subdirectories or saves.
-$stale=@(Get-ChildItem -LiteralPath (Join-Path $runtime 'data') -File -Force | Where-Object {$_.Extension -in '.cmd','.ps1','.log','.dmp'})
+$stale=@(Get-ChildItem -LiteralPath (Join-Path $runtime 'data') -File -Force | Where-Object {($_.Extension -in '.cmd','.ps1','.log','.dmp') -and -not ($manifest.data.PSObject.Properties.Name -contains $_.Name) -and -not ($manifest.files.PSObject.Properties.Name -contains ('data/'+$_.Name))})
 foreach($file in $stale){$bytes+=$file.Length;$files++;Remove-Item -LiteralPath $file.FullName -Force}
 if((Hash $keep) -ne $keepHash){throw 'Retained test ZIP changed'}
 $result=[pscustomobject]@{state='deleted';retained_test_zip=$keep;retained_sha256=$keepHash;commit=$local;removed_bytes=$bytes;removed_files=$files;free_before=$freeBefore;free_after=(Get-PSDrive C).Free;game_data='runtime/data';source_pushed=$true;preserved_saves=(@($saves.Hash|Sort-Object -Unique)).Count}
