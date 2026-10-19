@@ -35,6 +35,11 @@ baseline与维护开关`-WithoutFieldReturnHeight`保留原路由，事务记录
 
 增强配置界面与专用模块的当前构建、增量更新及回滚步骤见[配置工具构建](docs/CONFIGURATION_MATERIAL.md)。
 
+## 清理生成产物（2026-10-19）
+
+`Clean-generated.cmd` 仅保留最新统一测试 ZIP，清除旧包、解压副本、`build/`、`out/` 和工具/测试缓存。
+原版光盘、共享运行目录、存档与重建依赖保留；预览、验证及边界见[共享运行布局](docs/SHARED_RUNTIME_LAYOUT.md)。
+
 ## 当前运行布局（2026-10-14）
 
 功能更新采用[共享数据布局](docs/SHARED_RUNTIME_LAYOUT.md)：只更新运行模块与配置，不复制整套游戏。

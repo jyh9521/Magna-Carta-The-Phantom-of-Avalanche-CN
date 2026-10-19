@@ -70,10 +70,23 @@ python -m unittest discover -s tests
 
 用户已明确要求直接释放空间，不保留历史调试、截图和游戏回滚副本。
 先推送源码并确认远端HEAD一致，迁移必要数据和独有存档，再删除
-`build/`、`dist/`及唯一游戏目录中废弃的旧入口、session、备份运行目录。
+`build/`、`out/`、`dist/` 中除最新统一测试 ZIP 外的产物，以及唯一游戏目录中废弃的旧入口、session、备份运行目录。
 不建立另一份全量备份。删除后的旧副本及调试证据不可从本机恢复；
 源码历史仍在GitHub，必要的构建输入和当前数据留在新布局。
 
 ## Shared launcher log reuse (2026-10-14)
 
 Verified: StartShared reused cache/profile.log, while workspace_launcher refuses an existing log. Its verify-only branch returns before that check, so engine hash preflight did not prove launch readiness. The shared entry now removes only that single prior session log under the existing session mutex and running-game exclusion, before real launch. Verify-only preserves it. Directories and reparse points are rejected; other logs, saves and game assets are untouched. Repeated-cache tests execute the actual PowerShell preparation block without launching the game. Game startup remains manual acceptance.
+
+## 单份最新测试包清理（2026-10-19）
+
+`Clean-generated.cmd` 保留 `dist/MagnaCarta-unified-test*.zip` 中修改时间最新的一份，
+删除旧包、已解压包、构建/隔离测试/回滚副本与工具、测试的 Python 缓存。
+同时间按名称升序选择，找不到统一测试 ZIP 时停止；删除前统一检查路径、链接和已跟踪文件。
+原版 `game/` 光盘与补丁、当前 `runtime/data`、存档、配置、模块、依赖及研究记录保留。
+
+预览：`powershell -NoProfile -ExecutionPolicy Bypass -File tools/CleanupGenerated.ps1 -PlanOnly`。
+执行仍要求源码已提交并与远端 main 一致、游戏和启动器已退出、运行资源与存档摘要通过。
+预览不删除文件；执行记录保留测试包路径和 SHA-256，清理后再次核对包摘要。
+验证：`python -m unittest discover -s tests -p test_cleanup_generated.py -v`，
+在临时本地 Git 仓库验证保留一包、存档保护、预览、无包停止和已跟踪文件保护，不启动游戏。
