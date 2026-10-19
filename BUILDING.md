@@ -1,5 +1,14 @@
 # 构建说明
 
+## 提示文本与对话显示修正（2026-10-19）
+
+提示文本规则保存在 `locales/zh-CN/prompt-punctuation-policy.json`，
+审计入口为 `tools/normalize_prompt_punctuation.py`；普通人物对白不进入提示标点规则。
+当前运行资源的增量重建与对话钩子证据见 [文本与对话修正](docs/TEXT_DIALOGUE_REPAIR.md)。
+部署入口 `tools/deploy_text_runtime.py` 整批校验当前摘要及候选的前后摘要，
+只备份和修改本次变化文件；存档、增强配置和其它游戏资源保持原样。
+商业文件不作为完整载荷分发，玩家小更新使用 [增量更新包](docs/TEXT_RUNTIME_UPDATE_PACKAGE.md)。
+
 ## 统一玩家测试补丁包（2026-10-17）
 
 `python tools/build_player_test_bundle.py --source ORIGINAL_GAME --runtime runtime --output dist/NEW_TEST_PACKAGE`

@@ -2297,7 +2297,7 @@
   {
     "id": "Itm/0000.itm:description:15:43",
     "source_sha256": "92af2e364f759763b6450f2b3fd0506462fa44eff74bd07c8712ba46869f0639",
-    "target": "开启用银锁锁住的宝箱。",
+    "target": "开启用银锁锁住的宝箱",
     "state": "translated"
   },
   {
@@ -2309,7 +2309,7 @@
   {
     "id": "Itm/0000.itm:description:16:44",
     "source_sha256": "bd750f5df1770d7233067846e69916dea0110604d4a96cd7c3ca1c897fb81fbd",
-    "target": "开启用金锁锁住的宝箱。",
+    "target": "开启用金锁锁住的宝箱",
     "state": "translated"
   },
   {

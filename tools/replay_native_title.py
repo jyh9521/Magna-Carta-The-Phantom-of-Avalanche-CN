@@ -7,6 +7,7 @@ import struct
 from pathlib import Path
 
 SUPPORTED_SHA = '5c701de93af6267b959c49e6927bee525bc0f3c68c8c6f51413515d13809d427'
+SUPPORTED_SHAS = frozenset([SUPPORTED_SHA, '7e8649425217d3b99d52d11c679761a88c57b125c241b331aea5c25e00e3b15e'])
 BASE = 0x52000000
 BUTTON = 0x20001000
 SECOND = 0x20001800
@@ -27,7 +28,7 @@ def _require(condition, message):
 
 class NativeTitle:
     def __init__(self, image: bytes, identifier: int = 0x16d, phase: int = 4):
-        if hashlib.sha256(image).hexdigest() != SUPPORTED_SHA:
+        if hashlib.sha256(image).hexdigest() not in SUPPORTED_SHAS:
             raise ValueError('Unsupported MCAlpha image SHA256')
         from unicorn import Uc, UC_ARCH_X86, UC_MODE_32, UC_HOOK_CODE
         from unicorn.x86_const import UC_X86_REG_ECX, UC_X86_REG_ESP, UC_X86_REG_EIP, UC_X86_REG_EAX
@@ -182,7 +183,7 @@ def run_replay(image: bytes):
     n.dispatch(-1, root=ROOT)
     _require(n.requests == [9], "Native replay invariant failed")
     record('disabled_first_child_continues_to_second', n)
-    return {'schema': 1, 'sample_sha256': SUPPORTED_SHA, 'cases': cases, 'native_instructions': total,
+    return {'schema': 1, 'sample_sha256': hashlib.sha256(image).hexdigest(), 'cases': cases, 'native_instructions': total,
             'native_bytes_emulated': True, 'game_dll_loaded': False, 'game_started': False,
             'boundaries': ['owned _ftol ABI shim', 'transition request recorder', 'start allocation stop'],
             'not_proven': ['actual controller', 'rendered pointer or highlight', 'real resource loading or transitions']}
@@ -198,7 +199,7 @@ def main():
         parser.error('Report must differ from the sample path')
     image = args.sample.read_bytes()
     report = run_replay(image)
-    if hashlib.sha256(args.sample.read_bytes()).hexdigest() != SUPPORTED_SHA:
+    if hashlib.sha256(args.sample.read_bytes()).hexdigest() != report['sample_sha256']:
         raise ReplayError('Sample changed during replay')
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)

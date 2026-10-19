@@ -96,7 +96,7 @@ def run_replay(image):
     n.invoke(0x48774, render_boundary=True)
     cases.append({'name': 'visible_original_render', 'boundary': 'before_graphics_setup_48445'})
     instructions += n.instructions
-    return {'schema': 1, 'sample_sha256': SUPPORTED_SHA, 'cases': cases,
+    return {'schema': 1, 'sample_sha256': hashlib.sha256(image).hexdigest(), 'cases': cases,
             'native_instructions': instructions, 'native_bytes_emulated': True,
             'graphics_APIs_executed': False, 'game_started': False,
             'not_proven': ['rendered pixels', 'physical controller', 'live cursor visibility state']}
@@ -111,7 +111,7 @@ def main():
                         (args.report.exists() and args.report.samefile(args.sample))):
         parser.error('Report must differ from the sample path')
     report = run_replay(args.sample.read_bytes())
-    if hashlib.sha256(args.sample.read_bytes()).hexdigest() != SUPPORTED_SHA:
+    if hashlib.sha256(args.sample.read_bytes()).hexdigest() != report['sample_sha256']:
         raise ReplayError('Sample changed during replay')
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)

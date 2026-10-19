@@ -8,25 +8,25 @@
     {
       "offset": 864996,
       "expected_hex": "253034642e6f6273c0c720256420bdc3c4f6bdbab0a120bef8b4c220bdbdb7d428256429c0bb20c2fcc1b6c7dfbdc0b4cfb4d92e",
-      "target": "%04d.obs的序列%d引用了不存在的槽位（%d）。",
+      "target": "%04d.obs的序列%d引用了不存在的槽位（%d）",
       "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
     },
     {
       "offset": 865052,
       "expected_hex": "253034642e6f6273c0c720256420bdc3c4f6bdbab0a120bef8b4c220c0ccb9ccc1f628256429c0bb20c2fcc1b6c7dfbdc0b4cfb4d92e",
-      "target": "%04d.obs的序列%d引用了不存在的图像（%d）。",
+      "target": "%04d.obs的序列%d引用了不存在的图像（%d）",
       "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
     },
     {
       "offset": 865612,
       "expected_hex": "253034642e6f6273c0c720256420bdc3c4f6bdbab0a120bef8b4c220bdbdb7d428256429c0bb20c2fcc1b6c7dfbdc0b4cfb4d92e",
-      "target": "%04d.obs的序列%d引用了不存在的槽位（%d）。",
+      "target": "%04d.obs的序列%d引用了不存在的槽位（%d）",
       "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
     },
     {
       "offset": 865668,
       "expected_hex": "253034642e6f6273c0c720256420bdc3c4f6bdbab0a120bef8b4c220c0ccb9ccc1f628256429c0bb20c2fcc1b6c7dfbdc0b4cfb4d92e",
-      "target": "%04d.obs的序列%d引用了不存在的图像（%d）。",
+      "target": "%04d.obs的序列%d引用了不存在的图像（%d）",
       "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
     },
     {
@@ -50,7 +50,7 @@
     {
       "offset": 926112,
       "expected_hex": "257320b4c220c6c4c6bcb5a5c0ccc5b8bfa120bef8b4d92e",
-      "target": "队伍数据中不存在%s。",
+      "target": "队伍数据中不存在%s",
       "evidence": "COVERAGE_REPORT.md:49; fatal wrapper FUN_52001270 -> USER32 MessageBoxA; camera wrapper FUN_52001395 -> MessageBoxA."
     },
     {

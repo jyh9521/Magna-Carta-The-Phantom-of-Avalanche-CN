@@ -6,91 +6,91 @@
     {
       "offset": 901028,
       "expected_hex": "257320bec6c0ccc5dbc0bb20c8b9b5e6c7cfbfb4bdc0b4cfb4d92e",
-      "target": "获得%s。",
+      "target": "获得%s",
       "display_domain": "game_native_font",
       "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
     },
     {
       "offset": 901296,
       "expected_hex": "257320c0cc28b0a12920c0d6beeebedf20bbf3c0dab8a620bfad20bcf620c0d6bdc0b4cfb4d92e",
-      "target": "需要%s才能打开宝箱。",
+      "target": "需要%s才能打开宝箱",
       "display_domain": "game_native_font",
       "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
     },
     {
       "offset": 901448,
       "expected_hex": "257320bec6c0ccc5dbc0bb20c8b9b5e6c7cfbfb4bdc0b4cfb4d92e246e257320bec6c0ccc5dbc0bb20bcd2b8f0c7cfbfb4bdc0b4cfb4d92e",
-      "target": "获得%s。$n消耗%s。",
+      "target": "获得%s$n消耗%s",
       "display_domain": "game_native_font",
       "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
     },
     {
       "offset": 901824,
       "expected_hex": "257320bec6c0ccc5dbc0bb20c8b9b5e6c7cfbfb4bdc0b4cfb4d92e",
-      "target": "获得%s。",
+      "target": "获得%s",
       "display_domain": "game_native_font",
       "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
     },
     {
       "offset": 923948,
       "expected_hex": "2573202d20c4abb8a3c5b8b8a620bcb1c5c3c7cfbdc3bfc02e",
-      "target": "%s：请选择卡尔塔。",
+      "target": "%s：请选择卡尔塔",
       "display_domain": "game_native_font",
       "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
     },
     {
       "offset": 924976,
       "expected_hex": "f2a23cc1f63e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
-      "target": "地<地>卡尔塔亲和度增加%d。",
+      "target": "地<地>卡尔塔亲和度增加%d",
       "display_domain": "game_native_font",
       "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
     },
     {
       "offset": 925020,
       "expected_hex": "fbfd3cc8ad3e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
-      "target": "火<火>卡尔塔亲和度增加%d。",
+      "target": "火<火>卡尔塔亲和度增加%d",
       "display_domain": "game_native_font",
       "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
     },
     {
       "offset": 925064,
       "expected_hex": "f9a63cc7b33e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
-      "target": "风<风>卡尔塔亲和度增加%d。",
+      "target": "风<风>卡尔塔亲和度增加%d",
       "display_domain": "game_native_font",
       "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
     },
     {
       "offset": 925108,
       "expected_hex": "e4de3cbecf3e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
-      "target": "暗<暗>卡尔塔亲和度增加%d。",
+      "target": "暗<暗>卡尔塔亲和度增加%d",
       "display_domain": "game_native_font",
       "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
     },
     {
       "offset": 925152,
       "expected_hex": "e2a93cbcf63e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
-      "target": "水<水>卡尔塔亲和度增加%d。",
+      "target": "水<水>卡尔塔亲和度增加%d",
       "display_domain": "game_native_font",
       "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
     },
     {
       "offset": 925196,
       "expected_hex": "efb33cc0fc3e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
-      "target": "雷<雷>卡尔塔亲和度增加%d。",
+      "target": "雷<雷>卡尔塔亲和度增加%d",
       "display_domain": "game_native_font",
       "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
     },
     {
       "offset": 925240,
       "expected_hex": "cec33cb1a43e20c4abb8a3c5b8c0c720c4a3c8adb5b5b0a120256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e",
-      "target": "光<光>卡尔塔亲和度增加%d。",
+      "target": "光<光>卡尔塔亲和度增加%d",
       "display_domain": "game_native_font",
       "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
     },
     {
       "offset": 925284,
       "expected_hex": "2573246ec3bcb7c2c0cc20256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e246eb0f8b0ddb7c2c0cc20256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e246eb9e6beeeb7c2c0cc20256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e246ec1f6b7c2c0cc20256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e246eb9cec3b8bcbac0cc20256420c1f5b0a1c7cfbfb4bdc0b4cfb4d92e246e2573",
-      "target": "%s$n体力增加%d。$n攻击力增加%d。$n防御力增加%d。$n智力增加%d。$n敏捷增加%d。$n%s",
+      "target": "%s$n体力增加%d$n攻击力增加%d$n防御力增加%d$n智力增加%d$n敏捷增加%d$n%s",
       "display_domain": "game_native_font",
       "evidence": "已确认sprintf至原生字纹理显示消费链；角括号内韩文为字面元素注音，不是引擎控制标记。"
     }
@@ -119,7 +119,7 @@
           "ordinal": 3,
           "identifier": 4294967295,
           "expected": "스크린 모드를 선택하세요.",
-          "target": "请选择屏幕模式。"
+          "target": "请选择屏幕模式"
         },
         {
           "ordinal": 4,
@@ -137,13 +137,13 @@
           "ordinal": 6,
           "identifier": 4294967295,
           "expected": "드라이버를 선택하세요.",
-          "target": "请选择图形驱动。"
+          "target": "请选择图形驱动"
         },
         {
           "ordinal": 9,
           "identifier": 4294967295,
           "expected": "해상도를 선택하세요",
-          "target": "请选择分辨率。"
+          "target": "请选择分辨率"
         },
         {
           "ordinal": 11,
@@ -173,7 +173,7 @@
           "ordinal": 15,
           "identifier": 4294967295,
           "expected": "스피커를 선택하세요.",
-          "target": "请选择扬声器。"
+          "target": "请选择扬声器"
         },
         {
           "ordinal": 16,

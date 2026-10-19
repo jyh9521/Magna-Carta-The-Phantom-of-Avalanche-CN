@@ -181,3 +181,11 @@ add_executable(rigid_motion_fixture rigid_motion_fixture.cpp motion60.cpp render
 target_compile_definitions(rigid_motion_fixture PRIVATE MOTION60_TEST)
 set_property(TARGET rigid_motion_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 target_compile_options(rigid_motion_fixture PRIVATE /W4 /utf-8)
+
+# Native dialogue reveal preserves the original control-code layout and page boundary.
+target_sources(workspace_profile PRIVATE dialogue_reveal.cpp)
+add_executable(dialogue_reveal_fixture dialogue_reveal_fixture.cpp dialogue_reveal.cpp)
+target_compile_definitions(dialogue_reveal_fixture PRIVATE DIALOGUE_REVEAL_TEST)
+target_compile_options(dialogue_reveal_fixture PRIVATE /W4 /utf-8)
+set_property(TARGET dialogue_reveal_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded")
+target_link_libraries(dialogue_reveal_fixture PRIVATE user32)

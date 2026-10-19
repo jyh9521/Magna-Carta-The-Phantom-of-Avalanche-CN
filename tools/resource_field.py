@@ -7,6 +7,7 @@ import struct
 from pathlib import Path
 
 ENGINE_SHA256 = '5c701de93af6267b959c49e6927bee525bc0f3c68c8c6f51413515d13809d427'
+ENGINE_SHA256S = frozenset([ENGINE_SHA256, '7e8649425217d3b99d52d11c679761a88c57b125c241b331aea5c25e00e3b15e'])
 
 
 class Reader:
@@ -82,7 +83,7 @@ def parse(data):
 
 def audit(source, maps, engine):
     engine_before = hashlib.sha256(engine.read_bytes()).hexdigest()
-    if engine_before != ENGINE_SHA256:
+    if engine_before not in ENGINE_SHA256S:
         raise ValueError('Unsupported Field loader image')
     map_ids = {int(p.stem) for p in maps.glob('*.wrd') if p.stem.isdigit()}
     accepted, rejected = [], []

@@ -91,7 +91,7 @@ def run_replay(image):
     result = n.keyboard(0, counter=0)
     _require(n.events.count(10) == 2 and 14 not in n.events, 'Original Down idle route changed')
     record('original_down_idle_route', n, result, up_idle_event_10_count=2, down_idle_event_14_count=0)
-    return {'schema': 1, 'sample_sha256': SUPPORTED_SHA, 'cases': cases,
+    return {'schema': 1, 'sample_sha256': hashlib.sha256(image).hexdigest(), 'cases': cases,
             'native_instructions': total, 'listener': 'boundary_recorder', 'game_started': False,
             'not_proven': ['physical Xbox', 'rendered selection', 'actual scene listener behavior']}
 
@@ -105,7 +105,7 @@ def main():
                         (args.report.exists() and args.report.samefile(args.sample))):
         parser.error('Report must differ from the sample path')
     report = run_replay(args.sample.read_bytes())
-    if hashlib.sha256(args.sample.read_bytes()).hexdigest() != SUPPORTED_SHA:
+    if hashlib.sha256(args.sample.read_bytes()).hexdigest() != report['sample_sha256']:
         raise ReplayError('Sample changed during replay')
     if args.report:
         args.report.parent.mkdir(parents=True, exist_ok=True)

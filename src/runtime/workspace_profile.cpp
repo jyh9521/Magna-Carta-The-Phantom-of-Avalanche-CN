@@ -8,6 +8,7 @@
 #include "texture_lifetime.h"
 #include "focus_guard.h"
 #include "native_text_step.h"
+#include "dialogue_reveal.h"
 #include "native_font.h"
 #include "system_messages.h"
 #include "modern_gamepad.h"
@@ -186,6 +187,8 @@ void patch(HMODULE module) {
             ExitProcess(125);
         }
         trace(L"NATIVE_TEXT_STEP_READY");
+        wchar_t reveal[8]{};
+        if(!(GetEnvironmentVariableW(L"MC_DIALOGUE_REVEAL",reveal,8)==1 && reveal[0]==L'0') && !installDialogueReveal(module,trace)){trace(L"DIALOGUE_REVEAL_REJECTED");ExitProcess(125);}
     }
     wchar_t windowMode[8]{};
     if(!_wcsicmp(base,L"MCAlpha.dll") && GetEnvironmentVariableW(L"MC_WINDOWED",windowMode,8)==1 && windowMode[0]==L'1'){

@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "terminal": "。",
+  "line_separators": ["$n", "\n", "\r\n"],
+  "retain_if_contains": ["，", ",", "。", "！", "!", "？", "?", "；", ";", "……"],
+  "domains": [
+    {"file": "text/fixed-tables.json", "id_prefix": "Itm/", "context": "inventory_item", "evidence": "ITM fixed display names/descriptions; fixed-field-decisions.json"},
+    {"file": "text-domain-plans.json", "pointer_prefixes": ["/native_fields/", "/dialogs/"], "context": "native_notification_or_configuration_prompt", "evidence": "Existing native display consumer and UTF-16 dialog plans"},
+    {"file": "system-message-plans.json", "pointer_prefixes": ["/fields/"], "context": "system_message", "evidence": "Existing MessageBoxA consumer plans"},
+    {"file": "image-text-plans.json", "context": "menu_image_prompt", "evidence": "Existing resource-bound UI image masks; narrative images are in image-group-plans.json"}
+  ],
+  "excluded_contexts": ["FPB character dialogue", "opening narrative image groups", "video subtitles", "reference terms and original source text"]
+}

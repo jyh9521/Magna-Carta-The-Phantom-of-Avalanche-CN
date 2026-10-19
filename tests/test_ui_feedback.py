@@ -26,7 +26,7 @@ class FeedbackLayoutTests(unittest.TestCase):
             for rect in plan['erase_rects_xyxy']:
                 self.assertGreaterEqual(rect[1], top+1)
                 self.assertLessEqual(rect[3], bottom-1)
-        tip = next(p for p in row['plans'] if p.get('target')=='请调整音量。')
+        tip = next(p for p in row['plans'] if p.get('target')=='请调整音量')
         self.assertIn([90,144,166,157],tip['erase_rects_xyxy'])
 
 
