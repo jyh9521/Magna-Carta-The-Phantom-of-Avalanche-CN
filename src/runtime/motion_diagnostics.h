@@ -20,7 +20,7 @@ class Diagnostics {
  bool started_=false;
  DiagnosticWindow window_{};
 public:
- bool enabled() const {return reports_<120;}
+ bool enabled() const {return true;}
  void reset(){owner_=0;start_=0;reports_=0;started_=false;window_={};}
  void clock(uintptr_t owner,unsigned updates,bool generationChanged,bool valid,uint32_t now,unsigned jobRva){
   if(!started_){start_=now;started_=true;}
@@ -43,8 +43,9 @@ public:
  }
  void skippedWorld(){++window_.worldSkipped;}
  bool take(uint32_t now,DiagnosticWindow& out){
-  if(!started_||reports_>=120||uint32_t(now-start_)<1000)return false;
-  out=window_;window_={};start_=now;++reports_;return true;
+  // Retain rare late-session evidence without per-second logging forever.
+  if(!started_||uint32_t(now-start_)<(reports_<120?1000u:10000u))return false;
+  out=window_;window_={};start_=now;if(reports_<120)++reports_;return true;
  }
 };
 }

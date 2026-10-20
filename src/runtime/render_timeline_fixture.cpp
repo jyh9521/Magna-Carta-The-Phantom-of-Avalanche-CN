@@ -1,4 +1,5 @@
 #include "render_timeline.h"
+#include "motion_diagnostics.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
@@ -130,5 +131,10 @@ int main(){
   TransformTrack strictCamera;auto cameraBypass=strictCamera.sample(modelNext,modelPhase,true);
   require(!memcmp(&cameraBypass,&modelNext,sizeof(modelNext))&&strictCamera.observation().unsupported,"affine model support must not widen camera admission");
  }
+ Diagnostics late;DiagnosticWindow window{};
+ for(unsigned i=0;i<120;++i){late.clock(1,1,false,true,i*1000,0);require(late.take((i+1)*1000,window),"initial diagnostic window");}
+ require(late.enabled(),"rare eye symptom still observable after first 120 windows");
+ late.clock(1,1,false,true,121000,0);require(!late.take(121000,window),"late diagnostics throttled");
+ late.clock(1,1,false,true,130000,0);require(late.take(130000,window)&&window.clocks==2,"late diagnostic window retains counters");
  std::printf("RENDER_TIMELINE_FIXTURE PASS checks=%d world=true rotation=true camera=true phase=engine_remainder logic_events=unchanged game_started=false\n",checks);
 }

@@ -125,3 +125,7 @@ game_native_font、UTF-16 RT_DIALOG与MessageBoxA分别处理。13处原生字�
 无盘启动候选：5字节源摘要锁定补丁、光驱检查模型、隔离入口及独立副本回滚见[DISC_GATE.md](docs/DISC_GATE.md)。游戏未启动，完整无盘游玩尚未验收；未挂载镜像或修改保护驱动。
 
 原生BGRA字形覆盖与18字节保存地点完整加载/保存/显示链已核对，见[显示反馈修正](docs/UI_READABILITY_FIX.md)。磁盘商业模块不变，自有profile只在版本锁定进程内安装适配。
+
+## 战斗菜单宽度断言（2026-10-20）
+
+资源变体选择与宽屏画布分离，两处源锁CMP改读原生物理宽度。原指令复现Line169、生产比较回归、晚期动作诊断及验收边界见[战斗菜单调查](docs/BATTLE_MENU_WIDTH_ASSERTION.md)。
