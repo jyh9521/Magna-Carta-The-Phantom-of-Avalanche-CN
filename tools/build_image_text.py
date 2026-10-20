@@ -21,7 +21,83 @@ def rectangle(value, width, height):
     return tuple(value)
 
 
-def render(image, plans, font_path):
+def erasable(pixel, mode):
+    """The same policy applies to both explicit cleanup and layout cleanup."""
+    if mode not in ('all_pixels', 'neutral_ink', 'nontransparent', 'overlay'):
+        raise ValueError('unsupported image text erase mode')
+    return (mode != 'overlay' and
+            (mode == 'all_pixels' or pixel[3] != 0) and
+            (mode != 'neutral_ink' or max(pixel[:3]) - min(pixel[:3]) <= 8))
+
+
+def references(plans, source, snapshots):
+    """Load explicitly hash-bound background donors, never inferred neighbours."""
+    result = {}
+    for plan in plans:
+        for repair in plan.get('background_repairs', []):
+            name = repair.get('resource')
+            if name is None:
+                continue
+            if not isinstance(name, str) or '\\' in name or ':' in name:
+                raise ValueError('invalid background donor path')
+            rel = PurePosixPath(name)
+            if rel.is_absolute() or '..' in rel.parts or rel.as_posix() != name:
+                raise ValueError('noncanonical background donor path')
+            path = source/rel
+            if path.is_symlink() or not path.resolve(strict=True).is_relative_to(source):
+                raise ValueError('linked background donor')
+            raw = path.read_bytes()
+            if digest(raw) != repair.get('source_sha256'):
+                raise ValueError('background donor digest mismatch')
+            snapshots[path] = raw
+            result[name] = parse(raw)
+    return result
+
+
+def repair_background(original, result, plans, covered, donors):
+    """Reconstruct reviewed chrome using explicit copies/samples, before text."""
+    from PIL import Image
+    for plan in plans:
+        repairs = plan.get('background_repairs', [])
+        if not isinstance(repairs, list):
+            raise ValueError('invalid background repair list')
+        for repair in repairs:
+            box = rectangle(repair['xyxy'], *original.size)
+            if any((x,y) not in covered for y in range(box[1],box[3]) for x in range(box[0],box[2])):
+                raise ValueError('background repair exceeds cleanup footprints')
+            donor = original
+            if repair.get('resource'):
+                image = donors[repair['resource']]
+                donor = Image.frombytes('RGBA', (image.width,image.height), image.rgba())
+            mode = repair.get('mode', 'copy')
+            if mode == 'copy':
+                src = rectangle(repair['source_xyxy'], *donor.size)
+                if (src[2]-src[0],src[3]-src[1]) != (box[2]-box[0],box[3]-box[1]):
+                    raise ValueError('background copy size mismatch')
+                piece = donor.crop(src)
+                for axis, transpose in [('flip_x',Image.Transpose.FLIP_LEFT_RIGHT),('flip_y',Image.Transpose.FLIP_TOP_BOTTOM)]:
+                    flag = repair.get(axis,False)
+                    if type(flag) is not bool:
+                        raise ValueError('invalid background reflection')
+                    if flag:
+                        piece = piece.transpose(transpose)
+                result.paste(piece, box[:2])  # Exact RGBA copy, not double alpha blending.
+            elif mode in ('solid','row_sample','column_sample'):
+                anchor = repair.get('anchor')
+                if (not isinstance(anchor,list) or len(anchor)!=2 or any(type(v) is not int for v in anchor)
+                        or not 0<=anchor[0]<donor.width or not 0<=anchor[1]<donor.height):
+                    raise ValueError('invalid background repair anchor')
+                for y in range(box[1],box[3]):
+                    for x in range(box[0],box[2]):
+                        point = tuple(anchor) if mode=='solid' else (anchor[0],y) if mode=='row_sample' else (x,anchor[1])
+                        if not 0<=point[0]<donor.width or not 0<=point[1]<donor.height:
+                            raise ValueError('background sample exceeds donor')
+                        result.putpixel((x,y),donor.getpixel(point))
+            else:
+                raise ValueError('unsupported background repair mode')
+
+
+def render(image, plans, font_path, donors=None):
     from PIL import Image, ImageDraw, ImageFont
     from fontTools.ttLib import TTFont
     outline = TTFont(font_path)
@@ -42,6 +118,11 @@ def render(image, plans, font_path):
         if not isinstance(regions, list) or not regions:
             raise ValueError('empty reviewed source cleanup footprint')
         anchor = plan['background_anchor']
+        erase = plan.get('erase_mode', 'all_pixels')
+        erasable((0, 0, 0, 0), erase)  # Validate even an empty/transparent mask.
+        preserve_alpha = plan.get('preserve_background_alpha', False)
+        if type(preserve_alpha) is not bool:
+            raise ValueError('invalid background alpha policy')
         mode = plan.get('background_mode', 'solid')
         if mode not in ('solid', 'row_sample', 'column_sample'):
             raise ValueError('unsupported cleanup background mode')
@@ -52,9 +133,23 @@ def render(image, plans, font_path):
             rect = rectangle(region,image.width,image.height)
             for y in range(rect[1],rect[3]):
                 for x in range(rect[0],rect[2]):
-                    point = tuple(anchor) if mode=='solid' else (anchor[0],y) if mode=='row_sample' else (x,anchor[1])
-                    result.putpixel((x,y),original.getpixel(point))
                     covered.add((x,y))
+                    if not erasable(original.getpixel((x,y)), erase):
+                        continue
+                    point = tuple(anchor) if mode=='solid' else (anchor[0],y) if mode=='row_sample' else (x,anchor[1])
+                    pixel = original.getpixel(point)
+                    if preserve_alpha:
+                        pixel = (*pixel[:3], original.getpixel((x,y))[3])
+                    result.putpixel((x,y),pixel)
+    repair_background(original, result, plans, covered, donors or {})
+    protected = set()
+    for plan in plans:
+        for value in plan.get('protected_rects_xyxy', []):
+            rect = rectangle(value,image.width,image.height)
+            for y in range(rect[1],rect[3]):
+                for x in range(rect[0],rect[2]):
+                    result.putpixel((x,y),original.getpixel((x,y)))
+                    protected.add((x,y))
     layout_covered = set()
     for plan in plans:
         box = rectangle(plan['mask_xyxy'], image.width, image.height)
@@ -94,9 +189,7 @@ def render(image, plans, font_path):
                 old = original.getpixel((x, y))
                 if erase == 'overlay' or 'erase_rects_xyxy' in plan:
                     continue
-                if erase == 'nontransparent' and old[3] == 0:
-                    continue
-                if erase == 'neutral_ink' and (old[3] == 0 or max(old[:3]) - min(old[:3]) > 8):
+                if not erasable(old, erase):
                     continue
                 point = tuple(anchor) if mode == 'solid' else (anchor[0], y) if mode == 'row_sample' else (x, anchor[1])
                 result.putpixel((x, y), original.getpixel(point))
@@ -165,6 +258,9 @@ def render(image, plans, font_path):
         records.append(dict(target=text, mask_xyxy=list(box), erase_rects_xyxy=plan.get('erase_rects_xyxy'), size=size,
                             measured_pixels=[w, h], rotation=rotation, flow=flow, fit=True))
     before, after = original.tobytes(), result.tobytes()
+    if any(before[(y*image.width+x)*4:(y*image.width+x)*4+4] !=
+           after[(y*image.width+x)*4:(y*image.width+x)*4+4] for x,y in protected):
+        raise ValueError('text overlaps protected artwork')
     for i in range(image.width * image.height):
         if (i % image.width, i // image.width) not in covered and before[i*4:i*4+4] != after[i*4:i*4+4]:
             raise ValueError('render modifies a pixel outside the approved masks')
@@ -214,7 +310,8 @@ def build(source, plans_path, font_path, font_sha256, output):
         plans = resource.get('plans')
         if not isinstance(plans, list) or not plans:
             raise ValueError('image has no reviewed target plans')
-        rewritten, text_records, preview = render(image, plans, font_path)
+        donors = references(plans, source, originals)
+        rewritten, text_records, preview = render(image, plans, font_path, donors)
         if parse(rewritten).rgba() != preview.tobytes():
             raise ValueError('image pixel readback mismatch')
         originals[path] = original; results[name] = rewritten; previews[name] = preview

@@ -1,5 +1,15 @@
 # 文件格式
 
+## 图片清理与跨块标题计划（2026-10-20）
+
+`erase_rects_xyxy` 是半开旧字清理区，与 `mask_xyxy` 的新字排版区分离，两者使用
+同一 `erase_mode`。`preserve_background_alpha` 仅保留清理目标的源 alpha；
+`background_repairs` 在清理区内按显式源矩形拷贝/镜像 RGBA 或按行/列采样。
+跨图捐赠资源包含路径与整份 `source_sha256`；`protected_rects_xyxy` 要求最终像素
+与源相同，文字重叠拒绝发布。这些字段是自有构建计划，不改变 BGR 包装或 FDI。
+0155–0164 的五个题头按 512×256 原坐标拼合后一次排版，再裁回原 256×256 块；
+资源标识、包装、头尾、尺寸不改。证据见 [图片结构修复](IMAGE_INTEGRITY_REPAIR.md)。
+
 ## SGC1：自有缩放覆盖缓存（非游戏文件）
 
 小端：`magic[4]="SGC1"`，u32版本=1、逻辑高度、栅格倍数、字形数，头共20字节。

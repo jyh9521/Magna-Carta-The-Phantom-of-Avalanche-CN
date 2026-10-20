@@ -166,6 +166,65 @@ class ImageTextBuildTests(unittest.TestCase):
         raw,_,_=m.render(image,[self.plan],self.font)
         self.assertEqual(parse(raw).rgba()[i:i+4],bytes([255,128,0,0]))
 
+    def test_explicit_cleanup_respects_transparent_corners(self):
+        image=parse(self.raw);rgba=bytearray(image.rgba());i=(6*80+6)*4
+        rgba[i:i+4]=bytes([255,128,0,0]);image=image.replace_rgba(rgba)
+        self.plan.update(erase_mode='nontransparent',erase_rects_xyxy=[[5,5,75,35]])
+        raw,_,_=m.render(image,[self.plan],self.font)
+        self.assertEqual(parse(raw).rgba()[i:i+4],bytes([255,128,0,0]))
+
+    def test_explicit_neutral_cleanup_preserves_colored_chrome(self):
+        image=parse(self.raw);rgba=bytearray(image.rgba());i=(6*80+6)*4
+        rgba[i:i+4]=bytes([255,128,0,255]);image=image.replace_rgba(rgba)
+        self.plan.update(erase_mode='neutral_ink',erase_rects_xyxy=[[5,5,75,35]])
+        raw,_,_=m.render(image,[self.plan],self.font)
+        self.assertEqual(parse(raw).rgba()[i:i+4],bytes([255,128,0,255]))
+
+    def test_rounded_background_cleanup_preserves_antialias_alpha(self):
+        image=parse(self.raw);rgba=bytearray(image.rgba());i=(6*80+6)*4
+        rgba[i:i+4]=bytes([255,128,0,37]);image=image.replace_rgba(rgba)
+        self.plan.update(erase_mode='nontransparent',preserve_background_alpha=True,
+                         erase_rects_xyxy=[[5,5,75,35]])
+        raw,_,_=m.render(image,[self.plan],self.font)
+        self.assertEqual(parse(raw).rgba()[i+3],37)
+
+    def test_background_copy_reflects_rgba_without_double_alpha(self):
+        image=parse(self.raw);rgba=bytearray(image.rgba())
+        for y in range(2):
+            for x in range(2):
+                i=(y*80+x)*4;rgba[i:i+4]=bytes([x*80,y*80,44,37])
+        image=image.replace_rgba(rgba)
+        self.plan.update(erase_rects_xyxy=[[5,5,75,35]],background_repairs=[
+            dict(xyxy=[6,6,8,8],source_xyxy=[0,0,2,2],flip_y=True)])
+        _,_,preview=m.render(image,[self.plan],self.font)
+        self.assertEqual(preview.getpixel((6,6)),(0,80,44,37))
+        self.assertEqual(preview.getpixel((7,7)),(80,0,44,37))
+
+    def test_background_repair_is_confined_to_reviewed_cleanup(self):
+        self.plan.update(erase_rects_xyxy=[[5,5,75,35]],background_repairs=[
+            dict(xyxy=[0,0,2,2],source_xyxy=[0,0,2,2])])
+        with self.assertRaisesRegex(ValueError,'exceeds cleanup'):
+            m.render(parse(self.raw),[self.plan],self.font)
+
+    def test_protected_artwork_rejects_text_overlap_not_silent_clipping(self):
+        self.plan.update(protected_rects_xyxy=[self.plan['mask_xyxy']])
+        with self.assertRaisesRegex(ValueError,'overlaps protected'):
+            m.render(parse(self.raw),[self.plan],self.font)
+
+    def test_background_donor_hash_and_path_are_guarded(self):
+        for name,sha in [('fixture.bgr','0'*64),('../fixture.bgr',m.digest(self.raw))]:
+            self.plan.update(erase_rects_xyxy=[[5,5,75,35]],background_repairs=[
+                dict(xyxy=[6,6,8,8],source_xyxy=[0,0,2,2],resource=name,source_sha256=sha)])
+            with self.assertRaises(ValueError):self.build()
+            self.assertFalse(self.output.exists())
+
+    def test_copy_geometry_and_policy_are_validated(self):
+        for repair in [dict(xyxy=[6,6,8,8],source_xyxy=[0,0,3,3]),
+                       dict(xyxy=[6,6,8,8],source_xyxy=[0,0,2,2],flip_y=1),
+                       dict(xyxy=[6,6,8,8],mode='unknown')]:
+            self.plan.update(erase_rects_xyxy=[[5,5,75,35]],background_repairs=[repair])
+            with self.assertRaises(ValueError):m.render(parse(self.raw),[self.plan],self.font)
+
     def test_rotated_label_fits_mask_and_retains_headers(self):
         self.plan.update(target='Side',mask_xyxy=[5,5,25,35],rotation=90)
         r=self.build()

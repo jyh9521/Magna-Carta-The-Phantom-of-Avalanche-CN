@@ -1345,13 +1345,13 @@
         {
           "target": "特殊技能",
           "mask_xyxy": [
+            8,
             0,
-            0,
-            149,
+            140,
             27
           ],
           "background_anchor": [
-            90,
+            140,
             0
           ],
           "font_size": 18,
@@ -1365,14 +1365,29 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              6,
               0,
-              0,
-              149,
-              27
+              142,
+              31
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                6,
+                27,
+                142,
+                31
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                70,
+                0
+              ]
+            }
           ]
         },
         {
@@ -1380,12 +1395,12 @@
           "mask_xyxy": [
             76,
             27,
-            154,
-            46
+            149,
+            48
           ],
           "background_anchor": [
-            150,
-            44
+            70,
+            0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
@@ -1397,14 +1412,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               76,
               27,
               154,
-              46
+              48
+            ],
+            [
+              142,
+              23,
+              154,
+              38
             ]
+          ],
+          "background_mode": "row_sample",
+          "background_repairs": [
+            {
+              "xyxy": [
+                142,
+                23,
+                154,
+                38
+              ],
+              "source_xyxy": [
+                142,
+                8,
+                154,
+                23
+              ],
+              "flip_y": true
+            }
           ]
         }
       ]
@@ -1416,13 +1455,13 @@
         {
           "target": "特殊技能",
           "mask_xyxy": [
+            8,
             0,
-            0,
-            149,
+            140,
             27
           ],
           "background_anchor": [
-            90,
+            140,
             0
           ],
           "font_size": 18,
@@ -1436,14 +1475,29 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              6,
               0,
-              0,
-              149,
-              27
+              142,
+              31
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                6,
+                27,
+                142,
+                31
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                70,
+                0
+              ]
+            }
           ]
         },
         {
@@ -1451,12 +1505,12 @@
           "mask_xyxy": [
             76,
             27,
-            154,
-            46
+            149,
+            48
           ],
           "background_anchor": [
-            150,
-            44
+            70,
+            0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
@@ -1468,14 +1522,38 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               76,
               27,
               154,
-              46
+              48
+            ],
+            [
+              142,
+              23,
+              154,
+              38
             ]
+          ],
+          "background_mode": "row_sample",
+          "background_repairs": [
+            {
+              "xyxy": [
+                142,
+                23,
+                154,
+                38
+              ],
+              "source_xyxy": [
+                142,
+                8,
+                154,
+                23
+              ],
+              "flip_y": true
+            }
           ]
         }
       ]
@@ -1487,13 +1565,13 @@
         {
           "target": "状态",
           "mask_xyxy": [
+            8,
             0,
-            0,
-            149,
+            140,
             27
           ],
           "background_anchor": [
-            90,
+            140,
             0
           ],
           "font_size": 18,
@@ -1507,14 +1585,29 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              6,
               0,
-              0,
-              149,
-              27
+              142,
+              31
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                6,
+                27,
+                142,
+                31
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                70,
+                0
+              ]
+            }
           ]
         },
         {
@@ -1522,12 +1615,12 @@
           "mask_xyxy": [
             76,
             27,
-            154,
-            46
+            149,
+            48
           ],
           "background_anchor": [
-            150,
-            44
+            70,
+            0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
@@ -1539,26 +1632,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               76,
               27,
               154,
-              46
+              48
             ],
             [
-              93,
-              31,
-              122,
-              47
-            ],
-            [
-              144,
-              31,
-              149,
-              47
+              142,
+              23,
+              154,
+              38
             ]
+          ],
+          "background_mode": "row_sample",
+          "background_repairs": [
+            {
+              "xyxy": [
+                142,
+                23,
+                154,
+                38
+              ],
+              "source_xyxy": [
+                142,
+                8,
+                154,
+                23
+              ],
+              "flip_y": true
+            }
           ]
         }
       ]
@@ -1570,13 +1675,13 @@
         {
           "target": "状态",
           "mask_xyxy": [
+            8,
             0,
-            0,
-            149,
+            140,
             27
           ],
           "background_anchor": [
-            90,
+            140,
             0
           ],
           "font_size": 18,
@@ -1590,14 +1695,29 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              6,
               0,
-              0,
-              149,
-              27
+              142,
+              31
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                6,
+                27,
+                142,
+                31
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                70,
+                0
+              ]
+            }
           ]
         },
         {
@@ -1605,12 +1725,12 @@
           "mask_xyxy": [
             76,
             27,
-            154,
-            46
+            149,
+            48
           ],
           "background_anchor": [
-            150,
-            44
+            70,
+            0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
@@ -1622,26 +1742,38 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               76,
               27,
               154,
-              46
+              48
             ],
             [
-              93,
-              31,
-              122,
-              47
-            ],
-            [
-              144,
-              31,
-              149,
-              47
+              142,
+              23,
+              154,
+              38
             ]
+          ],
+          "background_mode": "row_sample",
+          "background_repairs": [
+            {
+              "xyxy": [
+                142,
+                23,
+                154,
+                38
+              ],
+              "source_xyxy": [
+                142,
+                8,
+                154,
+                23
+              ],
+              "flip_y": true
+            }
           ]
         }
       ]
@@ -1653,13 +1785,13 @@
         {
           "target": "启示",
           "mask_xyxy": [
+            8,
             0,
-            0,
-            149,
+            140,
             27
           ],
           "background_anchor": [
-            87,
+            140,
             0
           ],
           "font_size": 18,
@@ -1673,14 +1805,29 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              6,
               0,
-              0,
-              149,
-              27
+              142,
+              31
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                6,
+                27,
+                142,
+                31
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                70,
+                0
+              ]
+            }
           ]
         },
         {
@@ -1688,12 +1835,12 @@
           "mask_xyxy": [
             76,
             27,
-            154,
-            46
+            149,
+            48
           ],
           "background_anchor": [
-            150,
-            44
+            70,
+            0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
@@ -1705,14 +1852,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               76,
               27,
               154,
-              46
+              48
+            ],
+            [
+              142,
+              23,
+              154,
+              38
             ]
+          ],
+          "background_mode": "row_sample",
+          "background_repairs": [
+            {
+              "xyxy": [
+                142,
+                23,
+                154,
+                38
+              ],
+              "source_xyxy": [
+                142,
+                8,
+                154,
+                23
+              ],
+              "flip_y": true
+            }
           ]
         }
       ]
@@ -1724,13 +1895,13 @@
         {
           "target": "启示",
           "mask_xyxy": [
+            8,
             0,
-            0,
-            149,
+            140,
             27
           ],
           "background_anchor": [
-            90,
+            140,
             0
           ],
           "font_size": 18,
@@ -1744,14 +1915,29 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              6,
               0,
-              0,
-              149,
-              27
+              142,
+              31
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                6,
+                27,
+                142,
+                31
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                70,
+                0
+              ]
+            }
           ]
         },
         {
@@ -1759,12 +1945,12 @@
           "mask_xyxy": [
             76,
             27,
-            154,
-            46
+            149,
+            48
           ],
           "background_anchor": [
-            150,
-            44
+            70,
+            0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
@@ -1776,14 +1962,38 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               76,
               27,
               154,
-              46
+              48
+            ],
+            [
+              142,
+              23,
+              154,
+              38
             ]
+          ],
+          "background_mode": "row_sample",
+          "background_repairs": [
+            {
+              "xyxy": [
+                142,
+                23,
+                154,
+                38
+              ],
+              "source_xyxy": [
+                142,
+                8,
+                154,
+                23
+              ],
+              "flip_y": true
+            }
           ]
         }
       ]
@@ -1795,13 +2005,13 @@
         {
           "target": "使用物品",
           "mask_xyxy": [
+            8,
             0,
-            0,
-            149,
+            140,
             27
           ],
           "background_anchor": [
-            90,
+            140,
             0
           ],
           "font_size": 18,
@@ -1815,14 +2025,29 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              6,
               0,
-              0,
-              149,
-              27
+              142,
+              31
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                6,
+                27,
+                142,
+                31
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                70,
+                0
+              ]
+            }
           ]
         },
         {
@@ -1830,12 +2055,12 @@
           "mask_xyxy": [
             76,
             27,
-            154,
-            46
+            149,
+            48
           ],
           "background_anchor": [
-            150,
-            44
+            70,
+            0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
@@ -1847,14 +2072,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               76,
               27,
               154,
-              46
+              48
+            ],
+            [
+              142,
+              23,
+              154,
+              38
             ]
+          ],
+          "background_mode": "row_sample",
+          "background_repairs": [
+            {
+              "xyxy": [
+                142,
+                23,
+                154,
+                38
+              ],
+              "source_xyxy": [
+                142,
+                8,
+                154,
+                23
+              ],
+              "flip_y": true
+            }
           ]
         }
       ]
@@ -1866,13 +2115,13 @@
         {
           "target": "使用物品",
           "mask_xyxy": [
+            8,
             0,
-            0,
-            149,
+            140,
             27
           ],
           "background_anchor": [
-            90,
+            140,
             0
           ],
           "font_size": 18,
@@ -1886,14 +2135,29 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              6,
               0,
-              0,
-              149,
-              27
+              142,
+              31
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                6,
+                27,
+                142,
+                31
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                70,
+                0
+              ]
+            }
           ]
         },
         {
@@ -1901,12 +2165,12 @@
           "mask_xyxy": [
             76,
             27,
-            154,
-            46
+            149,
+            48
           ],
           "background_anchor": [
-            150,
-            44
+            70,
+            0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
@@ -1918,14 +2182,38 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               76,
               27,
               154,
-              46
+              48
+            ],
+            [
+              142,
+              23,
+              154,
+              38
             ]
+          ],
+          "background_mode": "row_sample",
+          "background_repairs": [
+            {
+              "xyxy": [
+                142,
+                23,
+                154,
+                38
+              ],
+              "source_xyxy": [
+                142,
+                8,
+                154,
+                23
+              ],
+              "flip_y": true
+            }
           ]
         }
       ]
@@ -1937,13 +2225,13 @@
         {
           "target": "设置",
           "mask_xyxy": [
+            8,
             0,
-            0,
-            149,
+            140,
             27
           ],
           "background_anchor": [
-            90,
+            140,
             0
           ],
           "font_size": 18,
@@ -1957,14 +2245,29 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              6,
               0,
-              0,
-              149,
-              27
+              142,
+              31
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                6,
+                27,
+                142,
+                31
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                70,
+                0
+              ]
+            }
           ]
         },
         {
@@ -1972,12 +2275,12 @@
           "mask_xyxy": [
             76,
             27,
-            154,
-            46
+            149,
+            48
           ],
           "background_anchor": [
-            150,
-            44
+            70,
+            0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
@@ -1989,20 +2292,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               76,
               27,
               154,
-              46
+              48
             ],
             [
-              121,
-              32,
-              149,
-              48
+              142,
+              23,
+              154,
+              38
             ]
+          ],
+          "background_mode": "row_sample",
+          "background_repairs": [
+            {
+              "xyxy": [
+                142,
+                23,
+                154,
+                38
+              ],
+              "source_xyxy": [
+                142,
+                8,
+                154,
+                23
+              ],
+              "flip_y": true
+            }
           ]
         }
       ]
@@ -2014,13 +2335,13 @@
         {
           "target": "设置",
           "mask_xyxy": [
+            8,
             0,
-            0,
-            149,
+            140,
             27
           ],
           "background_anchor": [
-            90,
+            140,
             0
           ],
           "font_size": 18,
@@ -2034,14 +2355,29 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              6,
               0,
-              0,
-              149,
-              27
+              142,
+              31
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                6,
+                27,
+                142,
+                31
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                70,
+                0
+              ]
+            }
           ]
         },
         {
@@ -2049,12 +2385,12 @@
           "mask_xyxy": [
             76,
             27,
-            154,
-            46
+            149,
+            48
           ],
           "background_anchor": [
-            150,
-            44
+            70,
+            0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
@@ -2066,20 +2402,38 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               76,
               27,
               154,
-              46
+              48
             ],
             [
-              121,
-              32,
-              149,
-              48
+              142,
+              23,
+              154,
+              38
             ]
+          ],
+          "background_mode": "row_sample",
+          "background_repairs": [
+            {
+              "xyxy": [
+                142,
+                23,
+                154,
+                38
+              ],
+              "source_xyxy": [
+                142,
+                8,
+                154,
+                23
+              ],
+              "flip_y": true
+            }
           ]
         }
       ]
@@ -2091,13 +2445,13 @@
         {
           "target": "结束回合",
           "mask_xyxy": [
+            8,
             0,
-            0,
-            149,
+            140,
             27
           ],
           "background_anchor": [
-            82,
+            140,
             0
           ],
           "font_size": 18,
@@ -2111,14 +2465,29 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              6,
               0,
-              0,
-              149,
-              27
+              142,
+              31
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                6,
+                27,
+                142,
+                31
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                70,
+                0
+              ]
+            }
           ]
         },
         {
@@ -2126,12 +2495,12 @@
           "mask_xyxy": [
             76,
             27,
-            154,
-            46
+            149,
+            48
           ],
           "background_anchor": [
-            150,
-            44
+            70,
+            0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
@@ -2143,26 +2512,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               76,
               27,
               154,
-              46
+              48
             ],
             [
-              121,
-              31,
-              136,
-              47
-            ],
-            [
-              103,
-              31,
-              117,
-              47
+              142,
+              23,
+              154,
+              38
             ]
+          ],
+          "background_mode": "row_sample",
+          "background_repairs": [
+            {
+              "xyxy": [
+                142,
+                23,
+                154,
+                38
+              ],
+              "source_xyxy": [
+                142,
+                8,
+                154,
+                23
+              ],
+              "flip_y": true
+            }
           ]
         }
       ]
@@ -2174,13 +2555,13 @@
         {
           "target": "结束回合",
           "mask_xyxy": [
+            8,
             0,
-            0,
-            149,
+            140,
             27
           ],
           "background_anchor": [
-            87,
+            140,
             0
           ],
           "font_size": 18,
@@ -2194,14 +2575,29 @@
             255
           ],
           "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              6,
               0,
-              0,
-              149,
-              27
+              142,
+              31
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                6,
+                27,
+                142,
+                31
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                70,
+                0
+              ]
+            }
           ]
         },
         {
@@ -2209,12 +2605,12 @@
           "mask_xyxy": [
             76,
             27,
-            154,
-            46
+            149,
+            48
           ],
           "background_anchor": [
-            150,
-            44
+            70,
+            0
           ],
           "font_size": 11,
           "minimum_font_size": 9,
@@ -2226,323 +2622,38 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               76,
               27,
               154,
-              46
+              48
             ],
             [
-              121,
-              31,
-              136,
-              47
-            ],
-            [
-              103,
-              31,
-              117,
-              47
+              142,
+              23,
+              154,
+              38
             ]
-          ]
-        }
-      ]
-    },
-    {
-      "resource": "BGR/0155.BGR",
-      "source_sha256": "23af87bb932e9ad70db319c7ea5c3d871ae5ca2e8fcef62b85e5c2b774b8a1f3",
-      "plans": [
-        {
-          "target": "任务",
-          "mask_xyxy": [
-            0,
-            1,
-            256,
-            15
           ],
-          "background_anchor": [
-            8,
-            2
-          ],
-          "font_size": 10,
-          "minimum_font_size": 8,
-          "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "align": "right",
-          "erase_mode": "nontransparent",
-          "erase_rects_xyxy": [
-            [
-              0,
-              1,
-              256,
-              15
-            ]
-          ]
-        }
-      ]
-    },
-    {
-      "resource": "BGR/0156.BGR",
-      "source_sha256": "98baa354e6e60a270004af52f63e87b359fdb69f5c9ef9326ba378daa43f9e72",
-      "plans": [
-        {
-          "target": "问题",
-          "mask_xyxy": [
-            0,
-            1,
-            256,
-            15
-          ],
-          "background_anchor": [
-            0,
-            2
-          ],
-          "font_size": 10,
-          "minimum_font_size": 8,
-          "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "align": "right",
-          "erase_mode": "nontransparent",
-          "erase_rects_xyxy": [
-            [
-              0,
-              1,
-              256,
-              15
-            ]
-          ]
-        }
-      ]
-    },
-    {
-      "resource": "BGR/0157.BGR",
-      "source_sha256": "21029033de99887a8db29c618ad7ea06c3ee58bcae28cf461eb51156b4b5e9a7",
-      "plans": [
-        {
-          "target": "答案",
-          "mask_xyxy": [
-            0,
-            1,
-            256,
-            15
-          ],
-          "background_anchor": [
-            8,
-            2
-          ],
-          "font_size": 10,
-          "minimum_font_size": 8,
-          "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "align": "right",
-          "erase_mode": "nontransparent",
-          "erase_rects_xyxy": [
-            [
-              0,
-              1,
-              256,
-              15
-            ]
-          ]
-        }
-      ]
-    },
-    {
-      "resource": "BGR/0158.BGR",
-      "source_sha256": "2036a54cd0ad0b24359e51c9052b2d5117206257e44cd802f6b591a8d4052fef",
-      "plans": [
-        {
-          "target": "武器",
-          "mask_xyxy": [
-            0,
-            1,
-            256,
-            15
-          ],
-          "background_anchor": [
-            0,
-            2
-          ],
-          "font_size": 10,
-          "minimum_font_size": 8,
-          "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "align": "right",
-          "erase_mode": "nontransparent",
-          "erase_rects_xyxy": [
-            [
-              0,
-              1,
-              256,
-              15
-            ]
-          ]
-        }
-      ]
-    },
-    {
-      "resource": "BGR/0160.BGR",
-      "source_sha256": "599f00fe8d862cd8ffc27f2b23733ec45a86ab19701275ddeecb96581256668c",
-      "plans": [
-        {
-          "target": "注意",
-          "mask_xyxy": [
-            0,
-            1,
-            256,
-            15
-          ],
-          "background_anchor": [
-            0,
-            2
-          ],
-          "font_size": 10,
-          "minimum_font_size": 8,
-          "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "align": "right",
-          "erase_mode": "nontransparent",
-          "erase_rects_xyxy": [
-            [
-              0,
-              1,
-              256,
-              15
-            ]
-          ]
-        }
-      ]
-    },
-    {
-      "resource": "BGR/0161.BGR",
-      "source_sha256": "555b258e1013e3e2c074ca958436f00f26093ab824c1fb404310ca3db31d4808",
-      "plans": [
-        {
-          "target": "战斗",
-          "mask_xyxy": [
-            0,
-            1,
-            256,
-            15
-          ],
-          "background_anchor": [
-            8,
-            2
-          ],
-          "font_size": 10,
-          "minimum_font_size": 8,
-          "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "align": "right",
-          "erase_mode": "nontransparent",
-          "erase_rects_xyxy": [
-            [
-              0,
-              1,
-              256,
-              15
-            ]
-          ]
-        }
-      ]
-    },
-    {
-      "resource": "BGR/0162.BGR",
-      "source_sha256": "833e14b422a6cbe9bf7a8dd553fcab44b403760dba3d35f13e11ba2865159d7f",
-      "plans": [
-        {
-          "target": "战斗警告",
-          "mask_xyxy": [
-            0,
-            1,
-            256,
-            15
-          ],
-          "background_anchor": [
-            0,
-            2
-          ],
-          "font_size": 10,
-          "minimum_font_size": 8,
-          "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "align": "right",
-          "erase_mode": "nontransparent",
-          "erase_rects_xyxy": [
-            [
-              0,
-              1,
-              256,
-              15
-            ]
-          ]
-        }
-      ]
-    },
-    {
-      "resource": "BGR/0163.BGR",
-      "source_sha256": "43a3c2fa9c2ed10c556e89f798fb3620504306e41c937cfd91ac00df951013eb",
-      "plans": [
-        {
-          "target": "信息",
-          "mask_xyxy": [
-            0,
-            1,
-            256,
-            15
-          ],
-          "background_anchor": [
-            8,
-            2
-          ],
-          "font_size": 10,
-          "minimum_font_size": 8,
-          "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "align": "right",
-          "erase_mode": "nontransparent",
-          "erase_rects_xyxy": [
-            [
-              0,
-              1,
-              256,
-              15
-            ]
-          ]
-        }
-      ]
-    },
-    {
-      "resource": "BGR/0164.BGR",
-      "source_sha256": "5038d8dfc5e1558bcfa1a299763c9f6432132771b6a59ede93ec2e343d98f847",
-      "plans": [
-        {
-          "target": "信息",
-          "mask_xyxy": [
-            0,
-            1,
-            256,
-            15
-          ],
-          "background_anchor": [
-            0,
-            2
-          ],
-          "font_size": 10,
-          "minimum_font_size": 8,
-          "stroke_width": 0,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "align": "right",
-          "erase_mode": "nontransparent",
-          "erase_rects_xyxy": [
-            [
-              0,
-              1,
-              256,
-              15
-            ]
+          "background_mode": "row_sample",
+          "background_repairs": [
+            {
+              "xyxy": [
+                142,
+                23,
+                154,
+                38
+              ],
+              "source_xyxy": [
+                142,
+                8,
+                154,
+                23
+              ],
+              "flip_y": true
+            }
           ]
         }
       ]
@@ -2708,7 +2819,7 @@
           "mask_xyxy": [
             65,
             6,
-            192,
+            186,
             33
           ],
           "background_anchor": [
@@ -2718,7 +2829,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2727,14 +2838,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              65,
-              6,
-              192,
+              124,
+              13,
+              186,
               33
+            ],
+            [
+              65,
+              32,
+              192,
+              34
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                65,
+                32,
+                192,
+                34
+              ],
+              "source_xyxy": [
+                65,
+                32,
+                192,
+                34
+              ],
+              "resource": "BGR/0181.BGR",
+              "source_sha256": "d0803ffd3391acb755bca25050871275dcce516860b481cfa464bb6dd121b87f"
+            }
           ]
         }
       ]
@@ -2748,7 +2883,7 @@
           "mask_xyxy": [
             65,
             6,
-            192,
+            186,
             33
           ],
           "background_anchor": [
@@ -2758,7 +2893,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2767,12 +2902,12 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              65,
-              6,
-              192,
+              124,
+              13,
+              186,
               33
             ]
           ]
@@ -2788,7 +2923,7 @@
           "mask_xyxy": [
             65,
             6,
-            192,
+            186,
             33
           ],
           "background_anchor": [
@@ -2798,7 +2933,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2807,14 +2942,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              65,
-              6,
-              192,
+              137,
+              13,
+              185,
               33
+            ],
+            [
+              65,
+              32,
+              192,
+              34
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                65,
+                32,
+                192,
+                34
+              ],
+              "source_xyxy": [
+                65,
+                32,
+                192,
+                34
+              ],
+              "resource": "BGR/0181.BGR",
+              "source_sha256": "d0803ffd3391acb755bca25050871275dcce516860b481cfa464bb6dd121b87f"
+            }
           ]
         }
       ]
@@ -2828,7 +2987,7 @@
           "mask_xyxy": [
             65,
             6,
-            192,
+            186,
             33
           ],
           "background_anchor": [
@@ -2838,7 +2997,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2847,12 +3006,12 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              65,
-              6,
-              192,
+              137,
+              13,
+              185,
               33
             ]
           ]
@@ -2868,7 +3027,7 @@
           "mask_xyxy": [
             65,
             6,
-            192,
+            186,
             33
           ],
           "background_anchor": [
@@ -2878,7 +3037,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2887,14 +3046,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              65,
-              6,
-              192,
+              138,
+              13,
+              187,
               33
+            ],
+            [
+              65,
+              32,
+              192,
+              34
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                65,
+                32,
+                192,
+                34
+              ],
+              "source_xyxy": [
+                65,
+                32,
+                192,
+                34
+              ],
+              "resource": "BGR/0181.BGR",
+              "source_sha256": "d0803ffd3391acb755bca25050871275dcce516860b481cfa464bb6dd121b87f"
+            }
           ]
         }
       ]
@@ -2908,7 +3091,7 @@
           "mask_xyxy": [
             65,
             6,
-            192,
+            186,
             33
           ],
           "background_anchor": [
@@ -2918,7 +3101,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2927,12 +3110,12 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              65,
-              6,
-              192,
+              138,
+              13,
+              187,
               33
             ]
           ]
@@ -2948,7 +3131,7 @@
           "mask_xyxy": [
             65,
             6,
-            192,
+            186,
             33
           ],
           "background_anchor": [
@@ -2958,7 +3141,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -2967,14 +3150,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              65,
-              6,
-              192,
+              129,
+              13,
+              185,
               33
+            ],
+            [
+              65,
+              32,
+              192,
+              34
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                65,
+                32,
+                192,
+                34
+              ],
+              "source_xyxy": [
+                65,
+                32,
+                192,
+                34
+              ],
+              "resource": "BGR/0181.BGR",
+              "source_sha256": "d0803ffd3391acb755bca25050871275dcce516860b481cfa464bb6dd121b87f"
+            }
           ]
         }
       ]
@@ -2988,7 +3195,7 @@
           "mask_xyxy": [
             65,
             6,
-            192,
+            186,
             33
           ],
           "background_anchor": [
@@ -2998,7 +3205,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3007,12 +3214,12 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              65,
-              6,
-              192,
+              129,
+              13,
+              185,
               33
             ]
           ]
@@ -3028,7 +3235,7 @@
           "mask_xyxy": [
             65,
             6,
-            192,
+            186,
             33
           ],
           "background_anchor": [
@@ -3038,7 +3245,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3047,14 +3254,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              65,
-              6,
-              192,
+              72,
+              13,
+              185,
               33
+            ],
+            [
+              65,
+              32,
+              192,
+              34
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                65,
+                32,
+                192,
+                34
+              ],
+              "source_xyxy": [
+                65,
+                32,
+                192,
+                34
+              ],
+              "resource": "BGR/0181.BGR",
+              "source_sha256": "d0803ffd3391acb755bca25050871275dcce516860b481cfa464bb6dd121b87f"
+            }
           ]
         }
       ]
@@ -3068,7 +3299,7 @@
           "mask_xyxy": [
             65,
             6,
-            192,
+            186,
             33
           ],
           "background_anchor": [
@@ -3078,7 +3309,7 @@
           "font_size": 19,
           "minimum_font_size": 13,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -3087,12 +3318,12 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              65,
-              6,
-              192,
+              72,
+              13,
+              185,
               33
             ]
           ]
@@ -3106,13 +3337,13 @@
         {
           "target": "特殊技能",
           "mask_xyxy": [
-            18,
+            21,
             0,
             155,
-            18
+            20
           ],
           "background_anchor": [
-            170,
+            0,
             0
           ],
           "font_size": 14,
@@ -3120,64 +3351,52 @@
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "background_mode": "row_sample",
+          "background_mode": "column_sample",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
+              20,
               0,
               155,
-              18
-            ],
-            [
-              59,
-              5,
-              79,
               24
-            ],
-            [
-              18,
-              2,
-              45,
-              20
-            ],
-            [
-              48,
-              2,
-              57,
-              20
-            ],
-            [
-              43,
-              4,
-              51,
-              19
-            ],
-            [
-              53,
-              4,
-              62,
-              19
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "source_xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "resource": "BGR/0221.BGR",
+              "source_sha256": "eaaa9d263a7406e96be937766efc6a539f3c77888a430334ddfd1f86383d710f"
+            }
           ]
         },
         {
           "target": "特殊技能",
           "mask_xyxy": [
-            18,
-            18,
+            21,
+            23,
             115,
-            38
+            39
           ],
           "background_anchor": [
-            150,
-            18
+            0,
+            0
           ],
           "font_size": 10,
           "minimum_font_size": 9,
@@ -3190,15 +3409,16 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
-              18,
+              20,
+              23,
               115,
-              38
+              39
             ]
-          ]
+          ],
+          "background_mode": "column_sample"
         }
       ]
     },
@@ -3209,13 +3429,13 @@
         {
           "target": "特殊技能",
           "mask_xyxy": [
-            18,
+            21,
             0,
             155,
-            18
+            20
           ],
           "background_anchor": [
-            170,
+            0,
             0
           ],
           "font_size": 14,
@@ -3223,70 +3443,34 @@
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "background_mode": "row_sample",
+          "background_mode": "column_sample",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
+              20,
               0,
               155,
-              18
-            ],
-            [
-              60,
-              5,
-              79,
-              23
-            ],
-            [
-              19,
-              3,
-              34,
-              19
-            ],
-            [
-              32,
-              3,
-              44,
-              19
-            ],
-            [
-              49,
-              3,
-              57,
-              19
-            ],
-            [
-              54,
-              8,
-              60,
-              19
-            ],
-            [
-              43,
-              8,
-              50,
-              19
+              24
             ]
           ]
         },
         {
           "target": "特殊技能",
           "mask_xyxy": [
-            18,
-            18,
+            21,
+            23,
             115,
-            38
+            39
           ],
           "background_anchor": [
-            150,
-            18
+            0,
+            0
           ],
           "font_size": 10,
           "minimum_font_size": 9,
@@ -3299,15 +3483,16 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
-              18,
+              20,
+              23,
               115,
-              38
+              39
             ]
-          ]
+          ],
+          "background_mode": "column_sample"
         }
       ]
     },
@@ -3318,13 +3503,13 @@
         {
           "target": "状态",
           "mask_xyxy": [
-            18,
+            21,
             0,
             155,
-            18
+            20
           ],
           "background_anchor": [
-            170,
+            0,
             0
           ],
           "font_size": 14,
@@ -3332,40 +3517,52 @@
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "background_mode": "row_sample",
+          "background_mode": "column_sample",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
+              20,
               0,
               155,
-              18
-            ],
-            [
-              18,
-              2,
-              78,
-              20
+              24
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "source_xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "resource": "BGR/0221.BGR",
+              "source_sha256": "eaaa9d263a7406e96be937766efc6a539f3c77888a430334ddfd1f86383d710f"
+            }
           ]
         },
         {
           "target": "状态",
           "mask_xyxy": [
-            18,
-            18,
+            21,
+            23,
             115,
-            38
+            39
           ],
           "background_anchor": [
-            150,
-            18
+            0,
+            0
           ],
           "font_size": 10,
           "minimum_font_size": 9,
@@ -3378,15 +3575,16 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
-              18,
+              20,
+              23,
               115,
-              38
+              39
             ]
-          ]
+          ],
+          "background_mode": "column_sample"
         }
       ]
     },
@@ -3397,13 +3595,13 @@
         {
           "target": "状态",
           "mask_xyxy": [
-            18,
+            21,
             0,
             155,
-            18
+            20
           ],
           "background_anchor": [
-            170,
+            0,
             0
           ],
           "font_size": 14,
@@ -3411,64 +3609,34 @@
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "background_mode": "row_sample",
+          "background_mode": "column_sample",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
+              20,
               0,
               155,
-              18
-            ],
-            [
-              49,
-              5,
-              68,
-              19
-            ],
-            [
-              65,
-              8,
-              77,
-              19
-            ],
-            [
-              31,
-              5,
-              40,
-              19
-            ],
-            [
-              19,
-              3,
-              33,
-              19
-            ],
-            [
-              37,
-              8,
-              50,
-              19
+              24
             ]
           ]
         },
         {
           "target": "状态",
           "mask_xyxy": [
-            18,
-            18,
+            21,
+            23,
             115,
-            38
+            39
           ],
           "background_anchor": [
-            150,
-            18
+            0,
+            0
           ],
           "font_size": 10,
           "minimum_font_size": 9,
@@ -3481,15 +3649,16 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
-              18,
+              20,
+              23,
               115,
-              38
+              39
             ]
-          ]
+          ],
+          "background_mode": "column_sample"
         }
       ]
     },
@@ -3500,13 +3669,13 @@
         {
           "target": "暴走模式",
           "mask_xyxy": [
-            18,
+            21,
             0,
             155,
-            18
+            20
           ],
           "background_anchor": [
-            170,
+            0,
             0
           ],
           "font_size": 14,
@@ -3514,46 +3683,52 @@
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "background_mode": "row_sample",
+          "background_mode": "column_sample",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
+              20,
               0,
               155,
-              18
-            ],
-            [
-              70,
-              2,
-              125,
-              20
-            ],
-            [
-              20,
-              2,
-              69,
               24
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "source_xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "resource": "BGR/0221.BGR",
+              "source_sha256": "eaaa9d263a7406e96be937766efc6a539f3c77888a430334ddfd1f86383d710f"
+            }
           ]
         },
         {
           "target": "暴走模式",
           "mask_xyxy": [
-            18,
-            18,
+            21,
+            23,
             115,
-            38
+            39
           ],
           "background_anchor": [
-            150,
-            18
+            0,
+            0
           ],
           "font_size": 10,
           "minimum_font_size": 9,
@@ -3566,15 +3741,16 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
-              18,
+              20,
+              23,
               115,
-              38
+              39
             ]
-          ]
+          ],
+          "background_mode": "column_sample"
         }
       ]
     },
@@ -3585,13 +3761,13 @@
         {
           "target": "暴走模式",
           "mask_xyxy": [
-            18,
+            21,
             0,
             155,
-            18
+            20
           ],
           "background_anchor": [
-            170,
+            0,
             0
           ],
           "font_size": 14,
@@ -3599,88 +3775,34 @@
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "background_mode": "row_sample",
+          "background_mode": "column_sample",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
+              20,
               0,
               155,
-              18
-            ],
-            [
-              100,
-              3,
-              115,
-              19
-            ],
-            [
-              88,
-              7,
-              101,
-              19
-            ],
-            [
-              71,
-              3,
-              90,
-              19
-            ],
-            [
-              56,
-              8,
-              68,
-              23
-            ],
-            [
-              111,
-              8,
-              124,
-              19
-            ],
-            [
-              21,
-              3,
-              34,
-              19
-            ],
-            [
-              30,
-              7,
-              39,
-              19
-            ],
-            [
-              36,
-              8,
-              49,
-              19
-            ],
-            [
-              47,
-              8,
-              58,
-              19
+              24
             ]
           ]
         },
         {
           "target": "暴走模式",
           "mask_xyxy": [
-            18,
-            18,
+            21,
+            23,
             115,
-            38
+            39
           ],
           "background_anchor": [
-            150,
-            18
+            0,
+            0
           ],
           "font_size": 10,
           "minimum_font_size": 9,
@@ -3693,15 +3815,16 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
-              18,
+              20,
+              23,
               115,
-              38
+              39
             ]
-          ]
+          ],
+          "background_mode": "column_sample"
         }
       ]
     },
@@ -3712,13 +3835,13 @@
         {
           "target": "物品",
           "mask_xyxy": [
-            18,
+            21,
             0,
             155,
-            18
+            20
           ],
           "background_anchor": [
-            170,
+            0,
             0
           ],
           "font_size": 14,
@@ -3726,46 +3849,52 @@
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "background_mode": "row_sample",
+          "background_mode": "column_sample",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
+              20,
               0,
               155,
-              18
-            ],
-            [
-              24,
-              5,
-              60,
-              20
-            ],
-            [
-              19,
-              2,
-              28,
-              20
+              24
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "source_xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "resource": "BGR/0221.BGR",
+              "source_sha256": "eaaa9d263a7406e96be937766efc6a539f3c77888a430334ddfd1f86383d710f"
+            }
           ]
         },
         {
           "target": "物品",
           "mask_xyxy": [
-            18,
-            18,
+            21,
+            23,
             115,
-            38
+            39
           ],
           "background_anchor": [
-            150,
-            18
+            0,
+            0
           ],
           "font_size": 10,
           "minimum_font_size": 9,
@@ -3778,15 +3907,16 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
-              18,
+              20,
+              23,
               115,
-              38
+              39
             ]
-          ]
+          ],
+          "background_mode": "column_sample"
         }
       ]
     },
@@ -3797,13 +3927,13 @@
         {
           "target": "物品",
           "mask_xyxy": [
-            18,
+            21,
             0,
             155,
-            18
+            20
           ],
           "background_anchor": [
-            170,
+            0,
             0
           ],
           "font_size": 14,
@@ -3811,52 +3941,34 @@
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "background_mode": "row_sample",
+          "background_mode": "column_sample",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
+              20,
               0,
               155,
-              18
-            ],
-            [
-              19,
-              3,
-              27,
-              19
-            ],
-            [
-              25,
-              5,
-              44,
-              19
-            ],
-            [
-              43,
-              8,
-              60,
-              19
+              24
             ]
           ]
         },
         {
           "target": "物品",
           "mask_xyxy": [
-            18,
-            18,
+            21,
+            23,
             115,
-            38
+            39
           ],
           "background_anchor": [
-            150,
-            18
+            0,
+            0
           ],
           "font_size": 10,
           "minimum_font_size": 9,
@@ -3869,15 +3981,16 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
-              18,
+              20,
+              23,
               115,
-              38
+              39
             ]
-          ]
+          ],
+          "background_mode": "column_sample"
         }
       ]
     },
@@ -3888,13 +4001,13 @@
         {
           "target": "结束回合",
           "mask_xyxy": [
-            18,
+            21,
             0,
             155,
-            18
+            20
           ],
           "background_anchor": [
-            170,
+            0,
             0
           ],
           "font_size": 14,
@@ -3902,52 +4015,52 @@
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "background_mode": "row_sample",
+          "background_mode": "column_sample",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
+              20,
               0,
               155,
-              18
-            ],
-            [
-              21,
-              2,
-              34,
-              20
-            ],
-            [
-              61,
-              3,
-              98,
-              20
-            ],
-            [
-              29,
-              7,
-              58,
-              20
+              24
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "source_xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "resource": "BGR/0221.BGR",
+              "source_sha256": "eaaa9d263a7406e96be937766efc6a539f3c77888a430334ddfd1f86383d710f"
+            }
           ]
         },
         {
           "target": "结束回合",
           "mask_xyxy": [
-            18,
-            18,
+            21,
+            23,
             115,
-            38
+            39
           ],
           "background_anchor": [
-            150,
-            18
+            0,
+            0
           ],
           "font_size": 10,
           "minimum_font_size": 9,
@@ -3960,15 +4073,16 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
-              18,
+              20,
+              23,
               115,
-              38
+              39
             ]
-          ]
+          ],
+          "background_mode": "column_sample"
         }
       ]
     },
@@ -3979,13 +4093,13 @@
         {
           "target": "结束回合",
           "mask_xyxy": [
-            18,
+            21,
             0,
             155,
-            18
+            20
           ],
           "background_anchor": [
-            170,
+            0,
             0
           ],
           "font_size": 14,
@@ -3993,76 +4107,34 @@
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "background_mode": "row_sample",
+          "background_mode": "column_sample",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
+              20,
               0,
               155,
-              18
-            ],
-            [
-              22,
-              3,
-              33,
-              19
-            ],
-            [
-              83,
-              3,
-              97,
-              19
-            ],
-            [
-              39,
-              7,
-              48,
-              19
-            ],
-            [
-              45,
-              7,
-              57,
-              19
-            ],
-            [
-              62,
-              3,
-              75,
-              19
-            ],
-            [
-              29,
-              8,
-              41,
-              19
-            ],
-            [
-              72,
-              7,
-              84,
-              19
+              24
             ]
           ]
         },
         {
           "target": "结束回合",
           "mask_xyxy": [
-            18,
-            18,
+            21,
+            23,
             115,
-            38
+            39
           ],
           "background_anchor": [
-            150,
-            18
+            0,
+            0
           ],
           "font_size": 10,
           "minimum_font_size": 9,
@@ -4075,15 +4147,16 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
-              18,
+              20,
+              23,
               115,
-              38
+              39
             ]
-          ]
+          ],
+          "background_mode": "column_sample"
         }
       ]
     },
@@ -4094,13 +4167,13 @@
         {
           "target": "普通攻击",
           "mask_xyxy": [
-            18,
+            21,
             0,
             155,
-            18
+            20
           ],
           "background_anchor": [
-            170,
+            0,
             0
           ],
           "font_size": 14,
@@ -4108,40 +4181,52 @@
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "background_mode": "row_sample",
+          "background_mode": "column_sample",
           "color": [
             255,
             255,
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
+              20,
               0,
               155,
-              18
-            ],
-            [
-              18,
-              2,
-              78,
-              20
+              24
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "source_xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "resource": "BGR/0221.BGR",
+              "source_sha256": "eaaa9d263a7406e96be937766efc6a539f3c77888a430334ddfd1f86383d710f"
+            }
           ]
         },
         {
           "target": "普通攻击",
           "mask_xyxy": [
-            18,
-            18,
+            21,
+            23,
             115,
-            38
+            39
           ],
           "background_anchor": [
-            150,
-            18
+            0,
+            0
           ],
           "font_size": 10,
           "minimum_font_size": 9,
@@ -4154,15 +4239,16 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
-              18,
+              20,
+              23,
               115,
-              38
+              39
             ]
-          ]
+          ],
+          "background_mode": "column_sample"
         }
       ]
     },
@@ -4173,13 +4259,13 @@
         {
           "target": "普通攻击",
           "mask_xyxy": [
-            18,
+            21,
             0,
             155,
-            18
+            20
           ],
           "background_anchor": [
-            170,
+            0,
             0
           ],
           "font_size": 14,
@@ -4187,64 +4273,52 @@
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "align": "left",
-          "background_mode": "row_sample",
+          "background_mode": "column_sample",
           "color": [
             90,
             90,
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
+              20,
               0,
               155,
-              18
-            ],
-            [
-              19,
-              3,
-              34,
-              19
-            ],
-            [
-              57,
-              3,
-              76,
-              19
-            ],
-            [
-              46,
-              8,
-              58,
-              19
-            ],
-            [
-              32,
-              5,
-              41,
-              19
-            ],
-            [
-              39,
-              5,
-              48,
-              19
+              24
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "source_xyxy": [
+                20,
+                21,
+                155,
+                23
+              ],
+              "resource": "BGR/0221.BGR",
+              "source_sha256": "eaaa9d263a7406e96be937766efc6a539f3c77888a430334ddfd1f86383d710f"
+            }
           ]
         },
         {
           "target": "普通攻击",
           "mask_xyxy": [
-            18,
-            18,
+            21,
+            23,
             115,
-            38
+            39
           ],
           "background_anchor": [
-            150,
-            18
+            0,
+            0
           ],
           "font_size": 10,
           "minimum_font_size": 9,
@@ -4257,15 +4331,16 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              18,
-              18,
+              20,
+              23,
               115,
-              38
+              39
             ]
-          ]
+          ],
+          "background_mode": "column_sample"
         }
       ]
     },
@@ -4278,7 +4353,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4288,7 +4363,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4297,14 +4372,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              68,
+              8,
+              119,
+              25
+            ],
+            [
               24,
-              4,
+              24,
               125,
-              31
+              26
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "source_xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "resource": "BGR/0265.BGR",
+              "source_sha256": "f9e2a2d6f0417fc55b838fd4888f0f9639345dae4dd3b441ebb604185164e72c"
+            }
           ]
         }
       ]
@@ -4318,7 +4417,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4328,7 +4427,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4337,13 +4436,13 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              24,
-              4,
-              125,
-              31
+              68,
+              8,
+              118,
+              25
             ]
           ]
         }
@@ -4358,7 +4457,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4368,7 +4467,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4377,14 +4476,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              77,
+              8,
+              118,
+              25
+            ],
+            [
               24,
-              4,
+              24,
               125,
-              31
+              26
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "source_xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "resource": "BGR/0265.BGR",
+              "source_sha256": "f9e2a2d6f0417fc55b838fd4888f0f9639345dae4dd3b441ebb604185164e72c"
+            }
           ]
         }
       ]
@@ -4398,7 +4521,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4408,7 +4531,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4417,13 +4540,13 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              24,
-              4,
-              125,
-              31
+              77,
+              8,
+              118,
+              25
             ]
           ]
         }
@@ -4438,7 +4561,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4448,7 +4571,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4457,14 +4580,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              82,
+              8,
+              118,
+              25
+            ],
+            [
               24,
-              4,
+              24,
               125,
-              31
+              26
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "source_xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "resource": "BGR/0265.BGR",
+              "source_sha256": "f9e2a2d6f0417fc55b838fd4888f0f9639345dae4dd3b441ebb604185164e72c"
+            }
           ]
         }
       ]
@@ -4478,7 +4625,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4488,7 +4635,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4497,13 +4644,13 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              24,
-              4,
-              125,
-              31
+              82,
+              8,
+              118,
+              25
             ]
           ]
         }
@@ -4518,7 +4665,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4528,7 +4675,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4537,14 +4684,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              39,
+              8,
+              120,
+              28
+            ],
+            [
               24,
-              4,
+              24,
               125,
-              31
+              26
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "source_xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "resource": "BGR/0265.BGR",
+              "source_sha256": "f9e2a2d6f0417fc55b838fd4888f0f9639345dae4dd3b441ebb604185164e72c"
+            }
           ]
         }
       ]
@@ -4558,7 +4729,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4568,7 +4739,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4577,13 +4748,13 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              24,
-              4,
-              125,
-              31
+              39,
+              8,
+              118,
+              28
             ]
           ]
         }
@@ -4598,7 +4769,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4608,7 +4779,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4617,14 +4788,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              54,
+              8,
+              118,
+              28
+            ],
+            [
               24,
-              4,
+              24,
               125,
-              31
+              26
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "source_xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "resource": "BGR/0265.BGR",
+              "source_sha256": "f9e2a2d6f0417fc55b838fd4888f0f9639345dae4dd3b441ebb604185164e72c"
+            }
           ]
         }
       ]
@@ -4638,7 +4833,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4648,7 +4843,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4657,13 +4852,13 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              24,
-              4,
-              125,
-              31
+              54,
+              8,
+              118,
+              28
             ]
           ]
         }
@@ -4678,7 +4873,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4688,7 +4883,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4697,14 +4892,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              82,
+              8,
+              120,
+              27
+            ],
+            [
               24,
-              4,
+              24,
               125,
-              31
+              26
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "source_xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "resource": "BGR/0265.BGR",
+              "source_sha256": "f9e2a2d6f0417fc55b838fd4888f0f9639345dae4dd3b441ebb604185164e72c"
+            }
           ]
         }
       ]
@@ -4718,7 +4937,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4728,7 +4947,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4737,13 +4956,13 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              24,
-              4,
-              125,
-              31
+              82,
+              8,
+              118,
+              27
             ]
           ]
         }
@@ -4758,7 +4977,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            122,
             31
           ],
           "background_anchor": [
@@ -4768,7 +4987,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4777,20 +4996,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              24,
-              4,
-              125,
-              31
+              83,
+              12,
+              122,
+              36
             ],
             [
-              85,
-              13,
-              121,
-              35
+              24,
+              32,
+              125,
+              34
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                24,
+                32,
+                125,
+                34
+              ],
+              "source_xyxy": [
+                24,
+                32,
+                125,
+                34
+              ],
+              "resource": "BGR/0296.BGR",
+              "source_sha256": "81d931cfcb32ad43a0bd12badf0867d7d4b37e3f7ec0fc5da630d89bd5e2c155"
+            }
           ]
         }
       ]
@@ -4804,7 +5041,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            122,
             31
           ],
           "background_anchor": [
@@ -4814,7 +5051,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4823,19 +5060,13 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              24,
-              4,
-              125,
-              31
-            ],
-            [
-              85,
-              13,
-              117,
-              35
+              84,
+              12,
+              118,
+              36
             ]
           ]
         }
@@ -4850,7 +5081,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            122,
             31
           ],
           "background_anchor": [
@@ -4860,7 +5091,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4869,14 +5100,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              84,
+              12,
+              123,
+              32
+            ],
+            [
               24,
-              4,
+              32,
               125,
-              31
+              34
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                24,
+                32,
+                125,
+                34
+              ],
+              "source_xyxy": [
+                24,
+                32,
+                125,
+                34
+              ],
+              "resource": "BGR/0296.BGR",
+              "source_sha256": "81d931cfcb32ad43a0bd12badf0867d7d4b37e3f7ec0fc5da630d89bd5e2c155"
+            }
           ]
         }
       ]
@@ -4890,7 +5145,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            122,
             31
           ],
           "background_anchor": [
@@ -4900,7 +5155,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4909,13 +5164,13 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              24,
-              4,
-              125,
-              31
+              84,
+              12,
+              118,
+              32
             ]
           ]
         }
@@ -4930,7 +5185,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4940,7 +5195,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4949,14 +5204,38 @@
             255,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
+              76,
+              8,
+              119,
+              28
+            ],
+            [
               24,
-              4,
+              24,
               125,
-              31
+              26
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "source_xyxy": [
+                24,
+                24,
+                125,
+                26
+              ],
+              "resource": "BGR/0265.BGR",
+              "source_sha256": "f9e2a2d6f0417fc55b838fd4888f0f9639345dae4dd3b441ebb604185164e72c"
+            }
           ]
         }
       ]
@@ -4970,7 +5249,7 @@
           "mask_xyxy": [
             24,
             4,
-            125,
+            120,
             31
           ],
           "background_anchor": [
@@ -4980,7 +5259,7 @@
           "font_size": 19,
           "minimum_font_size": 14,
           "stroke_width": 1,
-          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
+          "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。 Cleanup covers the complete source ink/outline only; original clean upper chrome is retained. Full-colour reconstruction replaces neutral-ink filtering to remove colour-mixed antialiasing.",
           "align": "right",
           "background_mode": "column_sample",
           "color": [
@@ -4989,13 +5268,13 @@
             90,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
-              24,
-              4,
-              125,
-              31
+              76,
+              8,
+              119,
+              28
             ]
           ]
         }
@@ -5078,8 +5357,8 @@
             18
           ],
           "background_anchor": [
-            127,
-            127
+            4,
+            10
           ],
           "font_size": 12,
           "minimum_font_size": 10,
@@ -5099,7 +5378,9 @@
               91,
               21
             ]
-          ]
+          ],
+          "background_mode": "solid",
+          "preserve_background_alpha": true
         }
       ]
     },
@@ -5116,8 +5397,8 @@
             18
           ],
           "background_anchor": [
-            127,
-            127
+            4,
+            10
           ],
           "font_size": 12,
           "minimum_font_size": 10,
@@ -5137,7 +5418,9 @@
               91,
               21
             ]
-          ]
+          ],
+          "background_mode": "solid",
+          "preserve_background_alpha": true
         }
       ]
     },
@@ -5148,17 +5431,17 @@
         {
           "target": "按名称排序",
           "mask_xyxy": [
-            4,
+            5,
             1,
-            125,
-            28
+            88,
+            18
           ],
           "background_anchor": [
-            89,
-            1
+            4,
+            10
           ],
-          "font_size": 16,
-          "minimum_font_size": 12,
+          "font_size": 12,
+          "minimum_font_size": 10,
           "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
@@ -5170,12 +5453,14 @@
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              4,
-              1,
-              125,
-              28
+              0,
+              0,
+              91,
+              21
             ]
-          ]
+          ],
+          "background_mode": "solid",
+          "preserve_background_alpha": true
         }
       ]
     },
@@ -5186,17 +5471,17 @@
         {
           "target": "按类型排序",
           "mask_xyxy": [
-            4,
+            5,
             1,
-            125,
-            28
+            88,
+            18
           ],
           "background_anchor": [
-            89,
-            1
+            4,
+            10
           ],
-          "font_size": 16,
-          "minimum_font_size": 12,
+          "font_size": 12,
+          "minimum_font_size": 10,
           "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
@@ -5208,12 +5493,14 @@
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              4,
-              1,
-              125,
-              28
+              0,
+              0,
+              91,
+              21
             ]
-          ]
+          ],
+          "background_mode": "solid",
+          "preserve_background_alpha": true
         }
       ]
     },
@@ -5224,17 +5511,17 @@
         {
           "target": "全部最大",
           "mask_xyxy": [
-            4,
+            5,
             1,
-            125,
-            28
+            88,
+            18
           ],
           "background_anchor": [
-            89,
-            1
+            4,
+            10
           ],
-          "font_size": 16,
-          "minimum_font_size": 12,
+          "font_size": 12,
+          "minimum_font_size": 10,
           "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
@@ -5246,12 +5533,14 @@
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              4,
-              1,
-              125,
-              28
+              0,
+              0,
+              91,
+              21
             ]
-          ]
+          ],
+          "background_mode": "solid",
+          "preserve_background_alpha": true
         }
       ]
     },
@@ -5262,17 +5551,17 @@
         {
           "target": "全部归零",
           "mask_xyxy": [
-            4,
+            5,
             1,
-            125,
-            28
+            88,
+            18
           ],
           "background_anchor": [
-            89,
-            1
+            4,
+            10
           ],
-          "font_size": 16,
-          "minimum_font_size": 12,
+          "font_size": 12,
+          "minimum_font_size": 10,
           "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
@@ -5284,12 +5573,14 @@
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              4,
-              1,
-              125,
-              28
+              0,
+              0,
+              91,
+              21
             ]
-          ]
+          ],
+          "background_mode": "solid",
+          "preserve_background_alpha": true
         }
       ]
     },
@@ -5300,17 +5591,17 @@
         {
           "target": "技能列表",
           "mask_xyxy": [
-            4,
+            5,
             1,
-            125,
-            28
+            88,
+            18
           ],
           "background_anchor": [
-            89,
-            1
+            4,
+            10
           ],
-          "font_size": 16,
-          "minimum_font_size": 12,
+          "font_size": 12,
+          "minimum_font_size": 10,
           "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
@@ -5322,12 +5613,14 @@
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              4,
-              1,
-              125,
-              28
+              0,
+              0,
+              91,
+              21
             ]
-          ]
+          ],
+          "background_mode": "solid",
+          "preserve_background_alpha": true
         }
       ]
     },
@@ -5344,8 +5637,8 @@
             18
           ],
           "background_anchor": [
-            127,
-            127
+            4,
+            10
           ],
           "font_size": 12,
           "minimum_font_size": 10,
@@ -5365,7 +5658,9 @@
               91,
               21
             ]
-          ]
+          ],
+          "background_mode": "solid",
+          "preserve_background_alpha": true
         }
       ]
     },
@@ -5382,8 +5677,8 @@
             18
           ],
           "background_anchor": [
-            127,
-            127
+            4,
+            10
           ],
           "font_size": 12,
           "minimum_font_size": 10,
@@ -5403,7 +5698,9 @@
               91,
               21
             ]
-          ]
+          ],
+          "background_mode": "solid",
+          "preserve_background_alpha": true
         }
       ]
     },
@@ -5759,25 +6056,25 @@
           "mask_xyxy": [
             0,
             0,
-            128,
+            90,
             28
           ],
           "background_anchor": [
             127,
-            0
+            127
           ],
           "font_size": 21,
           "minimum_font_size": 13,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "background_mode": "row_sample",
+          "background_mode": "solid",
           "color": [
             255,
             220,
             110,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               0,
@@ -5785,6 +6082,21 @@
               128,
               28
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                0,
+                0,
+                90,
+                28
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                85,
+                0
+              ]
+            }
           ]
         }
       ]
@@ -5798,25 +6110,25 @@
           "mask_xyxy": [
             0,
             0,
-            128,
+            90,
             28
           ],
           "background_anchor": [
             127,
-            0
+            127
           ],
           "font_size": 21,
           "minimum_font_size": 13,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "background_mode": "row_sample",
+          "background_mode": "solid",
           "color": [
             255,
             220,
             110,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               0,
@@ -5824,6 +6136,21 @@
               128,
               28
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                0,
+                0,
+                90,
+                28
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                85,
+                0
+              ]
+            }
           ]
         }
       ]
@@ -5837,25 +6164,25 @@
           "mask_xyxy": [
             0,
             0,
-            128,
+            90,
             28
           ],
           "background_anchor": [
             127,
-            0
+            127
           ],
           "font_size": 21,
           "minimum_font_size": 13,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "background_mode": "row_sample",
+          "background_mode": "solid",
           "color": [
             255,
             220,
             110,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               0,
@@ -5863,6 +6190,21 @@
               128,
               28
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                0,
+                0,
+                90,
+                28
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                85,
+                0
+              ]
+            }
           ]
         }
       ]
@@ -5876,25 +6218,25 @@
           "mask_xyxy": [
             0,
             0,
-            128,
+            90,
             28
           ],
           "background_anchor": [
             127,
-            0
+            127
           ],
           "font_size": 21,
           "minimum_font_size": 13,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "background_mode": "row_sample",
+          "background_mode": "solid",
           "color": [
             255,
             220,
             110,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               0,
@@ -5902,6 +6244,21 @@
               128,
               28
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                0,
+                0,
+                90,
+                28
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                0,
+                0
+              ]
+            }
           ]
         }
       ]
@@ -5915,25 +6272,25 @@
           "mask_xyxy": [
             0,
             0,
-            128,
+            90,
             28
           ],
           "background_anchor": [
-            43,
-            0
+            127,
+            127
           ],
           "font_size": 21,
           "minimum_font_size": 13,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "background_mode": "row_sample",
+          "background_mode": "solid",
           "color": [
             255,
             220,
             110,
             255
           ],
-          "erase_mode": "nontransparent",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               0,
@@ -5941,6 +6298,21 @@
               128,
               28
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                0,
+                0,
+                90,
+                28
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                0,
+                0
+              ]
+            }
           ]
         }
       ]
@@ -5954,26 +6326,43 @@
           "mask_xyxy": [
             0,
             0,
-            126,
-            61
+            90,
+            40
           ],
           "background_anchor": [
-            89,
-            0
+            127,
+            127
           ],
-          "font_size": 23,
+          "font_size": 20,
           "minimum_font_size": 18,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "background_mode": "solid",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               0,
               0,
-              126,
-              61
+              91,
+              40
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                0,
+                0,
+                90,
+                40
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                80,
+                0
+              ],
+              "resource": "BGR/0215.BGR",
+              "source_sha256": "910b56a08f6af3607df329dc27cc55abb18d2b41fbecf8b4f954f65702a18894"
+            }
           ]
         }
       ]
@@ -5987,26 +6376,43 @@
           "mask_xyxy": [
             0,
             0,
-            126,
-            61
+            90,
+            40
           ],
           "background_anchor": [
-            89,
-            0
+            127,
+            127
           ],
-          "font_size": 23,
+          "font_size": 20,
           "minimum_font_size": 18,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "background_mode": "solid",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               0,
               0,
-              126,
-              61
+              91,
+              40
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                0,
+                0,
+                90,
+                40
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                80,
+                0
+              ],
+              "resource": "BGR/0215.BGR",
+              "source_sha256": "910b56a08f6af3607df329dc27cc55abb18d2b41fbecf8b4f954f65702a18894"
+            }
           ]
         }
       ]
@@ -6020,26 +6426,43 @@
           "mask_xyxy": [
             0,
             0,
-            126,
-            61
+            90,
+            40
           ],
           "background_anchor": [
-            88,
-            0
+            127,
+            127
           ],
-          "font_size": 23,
+          "font_size": 20,
           "minimum_font_size": 18,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "background_mode": "solid",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               0,
               0,
-              126,
-              61
+              91,
+              40
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                0,
+                0,
+                90,
+                40
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                80,
+                0
+              ],
+              "resource": "BGR/0215.BGR",
+              "source_sha256": "910b56a08f6af3607df329dc27cc55abb18d2b41fbecf8b4f954f65702a18894"
+            }
           ]
         }
       ]
@@ -6053,26 +6476,43 @@
           "mask_xyxy": [
             0,
             0,
-            126,
-            61
+            90,
+            40
           ],
           "background_anchor": [
-            42,
-            0
+            127,
+            127
           ],
-          "font_size": 23,
+          "font_size": 20,
           "minimum_font_size": 18,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "background_mode": "solid",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               0,
               0,
-              126,
-              61
+              91,
+              40
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                0,
+                0,
+                90,
+                40
+              ],
+              "mode": "row_sample",
+              "anchor": [
+                80,
+                0
+              ],
+              "resource": "BGR/0215.BGR",
+              "source_sha256": "910b56a08f6af3607df329dc27cc55abb18d2b41fbecf8b4f954f65702a18894"
+            }
           ]
         }
       ]
@@ -6082,9 +6522,9 @@
       "source_sha256": "ad9fe6384b39e5b15365bf1898396184857c117066867c608f0450da85caf6cd",
       "plans": [
         {
-          "target": "0 破击蓄力",
+          "target": "破击蓄力",
           "mask_xyxy": [
-            0,
+            15,
             18,
             126,
             34
@@ -6093,17 +6533,32 @@
             126,
             18
           ],
-          "font_size": 12,
+          "font_size": 11,
           "minimum_font_size": 10,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              0,
+              14,
               18,
               126,
               34
+            ]
+          ],
+          "align": "left",
+          "protected_rects_xyxy": [
+            [
+              0,
+              0,
+              14,
+              34
+            ],
+            [
+              0,
+              0,
+              128,
+              18
             ]
           ]
         }
@@ -6114,9 +6569,9 @@
       "source_sha256": "50e299c7ecf1c58c8ecf84a85e0712a6f2694193b9bd6415e5d3741c284a0891",
       "plans": [
         {
-          "target": "1 破击蓄力",
+          "target": "破击蓄力",
           "mask_xyxy": [
-            0,
+            15,
             18,
             126,
             34
@@ -6125,23 +6580,32 @@
             126,
             18
           ],
-          "font_size": 12,
+          "font_size": 11,
           "minimum_font_size": 10,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              0,
+              14,
               18,
               126,
               34
+            ]
+          ],
+          "align": "left",
+          "protected_rects_xyxy": [
+            [
+              0,
+              0,
+              14,
+              34
             ],
             [
-              4,
-              13,
-              94,
-              28
+              0,
+              0,
+              128,
+              18
             ]
           ]
         }
@@ -6152,9 +6616,9 @@
       "source_sha256": "ec9bdb84182308b8809e79e2eff34f49464eed526395546465995f5c247b508c",
       "plans": [
         {
-          "target": "2 破击蓄力",
+          "target": "破击蓄力",
           "mask_xyxy": [
-            0,
+            15,
             18,
             126,
             34
@@ -6163,17 +6627,32 @@
             126,
             18
           ],
-          "font_size": 12,
+          "font_size": 11,
           "minimum_font_size": 10,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              0,
+              14,
               18,
               126,
               34
+            ]
+          ],
+          "align": "left",
+          "protected_rects_xyxy": [
+            [
+              0,
+              0,
+              14,
+              34
+            ],
+            [
+              0,
+              0,
+              128,
+              18
             ]
           ]
         }
@@ -6184,9 +6663,9 @@
       "source_sha256": "87ec44e0bcfdaef308d68827745b9417b5e08cf8cd8fbf25a7f4a86b908a545e",
       "plans": [
         {
-          "target": "3 层就绪",
+          "target": "层就绪",
           "mask_xyxy": [
-            0,
+            15,
             18,
             126,
             34
@@ -6195,35 +6674,32 @@
             126,
             18
           ],
-          "font_size": 12,
+          "font_size": 11,
           "minimum_font_size": 10,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
           "erase_rects_xyxy": [
             [
-              0,
+              14,
               18,
               126,
               34
+            ]
+          ],
+          "align": "left",
+          "protected_rects_xyxy": [
+            [
+              0,
+              0,
+              14,
+              30
             ],
             [
               0,
-              28,
-              44,
-              40
-            ],
-            [
-              64,
-              28,
-              97,
-              40
-            ],
-            [
-              43,
-              28,
-              65,
-              40
+              0,
+              128,
+              18
             ]
           ]
         },
@@ -6247,27 +6723,9 @@
           "erase_rects_xyxy": [
             [
               0,
-              34,
+              30,
               126,
               54
-            ],
-            [
-              0,
-              28,
-              44,
-              40
-            ],
-            [
-              64,
-              28,
-              97,
-              40
-            ],
-            [
-              43,
-              28,
-              65,
-              40
             ]
           ]
         }
@@ -6278,23 +6736,23 @@
       "source_sha256": "0de16a281aa297fb20d5b41aeccd90c45a00f1b78e3aaa9bfa98486c720ca66b",
       "plans": [
         {
-          "target": "快速连按3次！",
+          "target": "3次连击！",
           "mask_xyxy": [
             0,
             0,
-            128,
-            71
+            125,
+            46
           ],
           "background_anchor": [
             127,
-            70
+            127
           ],
-          "font_size": 16,
-          "minimum_font_size": 13,
+          "font_size": 23,
+          "minimum_font_size": 18,
           "stroke_width": 1,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
-          "background_mode": "row_sample",
-          "erase_mode": "nontransparent",
+          "background_mode": "solid",
+          "erase_mode": "all_pixels",
           "erase_rects_xyxy": [
             [
               0,
@@ -6302,7 +6760,42 @@
               128,
               71
             ]
+          ],
+          "background_repairs": [
+            {
+              "xyxy": [
+                0,
+                19,
+                125,
+                71
+              ],
+              "source_xyxy": [
+                0,
+                70,
+                125,
+                122
+              ],
+              "flip_y": true
+            }
           ]
+        },
+        {
+          "target": "快速连按3次！",
+          "mask_xyxy": [
+            0,
+            46,
+            125,
+            68
+          ],
+          "background_anchor": [
+            127,
+            127
+          ],
+          "erase_mode": "overlay",
+          "font_size": 13,
+          "minimum_font_size": 11,
+          "stroke_width": 1,
+          "source_text_evidence": "Press 3 times faster! Original lower glow is mirrored from the verified glyph-free rows70..121; full lower original glow remains unchanged."
         }
       ]
     },
@@ -6313,27 +6806,35 @@
         {
           "target": "卡林兹",
           "mask_xyxy": [
-            41,
+            40,
             1,
-            111,
+            106,
             15
           ],
           "background_anchor": [
-            2,
+            30,
             0
           ],
-          "font_size": 11,
+          "font_size": 10,
           "minimum_font_size": 9,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
           "background_mode": "row_sample",
           "erase_rects_xyxy": [
             [
               41,
-              1,
-              111,
-              15
+              3,
+              110,
+              14
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              0,
+              114,
+              4
             ]
           ]
         }
@@ -6346,18 +6847,18 @@
         {
           "target": "卡林兹",
           "mask_xyxy": [
-            41,
-            23,
-            111,
-            38
+            40,
+            25,
+            106,
+            39
           ],
           "background_anchor": [
-            40,
+            30,
             0
           ],
-          "font_size": 11,
+          "font_size": 10,
           "minimum_font_size": 9,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
@@ -6370,9 +6871,17 @@
           "erase_rects_xyxy": [
             [
               41,
-              23,
-              111,
+              27,
+              110,
               38
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              24,
+              114,
+              28
             ]
           ]
         }
@@ -6385,17 +6894,17 @@
         {
           "target": "阿多拉",
           "mask_xyxy": [
-            41,
+            40,
             1,
-            111,
+            106,
             15
           ],
           "background_anchor": [
-            1,
+            30,
             0
           ],
-          "font_size": 11,
-          "minimum_font_size": 8,
+          "font_size": 10,
+          "minimum_font_size": 9,
           "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
@@ -6403,9 +6912,17 @@
           "erase_rects_xyxy": [
             [
               41,
-              1,
-              111,
-              15
+              3,
+              110,
+              14
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              0,
+              114,
+              4
             ]
           ]
         }
@@ -6418,17 +6935,17 @@
         {
           "target": "阿多拉",
           "mask_xyxy": [
-            41,
-            23,
-            111,
-            38
+            40,
+            25,
+            106,
+            39
           ],
           "background_anchor": [
-            40,
+            30,
             0
           ],
-          "font_size": 11,
-          "minimum_font_size": 8,
+          "font_size": 10,
+          "minimum_font_size": 9,
           "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
@@ -6442,9 +6959,17 @@
           "erase_rects_xyxy": [
             [
               41,
-              23,
-              111,
+              27,
+              110,
               38
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              24,
+              114,
+              28
             ]
           ]
         }
@@ -6457,17 +6982,17 @@
         {
           "target": "罗普玛",
           "mask_xyxy": [
-            41,
+            40,
             1,
-            111,
+            106,
             15
           ],
           "background_anchor": [
-            2,
+            30,
             0
           ],
-          "font_size": 11,
-          "minimum_font_size": 8,
+          "font_size": 10,
+          "minimum_font_size": 9,
           "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
@@ -6475,9 +7000,17 @@
           "erase_rects_xyxy": [
             [
               41,
-              1,
-              111,
-              15
+              3,
+              110,
+              14
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              0,
+              114,
+              4
             ]
           ]
         }
@@ -6490,17 +7023,17 @@
         {
           "target": "罗普玛",
           "mask_xyxy": [
-            41,
-            23,
-            111,
-            38
+            40,
+            25,
+            106,
+            39
           ],
           "background_anchor": [
-            40,
+            30,
             0
           ],
-          "font_size": 11,
-          "minimum_font_size": 8,
+          "font_size": 10,
+          "minimum_font_size": 9,
           "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
@@ -6514,9 +7047,17 @@
           "erase_rects_xyxy": [
             [
               41,
-              23,
-              111,
+              27,
+              110,
               38
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              24,
+              114,
+              28
             ]
           ]
         }
@@ -6529,27 +7070,35 @@
         {
           "target": "切尔西",
           "mask_xyxy": [
-            41,
+            40,
             1,
-            111,
+            106,
             15
           ],
           "background_anchor": [
-            2,
+            30,
             0
           ],
-          "font_size": 11,
+          "font_size": 10,
           "minimum_font_size": 9,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
           "background_mode": "row_sample",
           "erase_rects_xyxy": [
             [
               41,
-              1,
-              111,
-              15
+              3,
+              110,
+              14
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              0,
+              114,
+              4
             ]
           ]
         }
@@ -6562,18 +7111,18 @@
         {
           "target": "切尔西",
           "mask_xyxy": [
-            41,
-            23,
-            111,
-            38
+            40,
+            25,
+            106,
+            39
           ],
           "background_anchor": [
-            40,
+            30,
             0
           ],
-          "font_size": 11,
+          "font_size": 10,
           "minimum_font_size": 9,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
@@ -6586,9 +7135,17 @@
           "erase_rects_xyxy": [
             [
               41,
-              23,
-              111,
+              27,
+              110,
               38
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              24,
+              114,
+              28
             ]
           ]
         }
@@ -6601,27 +7158,35 @@
         {
           "target": "乔克",
           "mask_xyxy": [
-            41,
+            40,
             1,
-            111,
+            106,
             15
           ],
           "background_anchor": [
-            1,
+            30,
             0
           ],
-          "font_size": 11,
+          "font_size": 10,
           "minimum_font_size": 9,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
           "background_mode": "row_sample",
           "erase_rects_xyxy": [
             [
               41,
-              1,
-              111,
-              15
+              3,
+              110,
+              14
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              0,
+              114,
+              4
             ]
           ]
         }
@@ -6634,18 +7199,18 @@
         {
           "target": "乔克",
           "mask_xyxy": [
-            41,
-            23,
-            111,
-            38
+            40,
+            25,
+            106,
+            39
           ],
           "background_anchor": [
-            40,
+            30,
             0
           ],
-          "font_size": 11,
+          "font_size": 10,
           "minimum_font_size": 9,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
@@ -6658,9 +7223,17 @@
           "erase_rects_xyxy": [
             [
               41,
-              23,
-              111,
+              27,
+              110,
               38
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              24,
+              114,
+              28
             ]
           ]
         }
@@ -6673,27 +7246,35 @@
         {
           "target": "菲莉西亚",
           "mask_xyxy": [
-            41,
+            40,
             1,
-            111,
+            106,
             15
           ],
           "background_anchor": [
-            2,
+            30,
             0
           ],
-          "font_size": 11,
+          "font_size": 10,
           "minimum_font_size": 9,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
           "background_mode": "row_sample",
           "erase_rects_xyxy": [
             [
               41,
-              1,
-              111,
-              15
+              3,
+              110,
+              14
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              0,
+              114,
+              4
             ]
           ]
         }
@@ -6706,18 +7287,18 @@
         {
           "target": "菲莉西亚",
           "mask_xyxy": [
-            41,
-            23,
-            111,
-            38
+            40,
+            25,
+            106,
+            39
           ],
           "background_anchor": [
-            40,
+            30,
             0
           ],
-          "font_size": 11,
+          "font_size": 10,
           "minimum_font_size": 9,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
@@ -6730,9 +7311,17 @@
           "erase_rects_xyxy": [
             [
               41,
-              23,
-              111,
+              27,
+              110,
               38
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              24,
+              114,
+              28
             ]
           ]
         }
@@ -6745,33 +7334,35 @@
         {
           "target": "费尔南",
           "mask_xyxy": [
-            41,
+            40,
             1,
-            111,
+            106,
             15
           ],
           "background_anchor": [
-            2,
+            30,
             0
           ],
-          "font_size": 11,
+          "font_size": 10,
           "minimum_font_size": 9,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
           "background_mode": "row_sample",
           "erase_rects_xyxy": [
             [
               41,
-              1,
-              111,
-              15
-            ],
-            [
-              39,
               3,
-              76,
-              12
+              110,
+              14
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              0,
+              114,
+              4
             ]
           ]
         }
@@ -6784,18 +7375,18 @@
         {
           "target": "费尔南",
           "mask_xyxy": [
-            41,
-            23,
-            111,
-            38
+            40,
+            25,
+            106,
+            39
           ],
           "background_anchor": [
-            39,
+            30,
             0
           ],
-          "font_size": 11,
+          "font_size": 10,
           "minimum_font_size": 9,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
@@ -6808,15 +7399,17 @@
           "erase_rects_xyxy": [
             [
               41,
-              23,
-              111,
+              27,
+              110,
               38
-            ],
+            ]
+          ],
+          "protected_rects_xyxy": [
             [
-              40,
-              26,
-              107,
-              38
+              106,
+              24,
+              114,
+              28
             ]
           ]
         }
@@ -6829,27 +7422,35 @@
         {
           "target": "萝洁",
           "mask_xyxy": [
-            41,
+            40,
             1,
-            111,
+            106,
             15
           ],
           "background_anchor": [
-            40,
+            30,
             0
           ],
-          "font_size": 11,
+          "font_size": 10,
           "minimum_font_size": 9,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "erase_mode": "nontransparent",
           "background_mode": "row_sample",
           "erase_rects_xyxy": [
             [
               41,
-              1,
-              111,
-              15
+              3,
+              110,
+              14
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              0,
+              114,
+              4
             ]
           ]
         }
@@ -6862,18 +7463,18 @@
         {
           "target": "萝洁",
           "mask_xyxy": [
-            41,
-            23,
-            111,
-            38
+            40,
+            25,
+            106,
+            39
           ],
           "background_anchor": [
-            40,
+            30,
             0
           ],
-          "font_size": 11,
+          "font_size": 10,
           "minimum_font_size": 9,
-          "stroke_width": 1,
+          "stroke_width": 0,
           "source_text_evidence": "原始RGBA图逐项及相邻拼图复核；本矩形仅为人工确认的文字回写区域，不沿用整图粗框。 原文字/描边清理轮廓与目标排版范围分离；原图连通字形和相邻UI图形复核。",
           "color": [
             128,
@@ -6886,9 +7487,17 @@
           "erase_rects_xyxy": [
             [
               41,
-              23,
-              111,
+              27,
+              110,
               38
+            ]
+          ],
+          "protected_rects_xyxy": [
+            [
+              106,
+              24,
+              114,
+              28
             ]
           ]
         }

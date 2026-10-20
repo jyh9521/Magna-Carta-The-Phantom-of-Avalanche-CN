@@ -1,0 +1,1442 @@
+{
+  "schema": 1,
+  "approved_replacements": [
+    {
+      "resource": "BGR/0357.BGR",
+      "source_sha256": "4440c917f4b9dbcc25a4507aa313bfc57245ae2a7cc315aa5e655c100117fbdb",
+      "target_sha256": "52fdf74d27d7e541514c9ab5f65b7b27b405d379d5276302382b2350dcb7846f",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "reason": "Previously approved 4K title background; retain exact deployed bytes, not the obsolete low-resolution group output."
+    },
+    {
+      "resource": "BGR/0358.BGR",
+      "source_sha256": "520bab45a8b4d7b814be54140a0893611190bcc8f1f3697c1cdee753403c8f39",
+      "target_sha256": "ad11c2148f9b98a202cee2662e754e3239b4f9e2b3ff5ca4b0e04d149150ac73",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "reason": "Previously approved 4K title background; retain exact deployed bytes, not the obsolete low-resolution group output."
+    },
+    {
+      "resource": "BGR/0359.BGR",
+      "source_sha256": "3fc989064e648a2520acda61e26772edfa00df6671f739d07349a35a9fe2e806",
+      "target_sha256": "fab026e2dc61a41ede05ecd9d6810fb71fbc7a3632b37df85d77a6a67044676a",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "reason": "Previously approved 4K title background; retain exact deployed bytes, not the obsolete low-resolution group output."
+    },
+    {
+      "resource": "BGR/0360.BGR",
+      "source_sha256": "2a9b837f278824cc93e1b97b3fb224a553790d107947cc15a47d444c4fc14918",
+      "target_sha256": "af842dcde807360e86fe45e7ac301698e8eb5e9039bb43a7dfa9453e6ae4d235",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "reason": "Previously approved 4K title background; retain exact deployed bytes, not the obsolete low-resolution group output."
+    },
+    {
+      "resource": "BGR/0361.BGR",
+      "source_sha256": "bcfdbabe1f1fc73a9715bfa7fdf13ea29b8a071ba93ad2b88162af074ccffc2f",
+      "target_sha256": "82c5d962ee234b22c25ecf519d8229fcd42e57292f152d8ec3d741a1621a64ce",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "reason": "Previously approved 4K title background; retain exact deployed bytes, not the obsolete low-resolution group output."
+    },
+    {
+      "resource": "BGR/0362.BGR",
+      "source_sha256": "2cc1f0beb1c00b7982b88f5ec217263b3e083a8e29c8bf3ec9092cbe70602385",
+      "target_sha256": "241de836dd9124485a0392efd90742bb1ab1dd3cf343c27ed5523d3fb0f5cf09",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "reason": "Previously approved 4K title background; retain exact deployed bytes, not the obsolete low-resolution group output."
+    },
+    {
+      "resource": "BGR/0363.BGR",
+      "source_sha256": "de1dbe7004e4198efe50bbd09997cd903a71876e0fd3ec643d27c4b62b37c478",
+      "target_sha256": "52fdf74d27d7e541514c9ab5f65b7b27b405d379d5276302382b2350dcb7846f",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "reason": "Previously approved 4K title background; retain exact deployed bytes, not the obsolete low-resolution group output."
+    },
+    {
+      "resource": "BGR/0364.BGR",
+      "source_sha256": "e23484bb0708a744119a797ae0017c963a104826a89b9b8927a52e63a4d3f990",
+      "target_sha256": "ad11c2148f9b98a202cee2662e754e3239b4f9e2b3ff5ca4b0e04d149150ac73",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "reason": "Previously approved 4K title background; retain exact deployed bytes, not the obsolete low-resolution group output."
+    },
+    {
+      "resource": "BGR/0365.BGR",
+      "source_sha256": "56e89ace1f841785f8f6f1f8c078209c3ae0abcff58f453bce835c3da760893f",
+      "target_sha256": "fab026e2dc61a41ede05ecd9d6810fb71fbc7a3632b37df85d77a6a67044676a",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "reason": "Previously approved 4K title background; retain exact deployed bytes, not the obsolete low-resolution group output."
+    },
+    {
+      "resource": "BGR/0366.BGR",
+      "source_sha256": "07ed86b6aa3efb1e8d2e86469bac58ead78e1169f4b5da281722abe3d7566777",
+      "target_sha256": "af842dcde807360e86fe45e7ac301698e8eb5e9039bb43a7dfa9453e6ae4d235",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "reason": "Previously approved 4K title background; retain exact deployed bytes, not the obsolete low-resolution group output."
+    },
+    {
+      "resource": "BGR/0367.BGR",
+      "source_sha256": "272b953d71d5aba6b68e233f9d19182006ff1c6fe5107f5c16f1f0983c92fabb",
+      "target_sha256": "82c5d962ee234b22c25ecf519d8229fcd42e57292f152d8ec3d741a1621a64ce",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "reason": "Previously approved 4K title background; retain exact deployed bytes, not the obsolete low-resolution group output."
+    },
+    {
+      "resource": "BGR/0368.BGR",
+      "source_sha256": "e1d9382c1ed253f8b8f51963c4c9620f5b40be38d93e509193fda136235dff17",
+      "target_sha256": "241de836dd9124485a0392efd90742bb1ab1dd3cf343c27ed5523d3fb0f5cf09",
+      "dimensions": [
+        2048,
+        2048
+      ],
+      "reason": "Previously approved 4K title background; retain exact deployed bytes, not the obsolete low-resolution group output."
+    }
+  ],
+  "checks": [
+    {
+      "resource": "BGR/0155.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          32,
+          64
+        ],
+        [
+          224,
+          16,
+          256,
+          64
+        ]
+      ],
+      "meaning": "Rounded popup frame and body remain original outside the joined title"
+    },
+    {
+      "resource": "BGR/0156.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          224,
+          0,
+          256,
+          64
+        ],
+        [
+          0,
+          16,
+          32,
+          64
+        ]
+      ],
+      "meaning": "Rounded popup frame and body remain original outside the joined title"
+    },
+    {
+      "resource": "BGR/0157.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          32,
+          64
+        ],
+        [
+          224,
+          16,
+          256,
+          64
+        ]
+      ],
+      "meaning": "Rounded popup frame and body remain original outside the joined title"
+    },
+    {
+      "resource": "BGR/0158.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          224,
+          0,
+          256,
+          64
+        ],
+        [
+          0,
+          16,
+          32,
+          64
+        ]
+      ],
+      "meaning": "Rounded popup frame and body remain original outside the joined title"
+    },
+    {
+      "resource": "BGR/0159.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          32,
+          64
+        ],
+        [
+          224,
+          16,
+          256,
+          64
+        ]
+      ],
+      "meaning": "Rounded popup frame and body remain original outside the joined title"
+    },
+    {
+      "resource": "BGR/0160.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          224,
+          0,
+          256,
+          64
+        ],
+        [
+          0,
+          16,
+          32,
+          64
+        ]
+      ],
+      "meaning": "Rounded popup frame and body remain original outside the joined title"
+    },
+    {
+      "resource": "BGR/0161.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          32,
+          64
+        ],
+        [
+          224,
+          16,
+          256,
+          64
+        ]
+      ],
+      "meaning": "Rounded popup frame and body remain original outside the joined title"
+    },
+    {
+      "resource": "BGR/0162.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          224,
+          0,
+          256,
+          64
+        ],
+        [
+          0,
+          16,
+          32,
+          64
+        ]
+      ],
+      "meaning": "Rounded popup frame and body remain original outside the joined title"
+    },
+    {
+      "resource": "BGR/0163.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          32,
+          64
+        ],
+        [
+          224,
+          16,
+          256,
+          64
+        ]
+      ],
+      "meaning": "Rounded popup frame and body remain original outside the joined title"
+    },
+    {
+      "resource": "BGR/0164.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          224,
+          0,
+          256,
+          64
+        ],
+        [
+          0,
+          16,
+          32,
+          64
+        ]
+      ],
+      "meaning": "Rounded popup frame and body remain original outside the joined title"
+    },
+    {
+      "resource": "BGR/0084.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          6,
+          48
+        ],
+        [
+          6,
+          31,
+          76,
+          48
+        ],
+        [
+          142,
+          0,
+          154,
+          23
+        ]
+      ],
+      "meaning": "Battle command left contour, status light and clean top-right corner"
+    },
+    {
+      "resource": "BGR/0085.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          6,
+          48
+        ],
+        [
+          6,
+          31,
+          76,
+          48
+        ],
+        [
+          142,
+          0,
+          154,
+          23
+        ]
+      ],
+      "meaning": "Battle command left contour, status light and clean top-right corner"
+    },
+    {
+      "resource": "BGR/0086.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          6,
+          48
+        ],
+        [
+          6,
+          31,
+          76,
+          48
+        ],
+        [
+          142,
+          0,
+          154,
+          23
+        ]
+      ],
+      "meaning": "Battle command left contour, status light and clean top-right corner"
+    },
+    {
+      "resource": "BGR/0087.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          6,
+          48
+        ],
+        [
+          6,
+          31,
+          76,
+          48
+        ],
+        [
+          142,
+          0,
+          154,
+          23
+        ]
+      ],
+      "meaning": "Battle command left contour, status light and clean top-right corner"
+    },
+    {
+      "resource": "BGR/0088.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          6,
+          48
+        ],
+        [
+          6,
+          31,
+          76,
+          48
+        ],
+        [
+          142,
+          0,
+          154,
+          23
+        ]
+      ],
+      "meaning": "Battle command left contour, status light and clean top-right corner"
+    },
+    {
+      "resource": "BGR/0089.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          6,
+          48
+        ],
+        [
+          6,
+          31,
+          76,
+          48
+        ],
+        [
+          142,
+          0,
+          154,
+          23
+        ]
+      ],
+      "meaning": "Battle command left contour, status light and clean top-right corner"
+    },
+    {
+      "resource": "BGR/0090.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          6,
+          48
+        ],
+        [
+          6,
+          31,
+          76,
+          48
+        ],
+        [
+          142,
+          0,
+          154,
+          23
+        ]
+      ],
+      "meaning": "Battle command left contour, status light and clean top-right corner"
+    },
+    {
+      "resource": "BGR/0091.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          6,
+          48
+        ],
+        [
+          6,
+          31,
+          76,
+          48
+        ],
+        [
+          142,
+          0,
+          154,
+          23
+        ]
+      ],
+      "meaning": "Battle command left contour, status light and clean top-right corner"
+    },
+    {
+      "resource": "BGR/0092.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          6,
+          48
+        ],
+        [
+          6,
+          31,
+          76,
+          48
+        ],
+        [
+          142,
+          0,
+          154,
+          23
+        ]
+      ],
+      "meaning": "Battle command left contour, status light and clean top-right corner"
+    },
+    {
+      "resource": "BGR/0093.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          6,
+          48
+        ],
+        [
+          6,
+          31,
+          76,
+          48
+        ],
+        [
+          142,
+          0,
+          154,
+          23
+        ]
+      ],
+      "meaning": "Battle command left contour, status light and clean top-right corner"
+    },
+    {
+      "resource": "BGR/0094.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          6,
+          48
+        ],
+        [
+          6,
+          31,
+          76,
+          48
+        ],
+        [
+          142,
+          0,
+          154,
+          23
+        ]
+      ],
+      "meaning": "Battle command left contour, status light and clean top-right corner"
+    },
+    {
+      "resource": "BGR/0095.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          6,
+          48
+        ],
+        [
+          6,
+          31,
+          76,
+          48
+        ],
+        [
+          142,
+          0,
+          154,
+          23
+        ]
+      ],
+      "meaning": "Battle command left contour, status light and clean top-right corner"
+    },
+    {
+      "resource": "BGR/0284.BGR",
+      "kind": "alpha",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          91,
+          21
+        ]
+      ],
+      "meaning": "Original rounded pill silhouette and antialiasing"
+    },
+    {
+      "resource": "BGR/0285.BGR",
+      "kind": "alpha",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          91,
+          21
+        ]
+      ],
+      "meaning": "Original rounded pill silhouette and antialiasing"
+    },
+    {
+      "resource": "BGR/0286.BGR",
+      "kind": "alpha",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          91,
+          21
+        ]
+      ],
+      "meaning": "Original rounded pill silhouette and antialiasing"
+    },
+    {
+      "resource": "BGR/0287.BGR",
+      "kind": "alpha",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          91,
+          21
+        ]
+      ],
+      "meaning": "Original rounded pill silhouette and antialiasing"
+    },
+    {
+      "resource": "BGR/0288.BGR",
+      "kind": "alpha",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          91,
+          21
+        ]
+      ],
+      "meaning": "Original rounded pill silhouette and antialiasing"
+    },
+    {
+      "resource": "BGR/0289.BGR",
+      "kind": "alpha",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          91,
+          21
+        ]
+      ],
+      "meaning": "Original rounded pill silhouette and antialiasing"
+    },
+    {
+      "resource": "BGR/0290.BGR",
+      "kind": "alpha",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          91,
+          21
+        ]
+      ],
+      "meaning": "Original rounded pill silhouette and antialiasing"
+    },
+    {
+      "resource": "BGR/0423.BGR",
+      "kind": "alpha",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          91,
+          21
+        ]
+      ],
+      "meaning": "Original rounded pill silhouette and antialiasing"
+    },
+    {
+      "resource": "BGR/0424.BGR",
+      "kind": "alpha",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          91,
+          21
+        ]
+      ],
+      "meaning": "Original rounded pill silhouette and antialiasing"
+    },
+    {
+      "resource": "BGR/0333.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0334.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0335.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0336.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0337.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0338.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0339.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0340.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0341.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0342.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0343.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0344.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0345.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0346.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0347.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0348.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          30,
+          54
+        ],
+        [
+          111,
+          0,
+          114,
+          54
+        ]
+      ],
+      "meaning": "HP indicator and outer nameplate contour"
+    },
+    {
+      "resource": "BGR/0219.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          20,
+          21,
+          155,
+          23
+        ]
+      ],
+      "meaning": "Complete active command green line without old descender cuts",
+      "donor": "BGR/0221.BGR"
+    },
+    {
+      "resource": "BGR/0221.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          20,
+          21,
+          155,
+          23
+        ]
+      ],
+      "meaning": "Complete active command green line without old descender cuts",
+      "donor": "BGR/0221.BGR"
+    },
+    {
+      "resource": "BGR/0223.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          20,
+          21,
+          155,
+          23
+        ]
+      ],
+      "meaning": "Complete active command green line without old descender cuts",
+      "donor": "BGR/0221.BGR"
+    },
+    {
+      "resource": "BGR/0225.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          20,
+          21,
+          155,
+          23
+        ]
+      ],
+      "meaning": "Complete active command green line without old descender cuts",
+      "donor": "BGR/0221.BGR"
+    },
+    {
+      "resource": "BGR/0227.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          20,
+          21,
+          155,
+          23
+        ]
+      ],
+      "meaning": "Complete active command green line without old descender cuts",
+      "donor": "BGR/0221.BGR"
+    },
+    {
+      "resource": "BGR/0410.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          20,
+          21,
+          155,
+          23
+        ]
+      ],
+      "meaning": "Complete active command green line without old descender cuts",
+      "donor": "BGR/0221.BGR"
+    },
+    {
+      "resource": "BGR/0181.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          65,
+          32,
+          90,
+          34
+        ]
+      ],
+      "meaning": "Active wide menu green line",
+      "donor": "BGR/0181.BGR"
+    },
+    {
+      "resource": "BGR/0183.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          65,
+          32,
+          90,
+          34
+        ]
+      ],
+      "meaning": "Active wide menu green line",
+      "donor": "BGR/0181.BGR"
+    },
+    {
+      "resource": "BGR/0185.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          65,
+          32,
+          90,
+          34
+        ]
+      ],
+      "meaning": "Active wide menu green line",
+      "donor": "BGR/0181.BGR"
+    },
+    {
+      "resource": "BGR/0187.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          65,
+          32,
+          90,
+          34
+        ]
+      ],
+      "meaning": "Active wide menu green line",
+      "donor": "BGR/0181.BGR"
+    },
+    {
+      "resource": "BGR/0189.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          65,
+          32,
+          90,
+          34
+        ]
+      ],
+      "meaning": "Active wide menu green line",
+      "donor": "BGR/0181.BGR"
+    },
+    {
+      "resource": "BGR/0265.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          24,
+          24,
+          42,
+          26
+        ]
+      ],
+      "meaning": "Active compact menu green line",
+      "donor": "BGR/0265.BGR"
+    },
+    {
+      "resource": "BGR/0267.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          24,
+          24,
+          42,
+          26
+        ]
+      ],
+      "meaning": "Active compact menu green line",
+      "donor": "BGR/0265.BGR"
+    },
+    {
+      "resource": "BGR/0269.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          24,
+          24,
+          42,
+          26
+        ]
+      ],
+      "meaning": "Active compact menu green line",
+      "donor": "BGR/0265.BGR"
+    },
+    {
+      "resource": "BGR/0271.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          24,
+          24,
+          42,
+          26
+        ]
+      ],
+      "meaning": "Active compact menu green line",
+      "donor": "BGR/0265.BGR"
+    },
+    {
+      "resource": "BGR/0273.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          24,
+          24,
+          42,
+          26
+        ]
+      ],
+      "meaning": "Active compact menu green line",
+      "donor": "BGR/0265.BGR"
+    },
+    {
+      "resource": "BGR/0275.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          24,
+          24,
+          42,
+          26
+        ]
+      ],
+      "meaning": "Active compact menu green line",
+      "donor": "BGR/0265.BGR"
+    },
+    {
+      "resource": "BGR/0393.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          24,
+          24,
+          42,
+          26
+        ]
+      ],
+      "meaning": "Active compact menu green line",
+      "donor": "BGR/0265.BGR"
+    },
+    {
+      "resource": "BGR/0294.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          24,
+          32,
+          70,
+          34
+        ]
+      ],
+      "meaning": "Trading menu green line",
+      "donor": "BGR/0296.BGR"
+    },
+    {
+      "resource": "BGR/0296.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          24,
+          32,
+          70,
+          34
+        ]
+      ],
+      "meaning": "Trading menu green line",
+      "donor": "BGR/0296.BGR"
+    },
+    {
+      "resource": "BGR/0427.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          128,
+          18
+        ],
+        [
+          0,
+          18,
+          14,
+          34
+        ]
+      ],
+      "meaning": "Native counter digit/icon and three charge squares"
+    },
+    {
+      "resource": "BGR/0428.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          128,
+          18
+        ],
+        [
+          0,
+          18,
+          14,
+          34
+        ]
+      ],
+      "meaning": "Native counter digit/icon and three charge squares"
+    },
+    {
+      "resource": "BGR/0429.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          128,
+          18
+        ],
+        [
+          0,
+          18,
+          14,
+          34
+        ]
+      ],
+      "meaning": "Native counter digit/icon and three charge squares"
+    },
+    {
+      "resource": "BGR/0430.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          0,
+          128,
+          18
+        ],
+        [
+          0,
+          18,
+          14,
+          30
+        ]
+      ],
+      "meaning": "Native counter digit/icon and three charge squares"
+    },
+    {
+      "resource": "BGR/0261.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          205,
+          148,
+          246,
+          165
+        ]
+      ],
+      "meaning": "Silver-key EA badge remains intact"
+    },
+    {
+      "resource": "BGR/0436.BGR",
+      "kind": "source",
+      "regions_xyxy": [
+        [
+          0,
+          71,
+          128,
+          128
+        ]
+      ],
+      "meaning": "Clean original lower glow remains unchanged"
+    }
+  ],
+  "phrases": [
+    {
+      "group": "message-question",
+      "target": "问题"
+    },
+    {
+      "group": "message-answer",
+      "target": "答案"
+    },
+    {
+      "group": "message-caution",
+      "target": "注意"
+    },
+    {
+      "group": "message-battle-alert",
+      "target": "战斗警告"
+    },
+    {
+      "group": "message-information",
+      "target": "信息"
+    }
+  ]
+}

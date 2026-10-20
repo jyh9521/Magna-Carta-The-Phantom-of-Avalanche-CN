@@ -992,6 +992,281 @@
         }
       ],
       "layout_evidence": "Original tile edges and six readable lines align as 299/300/301 then 303/304/305. 302 and 306 are blank, 307 contains only blurred background. Numeric enumeration was not a layout definition. Static phrase/crop evidence; runtime placement remains unverified. Actual 2026-10-13 screenshot binds the visible first-layout width to 640, not padded tile width 768; Chinese line centers are x=320. Source cleanup still covers the complete padded band; only target layout uses the visible 640px width."
+    },
+    {
+      "id": "message-question",
+      "dimensions": [
+        512,
+        256
+      ],
+      "tiles": [
+        {
+          "resource": "BGR/0155.BGR",
+          "source_sha256": "23af87bb932e9ad70db319c7ea5c3d871ae5ca2e8fcef62b85e5c2b774b8a1f3",
+          "xy": [
+            0,
+            0
+          ]
+        },
+        {
+          "resource": "BGR/0156.BGR",
+          "source_sha256": "98baa354e6e60a270004af52f63e87b359fdb69f5c9ef9326ba378daa43f9e72",
+          "xy": [
+            256,
+            0
+          ]
+        }
+      ],
+      "plans": [
+        {
+          "target": "问题",
+          "mask_xyxy": [
+            200,
+            1,
+            320,
+            15
+          ],
+          "background_anchor": [
+            100,
+            0
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "all_pixels",
+          "erase_rects_xyxy": [
+            [
+              200,
+              1,
+              320,
+              15
+            ]
+          ],
+          "font_size": 10,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "Original paired header joins across x256; erase only the complete caption, not the rounded frame."
+        }
+      ],
+      "layout_evidence": "Source tile ends join QUESTION / ANSWER / CAUTION / BATTLE ALERT / INFORMATION at x256; observed information popup screenshot confirms the paired layout. Original rounded corners remain outside cleanup."
+    },
+    {
+      "id": "message-answer",
+      "dimensions": [
+        512,
+        256
+      ],
+      "tiles": [
+        {
+          "resource": "BGR/0157.BGR",
+          "source_sha256": "21029033de99887a8db29c618ad7ea06c3ee58bcae28cf461eb51156b4b5e9a7",
+          "xy": [
+            0,
+            0
+          ]
+        },
+        {
+          "resource": "BGR/0158.BGR",
+          "source_sha256": "2036a54cd0ad0b24359e51c9052b2d5117206257e44cd802f6b591a8d4052fef",
+          "xy": [
+            256,
+            0
+          ]
+        }
+      ],
+      "plans": [
+        {
+          "target": "答案",
+          "mask_xyxy": [
+            200,
+            1,
+            320,
+            15
+          ],
+          "background_anchor": [
+            100,
+            0
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "all_pixels",
+          "erase_rects_xyxy": [
+            [
+              200,
+              1,
+              320,
+              15
+            ]
+          ],
+          "font_size": 10,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "Original paired header joins across x256; erase only the complete caption, not the rounded frame."
+        }
+      ],
+      "layout_evidence": "Source tile ends join QUESTION / ANSWER / CAUTION / BATTLE ALERT / INFORMATION at x256; observed information popup screenshot confirms the paired layout. Original rounded corners remain outside cleanup."
+    },
+    {
+      "id": "message-caution",
+      "dimensions": [
+        512,
+        256
+      ],
+      "tiles": [
+        {
+          "resource": "BGR/0159.BGR",
+          "source_sha256": "827386ae053a6981216b625f8bbf4781f0a76aac01c68add04f2ffdd5d5404a3",
+          "xy": [
+            0,
+            0
+          ]
+        },
+        {
+          "resource": "BGR/0160.BGR",
+          "source_sha256": "599f00fe8d862cd8ffc27f2b23733ec45a86ab19701275ddeecb96581256668c",
+          "xy": [
+            256,
+            0
+          ]
+        }
+      ],
+      "plans": [
+        {
+          "target": "注意",
+          "mask_xyxy": [
+            200,
+            1,
+            320,
+            15
+          ],
+          "background_anchor": [
+            100,
+            0
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "all_pixels",
+          "erase_rects_xyxy": [
+            [
+              200,
+              1,
+              320,
+              15
+            ]
+          ],
+          "font_size": 10,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "Original paired header joins across x256; erase only the complete caption, not the rounded frame."
+        }
+      ],
+      "layout_evidence": "Source tile ends join QUESTION / ANSWER / CAUTION / BATTLE ALERT / INFORMATION at x256; observed information popup screenshot confirms the paired layout. Original rounded corners remain outside cleanup."
+    },
+    {
+      "id": "message-battle-alert",
+      "dimensions": [
+        512,
+        256
+      ],
+      "tiles": [
+        {
+          "resource": "BGR/0161.BGR",
+          "source_sha256": "555b258e1013e3e2c074ca958436f00f26093ab824c1fb404310ca3db31d4808",
+          "xy": [
+            0,
+            0
+          ]
+        },
+        {
+          "resource": "BGR/0162.BGR",
+          "source_sha256": "833e14b422a6cbe9bf7a8dd553fcab44b403760dba3d35f13e11ba2865159d7f",
+          "xy": [
+            256,
+            0
+          ]
+        }
+      ],
+      "plans": [
+        {
+          "target": "战斗警告",
+          "mask_xyxy": [
+            200,
+            1,
+            320,
+            15
+          ],
+          "background_anchor": [
+            100,
+            0
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "all_pixels",
+          "erase_rects_xyxy": [
+            [
+              200,
+              1,
+              320,
+              15
+            ]
+          ],
+          "font_size": 10,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "Original paired header joins across x256; erase only the complete caption, not the rounded frame."
+        }
+      ],
+      "layout_evidence": "Source tile ends join QUESTION / ANSWER / CAUTION / BATTLE ALERT / INFORMATION at x256; observed information popup screenshot confirms the paired layout. Original rounded corners remain outside cleanup."
+    },
+    {
+      "id": "message-information",
+      "dimensions": [
+        512,
+        256
+      ],
+      "tiles": [
+        {
+          "resource": "BGR/0163.BGR",
+          "source_sha256": "43a3c2fa9c2ed10c556e89f798fb3620504306e41c937cfd91ac00df951013eb",
+          "xy": [
+            0,
+            0
+          ]
+        },
+        {
+          "resource": "BGR/0164.BGR",
+          "source_sha256": "5038d8dfc5e1558bcfa1a299763c9f6432132771b6a59ede93ec2e343d98f847",
+          "xy": [
+            256,
+            0
+          ]
+        }
+      ],
+      "plans": [
+        {
+          "target": "信息",
+          "mask_xyxy": [
+            200,
+            1,
+            320,
+            15
+          ],
+          "background_anchor": [
+            100,
+            0
+          ],
+          "background_mode": "row_sample",
+          "erase_mode": "all_pixels",
+          "erase_rects_xyxy": [
+            [
+              200,
+              1,
+              320,
+              15
+            ]
+          ],
+          "font_size": 10,
+          "minimum_font_size": 10,
+          "stroke_width": 0,
+          "source_text_evidence": "Original paired header joins across x256; erase only the complete caption, not the rounded frame."
+        }
+      ],
+      "layout_evidence": "Source tile ends join QUESTION / ANSWER / CAUTION / BATTLE ALERT / INFORMATION at x256; observed information popup screenshot confirms the paired layout. Original rounded corners remain outside cleanup."
     }
   ]
 }

@@ -4,7 +4,7 @@ import json
 from pathlib import Path, PurePosixPath
 import struct
 
-from build_image_text import digest, render, rectangle
+from build_image_text import digest, render, rectangle, references
 from resource_image import parse, TGA_FOOTER
 from locale_package import located,undelta
 
@@ -103,7 +103,8 @@ def build(source,plans_path,font,font_sha,output):
         artwork_records=[]
         if group.get('artwork'):
             image,artwork_records=apply_artwork(image,group['artwork'],plans_path.parent,snapshots)
-        _,texts,preview=render(image,plans,font)
+        donors=references(plans,source,snapshots)
+        _,texts,preview=render(image,plans,font,donors)
         records=[]
         for name,tile,box in tiles:
             cropped=preview.crop(box).tobytes();changed=tile.replace_rgba(cropped).to_bytes()
