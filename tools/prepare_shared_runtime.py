@@ -28,6 +28,8 @@ def prepare(source, modules, atlas, output, scaled_font_cache=None):
             raise ValueError('Scaled font requires the retained native-loading module and coverage cache')
         from integrate_scaled_font import payload
         font_files=payload(scaled_font_cache)
+        if ('launcher_output_snapshot'.encode('utf-16le') in modules['scaled-font'].read_bytes()
+                and b'SCALED_FONT_OUTPUT' not in modules['launcher'].read_bytes()):raise ValueError('Matching snapshot-capable launcher required')
     elif scaled_font_cache is not None:
         raise ValueError('Coverage cache requires the scaled font module')
     if 'native-loading' in modules:
@@ -136,6 +138,8 @@ def prepare(source, modules, atlas, output, scaled_font_cache=None):
         manifest['native_scene_loading']=dict(schema=1,enabled=True,module='native-loading')
     if 'scaled-font' in modules:
         manifest['scaled_font']=dict(schema=1,enabled=True,module='scaled-font',scale=4)
+        if 'launcher_output_snapshot'.encode('utf-16le') in modules['scaled-font'].read_bytes():
+            manifest['scaled_font_output']=dict(schema=1,source='launcher_display_snapshot')
     (output/'runtime.json').write_bytes((json.dumps(manifest,indent=2)+'\n').encode('utf8'))
     for recipe in recipes:
         entry='Play.cmd' if recipe=='configured' else 'Play-'+recipe+'.cmd'

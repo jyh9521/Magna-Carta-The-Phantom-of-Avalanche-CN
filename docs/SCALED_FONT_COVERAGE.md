@@ -1,6 +1,45 @@
 # 高分辨率文字：C方案运行接入
 
 
+## 2880×1800输出门控修正（2026-10-20）
+
+玩家反馈笔记本2880×1800仍有颗粒；保留的运行日志只有SCALED_FONT_READY，
+没有SCALED_FONT_TEXTURE。显示包装层日志确认为2880×1800、ResolutionScale=display(-1)。
+旧实现用GetRenderTarget/GetSurfaceDesc的内部逻辑尺寸作门槛；该值不是输出尺寸的可靠替代。
+
+**Verified缺陷**：自有D3D7夹具把内部目标设成800×600、输出快照设为2880×1800时，
+旧实现退出1（expected private high slot）；修正后40个高清纹理读回通过。
+**实机未验证**：旧日志没有记录内部尺寸，因此该回放不宣称已经读到玩家内部目标为800×600，
+也不排除其它守卫未通过。新日志逐步区分renderer、输出门控、canvas和纹理分配。
+
+启动器在游戏/兼容层注入前，以EnumDisplaySettingsW读取物理桌面尺寸，结合源锁显示配方、
+固定渲染尺寸和窗口大小，产生MC_SCALED_FONT_OUTPUT。auto的2880×1800不再被低逻辑目标挡住；
+1080p配方及1080p窗口仍走原字模。未知配方、非法尺寸拒绝；缺失快照不猜测桌面大小。
+该API不参与DPI虚拟化，依据[Microsoft文档](https://learn.microsoft.com/zh-cn/windows/win32/api/winuser/nf-winuser-enumdisplaysettingsw)。
+VerifyOnly也输出SCALED_FONT_OUTPUT，且不创建游戏进程。本机只读预检已返回selected=2880x1800。
+快照在每次启动时重新读取；不宣称游戏运行期间插拔显示器或拖动窗口会动态刷新。
+
+新增scaled_font_output_fixture覆盖72组配方/窗口/桌面组合；原D3D7夹具
+增加--presentation，三态均使用同一800×600内部目标与2880×1800输出快照。
+新SCALED_FONT_GATE记录output/logical/enabled/reason；只有SCALED_FONT_TEXTURE才证明创建了高清纹理。
+
+共享目录仅更新scaled-font.dll、workspace_launcher.exe和runtime.json；原Start、字体缓存、
+其它模块、配置和存档保留。事务工具：
+
+```powershell
+cmake --build build/native --config Release --target workspace_launcher workspace_profile scaled_font_runtime_fixture scaled_font_output_fixture
+python tools/update_scaled_font_output.py --runtime runtime --native build/native/Release --record build/scaled-font-output-evidence/integration
+python tools/check_scaled_font_runtime.py baseline --presentation
+python tools/check_scaled_font_runtime.py modified --presentation
+python tools/check_scaled_font_runtime.py rollback --presentation
+python tools/update_scaled_font_output.py --rollback build/scaled-font-output-evidence/integration
+```
+
+最后一条只撤回本轮启动器/模块/清单到上一版C。完整撤回C时，先撤回输出修正，再使用上一轮
+scaled-font-runtime-evidence/integration记录；摘要漂移拒绝覆盖。当前候选保留在原Play，
+不自动启动游戏。仍需测试者手动确认同一段对白和SCALED_FONT_GATE/TEXTURE日志。
+从干净来源重建共享目录时须使用同一轮构建的profile与launcher，不混用旧启动器。
+
 ## 当前候选：原有Play入口（2026-10-20）
 
 C方案已接入共享运行目录的 `Play.cmd → Start.ps1 → modules/scaled-font.dll`，
@@ -25,7 +64,7 @@ owner保存原逻辑尺寸的二次幂宽高，实际GPU纹理为其4倍。归�
 把原槽交回原27e4d；未知或回收后的纹理ID不用于删除其它资源。
 
 - 仅支持已锁定D3D7驱动；OpenGL等路径不创建高清槽。
-- 实际渲染目标宽>=2560或高>=1440才使用高清，1080p保留原流程；不是依据桌面大小猜测。
+- 已修正为启动器解析的实际输出快照宽>=2560或高>=1440才使用高清；内部逻辑目标仅记录诊断。
 - 单次CPU线缓冲<=16MiB，独立GPU纹理预算64MiB、最多128槽，保留至少32个驱动空闲ID。
 - 设备纹理尺寸上限和实际分配尺寸均校验；一行后续块失败会把前面块一并退回原槽视图，避免半行两种清晰度。
 - SGC1从 `fonts/` 启动时读取一次；摘要通过生成头绑定模块，并由Start清单先校验。

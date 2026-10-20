@@ -50,8 +50,12 @@ def validate_engine_fixes(runtime, manifest):
                 or any(name not in manifest['files'] for name in ('modules/scaled-font.dll','fonts/candidate-14.sgc','fonts/candidate-22.sgc','fonts/FONT-LICENSE.txt'))
                 or b'# SCALED_FONT_DEFAULT_ROUTE:' not in (runtime/'Start.ps1').read_bytes()):
             raise ValueError('Invalid scaled font integration')
+    output=manifest.get('scaled_font_output')
+    if output is not None and (scaled is None or output!=dict(schema=1,source='launcher_display_snapshot')):
+        raise ValueError('Invalid scaled font output policy')
     return dict(scaled_font=dict(default_enabled=scaled is not None,in_game_verified=False,scale=4,
-                                 threshold='render target width>=2560 or height>=1440',original_pool_preserved=True),
+                                 threshold='output width>=2560 or height>=1440' if output else 'legacy target width>=2560 or height>=1440',original_pool_preserved=True,
+                                 output_snapshot=output is not None),
                 native_scene_loading=dict(default_enabled=native is not None,in_game_verified=False,
                                           resource='FrameData/0204.fdi',artwork='original'),
                 scene_loading=dict(default_enabled=presentation is not None,in_game_verified=False,

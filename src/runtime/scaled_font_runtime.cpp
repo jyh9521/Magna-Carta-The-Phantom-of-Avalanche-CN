@@ -1,5 +1,6 @@
 #include "scaled_font_runtime.h"
 #include "scaled_font.h"
+#include "scaled_font_output.h"
 #include "native_font.h"
 #include <d3d.h>
 #include <bcrypt.h>
@@ -71,11 +72,23 @@ BYTE* renderer(){
     return p;
 }
 bool highTarget(BYTE* r){
-    auto device=field<IDirect3DDevice7*>(r,0x2c);if(!device)return false;
-    IDirectDrawSurface7* target=nullptr;
-    if(FAILED(device->GetRenderTarget(&target))||!target)return false;
-    DDSURFACEDESC2 d{};d.dwSize=sizeof d;HRESULT hr=target->GetSurfaceDesc(&d);target->Release();
-    return SUCCEEDED(hr)&&(d.dwWidth>=2560||d.dwHeight>=1440);
+    if(!field<IDirect3DDevice7*>(r,0x2c)){
+        static LONG reported=0;if(trace&&InterlockedCompareExchange(&reported,1,0)==0)trace(L"SCALED_FONT_SKIP stage=device_not_ready");return false;
+    }
+    wchar_t text[40]{};ScaledFontOutput output;
+    DWORD n=GetEnvironmentVariableW(L"MC_SCALED_FONT_OUTPUT",text,40);
+    bool valid=n&&n<40&&parseScaledFontOutput(text,output);
+    bool enabled=valid&&highScaledFontOutput(output);
+    thread_local unsigned previousW=~0u,previousH=~0u;
+    if(trace&&(output.width!=previousW||output.height!=previousH)){
+        previousW=output.width;previousH=output.height;
+        unsigned w=0,h=0;auto device=field<IDirect3DDevice7*>(r,0x2c);IDirectDrawSurface7* target=nullptr;
+        if(device&&SUCCEEDED(device->GetRenderTarget(&target))&&target){DDSURFACEDESC2 d{};d.dwSize=sizeof d;
+            if(SUCCEEDED(target->GetSurfaceDesc(&d))){w=d.dwWidth;h=d.dwHeight;}target->Release();}
+        wchar_t s[240];swprintf_s(s,L"SCALED_FONT_GATE output=%ux%u logical=%ux%u enabled=%s source=launcher_snapshot reason=%s",
+            output.width,output.height,w,h,enabled?L"true":L"false",!valid?L"missing_or_invalid_snapshot":enabled?L"high_output":L"low_output");trace(s);
+    }
+    return enabled;
 }
 bool loadCache(const std::filesystem::path& path,const char* expected,ScaledGlyphCache& cache){
     std::ifstream f(path,std::ios::binary|std::ios::ate);if(!f)return false;
@@ -163,6 +176,8 @@ void demoteLine(){
 void __fastcall rasterHook(void* object,void*,const char* text,unsigned* pixels,int pitch){
     capture=Capture{};
     BYTE* r=ready?renderer():nullptr;
+    static LONG rendererReported=0;
+    if(ready&&!r&&trace&&InterlockedCompareExchange(&rendererReported,1,0)==0)trace(L"SCALED_FONT_SKIP stage=renderer_contract");
     capture.collecting=r&&highTarget(r);
     raster(object,text,pixels,pitch);
     capture.collecting=false;
@@ -178,6 +193,7 @@ void* __fastcall allocateHook(void* object,void*,int w,int h){
         owned.reserve(128);
         capture.privateSlots.reserve(32);
         if(!makeTexture(*next,w,h,x)){
+            static LONG reported=0;if(trace&&InterlockedCompareExchange(&reported,1,0)==0)trace(L"SCALED_FONT_SKIP stage=texture_allocation caps_or_budget=true");
             // No mixed-quality seams within one line if a later tile exceeds
             // the GPU/budget limit. Earlier private pointers become native views.
             demoteLine();return original;
@@ -225,7 +241,9 @@ void beginScaledText(void* object,int pitch){
     if(!capture.collecting)return;
     try{
         int h=field<int>(object,0x1c);
-        if(pitch<1||pitch>8192||h<1||h>256||size_t(h)*pitch*scale*scale*4>16*1024*1024){capture.valid=false;return;}
+        if(pitch<1||pitch>8192||h<1||h>256||size_t(h)*pitch*scale*scale*4>16*1024*1024){
+            static LONG reported=0;if(trace&&InterlockedCompareExchange(&reported,1,0)==0){wchar_t s[120];swprintf_s(s,L"SCALED_FONT_SKIP stage=canvas_contract width=%d height=%d",pitch,h);trace(s);}
+            capture.valid=false;return;}
         capture.width=pitch;capture.height=h;capture.cursor=0;
         capture.pixels.assign(size_t(h)*pitch*scale*scale,0);capture.valid=true;
     }catch(...){capture.valid=false;}
@@ -265,7 +283,7 @@ bool installScaledFontRuntime(HMODULE module,void(*logger)(const wchar_t*)){
         *reinterpret_cast<int*>(patch+1)=static_cast<int>(reinterpret_cast<ULONG_PTR>(c.callback)-reinterpret_cast<ULONG_PTR>(b+c.rva+5));
         c.patched=true;if(!write(b+c.rva,patch)){removeScaledFontRuntime();return false;}
     }
-    ready=true;if(trace)trace(L"SCALED_FONT_READY variant=C scale=4 threshold=2560x_or_1440y original_pool=retained");return true;
+    ready=true;if(trace)trace(L"SCALED_FONT_READY variant=C scale=4 policy=launcher_output_snapshot original_pool=retained");return true;
 }
 bool removeScaledFontRuntime(){
     std::lock_guard<std::recursive_mutex> guard(stateMutex);

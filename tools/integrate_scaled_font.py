@@ -55,6 +55,9 @@ def integrate(runtime,module,cache,record):
         if digest(start)!=BASE_START_SHA or 'scaled_font' in m or m.get('native_scene_loading')!=dict(schema=1,enabled=True,module='native-loading'):
             raise ValueError('Expected retained native-loading baseline')
         after=payload(cache);after[ADDED[0]]=module.read_bytes()
+        if ('launcher_output_snapshot'.encode('utf-16le') in after[ADDED[0]]
+                and b'SCALED_FONT_OUTPUT' not in ordinary(root/'modules/workspace_launcher.exe').read_bytes()):
+            raise ValueError('A snapshot-capable launcher is required; rebuild the shared runtime with the matching launcher')
         if len(after[ADDED[0]])<64 or after[ADDED[0]][:2]!=b'MZ':raise ValueError('Expected Win32 module')
         for h in (14,22):
             if digest(after[f'fonts/candidate-{h}.sgc']).encode() not in after[ADDED[0]]:

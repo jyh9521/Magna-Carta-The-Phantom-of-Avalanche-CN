@@ -1,5 +1,6 @@
 #include <windows.h>
 #include "advanced_display.h"
+#include "scaled_font_output.h"
 #include <bcrypt.h>
 #include <filesystem>
 #include <fstream>
@@ -186,6 +187,18 @@ int wmain(int argc, wchar_t** argv) {
             else throw std::runtime_error("Unknown or incomplete argument");
         }
         require(!workspace.empty(),"Missing workspace");
+        std::wstring scaledOutput;
+        ScaledFontOutput fontOutput;
+        wchar_t scaledFlag[8]{};
+        if(GetEnvironmentVariableW(L"MC_SCALED_FONT",scaledFlag,8)==1&&scaledFlag[0]==L'1'){
+            // Resolve outside the child, before its compatibility/display hooks.
+            DEVMODEW desktop{};desktop.dmSize=sizeof desktop;
+            require(EnumDisplaySettingsW(nullptr,ENUM_CURRENT_SETTINGS,&desktop)!=FALSE,"Display snapshot failed");
+            wchar_t window[40]{};DWORD n=GetEnvironmentVariableW(L"MC_WINDOW_RESOLUTION",window,40);
+            require(n<40,"Window resolution snapshot invalid");
+            require(resolveScaledFontOutput(displayProfile,window,desktop.dmPelsWidth,desktop.dmPelsHeight,fontOutput),"Font output policy unsupported");
+            scaledOutput=std::to_wstring(fontOutput.width)+L"x"+std::to_wstring(fontOutput.height);
+        }
         if (verifyOnly) {
             if(!displayProfile.empty()) require(advancedConfigMatches(displayProfile,sha256(workspace/L"DDrawCompat-MagnaCarta.ini")),"Advanced mode/config mismatch");
             require(!fixture,"Verification requires a version-locked game workspace");
@@ -197,6 +210,7 @@ int wmain(int argc, wchar_t** argv) {
 #endif
             require(accepted,"Unsupported engine module");
             std::cout<<"WORKSPACE_VERIFY PASS engine="<<engine<<" game_started=false registry_changed=false"<<std::endl;
+            if(!scaledOutput.empty())std::cout<<"SCALED_FONT_OUTPUT selected="<<fontOutput.width<<"x"<<fontOutput.height<<" source=launcher_display_snapshot game_started=false"<<std::endl;
             return 0;
         }
         require(!shim.empty() && !setting.empty() && !log.empty(), "Missing launch arguments");
@@ -254,6 +268,7 @@ int wmain(int argc, wchar_t** argv) {
             require(fs::is_regular_file(captureHelper), "Capture helper missing");
         }
         Session session(workspace, setting);
+        SetEnvironmentVariableW(L"MC_SCALED_FONT_OUTPUT",scaledOutput.empty()?nullptr:scaledOutput.c_str());
         SetEnvironmentVariableW(L"MC_WORKSPACE_SESSION", session.path.c_str());
         SetEnvironmentVariableW(L"MC_WORKSPACE_LOG", log.c_str());
         SetEnvironmentVariableW(L"MC_SYSTEM_MESSAGES",systemMessages?L"1":L"0");

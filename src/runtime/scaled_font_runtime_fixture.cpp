@@ -71,7 +71,10 @@ void log(const wchar_t* s){std::wcout<<s<<std::endl;}
 }
 int wmain(int argc,wchar_t** argv){
     SetErrorMode(SEM_FAILCRITICALERRORS|SEM_NOGPFAULTERRORBOX);SetUnhandledExceptionFilter(crash);
-    if(argc!=5){std::cerr<<"mode absolute-driver absolute-ddraw absolute-cache"<<std::endl;return 2;}
+    if(argc!=5&&argc!=6){std::cerr<<"mode absolute-driver absolute-ddraw absolute-cache [--presentation]"<<std::endl;return 2;}
+    const bool presentation=argc==6&&!wcscmp(argv[5],L"--presentation");
+    if(argc==6&&!presentation)return 2;
+    SetEnvironmentVariableW(L"MC_SCALED_FONT_OUTPUT",presentation?L"2880x1800":L"3840x2160");
     const bool modified=!wcscmp(argv[1],L"modified"),rollback=!wcscmp(argv[1],L"rollback");
     if(!modified&&!rollback&&wcscmp(argv[1],L"baseline"))return 2;
     HMODULE image=nullptr;HWND window=nullptr;IDirectDraw7* draw=nullptr;IDirect3D7* d3d=nullptr;
@@ -91,7 +94,7 @@ int wmain(int argc,wchar_t** argv){
         hr(draw->SetCooperativeLevel(window,DDSCL_NORMAL),"normal cooperative level");
         hr(draw->QueryInterface(IID_IDirect3D7,reinterpret_cast<void**>(&d3d)),"d3d7");
         DDSURFACEDESC2 desc{};desc.dwSize=sizeof desc;desc.dwFlags=DDSD_CAPS|DDSD_WIDTH|DDSD_HEIGHT|DDSD_PIXELFORMAT;
-        desc.dwWidth=3840;desc.dwHeight=2160;desc.ddsCaps.dwCaps=DDSCAPS_OFFSCREENPLAIN|DDSCAPS_3DDEVICE|DDSCAPS_VIDEOMEMORY;
+        desc.dwWidth=presentation?800:3840;desc.dwHeight=presentation?600:2160;desc.ddsCaps.dwCaps=DDSCAPS_OFFSCREENPLAIN|DDSCAPS_3DDEVICE|DDSCAPS_VIDEOMEMORY;
         desc.ddpfPixelFormat.dwSize=sizeof(DDPIXELFORMAT);desc.ddpfPixelFormat.dwFlags=DDPF_RGB;desc.ddpfPixelFormat.dwRGBBitCount=32;
         desc.ddpfPixelFormat.dwRBitMask=0xff0000;desc.ddpfPixelFormat.dwGBitMask=0xff00;desc.ddpfPixelFormat.dwBBitMask=0xff;
         hr(draw->CreateSurface(&desc,&target,nullptr),"4k offscreen target");
@@ -186,6 +189,7 @@ int wmain(int argc,wchar_t** argv){
             check(scaledRuntimeOwnedCount()==0&&released==allocated,"budget fallback release");
             // A 1080p render target must use original slots even with C enabled.
             desc.dwWidth=1920;desc.dwHeight=1080;IDirectDrawSurface7* lowTarget=nullptr;
+            SetEnvironmentVariableW(L"MC_SCALED_FONT_OUTPUT",L"1920x1080");
             hr(draw->CreateSurface(&desc,&lowTarget,nullptr),"1080p target");hr(device->SetRenderTarget(lowTarget,0),"1080p selection");
             allocated=uploaded=released=0;scaledRasterFixture(nullptr,nullptr,"owned",line.data(),256);
             auto slot=scaledSlotFixture(nullptr,nullptr,256,14);check(slot==&originalSlots[0],"1080p baseline preserved");
