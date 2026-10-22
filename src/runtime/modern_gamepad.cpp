@@ -1,6 +1,7 @@
 #include "modern_gamepad.h"
 #include "modern_input.h"
 #include "battle_input.h"
+#include "battle_edge.h"
 #include "world_gamepad.h"
 #include "gamepad_cursor.h"
 #include "gamepad_ui.h"
@@ -14,6 +15,9 @@
 namespace {
 using Keyboard=BOOL(WINAPI*)(PBYTE);
 using Poll=DWORD(WINAPI*)(DWORD,XINPUT_STATE*);
+using Message=BOOL(WINAPI*)(LPMSG,HWND,UINT,UINT);
+Message originalMessage=nullptr;DWORD messageIat=0;
+combat_input::SpaceEdgeLatch spaceEdges;BYTE* edgeScene=nullptr;bool physicalBattleInput=false;
 Keyboard original=nullptr;
 DWORD originalIat=0;
 Poll poll=nullptr;
@@ -47,7 +51,39 @@ BYTE* battleScene(void* frame){
  if(!battleReady||!readable(frame,8)||reinterpret_cast<BYTE**>(frame)[1]!=engine+0xa0b92)return nullptr;
  auto parent=*reinterpret_cast<BYTE**>(frame);if(reinterpret_cast<ULONG_PTR>(parent)<4||!readable(parent-4,4))return nullptr;
  auto scene=*reinterpret_cast<BYTE**>(parent-4);
- return readable(scene,0x1e04)&&*reinterpret_cast<BYTE**>(scene)==engine+0xc195c?scene:nullptr;
+ return readable(scene,0x1e04)&&*reinterpret_cast<BYTE**>(scene)==engine+0xc1960?scene:nullptr;
+}
+bool battleFocused(){
+#ifdef MODERN_INPUT_TEST
+ return fixtureForeground;
+#else
+ HWND front=GetForegroundWindow();DWORD owner=0;if(front)GetWindowThreadProcessId(front,&owner);
+ return gameWindow&&front==*gameWindow&&owner==GetCurrentProcessId()&&!IsIconic(front);
+#endif
+}
+bool edgeValid(BYTE* scene){return battleReady&&scene&&readable(scene,0x1e04)&&*reinterpret_cast<BYTE**>(scene)==engine+0xc1960&&*reinterpret_cast<int*>(scene+0x1dc4)==1;}
+BOOL WINAPI messageHook(LPMSG msg,HWND window,UINT first,UINT last){
+ auto source=reinterpret_cast<ULONG_PTR>(_ReturnAddress());
+ BOOL result=originalMessage(msg,window,first,last);
+ if(source==reinterpret_cast<ULONG_PTR>(engine+0xbe01)){
+  bool valid=result>0&&msg&&battleFocused()&&edgeValid(edgeScene);
+  if(!valid){spaceEdges.clear();edgeScene=nullptr;}
+  else if((msg->message==WM_KILLFOCUS)||(msg->message==WM_ACTIVATEAPP&&!msg->wParam)){spaceEdges.clear();edgeScene=nullptr;}
+  else if(gameWindow&&msg->hwnd==*gameWindow&&(msg->message==WM_KEYDOWN||msg->message==WM_KEYUP)&&msg->wParam==VK_SPACE)
+   spaceEdges.message(reinterpret_cast<uintptr_t>(edgeScene),GetTickCount(),msg->time,msg->message==WM_KEYDOWN,(msg->lParam&(1ul<<30))!=0,true);
+ }
+ return result;
+}
+void battleEdge(PBYTE keys,BYTE* scene,bool focused){
+ bool valid=keys&&focused&&edgeValid(scene);DWORD now=GetTickCount();
+ bool edge=spaceEdges.consume(reinterpret_cast<uintptr_t>(scene),now,valid);edgeScene=valid?scene:nullptr;
+ physicalBattleInput=valid&&(edge||(keys[VK_SPACE]&0x80));
+ if(edge){
+  // GetKeyboardState may have already observed the up from a presentation-only
+  // pump. Reconstruct the real down edge at the next native sample, exactly once.
+  keys[VK_SPACE]|=0x80;
+  *reinterpret_cast<int*>(engine+0xf1c9c+VK_SPACE*sizeof(int))=0;
+ }
 }
 void battleAssist(PBYTE keys,BYTE* scene,bool focused,bool padTrigger,bool padEligible){
  combat_input::ComboState state{};
@@ -61,7 +97,7 @@ void battleAssist(PBYTE keys,BYTE* scene,bool focused,bool padTrigger,bool padEl
  }
  bool keyboardTrigger=keys&&(keys[VK_F10]&0x80);bool trigger=keyboardTrigger||padTrigger;
  if(trigger&&!comboAssist.pending())assistPadOwned=padTrigger&&!keyboardTrigger;
- bool eligible=focused&&keys&&(!assistPadOwned||padEligible);
+ bool eligible=focused&&keys&&!physicalBattleInput&&(!assistPadOwned||padEligible);
  if(comboAssist.update(state,trigger,eligible)){
   keys[VK_SPACE]|=0x80;
   if(inputTrace)inputTrace(L"BATTLE_COMBO_ASSIST_PULSE route=native_space clock=33ms_logic damage=unchanged");
@@ -99,6 +135,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     focused=fixtureForeground;
 #endif
     auto battle=battleScene(nativeFrame);battleScope=battle!=nullptr;
+    battleEdge(ok?keys:nullptr,battle,focused);
     if(passthroughOnly){movement={};navigation={};battleAssist(ok?keys:nullptr,battle,focused,false,false);if(ok)orbitKeyboard(keys,focused);return ok;}
     AcquireSRWLockExclusive(&lock);
     // The profile attaches under the loader lock. Load XInput only at the verified
@@ -268,10 +305,17 @@ bool installModernGamepad(HMODULE module,void(*logger)(const wchar_t*),bool batt
     if(nt->Signature!=IMAGE_NT_SIGNATURE || nt->OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR32_MAGIC || nt->OptionalHeader.SizeOfImage!=0x10b000)return false;
     if(bytes[0x2fca]!=0x68 || *reinterpret_cast<DWORD*>(bytes+0x2fcb)!=reinterpret_cast<DWORD>(bytes+0xf1b94) ||
        bytes[0x2fcf]!=0xff || bytes[0x2fd0]!=0x15 || *reinterpret_cast<DWORD*>(bytes+0x2fd1)!=reinterpret_cast<DWORD>(bytes+0xbd3dc))return false;
+    const BYTE ctor[]={0xc7,0x00};
+    const BYTE messageCall[]={0xff,0x15};
+    if(memcmp(bytes+0x9d424,ctor,2)||*reinterpret_cast<DWORD*>(bytes+0x9d426)!=reinterpret_cast<DWORD>(bytes+0xc1960)
+       ||memcmp(bytes+0xbdfb,messageCall,2)||*reinterpret_cast<DWORD*>(bytes+0xbdfd)!=reinterpret_cast<DWORD>(bytes+0xbd42c))return false;
+    auto messageSlot=reinterpret_cast<DWORD*>(bytes+0xbd42c);
     auto slot=reinterpret_cast<DWORD*>(bytes+0xbd3dc);
-    if(*slot==reinterpret_cast<DWORD>(&keyboardBridge))return engine==bytes&&(!nativeRouting||(canSetWorldGamepad(module,true)&&canSetGamepadUi(module,true)));
+    if(*slot==reinterpret_cast<DWORD>(&keyboardBridge))return engine==bytes&&*messageSlot==reinterpret_cast<DWORD>(&messageHook)&&(!nativeRouting||(canSetWorldGamepad(module,true)&&canSetGamepadUi(module,true)));
     auto systemKeyboard=reinterpret_cast<Keyboard>(GetProcAddress(GetModuleHandleW(L"user32.dll"),"GetKeyboardState"));
     if(!systemKeyboard || *slot!=reinterpret_cast<DWORD>(systemKeyboard))return false;
+    auto systemMessage=reinterpret_cast<Message>(GetProcAddress(GetModuleHandleW(L"user32.dll"),"GetMessageA"));
+    if(!systemMessage||*messageSlot!=reinterpret_cast<DWORD>(systemMessage))return false;
     wchar_t passFlag[8]{};passthroughOnly=GetEnvironmentVariableW(L"MC_INPUT_PASSTHROUGH",passFlag,8)==1&&passFlag[0]==L'1';passthroughOnly=passthroughOnly||battleOnly;
     mapReservedKeys=GetEnvironmentVariableW(L"MC_MAP_OVERLAY",passFlag,8)==1&&passFlag[0]==L'1';
     wchar_t mode[8]{};bool native=GetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",mode,8)==1&&mode[0]==L'1'&&!battleOnly;
@@ -286,33 +330,36 @@ bool installModernGamepad(HMODULE module,void(*logger)(const wchar_t*),bool batt
     const BYTE comboTimer[]={0x8b,0x88,0xe0,0x1d,0,0,0x83,0xc1,1};
     battleReady=!memcmp(bytes+0xa0b8d,battleCall,sizeof(battleCall))&&!memcmp(bytes+0xa1711,comboTimer,sizeof(comboTimer))
        &&*reinterpret_cast<DWORD*>(bytes+0xc1964)==reinterpret_cast<DWORD>(bytes+0xa0b7e);
-    comboAssist.reset();assistPadOwned=false;battleScope=false;
+    comboAssist.reset();assistPadOwned=false;battleScope=false;spaceEdges.clear();edgeScene=nullptr;
     if(battleReady&&logger)logger(L"BATTLE_INPUT_READY A=Space B=Esc assist=F10_or_R3 scope=source_locked clock=logic_ticks");
     if(nativeRouting){modern_input::Config config;config.engage=12000;config.release=5500;router=modern_input::Router(config);}
     gameWindow=reinterpret_cast<HWND*>(bytes+0xf1b44);
+    originalMessage=systemMessage;messageIat=reinterpret_cast<DWORD>(systemMessage);
+    InterlockedExchange(reinterpret_cast<LONG*>(messageSlot),reinterpret_cast<LONG>(&messageHook));
     InterlockedExchange(reinterpret_cast<LONG*>(slot),reinterpret_cast<LONG>(&keyboardBridge));
     DWORD ignored;
     if(!VirtualProtect(slot,sizeof(DWORD),previous,&ignored)) {
+        InterlockedExchange(reinterpret_cast<LONG*>(messageSlot),reinterpret_cast<LONG>(systemMessage));
         InterlockedExchange(reinterpret_cast<LONG*>(slot),reinterpret_cast<LONG>(systemKeyboard));
         VirtualProtect(slot,sizeof(DWORD),previous,&ignored);return false;
     }
     if(logger)logger(passthroughOnly?L"INPUT_PASSTHROUGH_READY controller=false map_reserved_keys=prototype_flag source_keyboard=preserved":nativeRouting?L"MODERN_INPUT_READY backend=xinput1_4 route=native_world_and_ui menu=right_button":L"MODERN_INPUT_READY backend=xinput1_4 route=keyboard_poll menu=unmapped");
     if(nativeRouting&&!installWorldGamepad(module,logger)){
-        if(VirtualProtect(slot,4,PAGE_READWRITE,&previous)){*slot=reinterpret_cast<DWORD>(systemKeyboard);VirtualProtect(slot,4,previous,&ignored);}return false;
+        if(VirtualProtect(slot,4,PAGE_READWRITE,&previous)){*messageSlot=reinterpret_cast<DWORD>(systemMessage);*slot=reinterpret_cast<DWORD>(systemKeyboard);VirtualProtect(slot,4,previous,&ignored);}return false;
     }
     if(nativeRouting&&!installGamepadUi(module,logger)){
         removeWorldGamepad(module);
-        if(VirtualProtect(slot,4,PAGE_READWRITE,&previous)){*slot=reinterpret_cast<DWORD>(systemKeyboard);VirtualProtect(slot,4,previous,&ignored);}return false;
+        if(VirtualProtect(slot,4,PAGE_READWRITE,&previous)){*messageSlot=reinterpret_cast<DWORD>(systemMessage);*slot=reinterpret_cast<DWORD>(systemKeyboard);VirtualProtect(slot,4,previous,&ignored);}return false;
     }
     return true;
 }
 bool removeModernGamepad(HMODULE module){
     auto p=reinterpret_cast<BYTE*>(module);if(p!=engine||!readable(p,0x10b000))return false;
-    auto slot=reinterpret_cast<DWORD*>(p+0xbd3dc);if(*slot!=reinterpret_cast<DWORD>(&keyboardBridge))return false;
+    auto slot=reinterpret_cast<DWORD*>(p+0xbd3dc);if(*slot!=reinterpret_cast<DWORD>(&keyboardBridge)||*reinterpret_cast<DWORD*>(p+0xbd42c)!=reinterpret_cast<DWORD>(&messageHook))return false;
     if(nativeRouting&&(!canSetWorldGamepad(module,false)||!canSetGamepadUi(module,false)))return false;
     if(nativeRouting&&!removeWorldGamepad(module))return false;
     if(nativeRouting&&!removeGamepadUi(module)){installWorldGamepad(module,nullptr);return false;}
-    DWORD old;if(!VirtualProtect(slot,4,PAGE_READWRITE,&old)){if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}*slot=originalIat;DWORD ignored;
-    if(!VirtualProtect(slot,4,old,&ignored)){*slot=reinterpret_cast<DWORD>(&keyboardBridge);VirtualProtect(slot,4,old,&ignored);if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}
-    comboAssist.reset();battleScope=battleReady=false;assistPadOwned=false;router=modern_input::Router();menuDirection=modern_input::MenuDirection();cursorHidden=cursorArmed=cursorRightEngaged=cursorMenu=false;cursorButtons=0;worldScope=false;movement={};syntheticLeftOwned=syntheticRightOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
+    DWORD old;if(!VirtualProtect(slot,4,PAGE_READWRITE,&old)){if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}*slot=originalIat;*reinterpret_cast<DWORD*>(p+0xbd42c)=messageIat;DWORD ignored;
+    if(!VirtualProtect(slot,4,old,&ignored)){*slot=reinterpret_cast<DWORD>(&keyboardBridge);*reinterpret_cast<DWORD*>(p+0xbd42c)=reinterpret_cast<DWORD>(&messageHook);VirtualProtect(slot,4,old,&ignored);if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}
+    spaceEdges.clear();edgeScene=nullptr;comboAssist.reset();battleScope=battleReady=false;assistPadOwned=false;router=modern_input::Router();menuDirection=modern_input::MenuDirection();cursorHidden=cursorArmed=cursorRightEngaged=cursorMenu=false;cursorButtons=0;worldScope=false;movement={};syntheticLeftOwned=syntheticRightOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
 }

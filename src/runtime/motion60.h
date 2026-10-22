@@ -34,10 +34,3 @@ void motion60TestInitialize(BYTE*,MotionAbsoluteFn);
 #ifdef MOTION60_TEST
 void motion60TestFreeView(bool enabled,bool toggle,bool reset,float yaw,float seconds);
 #endif
-
-#ifdef MOTION60_TEST
-void motion60TestBattleDraw(void*,void(__thiscall*)(void*));
-bool motion60TestBattlePatch(BYTE*,bool);
-void* motion60TestBattleModel();
-void* motion60TestResolveBattleModel(void*);
-#endif

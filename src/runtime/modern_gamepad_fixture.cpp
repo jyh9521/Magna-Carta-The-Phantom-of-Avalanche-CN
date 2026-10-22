@@ -1,15 +1,17 @@
 #include "modern_gamepad.h"
+#include "battle_edge.h"
 #include <cstring>
 #include <iostream>
 #include <stdexcept>
 static bool connected=true,keyboardOK=true,reserved=false;static int polls=0;
-static WORD buttons=0;static bool physicalF10=false;
-static BOOL WINAPI keyboard(PBYTE keys){if(!keyboardOK)return FALSE;memset(keys,0,256);keys[32]=1;keys[65]=0x80;if(physicalF10)keys[VK_F10]=0x80;if(reserved)keys[VK_F8]=keys[VK_F9]=0x80;return TRUE;}
+static WORD buttons=0;static bool physicalF10=false,physicalSpace=false;
+static BOOL WINAPI keyboard(PBYTE keys){if(!keyboardOK)return FALSE;memset(keys,0,256);keys[32]=1;keys[65]=0x80;if(physicalSpace)keys[VK_SPACE]|=0x80;if(physicalF10)keys[VK_F10]=0x80;if(reserved)keys[VK_F8]=keys[VK_F9]=0x80;return TRUE;}
 static DWORD WINAPI poll(DWORD slot,XINPUT_STATE* state){++polls;if(slot||!connected)return ERROR_DEVICE_NOT_CONNECTED;*state={};state->Gamepad.wButtons=buttons;return ERROR_SUCCESS;}
 static void check(bool b){if(!b)throw std::runtime_error("gamepad IAT fixture failed");}
 int main(int argc,char** argv){
     bool battleTest=argc==2&&!strcmp(argv[1],"--battle-context");
     bool battleKeyboard=argc==2&&!strcmp(argv[1],"--battle-keyboard");
+    bool battleEdge=argc==2&&!strcmp(argv[1],"--battle-edge");
     try {
         auto image=static_cast<BYTE*>(VirtualAlloc(nullptr,0x10b000,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE));check(image!=nullptr);
         auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x80;
@@ -19,17 +21,72 @@ int main(int argc,char** argv){
         BYTE battleCall[]={0xe8,0x03,0x24,0xf6,0xff,0x8b,0x45,0xfc};memcpy(image+0xa0b8d,battleCall,sizeof(battleCall));
         BYTE comboTimer[]={0x8b,0x88,0xe0,0x1d,0,0,0x83,0xc1,1};memcpy(image+0xa1711,comboTimer,sizeof(comboTimer));
         *reinterpret_cast<BYTE**>(image+0xc1964)=image+0xa0b7e;
+        image[0x9d424]=0xc7;image[0x9d425]=0;*reinterpret_cast<BYTE**>(image+0x9d426)=image+0xc1960;
+        image[0xbdfb]=0xff;image[0xbdfc]=0x15;*reinterpret_cast<BYTE**>(image+0xbdfd)=image+0xbd42c;
+        DWORD systemMessage=reinterpret_cast<DWORD>(GetProcAddress(GetModuleHandleW(L"user32.dll"),"GetMessageA"));*reinterpret_cast<DWORD*>(image+0xbd42c)=systemMessage;
         auto slot=reinterpret_cast<DWORD*>(image+0xbd3dc);
         DWORD system=reinterpret_cast<DWORD>(GetProcAddress(GetModuleHandleW(L"user32.dll"),"GetKeyboardState"));*slot=system;
+        auto messageSlot=reinterpret_cast<DWORD*>(image+0xbd42c);
+        image[0x9d424]^=1;check(!installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr));check(*slot==system&&*messageSlot==systemMessage);image[0x9d424]^=1;
+        image[0xbdfb]^=1;check(!installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr));check(*slot==system&&*messageSlot==systemMessage);image[0xbdfb]^=1;
+        *messageSlot=1;check(!installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr));check(*slot==system&&*messageSlot==1);*messageSlot=systemMessage;
         DWORD previous;check(VirtualProtect(image+0x2000,0x1000,PAGE_EXECUTE_READ,&previous)!=FALSE);
         check(VirtualProtect(image+0xbd000,0x1000,PAGE_READONLY,&previous)!=FALSE);
         nt->OptionalHeader.SizeOfImage=1;check(!installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr));check(*slot==system);nt->OptionalHeader.SizeOfImage=0x10b000;
-        check(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr,battleKeyboard));DWORD modified=*slot;check(modified!=system);
+        check(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr,battleKeyboard||battleEdge));DWORD modified=*slot;check(modified!=system);
         check(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr));check(*slot==modified);
         MEMORY_BASIC_INFORMATION info{};VirtualQuery(slot,&info,sizeof(info));check(info.Protect==PAGE_READONLY);
         configureModernGamepadFixture(keyboard,poll,true);
+        if(battleEdge){
+            // Fixture obtains scene vptr from the constructor operand, not a
+            // handwritten preceding-table address. Both production IATs execute.
+            BYTE scene[0x1e04]{};*reinterpret_cast<BYTE**>(scene)=*reinterpret_cast<BYTE**>(image+0x9d426);
+            *reinterpret_cast<int*>(scene+0x1dc4)=1;
+            BYTE* outer[2]={scene,nullptr};BYTE* inputFrame[2]={reinterpret_cast<BYTE*>(&outer[1]),image+0xa0b92};
+            HWND window=CreateWindowExA(0,"STATIC","offline input fixture",WS_POPUP,0,0,1,1,nullptr,nullptr,GetModuleHandleW(nullptr),nullptr);check(window!=nullptr);
+            *reinterpret_cast<HWND*>(image+0xf1b44)=window;
+            // The verified native GetMessage return address is BE01.
+            BYTE msgCaller[]={0x55,0x8b,0xec,0xff,0x75,0x14,0xff,0x75,0x10,0xff,0x75,0x0c,0xff,0x75,0x08};
+            memcpy(image+0xbdec,msgCaller,sizeof(msgCaller));image[0xbe01]=0x5d;image[0xbe02]=0xc2;image[0xbe03]=16;image[0xbe04]=0;
+            check(VirtualProtect(image+0xb000,0x1000,PAGE_EXECUTE_READWRITE,&previous)!=FALSE);
+            using Message=BOOL(WINAPI*)(LPMSG,HWND,UINT,UINT);auto get=reinterpret_cast<Message>(image+0xbdec);
+            auto keys=image+0xf1b94;auto counter=reinterpret_cast<int*>(image+0xf1c9c+VK_SPACE*4);
+            auto post=[&](UINT kind,LPARAM flags){check(PostMessageA(window,kind,VK_SPACE,flags)!=FALSE);MSG msg{};check(get(&msg,window,kind,kind)>0);check(msg.message==kind);};
+            check(modernBattleKeyboardFixture(keys,inputFrame)); // bind verified owner
+            post(WM_KEYDOWN,1);post(WM_KEYUP,LPARAM(3ul<<30)|1);
+            check(modernBattleKeyboardFixture(keys,inputFrame));
+            bool latched=(keys[VK_SPACE]&0x80)!=0;
+            if(!latched){std::cout<<"BATTLE_EDGE FAIL lost_tap=true native_sample_space=0 game_started=false\n";return 1;}
+            check(*counter==0);check(modernBattleKeyboardFixture(keys,inputFrame));check(!(keys[VK_SPACE]&0x80));
+            // Held physical Space remains high; repeats never retrigger its counter.
+            physicalSpace=true;post(WM_KEYDOWN,1);*counter=7;check(modernBattleKeyboardFixture(keys,inputFrame));check(keys[VK_SPACE]&0x80);check(*counter==0);
+            *counter=1;post(WM_KEYDOWN,LPARAM(1ul<<30)|1);check(modernBattleKeyboardFixture(keys,inputFrame));check(keys[VK_SPACE]&0x80);check(*counter==1);
+            // A true release/repress between polls must reset the previous hold.
+            post(WM_KEYUP,LPARAM(3ul<<30)|1);post(WM_KEYDOWN,1);check(modernBattleKeyboardFixture(keys,inputFrame));check(*counter==0);
+            physicalSpace=false;
+            post(WM_KEYDOWN,LPARAM(1ul<<30)|1);check(modernBattleKeyboardFixture(keys,inputFrame));check(!(keys[VK_SPACE]&0x80));
+            post(WM_KEYDOWN,1);configureModernGamepadFixture(keyboard,poll,false);check(modernBattleKeyboardFixture(keys,inputFrame));check(!(keys[VK_SPACE]&0x80));
+            configureModernGamepadFixture(keyboard,poll,true);check(modernBattleKeyboardFixture(keys,inputFrame));check(!(keys[VK_SPACE]&0x80));
+            post(WM_KEYDOWN,1);*reinterpret_cast<int*>(scene+0x1dc4)=0;check(modernBattleKeyboardFixture(keys,inputFrame));check(!(keys[VK_SPACE]&0x80));
+            *reinterpret_cast<int*>(scene+0x1dc4)=1;check(modernBattleKeyboardFixture(keys,inputFrame));
+            BYTE config[4]{};*reinterpret_cast<BYTE**>(image+0xf2428)=config;
+            BYTE getter[]={0x8b,0x44,0x24,0x04,0x83,0xf8,0x23,0xb8,10,0,0,0,0x74,0x05,0xb8,4,0,0,0,0xc2,4,0};memcpy(image+0xb5b0e,getter,sizeof(getter));check(VirtualProtect(image+0xb5000,0x1000,PAGE_EXECUTE_READWRITE,&previous)!=FALSE);
+            physicalF10=true;check(modernBattleKeyboardFixture(keys,inputFrame));check(keys[VK_SPACE]&0x80);physicalF10=false;
+            *reinterpret_cast<int*>(scene+0x1dcc)=1;*reinterpret_cast<unsigned*>(scene+0x1ddc)=1;*reinterpret_cast<unsigned*>(scene+0x1de0)=10;
+            check(modernBattleKeyboardFixture(keys,inputFrame));post(WM_KEYDOWN,1);post(WM_KEYUP,LPARAM(3ul<<30)|1);
+            check(modernBattleKeyboardFixture(keys,inputFrame));check(keys[VK_SPACE]&0x80); // real tap owns this pulse
+            *reinterpret_cast<unsigned*>(scene+0x1ddc)=2;*reinterpret_cast<unsigned*>(scene+0x1de0)=21;
+            check(modernBattleKeyboardFixture(keys,inputFrame));check(!(keys[VK_SPACE]&0x80)); // pending assist was cancelled
+            check(removeModernGamepad(reinterpret_cast<HMODULE>(image)));check(*reinterpret_cast<DWORD*>(image+0xbd42c)==systemMessage);DestroyWindow(window);VirtualFree(image,0,MEM_RELEASE);
+            combat_input::SpaceEdgeLatch latch;latch.sample(1,10,true);latch.message(1,20,20,true,false,true);check(latch.consume(1,40,true));check(!latch.consume(1,41,true));
+            latch.message(1,42,42,true,true,true);check(!latch.consume(1,43,true));
+            latch.message(1,44,44,true,false,true);check(!latch.consume(2,45,true));
+            latch.message(2,46,46,true,false,true);check(!latch.consume(2,113,true));
+            latch.sample(2,0xfffffff0,true);latch.message(2,5,5,true,false,true);check(latch.consume(2,20,true));
+            std::cout<<"BATTLE_EDGE PASS lost_tap=restored once=true held=preserved repress=edge assist_cancel=true repeat=false focus_cancel=true scene_cancel=true stale_cancel=true wrap=true ctor_vptr=derived rollback=both_IATs game_started=false\n";return 0;
+        }
         if(battleKeyboard){
-            BYTE scene[0x1e04]{},config[4]{};*reinterpret_cast<BYTE**>(scene)=image+0xc195c;*reinterpret_cast<BYTE**>(image+0xf2428)=config;
+            BYTE scene[0x1e04]{},config[4]{};*reinterpret_cast<BYTE**>(scene)=*reinterpret_cast<BYTE**>(image+0x9d426);*reinterpret_cast<BYTE**>(image+0xf2428)=config;
             *reinterpret_cast<int*>(scene+0x1dc4)=1;
             BYTE getter[]={0x8b,0x44,0x24,0x04,0x83,0xf8,0x23,0xb8,10,0,0,0,0x74,0x05,0xb8,4,0,0,0,0xc2,4,0};memcpy(image+0xb5b0e,getter,sizeof(getter));check(VirtualProtect(image+0xb5000,0x1000,PAGE_EXECUTE_READWRITE,&previous)!=FALSE);
             BYTE* outer[2]={scene,nullptr};BYTE* inputFrame[2]={reinterpret_cast<BYTE*>(&outer[1]),image+0xa0b92};auto keys=image+0xf1b94;
@@ -43,7 +100,7 @@ int main(int argc,char** argv){
             std::cout<<"BATTLE_KEYBOARD PASS F10=native_space scheduled_window=true focus_cancel=true controller_poll=0 physical_keys=preserved rollback=exact game_started=false\n";return 0;
         }
         if(battleTest){
-            BYTE scene[0x1e04]{};*reinterpret_cast<BYTE**>(scene)=image+0xc195c;
+            BYTE scene[0x1e04]{};*reinterpret_cast<BYTE**>(scene)=*reinterpret_cast<BYTE**>(image+0x9d426);
             BYTE* outer[2]={scene,nullptr};BYTE* inputFrame[2]={reinterpret_cast<BYTE*>(&outer[1]),image+0xa0b92};
             auto keys=image+0xf1b94;configureModernBattleFixture(true);
             check(modernBattleKeyboardFixture(keys,inputFrame));check(modernBattleKeyboardFixture(keys,inputFrame));

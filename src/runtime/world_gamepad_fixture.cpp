@@ -91,6 +91,10 @@ int main(int argc,char** argv){
  image[0x2fca]=0x68;*reinterpret_cast<DWORD*>(image+0x2fcb)=reinterpret_cast<DWORD>(image+0xf1b94);image[0x2fcf]=0xff;image[0x2fd0]=0x15;*reinterpret_cast<DWORD*>(image+0x2fd1)=reinterpret_cast<DWORD>(image+0xbd3dc);image[0x2fd5]=0xc3;
  initializeGamepadUiFixture(image);BYTE clearPrefix[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc};stub(0x5718f,clearPrefix,sizeof(clearPrefix),reinterpret_cast<void*>(&clearNativePress));
  BYTE guiPrefix[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xf8};stub(0x55134,guiPrefix,sizeof(guiPrefix),reinterpret_cast<void*>(&keyboardGui));stub(0x38c24,guiPrefix,sizeof(guiPrefix),reinterpret_cast<void*>(&cursorPrepare));stub(0x48774,clearPrefix,sizeof(clearPrefix),reinterpret_cast<void*>(&cursorDraw));
+ // Match the guarded original message-pump call and constructor operand.
+ image[0x9d424]=0xc7;image[0x9d425]=0;*reinterpret_cast<BYTE**>(image+0x9d426)=image+0xc1960;
+ image[0xbdfb]=0xff;image[0xbdfc]=0x15;*reinterpret_cast<BYTE**>(image+0xbdfd)=image+0xbd42c;
+ DWORD oldMessage=reinterpret_cast<DWORD>(GetProcAddress(GetModuleHandleW(L"user32.dll"),"GetMessageA"));*reinterpret_cast<DWORD*>(image+0xbd42c)=oldMessage;
  auto iat=reinterpret_cast<DWORD*>(image+0xbd3dc);DWORD oldIat=reinterpret_cast<DWORD>(GetProcAddress(GetModuleHandleW(L"user32.dll"),"GetKeyboardState"));*iat=oldIat;
  BYTE t[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc},f[]={0x55,0x8b,0xec,0x83,0xec,0x54,0x89,0x4d,0xac},d[]={0x55,0x8b,0xec,0x83,0xec,0x1c,0x89,0x4d,0xec};
  stub(0x6b2d8,t,sizeof(t),reinterpret_cast<void*>(&tick));stub(0x652b4,f,sizeof(f),reinterpret_cast<void*>(&forward));stub(0x65504,d,sizeof(d),reinterpret_cast<void*>(&heading));
@@ -284,7 +288,7 @@ int main(int argc,char** argv){
  require(worldMenuRequests==1&&*reinterpret_cast<int*>(world+0x156c)==5,"deliberate Start release requests source field menu mode 5 once");run();require(worldMenuRequests==1,"idle cannot repeat field menu request");
  printf("GAMEPAD_CANCEL_RELEASE_REPLAY PASS menu_B=deliberate_release device_loss=cancelled device_switch=cancelled physical_right=preserved world_Start=mode5 release_event=40 transition_executor=not_run game_started=false\n");
  replayMenu=nullptr;*reinterpret_cast<int*>(gui+0x190)=1;
- buttons=0;require(removeModernGamepad(reinterpret_cast<HMODULE>(image)),"integrated rollback");require(*iat==oldIat&&*reinterpret_cast<DWORD*>(image+0xc12c0)==reinterpret_cast<DWORD>(image+0x6b2d8)&&*reinterpret_cast<DWORD*>(image+0xc1258)==reinterpret_cast<DWORD>(image+0x652b4),"all three original slots restored");
+ buttons=0;require(removeModernGamepad(reinterpret_cast<HMODULE>(image)),"integrated rollback");require(*reinterpret_cast<DWORD*>(image+0xbd42c)==oldMessage&&*iat==oldIat&&*reinterpret_cast<DWORD*>(image+0xc12c0)==reinterpret_cast<DWORD>(image+0x6b2d8)&&*reinterpret_cast<DWORD*>(image+0xc1258)==reinterpret_cast<DWORD>(image+0x652b4),"all three original slots restored");
  image[0x6e77e]^=1;require(!installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"unknown movement callsite rejects");image[0x6e77e]^=1;
  image[0x6e6d8]^=1;require(!installWorldGamepad(reinterpret_cast<HMODULE>(image),nullptr),"unknown interaction handler rejects before installing hooks");image[0x6e6d8]^=1;
  // Camera-only recipe must adapt keyboard movement without polling an Xbox.
