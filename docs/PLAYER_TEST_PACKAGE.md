@@ -1,6 +1,6 @@
 # 统一玩家测试补丁包
 
-2026-10-19更新（保留2026-10-17包作为历史基线）。打包共享运行目录当前候选，不再要求玩家串联历史汉化包和免CD包。
+2026-10-22更新。打包共享运行目录当前候选，不再要求玩家串联历史汉化包和免CD包。
 
 ## 实现
 
@@ -13,7 +13,8 @@
 - 原版11784文件摘要预检后，仅向新目录的`.assembling`副本写入；完成后重命名。
   失败不发布半成品目标，保留assembling目录供调查；重新安装应使用另一全新路径。
 - 不捆绑原版完整EXE/DLL、商业媒体、旧存档或Python。Logo、名单维持原字节。
-  设置沿用当前共享目录的可变配置，不纳入运行时不可变摘要。
+  发行设置固定为1080p、无边框、30帧、键鼠、自由视角关闭、窗口1280×720；
+  不导出维护端个人设置，也不改维护端配置。安装后的可变设置不纳入运行时不可变摘要。
 
 ## 安装与恢复
 
@@ -40,3 +41,14 @@ Play/Configure及非baseline配方默认开启限定0757/event2的返回高度�
 维护开关 `Start.ps1 -WithoutFieldReturnHeight` 沿用保存设置、恢复原模块路由，
 与Install Rollback的“全资源恢复原版”不同。用户正常推进至该事件再验收。
 详见[触发链与整合事务](STAIRWELL_RETURN_HEIGHT.md)。
+
+## 2026-10-22 测试发行
+
+包含当前战斗菜单宽屏资源选择、图片结构与拼接标题、高清字模输出门控修正，
+以及原生Loading候选；来源见[BATTLE_MENU_WIDTH_ASSERTION.md](BATTLE_MENU_WIDTH_ASSERTION.md)、
+[IMAGE_INTEGRITY_REPAIR.md](IMAGE_INTEGRITY_REPAIR.md)与[SCALED_FONT_COVERAGE.md](SCALED_FONT_COVERAGE.md)。
+场景切换崩溃和60帧眼球偶发外突仍未确认解决，不能作为正式全流程通过版。
+重点人工复验最近存档至下水道入口及首次战斗，保留设置、日志、截图和问题时间。
+构建仍使用`tools/build_player_test_bundle.py --source ORIGINAL --runtime runtime --output dist/NEW_NAME`。
+离线安装器回归使用`python -m unittest discover -s tests -p "test_player*.py"`；
+新增合成完整打包检查确保发行默认值、载荷摘要一致且维护端设置原样保留。

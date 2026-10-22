@@ -92,6 +92,11 @@ def build(source, runtime, output):
         dest = payload/name
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(runtime/name, dest)
+    # Distributable defaults must not inherit the maintainer's mutable settings.
+    (payload/'config/enhancements.json').write_text(json.dumps(dict(
+        schema=2, resolution='1080p', window_mode='borderless', frame_rate=30,
+        native_gamepad=False, free_view=False, window_resolution='1280x720'
+    ), indent=2)+'\n', encoding='utf8')
     records = []
     inputs = {}
     for p in sorted(source.rglob('*')):
