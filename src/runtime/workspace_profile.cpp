@@ -9,6 +9,7 @@
 #include "focus_guard.h"
 #include "native_text_step.h"
 #include "dialogue_reveal.h"
+#include "damage_projection.h"
 #include "field_return_height.h"
 #include "gui_parent_guard.h"
 #include "native_scene_loading.h"
@@ -178,7 +179,7 @@ void patch(HMODULE module) {
     if (nt->Signature != IMAGE_NT_SIGNATURE || nt->OptionalHeader.Magic != IMAGE_NT_OPTIONAL_HDR32_MAGIC) return;
     if (focusGuard && !_wcsicmp(base, L"MCAlpha.dll"))
         trace(installFocusGuard(module, trace) ? L"FOCUS_GUARD_READY" : L"FOCUS_GUARD_REJECTED");
-    if (modernInput && !_wcsicmp(base,L"MCAlpha.dll") && !installModernGamepad(module,trace)) {
+    if ((modernInput||systemMessages) && !_wcsicmp(base,L"MCAlpha.dll") && !installModernGamepad(module,trace,!modernInput)) {
         trace(L"MODERN_INPUT_REJECTED");ExitProcess(125);
     }
     if(cameraInput&&!_wcsicmp(base,L"MCAlpha.dll")&&(!installWorldGamepad(module,trace)||!installMouseView(module,trace))){
@@ -221,6 +222,9 @@ void patch(HMODULE module) {
     bool localizedModule=systemMessages && !_wcsicmp(base,L"MCAlpha.dll");
     if (localizedModule && !systemMessageModuleMatches(module)) {
         trace(L"SYSTEM_MESSAGES_REJECTED");ExitProcess(125);
+    }
+    if(localizedModule && !installDamageProjection(module,trace)) {
+        trace(L"DAMAGE_PROJECTION_REJECTED");ExitProcess(125);
     }
     if(localizedModule && !installMenuVisibility(module,trace)) {
         trace(L"MENU_VISIBILITY_REJECTED");ExitProcess(125);

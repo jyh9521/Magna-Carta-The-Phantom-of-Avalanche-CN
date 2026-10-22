@@ -20,6 +20,8 @@ Render originalRigidRender=nullptr;
 Render originalRender=nullptr;Absolute originalAbsolute=nullptr;BYTE* engineBase=nullptr;
 void(*trace)(const wchar_t*)=nullptr;
 bool complete=false;
+using BattleDraw=void(__thiscall*)(void*);BattleDraw originalBattleDraw=nullptr;
+thread_local void* battleAttackModel=nullptr;
 bool readable(const void*,size_t);
 DWORD timelineThread=0;
 motion::Timeline timeline;
@@ -188,8 +190,26 @@ bool skeletonLayout(void* bones,unsigned count,std::vector<unsigned>& out){
  }
  return visited==count;
 }
+void* nativeBattleModel(BYTE* scene){
+ if(!engineBase||!readable(scene,0x1e04)||*reinterpret_cast<BYTE**>(scene)!=engineBase+0xc195c
+    ||*reinterpret_cast<int*>(scene+0x1dc4)!=1||*reinterpret_cast<int*>(scene+0x1dcc)!=1)return nullptr;
+ auto actor=*reinterpret_cast<BYTE**>(scene+0x40);if(!readable(actor,0x2e0)||*reinterpret_cast<BYTE**>(actor)!=engineBase+0xc1644)return nullptr;
+ auto graph=*reinterpret_cast<BYTE**>(actor+0x2dc);if(!readable(graph,0x144)||*reinterpret_cast<BYTE**>(graph)!=engineBase+0xbe200)return nullptr;
+ auto obs=*reinterpret_cast<BYTE**>(graph+0x140);if(!readable(obs,0x60)||*reinterpret_cast<BYTE**>(obs)!=engineBase+0xbda2c)return nullptr;
+ auto model=*reinterpret_cast<BYTE**>(obs+0x5c);if(!readable(model,0xd8))return nullptr;
+ auto table=*reinterpret_cast<BYTE**>(model);return table==engineBase+0xbd9f4||table==engineBase+0xbda14?model:nullptr;
+}
+void __fastcall battleDrawHook(void* value,void*){
+ auto previous=battleAttackModel;battleAttackModel=nativeBattleModel(static_cast<BYTE*>(value));
+ if(battleAttackModel){AcquireSRWLockExclusive(&cacheLock);caches.erase(battleAttackModel);ReleaseSRWLockExclusive(&cacheLock);}
+ __try {originalBattleDraw(value);}
+ __finally {battleAttackModel=previous;}
+}
 void __cdecl absoluteHook(void* bones,unsigned root,Matrix* poses,Matrix* parent){
  auto phase=renderPhase();
+ // Native current pose and queued world must remain one coherent endpoint for
+ // the source-locked active timed-combo attacker. Camera history is independent.
+ if(active&&battleAttackModel==active->object){originalAbsolute(bones,root,poses,parent);return;}
  if(complete&&!phase.valid){originalAbsolute(bones,root,poses,parent);return;}
  if(!active||!sourceCall(_ReturnAddress())||root||parent||!readable(active->object,active->rigidModel?0xd8:0x100)){originalAbsolute(bones,root,poses,parent);return;}
  BYTE* object=static_cast<BYTE*>(active->object);void* action=*reinterpret_cast<void**>(object+0xa0);
@@ -317,6 +337,17 @@ bool rigidSourceMatches(BYTE* p){
  BYTE call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);
  return !memcmp(p+0x3d12f,prefix,sizeof(prefix))&&!memcmp(p+0x3d52e,call,sizeof(call));
 }
+constexpr BYTE battleDrawPrefix[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc};
+bool battleDrawMatches(BYTE* p){
+ if(memcmp(p+0xa0c13,battleDrawPrefix,sizeof(battleDrawPrefix)))return false;
+ auto slot=*reinterpret_cast<DWORD*>(p+0xc196c);
+ return slot==reinterpret_cast<DWORD>(p+0xa0c13)||(slot==reinterpret_cast<DWORD>(&battleDrawHook)&&engineBase==p);
+}
+bool battleDrawPatch(BYTE* p,bool enabled){
+ if(!headerMatches(p,0x10b000)||!battleDrawMatches(p))return false;
+ originalBattleDraw=reinterpret_cast<BattleDraw>(p+0xa0c13);
+ return write(p+0xc196c,enabled?reinterpret_cast<DWORD>(&battleDrawHook):reinterpret_cast<DWORD>(p+0xa0c13));
+}
 bool mappedMatches(BYTE* p,size_t n,Absolute absolute){
  if(!headerMatches(p,n)||!absolute||!rigidSourceMatches(p))return false;
  BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0x04,0x03,0x00,0x00,0x56,0x57},call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);
@@ -352,16 +383,20 @@ bool installMotion60(HMODULE engine,void(*logger)(const wchar_t*)){
  auto absolute=GetProcAddress(asura,"?MakeAbsoluteMatrix@@YAXPAUASRBone@@IPAVASRMatrix@@1@Z");BYTE prefix[]={0x55,0x8b,0xec,0x83,0xec,0x44,0x56,0x57};
  if(absolute!=reinterpret_cast<FARPROC>(p+0x44f0d)||!readable(p+0x44f0d,sizeof(prefix))||memcmp(p+0x44f0d,prefix,sizeof(prefix)))return false;
  auto base=reinterpret_cast<BYTE*>(engine);wchar_t flag[8]{};complete=GetEnvironmentVariableW(L"MC_MOTION60_COMPLETE",flag,8)==1&&flag[0]==L'1';
- if(!headerMatches(base,0x10b000)||(complete&&(!timerMatches(base)||!sceneCameraSiteMatches(base))))return false;
+ if(!headerMatches(base,0x10b000)||(complete&&(!timerMatches(base)||!sceneCameraSiteMatches(base)||!battleDrawMatches(base))))return false;
  if(!setMapped(base,0x10b000,reinterpret_cast<Absolute>(absolute),true,logger))return false;
  if(complete&&!timerPatch(base,true)){setMapped(base,0x10b000,reinterpret_cast<Absolute>(absolute),false,nullptr);return false;}
+ if(complete&&!battleDrawPatch(base,true)){timerPatch(base,false);setMapped(base,0x10b000,reinterpret_cast<Absolute>(absolute),false,nullptr);return false;}
+ if(complete&&logger)logger(L"BATTLE_RHYTHM_READY scope=timed_combo_attacker pose_world=native_current camera=unchanged presentation=unchanged acceptance=pending");
  if(complete&&logger)logger(L"MOTION60_COMPLETE_READY clock=engine_fixed_step world=source_locked camera=source_locked logic_events=unchanged");return true;
 }
 bool removeMotion60(HMODULE engine){
  if(engineBase!=reinterpret_cast<BYTE*>(engine))return false;
- if(!mappedMatches(engineBase,0x10b000,originalAbsolute)||(complete&&!timerMatches(engineBase)))return false;
- if(complete&&!timerPatch(engineBase,false))return false;
- return setMapped(engineBase,0x10b000,originalAbsolute,false,nullptr);
+ if(!mappedMatches(engineBase,0x10b000,originalAbsolute)||(complete&&(!timerMatches(engineBase)||!battleDrawMatches(engineBase))))return false;
+ if(complete&&!battleDrawPatch(engineBase,false))return false;
+ if(complete&&!timerPatch(engineBase,false)){battleDrawPatch(engineBase,true);return false;}
+ if(setMapped(engineBase,0x10b000,originalAbsolute,false,nullptr))return true;
+ if(complete){timerPatch(engineBase,true);battleDrawPatch(engineBase,true);}return false;
 }
 namespace {
 bool setDriver(BYTE* p,bool enabled,void(*logger)(const wchar_t*)){
@@ -392,8 +427,12 @@ bool installMotion60Driver(HMODULE module,void(*logger)(const wchar_t*)){
 bool removeMotion60Driver(HMODULE module){return setDriver(reinterpret_cast<BYTE*>(module),false,nullptr);}
 #ifdef MOTION60_TEST
 bool motion60TestSetMapped(BYTE* p,size_t n,MotionAbsoluteFn a,bool enabled){return setMapped(p,n,reinterpret_cast<Absolute>(a),enabled,nullptr);}
-void motion60TestInitialize(BYTE* p,MotionAbsoluteFn a){memset(p,0,0x10b000);memcpy(p+0x1da20,sceneCameraCall,sizeof(sceneCameraCall));auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);d->e_magic=IMAGE_DOS_SIGNATURE;d->e_lfanew=0x100;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+0x100);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;BYTE rigidPrefix[]={0x55,0x8b,0xec,0x81,0xec,0xec,0x01,0,0,0x56,0x57};memcpy(p+0x3d12f,rigidPrefix,sizeof(rigidPrefix));*reinterpret_cast<DWORD*>(p+0xbda18)=reinterpret_cast<DWORD>(p+0x3d12f);BYTE rigidCall[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(rigidCall+2)=reinterpret_cast<DWORD>(p+0xbd0a4);memcpy(p+0x3d52e,rigidCall,sizeof(rigidCall));BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0x04,0x03,0x00,0x00,0x56,0x57};memcpy(p+0x3b0c0,prefix,sizeof(prefix));BYTE call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);memcpy(p+0x3b7fb,call,sizeof(call));*reinterpret_cast<DWORD*>(p+0xbd9f8)=reinterpret_cast<DWORD>(p+0x3b0c0);*reinterpret_cast<DWORD*>(p+0xbd0a4)=reinterpret_cast<DWORD>(a);}
+void motion60TestInitialize(BYTE* p,MotionAbsoluteFn a){memset(p,0,0x10b000);memcpy(p+0x1da20,sceneCameraCall,sizeof(sceneCameraCall));memcpy(p+0xa0c13,battleDrawPrefix,sizeof(battleDrawPrefix));*reinterpret_cast<BYTE**>(p+0xc196c)=p+0xa0c13;auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);d->e_magic=IMAGE_DOS_SIGNATURE;d->e_lfanew=0x100;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+0x100);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;BYTE rigidPrefix[]={0x55,0x8b,0xec,0x81,0xec,0xec,0x01,0,0,0x56,0x57};memcpy(p+0x3d12f,rigidPrefix,sizeof(rigidPrefix));*reinterpret_cast<DWORD*>(p+0xbda18)=reinterpret_cast<DWORD>(p+0x3d12f);BYTE rigidCall[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(rigidCall+2)=reinterpret_cast<DWORD>(p+0xbd0a4);memcpy(p+0x3d52e,rigidCall,sizeof(rigidCall));BYTE prefix[]={0x55,0x8b,0xec,0x81,0xec,0x04,0x03,0x00,0x00,0x56,0x57};memcpy(p+0x3b0c0,prefix,sizeof(prefix));BYTE call[]={0xff,0x15,0,0,0,0,0x83,0xc4,0x10};*reinterpret_cast<DWORD*>(call+2)=reinterpret_cast<DWORD>(p+0xbd0a4);memcpy(p+0x3b7fb,call,sizeof(call));*reinterpret_cast<DWORD*>(p+0xbd9f8)=reinterpret_cast<DWORD>(p+0x3b0c0);*reinterpret_cast<DWORD*>(p+0xbd0a4)=reinterpret_cast<DWORD>(a);}
 void motion60TestConfigure(MotionRenderFn r,MotionAbsoluteFn a){originalRender=reinterpret_cast<Render>(r);originalAbsolute=reinterpret_cast<Absolute>(a);LARGE_INTEGER f{};QueryPerformanceFrequency(&f);frequency=f.QuadPart;caches.clear();}
+void motion60TestBattleDraw(void* scene,void(__thiscall* draw)(void*)){originalBattleDraw=draw;battleDrawHook(scene,nullptr);}
+bool motion60TestBattlePatch(BYTE* p,bool enabled){return battleDrawPatch(p,enabled);}
+void* motion60TestBattleModel(){return battleAttackModel;}
+void* motion60TestResolveBattleModel(void* scene){return nativeBattleModel(static_cast<BYTE*>(scene));}
 void motion60TestSetTime(double milliseconds){fixtureClock=true;fixtureTicks=static_cast<LONGLONG>(milliseconds*frequency/1000.0);}
 void motion60TestRender(void* o,int f){renderHook(o,nullptr,f,nullptr,0,0,0,0,0);}
 void motion60TestRenderParent(void* o,int f,MotionMatrix* p){renderHook(o,nullptr,f,reinterpret_cast<Matrix*>(p),0,0,0,0,0);}

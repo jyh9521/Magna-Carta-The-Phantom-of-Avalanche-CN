@@ -1,5 +1,12 @@
 # 构建说明
 
+## 战斗反馈运行模块（2026-10-23）
+
+复用既有Win32生成头与共享运行目录。构建新增`battle_input_fixture`、
+`battle_rhythm_fixture`、`damage_projection_fixture`及`workspace_profile`，不复制游戏。
+12份角色模块的整批更新、原始摘要校验、撤回和小更新包命令见
+[玩家反馈调查](docs/PLAYER_FEEDBACK_20261023.md)。
+
 ## 图片结构与全量审计（2026-10-20）
 
 422 份 BGR 的源绑定审计、204 份图片计划重建、原 Play 图片单项事务和精确回滚见

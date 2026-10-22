@@ -45,6 +45,16 @@ void renderSample(int frame){
  if(fullDraw&&!localDraw)motion60TestRenderParent(object,frame,&parent);else motion60TestRender(object,frame);
 }
 bool sehProbe(){__try {renderSample(2);}__except(EXCEPTION_EXECUTE_HANDLER){return true;}return false;}
+static BYTE* nestedBattleScene=nullptr;static void* expectedBattleModel=nullptr;static int battleFrame=1;
+void __fastcall emptyBattleDraw(void*,void*){require(motion60TestBattleModel()==nullptr,"unrelated nested scene has no attack override");}
+void __fastcall battleDraw(void*,void*){
+ require(motion60TestBattleModel()==expectedBattleModel,"battle draw resolves exact attack model");
+ if(nestedBattleScene){auto nested=nestedBattleScene;nestedBattleScene=nullptr;
+  motion60TestBattleDraw(nested,reinterpret_cast<void(__thiscall*)(void*)>(&emptyBattleDraw));
+  require(motion60TestBattleModel()==expectedBattleModel,"nested unrelated draw restores outer attack identity");}
+ renderSample(battleFrame);
+}
+bool battleSehProbe(void* scene){__try {motion60TestBattleDraw(scene,reinterpret_cast<void(__thiscall*)(void*)>(&battleDraw));}__except(EXCEPTION_EXECUTE_HANDLER){return true;}return false;}
 int main(int argc,char** argv){
  const bool renderHistoryOnly=argc==2&&!strcmp(argv[1],"--render-history-only");
  BYTE* image=static_cast<BYTE*>(VirtualAlloc(nullptr,0x10b000,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE));require(image!=nullptr,"fixture allocation");motion60TestInitialize(image,&absolute);
@@ -374,6 +384,44 @@ int main(int argc,char** argv){
  require(motion60TestDriverSet(driverImage,false),"camera rollback");require(*loadSlot==oldLoad&&*mulSlot==oldMul,"camera exact slots restored");require(motion60TestDriverSet(driverImage,false),"camera rollback idempotent");
  *mulSlot=1;require(!motion60TestDriverSet(driverImage,true)&&*loadSlot==oldLoad,"unknown driver slot rejects before writes");*mulSlot=oldMul;
  VirtualFree(driverImage,0,MEM_RELEASE);
+ // Keep the 60Hz camera and other objects; only the current timed attacker
+ // uses native current pose/world, removing the interpolation's extra tick.
+ motion60TestComplete(image,true);motion60TestConfigure(reinterpret_cast<MotionRenderFn>(&draw),&absolute);
+ BYTE battleScene[0x1e04]{},battleActor[0x2e0]{},battleGraph[0x144]{},battleObs[0x60]{},unrelatedScene[0x1e04]{};
+ *reinterpret_cast<BYTE**>(battleScene)=image+0xc195c;*reinterpret_cast<int*>(battleScene+0x1dc4)=1;*reinterpret_cast<int*>(battleScene+0x1dcc)=1;
+ *reinterpret_cast<BYTE**>(battleScene+0x40)=battleActor;*reinterpret_cast<BYTE**>(battleActor)=image+0xc1644;*reinterpret_cast<BYTE**>(battleActor+0x2dc)=battleGraph;*reinterpret_cast<BYTE**>(battleGraph)=image+0xbe200;
+ *reinterpret_cast<BYTE**>(battleGraph+0x140)=battleObs;*reinterpret_cast<BYTE**>(battleObs)=image+0xbda2c;*reinterpret_cast<BYTE**>(battleObs+0x5c)=object;
+ *reinterpret_cast<BYTE**>(object)=image+0xbd9f4;*reinterpret_cast<unsigned*>(action+4)=4;*reinterpret_cast<unsigned*>(action+8)=4;
+ fullDraw=true;localDraw=false;actorX=0;actorYaw=0;*reinterpret_cast<MotionMatrix*>(driver+0x5c)=identity(0);
+ motion60TestTick(0,0,14000);renderSample(0);actorX=10;motion60TestTick(1,16,14049);renderSample(1);
+ require(observed>104&&observed<106&&queuedWorld.v[12]>4&&queuedWorld.v[12]<6,"control has one-tick pose/world display delay");
+ require(motion60TestResolveBattleModel(battleScene)==object,"exact native actor graph obs model chain resolves");
+ *reinterpret_cast<BYTE**>(battleActor)=image+0xc1648;require(motion60TestResolveBattleModel(battleScene)==nullptr,"unknown actor class rejects override");*reinterpret_cast<BYTE**>(battleActor)=image+0xc1644;
+ *reinterpret_cast<BYTE**>(battleGraph)=image+0xbe204;require(motion60TestResolveBattleModel(battleScene)==nullptr,"unknown graph class rejects override");*reinterpret_cast<BYTE**>(battleGraph)=image+0xbe200;
+ *reinterpret_cast<BYTE**>(battleObs)=image+0xbda30;require(motion60TestResolveBattleModel(battleScene)==nullptr,"unknown obs class rejects override");*reinterpret_cast<BYTE**>(battleObs)=image+0xbda2c;
+ *reinterpret_cast<BYTE**>(object)=image+0xbd9f0;require(motion60TestResolveBattleModel(battleScene)==nullptr,"unknown skeletal class rejects override");*reinterpret_cast<BYTE**>(object)=image+0xbd9f4;
+ auto cameraBefore=*reinterpret_cast<MotionMatrix*>(driver+0x5c);expectedBattleModel=object;nestedBattleScene=unrelatedScene;
+ motion60TestBattleDraw(battleScene,reinterpret_cast<void(__thiscall*)(void*)>(&battleDraw));
+ require(observed==110&&queuedWorld.v[12]==10,"timed current attacker draws native pose and matching native world");
+ require(motion60TestBattleModel()==nullptr,"outer battle scope restores TLS");
+ require(!memcmp(&cameraBefore,driver+0x5c,64),"combat override leaves camera unchanged");
+ throwSeh=true;require(battleSehProbe(battleScene),"battle draw exception propagates");throwSeh=false;require(motion60TestBattleModel()==nullptr,"battle scope restores TLS through SEH");
+ BYTE foreignModel[0x120]{};*reinterpret_cast<BYTE**>(foreignModel)=image+0xbd9f4;*reinterpret_cast<BYTE**>(battleObs+0x5c)=foreignModel;
+ motion60TestComplete(image,true);actorX=0;motion60TestTick(0,0,15000);renderSample(0);actorX=10;motion60TestTick(1,16,15049);expectedBattleModel=foreignModel;
+ motion60TestBattleDraw(battleScene,reinterpret_cast<void(__thiscall*)(void*)>(&battleDraw));
+ require(observed>104&&observed<106&&queuedWorld.v[12]>4&&queuedWorld.v[12]<6,"unrelated model in battle retains interpolation");
+ *reinterpret_cast<BYTE**>(battleObs+0x5c)=object;
+ // No active timed combo: the exact same actor must interpolate normally again.
+ *reinterpret_cast<int*>(battleScene+0x1dcc)=0;expectedBattleModel=nullptr;
+ motion60TestTick(1,0,15066);battleFrame=2;actorX=20;motion60TestBattleDraw(battleScene,reinterpret_cast<void(__thiscall*)(void*)>(&battleDraw));
+ motion60TestTick(1,16,15115);battleFrame=3;actorX=30;motion60TestBattleDraw(battleScene,reinterpret_cast<void(__thiscall*)(void*)>(&battleDraw));
+ require(observed>124&&observed<126&&queuedWorld.v[12]>24&&queuedWorld.v[12]<26,"after combo pose/world interpolation resumes");
+ // Source guards reject drift before modifying a slot, and rollback is exact.
+ auto battleSlot=reinterpret_cast<DWORD*>(image+0xc196c);DWORD originalBattle=*battleSlot;
+ image[0xa0c13]^=1;require(!motion60TestBattlePatch(image,true)&&*battleSlot==originalBattle,"unknown battle draw prefix rejected before write");image[0xa0c13]^=1;
+ require(motion60TestBattlePatch(image,true)&&*battleSlot!=originalBattle,"battle draw hook installed");require(motion60TestBattlePatch(image,true),"battle draw install idempotent");
+ require(motion60TestBattlePatch(image,false)&&*battleSlot==originalBattle,"battle draw exact rollback");require(motion60TestBattlePatch(image,false),"battle draw rollback idempotent");
+ printf("BATTLE_RHYTHM_REPLAY PASS attacker_pose=native_current attacker_world=native_current camera=unchanged nesting=restored exception=restored scene_exit=interpolation guard=rejected rollback=exact game_started=false\n");
  motion60TestComplete(image,false);fullDraw=false;VirtualFree(image,0,MEM_RELEASE);
  printf("MOTION60_FIXTURE PASS checks=%d real_hook_calls=true intermediate_pose=true restore=exact logic_ticks=unchanged commercial_code_executed=false game_started=false\n",checks);return 0;
 }

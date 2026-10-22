@@ -52,6 +52,13 @@ def build(runtime, record, output):
     if output.suffix.lower() != '.zip' or output.exists() or any(output.is_relative_to(p) for p in [runtime, record]):
         raise ValueError('New separate .zip output required')
     states = json.loads((record/'changes.json').read_text(encoding='utf-8-sig'))
+    if states.get('kind') == 'owned_runtime_module_update':
+        from update_runtime_modules import CHANGES
+        changes = states.get('changes', [])
+        if states.get('schema') != 1 or [row.get('path') for row in changes] != list(CHANGES):
+            raise ValueError('Invalid owned-module deployment record')
+        states = {row['path']: {'before': row['before'], 'after': row['after']}
+                  for row in changes}
     if not states or 'runtime.json' not in states:
         raise ValueError('Deployment record must include runtime.json')
     if len({name.lower() for name in states}) != len(states):

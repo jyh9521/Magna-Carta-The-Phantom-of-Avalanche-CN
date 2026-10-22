@@ -1,7 +1,7 @@
 #pragma once
 #include "camera_relative_input.h"
 #include <windows.h>
-bool installModernGamepad(HMODULE,void(*logger)(const wchar_t*));
+bool installModernGamepad(HMODULE,void(*logger)(const wchar_t*),bool battleOnly=false);
 bool removeModernGamepad(HMODULE);
 void modernGamepadWorldScope(bool enabled);
 bool modernGamepadConsumeInteraction();
@@ -15,6 +15,8 @@ void modernGamepadFocusCursor(float x,float y);
 #include <Xinput.h>
 void configureModernGamepadFixture(BOOL(WINAPI*)(PBYTE),DWORD(WINAPI*)(DWORD,XINPUT_STATE*),bool);
 void configureModernNavigationFixture(BYTE*,GamepadNavigation);
+void configureModernBattleFixture(bool native);
+BOOL modernBattleKeyboardFixture(PBYTE keys,void* frame);
 #endif
 
 unsigned modernGamepadMapButtons();
