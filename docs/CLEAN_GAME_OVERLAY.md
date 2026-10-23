@@ -42,3 +42,7 @@ python -m unittest discover -s tests -p 'test_configuration*.py'
 `--verify-only` 移至全部无副作用的原生启动预检之后，包含真实目录关系、版本、图形组合、ANSI 路径与52字节配置检查；不启动进程、不创建会话或日志。自有 `overlay_launch_fixture` 调用生产 wmain，只有安装目录读取用确定性替身，注册写入及进程创建有捕获计数。原代码复现同样报错，随后因 verify-only 错误通过而断言失败；修订后显式平铺成功、旧模式拒绝原路径、独立隔离目录通过、父目录/外部日志拒绝，写入/子进程计数均为0。
 
 `tools/build_overlay_launch_repair.py` 为首版覆盖 ZIP 的准确摘要构建仅四个自有文件的小修复：启动器、Start.ps1、runtime.json、Overlay-Manifest.json。不改资源、存档和个人设置。原生启动器能力标记检查进入完整覆盖构建，避免再次搭配不支持平铺参数的旧启动器。完整修正版可重新生成；首版已解压者只需小修复。
+
+### 小修复入口的窗口结果
+
+首版 Fix-Overlay-Launch.cmd 只在失败时 pause，成功 exit=0 后会自动关闭，不能据此称作更新崩溃。修订入口始终显示退出码并等待按键，同时将 PowerShell 完整输出保存为同层 Overlay-Launch-Fix.log。只替换 CMD 不改变更新清单或安装标记，已经安装的原小修复可幂等检查。真实 cmd.exe 的开放输入管道回归确认成功和失败均等到按键才结束，且保留原退出码。

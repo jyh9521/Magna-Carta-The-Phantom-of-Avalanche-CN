@@ -43,7 +43,7 @@ def build(previous,launcher,work,output):
 }
 """+needle)
  payload[FOLDER+'/Update.ps1']=b'\xef\xbb\xbf'+script.encode()
- payload['Fix-Overlay-Launch.cmd']=(f'@echo off\r\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0{FOLDER}\\Update.ps1" -Runtime "%~dp0."\r\nif errorlevel 1 pause\r\n').encode()
+ payload['Fix-Overlay-Launch.cmd']=(ROOT/'assets/player-test-package/Fix-Overlay-Launch.cmd').read_bytes()
  payload['README-Overlay-Launch-Fix.txt']=('纯净版覆盖包启动修复\r\n适用：MagnaCarta-clean-game-all-in-one-overlay-20261023.zip 已经解压覆盖后的游戏目录。\r\n'
   '退出游戏，完整解压本小包到同一个目录（Play.cmd所在层），双击 Fix-Overlay-Launch.cmd。\r\n'
   '看到 MODIFIED PASS 后使用原 Play.cmd 或 Configure.cmd 启动。不需要重装、移动目录或重下完整包。\r\n'

@@ -1,2 +1,5 @@
 # Preserve the exact upstream license bytes, including original trailing spaces.
 assets/licenses/* -text whitespace=-blank-at-eol
+
+# Windows repair entry points use normalized CRLF checkouts.
+assets/player-test-package/*.cmd text eol=crlf
