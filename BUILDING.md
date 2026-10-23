@@ -251,3 +251,19 @@ See [opening centering evidence](docs/OPENING_CENTER_REPAIR.md).
 `scene_texture_probe`仅运行源锁驱动的Bind/Delete函数和真实系统D3D7，不运行游戏入口。
 三模式baseline/candidate/rollback均属资源级观察，不是完整场景切换验收；正常入口/包不改。
 命令及“不把仍绑定当UAF”的关键反证见[场景调查](docs/SCENE_TRANSITION_INVESTIGATION.md)。
+
+## 伤害数字离线绘制夹具（2026-10-23）
+
+`damage_projection_bridge` 和 `damage_projection_gpu_fixture` 均为自有程序，
+输出隔离到 `build/native/Release/damage-render-fixture/`，不加入共享运行模块或玩家更新包。
+同目录的 `AsrD3DDrv.dll` 是 `/NOENTRY /NODEFAULTLIB` 自有数据夹具，不是原商业驱动，
+不得复制到游戏目录。商业 PE 仅由 Python/Unicorn 按整份源摘要锁定后读取。
+
+```powershell
+cmake --build build/native --config Release --target damage_projection_bridge damage_projection_gpu_fixture
+$env:PYTHONPATH="$PWD/runtime/dependencies"
+python -m unittest discover -s tests -p 'test_damage*.py' -v
+```
+
+原生资源链和GPU像素检查命令见[伤害数字绘制链](docs/DAMAGE_PROJECTION_REPAIR.md)。
+离屏HAL依赖本机系统D3D7能力；设备拒绝的分辨率如实保存HRESULT，不通过切换桌面模式规避。

@@ -146,3 +146,9 @@ game_native_font、UTF-16 RT_DIALOG与MessageBoxA分别处理。13处原生字�
 ## 战斗菜单宽度断言（2026-10-20）
 
 资源变体选择与宽屏画布分离，两处源锁CMP改读原生物理宽度。原指令复现Line169、生产比较回归、晚期动作诊断及验收边界见[战斗菜单调查](docs/BATTLE_MENU_WIDTH_ASSERTION.md)。
+
+## 伤害数字真实绘制链（2026-10-23）
+
+实际角色头部类别、模型屏幕位置、原生数字资源、透视UI根相机、ASURA队列与D3D7 XYZ提交已纳入
+可复现离线回放；生产查询桥使用真实编译ABI，自有隐藏离屏GPU独立比较头部与数字像素。
+真实绘制链补充、源基线区分和未覆盖边界见[伤害投影修正](docs/DAMAGE_PROJECTION_REPAIR.md)。

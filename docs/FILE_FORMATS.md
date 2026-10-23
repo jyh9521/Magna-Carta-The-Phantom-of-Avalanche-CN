@@ -137,3 +137,13 @@ protection and type,4-byte padding. Validate header+stride*count within the stre
 64-bit region bounds and unambiguous address coverage. An absent stream or uncovered
 address is unknown, not proof of free memory; region state describes capture time.
 `Dump.memory_region` never queries or attaches to a live process.
+## 自有离屏伤害绘制输入（DGP3）
+
+此格式仅用于 `damage_projection_gpu_fixture`，不是商业游戏资源，不进入玩家包。
+文件采用小端：`<7I48f6I` 头，依次保存魔数 `0x33504744`、表面宽高、viewport的x/y/w/h、
+WORLD/VIEW/PROJECTION三组16浮点矩阵、primitive/count/纹理宽/纹理高/renderstate数/stagestate数。
+随后依次保存 `count` 个32字节 `D3DLVERTEX`（`<3f3I2f`）、纹理宽×高个BGRA像素、
+`renderstate数` 个 `<2I state,value>` 和 `stagestate数` 个 `<3I stage,state,value>`。
+纹理保持原始BGR的存储行方向，UV由原生图形提交；不预先软件投影顶点。
+矩阵、顶点、状态来自源锁回放，纹理上传元数据的受控边界由验证报告单独列明。
+读取器限制尺寸/数量并拒绝非有限坐标；GPU读回BMP使用负高度记录顶向下行。

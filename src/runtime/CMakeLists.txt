@@ -31,6 +31,26 @@ add_executable(damage_projection_fixture damage_projection_fixture.cpp damage_pr
 target_compile_definitions(damage_projection_fixture PRIVATE DAMAGE_PROJECTION_TEST)
 set_property(TARGET damage_projection_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 target_compile_options(damage_projection_fixture PRIVATE /W4 /utf-8)
+# Owned no-entry driver and hook ABI bridge: isolated from distributable runtime modules.
+set(DAMAGE_RENDER_FIXTURE_DIR "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>/damage-render-fixture")
+add_library(owned_damage_driver SHARED damage_projection_owned_driver.cpp)
+set_target_properties(owned_damage_driver PROPERTIES OUTPUT_NAME AsrD3DDrv
+  RUNTIME_OUTPUT_DIRECTORY "${DAMAGE_RENDER_FIXTURE_DIR}"
+  ARCHIVE_OUTPUT_DIRECTORY "${DAMAGE_RENDER_FIXTURE_DIR}"
+  PDB_OUTPUT_DIRECTORY "${DAMAGE_RENDER_FIXTURE_DIR}")
+target_link_options(owned_damage_driver PRIVATE /NOENTRY /NODEFAULTLIB)
+add_executable(damage_projection_bridge damage_projection_bridge.cpp damage_projection.cpp)
+target_link_libraries(damage_projection_bridge PRIVATE user32)
+add_dependencies(damage_projection_bridge owned_damage_driver)
+add_executable(damage_projection_gpu_fixture damage_projection_gpu_fixture.cpp)
+target_link_libraries(damage_projection_gpu_fixture PRIVATE user32 dxguid)
+foreach(target damage_projection_bridge damage_projection_gpu_fixture)
+  set_property(TARGET ${target} PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+  target_compile_options(${target} PRIVATE /W4 /utf-8)
+  set_target_properties(${target} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY "${DAMAGE_RENDER_FIXTURE_DIR}"
+    PDB_OUTPUT_DIRECTORY "${DAMAGE_RENDER_FIXTURE_DIR}")
+endforeach()
 add_executable(battle_input_fixture battle_input_fixture.cpp)
 set_property(TARGET battle_input_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 target_compile_options(battle_input_fixture PRIVATE /W4 /utf-8)
