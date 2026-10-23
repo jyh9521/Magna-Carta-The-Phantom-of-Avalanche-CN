@@ -344,3 +344,8 @@ target_compile_options(native_actor_motion_fixture PRIVATE /W4 /utf-8)
 target_link_libraries(native_actor_motion_fixture PRIVATE user32)
 
 target_compile_definitions(workspace_profile PRIVATE RELEASE_ARCHIVED_INPUT)
+add_executable(encounter_hud_fixture encounter_hud_fixture.cpp)
+target_compile_definitions(encounter_hud_fixture PRIVATE ENCOUNTER_CONTROL_TEST)
+target_link_libraries(encounter_hud_fixture PRIVATE user32 gdi32)
+target_compile_options(encounter_hud_fixture PRIVATE /W4 /utf-8)
+set_property(TARGET encounter_hud_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")

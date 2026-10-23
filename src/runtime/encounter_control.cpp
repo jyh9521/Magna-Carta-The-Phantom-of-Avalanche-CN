@@ -5,7 +5,9 @@ constexpr unsigned rva=0x6e07d,imageSize=0x10b000;
 constexpr BYTE prefix[]={0x55,0x8b,0xec,0x83,0xec,0x0c};
 BYTE* engine=nullptr;BYTE* trampoline=nullptr;
 using Check=int(__thiscall*)(void*);Check original=nullptr;
-volatile LONG enabled=1,uiStarted=0;bool held=true;
+volatile LONG enabled=1,uiStarted=0,toastSerial=0;bool held=true;
+alignas(8) volatile LONG64 toastAt=0;
+bool hudShown=false;LONG renderedSerial=0;RECT renderedRect{};
 void(*trace)(const wchar_t*)=nullptr;
 HANDLE uiThread=nullptr,stopEvent=nullptr;HWND* gameWindow=nullptr;
 wchar_t onLabel[128]=L"Random encounters: ON  [F5]",offLabel[128]=L"Random encounters: OFF  [F5]";
@@ -39,19 +41,40 @@ void paint(HDC dc,int width,int height){
  HFONT font=CreateFontW(-height*5/11,0,0,0,FW_SEMIBOLD,FALSE,FALSE,FALSE,DEFAULT_CHARSET,OUT_DEFAULT_PRECIS,CLIP_DEFAULT_PRECIS,ANTIALIASED_QUALITY,DEFAULT_PITCH,L"Microsoft YaHei");auto old=SelectObject(dc,font);
  DrawTextW(dc,encounterStatus(),-1,&rect,DT_CENTER|DT_VCENTER|DT_SINGLELINE|DT_NOPREFIX);SelectObject(dc,old);DeleteObject(font);
 }
+// All glyphs are drawn into an off-screen DIB. Never issue text drawing to a
+// window DC: legacy DirectDraw wrappers can redirect those calls to the game.
+bool present(HWND window,const RECT& area,LONG serial){
+ int height=(area.bottom-area.top)/36;if(height<24)height=24;if(height>32)height=32;
+ int width=height*10;if(width>area.right-area.left-16)width=area.right-area.left-16;
+ if(width<=0)return false;
+ BITMAPINFO info{};info.bmiHeader.biSize=sizeof(BITMAPINFOHEADER);info.bmiHeader.biWidth=width;
+ info.bmiHeader.biHeight=-height;info.bmiHeader.biPlanes=1;info.bmiHeader.biBitCount=32;info.bmiHeader.biCompression=BI_RGB;
+ void* pixels=nullptr;HBITMAP bitmap=CreateDIBSection(nullptr,&info,DIB_RGB_COLORS,&pixels,nullptr,0);
+ HDC memory=CreateCompatibleDC(nullptr);if(!bitmap||!memory){if(bitmap)DeleteObject(bitmap);if(memory)DeleteDC(memory);return false;}
+ auto previous=SelectObject(memory,bitmap);paint(memory,width,height);
+ POINT position{area.right-width-16,area.bottom-height-24},source{};SIZE size{width,height};
+ BLENDFUNCTION blend{AC_SRC_OVER,0,232,0};
+ bool ok=UpdateLayeredWindow(window,nullptr,&position,&size,memory,&source,0,&blend,ULW_ALPHA)!=FALSE;
+ SelectObject(memory,previous);DeleteDC(memory);DeleteObject(bitmap);
+ if(ok){renderedSerial=serial;renderedRect=area;}return ok;
+}
+void hideHud(HWND window){if(hudShown){ShowWindow(window,SW_HIDE);hudShown=false;}}
 LRESULT CALLBACK windowProc(HWND window,UINT message,WPARAM w,LPARAM l){
  if(message==WM_NCHITTEST)return HTTRANSPARENT;
  if(message==WM_MOUSEACTIVATE)return MA_NOACTIVATE;
- if(message==WM_PAINT){PAINTSTRUCT ps{};HDC dc=BeginPaint(window,&ps);RECT rect{};GetClientRect(window,&rect);paint(dc,rect.right,rect.bottom);EndPaint(window,&ps);return 0;}
+ if(message==WM_ERASEBKGND)return 1;
+ if(message==WM_PAINT){PAINTSTRUCT ps{};BeginPaint(window,&ps);EndPaint(window,&ps);return 0;}
  if(message==WM_TIMER){
   if(WaitForSingleObject(stopEvent,0)==WAIT_OBJECT_0){DestroyWindow(window);return 0;}
+  LONG serial=InterlockedCompareExchange(&toastSerial,0,0);
+  ULONGLONG at=static_cast<ULONGLONG>(InterlockedCompareExchange64(&toastAt,0,0));
   HWND game=gameWindow?*gameWindow:nullptr;DWORD pid=0;if(game)GetWindowThreadProcessId(game,&pid);
-  if(!game||!IsWindow(game)||IsIconic(game)||GetForegroundWindow()!=game||pid!=GetCurrentProcessId()){ShowWindow(window,SW_HIDE);return 0;}
-  RECT rect{};POINT origin{};GetClientRect(game,&rect);ClientToScreen(game,&origin);
-  int height=rect.bottom/22;if(height<24)height=24;if(height>72)height=72;
-  int width=height*8;if(width>rect.right)width=rect.right;
-  SetWindowPos(window,HWND_TOPMOST,origin.x+(rect.right-width)/2,origin.y+height/2,width,height,SWP_NOACTIVATE|SWP_SHOWWINDOW);
-  InvalidateRect(window,nullptr,FALSE);return 0;
+  if(!serial||GetTickCount64()-at>=1800||!game||!IsWindow(game)||IsIconic(game)||GetForegroundWindow()!=game||pid!=GetCurrentProcessId()){hideHud(window);return 0;}
+  RECT rect{};POINT origin{};if(!GetClientRect(game,&rect)||!ClientToScreen(game,&origin)||rect.right<=16||rect.bottom<=64){hideHud(window);return 0;}
+  rect={origin.x,origin.y,origin.x+rect.right,origin.y+rect.bottom};
+  if(serial!=renderedSerial||memcmp(&rect,&renderedRect,sizeof(rect))){if(!present(window,rect,serial)){hideHud(window);return 0;}}
+  if(!hudShown){SetWindowPos(window,HWND_TOPMOST,0,0,0,0,SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOSIZE|SWP_SHOWWINDOW);hudShown=true;}
+  return 0;
  }
  if(message==WM_DESTROY){PostQuitMessage(0);return 0;}return DefWindowProcW(window,message,w,l);
 }
@@ -59,7 +82,7 @@ DWORD WINAPI threadMain(void*){
  HINSTANCE instance=GetModuleHandleW(nullptr);WNDCLASSW cls{};cls.lpfnWndProc=windowProc;cls.hInstance=instance;cls.lpszClassName=L"MagnaCartaEncounterStatus";
  if(!RegisterClassW(&cls)){if(trace)trace(L"ENCOUNTER_HUD_FAILED register_class=true");return 1;}
  HWND window=CreateWindowExW(WS_EX_LAYERED|WS_EX_TRANSPARENT|WS_EX_NOACTIVATE|WS_EX_TOOLWINDOW,cls.lpszClassName,L"",WS_POPUP,0,0,320,40,nullptr,nullptr,instance,nullptr);
- if(window){SetLayeredWindowAttributes(window,0,232,LWA_ALPHA);SetTimer(window,1,50,nullptr);MSG message{};while(GetMessageW(&message,nullptr,0,0)>0){TranslateMessage(&message);DispatchMessageW(&message);}}
+ if(window){SetTimer(window,1,50,nullptr);MSG message{};while(GetMessageW(&message,nullptr,0,0)>0){TranslateMessage(&message);DispatchMessageW(&message);}}
  if(trace)trace(window?L"ENCOUNTER_HUD_CLOSED":L"ENCOUNTER_HUD_FAILED create_window=true");UnregisterClassW(cls.lpszClassName,instance);return window?0:1;
 }
 void startUi(){
@@ -74,7 +97,7 @@ bool encountersEnabled(){return InterlockedCompareExchange(&enabled,0,0)!=0;}
 const wchar_t* encounterStatus(){return encountersEnabled()?onLabel:offLabel;}
 void encounterKeyboard(PBYTE keys,bool focused){
  bool down=keys&&(keys[VK_F5]&0x80);if(!focused||!keys){held=true;return;}
- startUi();if(down&&!held){bool on=!encountersEnabled();InterlockedExchange(&enabled,on?1:0);if(trace)trace(on?L"ENCOUNTER_STATE enabled=true key=F5":L"ENCOUNTER_STATE enabled=false key=F5");}
+ startUi();if(down&&!held){bool on=!encountersEnabled();InterlockedExchange(&enabled,on?1:0);InterlockedExchange64(&toastAt,static_cast<LONG64>(GetTickCount64()));InterlockedIncrement(&toastSerial);if(trace)trace(on?L"ENCOUNTER_STATE enabled=true key=F5":L"ENCOUNTER_STATE enabled=false key=F5");}
  held=down;keys[VK_F5]=0;
 }
 bool installEncounterControl(HMODULE module,void(*logger)(const wchar_t*)){
@@ -89,6 +112,6 @@ bool removeEncounterControl(){
 }
 #ifdef ENCOUNTER_CONTROL_TEST
 bool encounterTestMapped(BYTE* p,size_t size,bool on){return mapped(p,size,on);}
-void encounterTestReset(){enabled=1;held=true;}
+void encounterTestReset(){enabled=1;held=true;toastSerial=0;toastAt=0;hudShown=false;renderedSerial=0;renderedRect={};}
 void encounterTestPaint(HDC dc,int w,int h){paint(dc,w,h);}
 #endif

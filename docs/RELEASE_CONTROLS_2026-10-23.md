@@ -54,16 +54,34 @@ REA `ev_9b46733e233347eed3390143bb70c8500756c0835025e89297262f218705302d`、
 - 按下边沿去抖；按住不连翻，失焦和失焦期间按住的键不误触发。只消耗 F5，不改 F10/F11。
 - 使用原生键盘采样观察接口，不依赖手柄组件的虚拟按键。
 
-状态常驻客户区上方，使用点击穿透、不激活窗口的分层提示；失焦/最小化时隐藏，跟随窗口位置与尺寸。
+2026-10-23 提示修订：旧版常驻顶部的大条幅已由玩家画面反馈否决，并报告左上角同文闪烁。
+离线生产 WM_TIMER 回放复现未按 F5 就显示；旧分支每 50ms 重定位、显示并请求重绘。
+原 HDC 背景像素测试不足以发现常驻、重绘频率和呈现方式问题。
+
+状态改成仅 F5 切换后显示 1.8 秒，右下角 16/24 像素留边；高度按客户区缩放并限制在 24–32 像素，宽度最多 320 像素。
+启动不显示、过期隐藏、失焦/最小化隐藏；按住不刷新期限。切回窗口不重新计时。
+文字仅绘制到离屏 32 位 DIB，再由 UpdateLayeredWindow 一次提交图像与屏幕坐标，成功后才显示。
+WM_PAINT 不再绘字，不再使用 InvalidateRect，也不在内容与位置未变时重复绘制/显示。
+这消除了窗口 DC 绘字和初始 (0,0) 绘字路径；与游戏内左上角闪字的因果关系仍需玩家现场确认。
 提示文字来自 `locales/zh-CN/encounter-ui.json`，通用实现保留英文缺省值。
-自有 HDC 验证生产绘制函数和背景像素；这不是游戏内叠加画面验收。
-无边框、窗口及尤其独占全屏下的实际可见性、DPI、多显示器均需人工检查。
+
+`encounter_hud_fixture` 直接包含生产实现，在 Win32 呈现边界回放相同定时器和 F5 路径，锁定时钟、窗口位置、焦点。
+旧源码断言 `HUD visible before first F5 (persistent banner)` 失败；新源码验证启动隐藏、1799ms 可见/1800ms 隐藏、
+紧凑尺寸、仅变化时提交、文字目标为内存 DC、失焦和过期切回行为。
+窗口与焦点 API 使用确定性替身，不启动游戏、不创建桌面窗口，因此该结果不是游戏画面或 DirectDraw 兼容性验收。
+无边框、窗口、独占全屏、DPI、多显示器下最终呈现仍由测试者验收。
+
+提示热修复使用 `tools/build_encounter_hud_update.py`，基线锁定已交付的 `MagnaCarta-release-controls-20261023.zip`。
+仅更新十二个自有模块和玩家原有清单，不引入维护目录特有依赖；独立 `.encounter-hud-20261023` 回滚目录保留前次更新证据。
+真实 PowerShell 更新器在自有文件夹具上验证预检、安装、重复安装、回读、独立副本回滚及混合版本拒绝。
+证据位于 `build/encounter-hud-repair/`，源码回滚只在隔离源码目录进行，共享运行目录保持修复状态。
 
 ## 构建与离线复现
 
 ```powershell
-cmake --build build/native --config Release --target workspace_profile encounter_control_fixture native_actor_motion_fixture motion60_fixture rigid_motion_fixture
+cmake --build build/native --config Release --target workspace_profile encounter_control_fixture encounter_hud_fixture native_actor_motion_fixture motion60_fixture rigid_motion_fixture
 build/native/Release/encounter_control_fixture.exe
+build/native/Release/encounter_hud_fixture.exe
 build/native/Release/native_actor_motion_fixture.exe
 build/native/Release/motion60_fixture.exe
 build/native/Release/rigid_motion_fixture.exe
@@ -102,3 +120,7 @@ Verify / Install / 重复 Install / CheckInstalled / 独立副本 Rollback，并
 ## 本轮离线结果
 
 基线全套 872 项通过（1 项跳过）；调整后全套 880 项通过（1 项跳过）。最终核心钩子 996 检查、刚性同相位 33 个余数、新增基础类与遇敌夹具、20 项配置回归及8项发布调整回归通过。实际已交付的统一包+F11基线由真实小更新器验证安装、重复安装、独立副本回滚、混合版本拒绝，个人设置字节保持不变。上述均为离线结果，不提升为全部怪物或叠加提示的游戏内验收。
+
+### 提示修复离线结果
+
+修复后的全套 882 项通过（1 项跳过），发布控制回归 10 项通过；遇敌呈现消息回放、原随机判定钩子、996 项动作钩子检查和两类基础模型回放通过。旧源码在同一呈现回放中稳定失败，隔离源码回滚恢复相同失败及原摘要；玩家小更新的真实安装与精确回滚通过。上述结果不代替游戏内闪字消失验收。

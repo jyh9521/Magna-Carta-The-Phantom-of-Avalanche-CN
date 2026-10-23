@@ -43,6 +43,24 @@ class ReleaseControlsTests(unittest.TestCase):
    self.assertIn('ROLLBACK PASS files=19',run('Rollback').stdout)
    for n,b in before.items():self.assertEqual((root/n).read_bytes(),b,n)
    self.assertFalse((root/'config/encounter-ui.json').exists())
+ def test_HUD_package_chain_and_exact_rollback(self):
+  from unittest.mock import patch
+  import build_encounter_hud_update as hud
+  from verify_release_controls_update import verify
+  with tempfile.TemporaryDirectory() as d:
+   d=Path(d);root,module=self.fixture(d);deploy.apply(root,module,d/'record')
+   package.build(root,d/'record',d/'previous.zip')
+   newer=bytearray(module.read_bytes());newer[-1]^=1;module.write_bytes(newer)
+   with patch.object(hud,'PREVIOUS_SHA256',hashlib.sha256((d/'previous.zip').read_bytes()).hexdigest()):
+    record=hud.prepare(d/'previous.zip',module,d/'work',d/'hud.zip')
+   report=verify(record,d/'hud.zip',d/'evidence',folder=hud.FOLDER)
+   self.assertEqual(report['rollback_state'],'original hashes exact')
+   with zipfile.ZipFile(d/'hud.zip') as z:
+    m=json.loads(z.read(hud.FOLDER+'/package.json'))
+    self.assertEqual({r['path'] for r in m['files']},set(hud.CHANGES))
+    self.assertNotEqual(hud.BACKUP,package.BACKUP)
+   with self.assertRaises(ValueError):hud.prepare(d/'previous.zip',module,d/'bad',d/'bad.zip')
+   self.assertFalse((d/'bad').exists())
  def test_release_ui_has_no_archived_choices(self):
   x=(ROOT/'src/configuration/Configure.xaml').read_text(encoding='utf-8-sig')
   self.assertNotIn('GamepadChoices',x);self.assertNotIn('CameraChoices',x)
@@ -82,6 +100,10 @@ class ReleaseControlsTests(unittest.TestCase):
  @unittest.skipUnless((ROOT/'build/native/Release/encounter_control_fixture.exe').exists(),'Build native fixtures')
  def test_production_encounter_hook_and_HUD(self):
   r=subprocess.run([str(ROOT/'build/native/Release/encounter_control_fixture.exe')],capture_output=True,text=True,timeout=15);self.assertEqual(r.returncode,0,r.stdout+r.stderr);self.assertIn('rollback=exact',r.stdout)
+ @unittest.skipUnless((ROOT/'build/native/Release/encounter_hud_fixture.exe').exists(),'Build native fixtures')
+ def test_HUD_transient_atomic_presentation(self):
+  r=subprocess.run([str(ROOT/'build/native/Release/encounter_hud_fixture.exe')],capture_output=True,text=True,timeout=15)
+  self.assertEqual(r.returncode,0,r.stdout+r.stderr);self.assertIn('redraw=on_change only=layered_bitmap',r.stdout)
  @unittest.skipUnless((ROOT/'build/native/Release/native_actor_motion_fixture.exe').exists(),'Build native fixtures')
  def test_native_actor_midpoints(self):
   r=subprocess.run([str(ROOT/'build/native/Release/native_actor_motion_fixture.exe')],capture_output=True,text=True,timeout=15);self.assertEqual(r.returncode,0,r.stdout+r.stderr);self.assertIn('base_skin=interpolated base_rigid=interpolated',r.stdout)
