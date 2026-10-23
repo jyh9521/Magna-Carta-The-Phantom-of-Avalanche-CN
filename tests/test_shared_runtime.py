@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import sys
 import tempfile
+import struct
 import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'tools'))
@@ -51,9 +52,42 @@ class SharedRuntimeTests(unittest.TestCase):
             self.assertTrue(m['recipes']['maps-gamepad']['maps'])
             self.assertTrue(m['recipes']['maps-gamepad']['settings']['native_gamepad'])
             self.assertTrue((out/'Configure.cmd').is_file())
+            self.assertFalse((out/'Play-diagnostic.cmd').exists())
+            self.assertNotIn('modules/capture_helper.exe',m['files'])
             self.assertIn(b'set MC_TITLE_STYLE=0', (out/'Play-title-original.cmd').read_bytes())
             self.assertEqual(tool.sha(out/'Play-title-original.cmd'),m['files']['Play-title-original.cmd'])
             self.assertRaises(ValueError,tool.prepare,game,modules,atlas,out)
+
+    def capture_helper(self, root, machine=0x14c, magic=0x10b, flags=0x0102):
+        # Owned PE header fixture, never executed or loaded.
+        data=bytearray(512);data[:2]=b'MZ';struct.pack_into('<I',data,0x3c,0x80)
+        data[0x80:0x84]=b'PE\0\0';struct.pack_into('<HH',data,0x84,machine,1)
+        struct.pack_into('<HHH',data,0x94,224,flags,magic)
+        path=root/'capture_helper.exe';path.write_bytes(data);return path
+
+    def test_optional_capture_helper_generates_hash_locked_manual_entry(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);game,modules,atlas=self.inputs(root)
+            helper=self.capture_helper(root);out=root/'runtime'
+            m=tool.prepare(game,modules,atlas,out,capture_helper=helper)
+            self.assertIn(b'-Recipe configured -CaptureException',(out/'Play-diagnostic.cmd').read_bytes())
+            for name in ('Play-diagnostic.cmd','modules/capture_helper.exe'):
+                self.assertEqual(tool.sha(out/name),m['files'][name])
+            self.assertEqual((out/'modules/capture_helper.exe').read_bytes(),helper.read_bytes())
+            self.assertFalse((out/'data').exists())
+
+    def test_capture_helper_wrong_type_rejected_before_output(self):
+        for machine,magic,flags in ((0x8664,0x20b,0x0102),(0x14c,0x10b,0x2102),
+                                    (0x14c,0x10b,0x0100)):
+            with self.subTest(machine=machine,magic=magic,flags=flags):
+                with tempfile.TemporaryDirectory() as directory:
+                    root=Path(directory);game,modules,atlas=self.inputs(root)
+                    helper=self.capture_helper(root,machine,magic,flags);out=root/'runtime'
+                    with self.assertRaisesRegex(ValueError,'capture helper'):
+                        tool.prepare(game,modules,atlas,out,capture_helper=helper)
+                    self.assertFalse(out.exists())
+        with self.assertRaisesRegex(ValueError,'capture helper'):
+            tool.check_capture_helper(b'not an executable')
 
     def test_optional_height_module_sets_default_route_preserving_original_roles(self):
         with tempfile.TemporaryDirectory() as directory:

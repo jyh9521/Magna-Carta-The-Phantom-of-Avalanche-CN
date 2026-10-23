@@ -1,4 +1,4 @@
-﻿param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','motion-gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='',[string]$SettingsFile='',[switch]$WithoutFieldReturnHeight,[switch]$WithoutGuiParentGuard,[switch]$WithoutSceneLoading,[switch]$WithoutNativeLoading,[switch]$WithoutScaledFont)
+﻿param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','motion-gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='',[string]$SettingsFile='',[switch]$WithoutFieldReturnHeight,[switch]$WithoutGuiParentGuard,[switch]$WithoutSceneLoading,[switch]$WithoutNativeLoading,[switch]$WithoutScaledFont,[switch]$CaptureException)
 $ErrorActionPreference='Stop'
 $runtimeRoot=$PSScriptRoot
 $manifest=Get-Content -LiteralPath (Join-Path $runtimeRoot 'runtime.json') -Raw | ConvertFrom-Json
@@ -106,6 +106,7 @@ try{
  $args=@('--workspace',$game,'--shim',(Join-Path $runtimeRoot ('modules/'+$module+'.dll')),'--profile',(Join-Path $cache 'profile.bin'),'--log',$log,'--native-text-step','--system-messages','--focus-guard','--display-profile',$settings.display_profile)
  if($settings.native_gamepad){$args+='--native-gamepad'}elseif($selected.maps -or $cameraEnabled){$args+='--input-passthrough'}
  if($selected.texture){$args+='--texture-lifetime'}
+ if($CaptureException){$args+='--capture-exception'}
  if($VerifyOnly){$args+='--verify-only'}
  & (Join-Path $runtimeRoot 'modules/workspace_launcher.exe') @args 1>(Join-Path $cache 'launcher.stdout.txt') 2>(Join-Path $cache 'launcher.stderr.txt')
  $code=$LASTEXITCODE

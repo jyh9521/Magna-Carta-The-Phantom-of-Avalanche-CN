@@ -7,6 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import struct
 from build_configuration_profiles import build as build_display_profiles
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -21,7 +22,27 @@ def settings(profile='wide4k', motion=False, pad=False):
     return dict(schema=1, display_profile=profile, motion60=motion, native_gamepad=pad)
 
 
-def prepare(source, modules, atlas, output, scaled_font_cache=None):
+def check_capture_helper(data):
+    """Check the PE32 x86 executable type without loading or executing it."""
+    if len(data) < 256 or data[:2] != b'MZ':
+        raise ValueError('Expected Win32 capture helper executable')
+    offset = struct.unpack_from('<I', data, 0x3c)[0]
+    if offset < 64 or offset + 26 > len(data):
+        raise ValueError('Invalid capture helper PE header')
+    machine, sections = struct.unpack_from('<HH', data, offset+4)
+    optional_size, flags = struct.unpack_from('<HH', data, offset+20)
+    if (data[offset:offset+4] != b'PE\0\0' or machine != 0x14c
+            or flags & 0x2000 or not flags & 0x0002
+            or struct.unpack_from('<H', data, offset+24)[0] != 0x10b
+            or optional_size < 96 or not 1 <= sections <= 96
+            or offset+24+optional_size+40*sections > len(data)):
+        raise ValueError('Expected PE32 x86 capture helper executable, not DLL')
+
+
+def prepare(source, modules, atlas, output, scaled_font_cache=None, capture_helper=None):
+    if capture_helper is not None:
+        capture_helper = Path(capture_helper).resolve(strict=True)
+        check_capture_helper(capture_helper.read_bytes())
     font_files={}
     if 'scaled-font' in modules:
         if 'native-loading' not in modules or scaled_font_cache is None:
@@ -71,6 +92,9 @@ def prepare(source, modules, atlas, output, scaled_font_cache=None):
         destination=output/name; destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(path, destination); files[name]=sha(destination)
     copy(ROOT/'src/configuration/StartShared.ps1','Start.ps1')
+    if capture_helper is not None:
+        copy(capture_helper,'modules/capture_helper.exe')
+        copy(ROOT/'assets/shared-runtime/Play-diagnostic.cmd','Play-diagnostic.cmd')
     for name in ['Configure.ps1','Configure.xaml','EnhancementSettings.psm1']:
         copy(ROOT/'src/configuration'/name,'config/'+name)
     copy(ROOT/'locales/zh-CN/configuration-ui.json','config/configuration-ui.json')
@@ -162,6 +186,7 @@ if __name__=='__main__':
     parser.add_argument('--native-loading',type=Path)
     parser.add_argument('--scaled-font',type=Path)
     parser.add_argument('--scaled-font-cache',type=Path)
+    parser.add_argument('--capture-helper',type=Path)
     a=parser.parse_args()
     modules={name:getattr(a,name) for name in ['display','modern','texture','camera','maps','launcher']}
     modules['configuration']=a.configuration
@@ -172,5 +197,5 @@ if __name__=='__main__':
     if a.scene_loading: modules['scene-loading']=a.scene_loading
     if a.native_loading: modules['native-loading']=a.native_loading
     if a.scaled_font: modules['scaled-font']=a.scaled_font
-    prepare(a.source,modules,a.atlas,a.output,a.scaled_font_cache)
+    prepare(a.source,modules,a.atlas,a.output,a.scaled_font_cache,a.capture_helper)
     print('SHARED_PACKAGE PASS copied_game_data=false data_move_pending=true')

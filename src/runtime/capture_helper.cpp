@@ -1,5 +1,10 @@
 #include <windows.h>
 #include <dbghelp.h>
+#include <bcrypt.h>
+#include <fstream>
+#include <iomanip>
+#include <sstream>
+#include <vector>
 #include <filesystem>
 #include <iostream>
 #include <cstdio>
@@ -38,6 +43,34 @@ bool below(const fs::path& path, const fs::path& root) {
     return p.size() > r.size() && !_wcsnicmp(p.c_str(), r.c_str(), r.size());
 }
 
+// Shared-runtime capture is opt-in through the existing exception hook. The
+// target must be this owned fixture or the exact supported game beside it.
+std::string fileDigest(const fs::path& path) {
+    if (!fs::is_regular_file(path) || fs::file_size(path)>16*1024*1024)
+        throw std::runtime_error("Unsupported capture input size");
+    std::ifstream file(path,std::ios::binary);
+    std::vector<unsigned char> raw((std::istreambuf_iterator<char>(file)),{});
+    if (!file.eof() && file.fail()) throw std::runtime_error("Capture input read failed");
+    BCRYPT_ALG_HANDLE algorithm=nullptr;
+    if(BCryptOpenAlgorithmProvider(&algorithm,BCRYPT_SHA256_ALGORITHM,nullptr,0)!=0)
+        throw std::runtime_error("Capture digest initialization failed");
+    struct CloseAlgorithm {BCRYPT_ALG_HANDLE value;~CloseAlgorithm(){BCryptCloseAlgorithmProvider(value,0);}} close{algorithm};
+    DWORD objectSize=0,used=0;
+    if(BCryptGetProperty(algorithm,BCRYPT_OBJECT_LENGTH,reinterpret_cast<BYTE*>(&objectSize),4,&used,0)!=0)
+        throw std::runtime_error("Capture digest object failed");
+    std::vector<unsigned char> object(objectSize);BCRYPT_HASH_HANDLE hash=nullptr;
+    if(BCryptCreateHash(algorithm,&hash,object.data(),objectSize,nullptr,0,0)!=0)
+        throw std::runtime_error("Capture digest creation failed");
+    struct CloseHash {BCRYPT_HASH_HANDLE value;~CloseHash(){BCryptDestroyHash(value);}} closeHash{hash};
+    unsigned char digest[32]{};
+    if(BCryptHashData(hash,raw.data(),static_cast<ULONG>(raw.size()),0)!=0
+        ||BCryptFinishHash(hash,digest,32,0)!=0)
+        throw std::runtime_error("Capture digest failed");
+    std::ostringstream result;
+    for(unsigned char byte:digest)result<<std::hex<<std::setw(2)<<std::setfill('0')<<unsigned(byte);
+    return result.str();
+}
+
 int wmain(int argc, wchar_t** argv) {
     if (argc == 2 && std::wstring(argv[1]) == L"--fixture") { fixture(); return 0; }
     if (argc == 2 && std::wstring(argv[1]) == L"--fixture-hook") {
@@ -61,16 +94,28 @@ int wmain(int argc, wchar_t** argv) {
         if (!GetModuleFileNameW(nullptr, self, 32768)) throw std::runtime_error("Helper path unavailable");
         auto binary = fs::canonical(self);
         auto build = binary.parent_path().parent_path().parent_path();
-        if (_wcsicmp(build.filename().c_str(), L"build")) throw std::runtime_error("Helper must be in the build tree");
+        const bool buildLayout=!_wcsicmp(build.filename().c_str(),L"build");
+        const auto shared=binary.parent_path().parent_path();
+        const bool sharedLayout=!_wcsicmp(binary.parent_path().filename().c_str(),L"modules")
+            && fs::is_regular_file(shared/L"runtime.json");
+        if (!buildLayout && !sharedLayout) throw std::runtime_error("Helper must be in build or a shared runtime");
         fs::path path = fs::absolute(argv[4]);
-        if (!below(path, build) || fs::exists(path)) throw std::runtime_error("Output must be new and below build");
+        const auto outputRoot=sharedLayout?shared/L"cache":build;
+        if (!below(path,outputRoot) || fs::exists(path)) throw std::runtime_error("Output must be new and below the capture root");
         process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, pid);
         if (!process) throw std::runtime_error("Target process unavailable");
         wchar_t image[32768]{}; DWORD length = 32768;
         if (!QueryFullProcessImageNameW(process, 0, image, &length)) throw std::runtime_error("Target image unavailable");
         fs::path target = fs::canonical(image);
-        bool game = !_wcsicmp(target.filename().c_str(), L"MagnaCarta.exe") && below(target, build);
+        bool game = !_wcsicmp(target.filename().c_str(), L"MagnaCarta.exe")
+            && (sharedLayout? target.parent_path()==fs::canonical(shared/L"data") : below(target,build));
         bool ownFixture = !_wcsicmp(target.c_str(), binary.c_str());
+        if (game && sharedLayout) {
+            if(fileDigest(target)!="6046b29600b5e009903b3495bd11df0b4d89fc3545adde028193ea9fbff8d4de"
+                ||fileDigest(target.parent_path()/L"Core.dll")!="72c91c8102ee268ef491c41b56180babca90760df31a00075f63aed018d62571"
+                ||fileDigest(target.parent_path()/L"MCAlpha.dll")!="7e8649425217d3b99d52d11c679761a88c57b125c241b331aea5c25e00e3b15e")
+                throw std::runtime_error("Unsupported shared-runtime capture target");
+        }
         if (!game && !ownFixture) throw std::runtime_error("Target is not an isolated game or capture fixture");
         fs::create_directories(path.parent_path());
         output = CreateFileW(path.c_str(), GENERIC_WRITE, 0, nullptr, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, nullptr);

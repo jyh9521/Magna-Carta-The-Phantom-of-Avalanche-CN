@@ -142,6 +142,14 @@ Win32 构建、配置隔离测试与运行入口见 [副本启动隔离](docs/RU
 
 完整异常采集和模拟回归见 [转储分析](docs/CRASH_ANALYSIS.md)。构建中的 `capture_core_fixture` 输出模拟 Core.dll，只用于自建故障样本，不复制到游戏副本；实际游戏 Core.dll 保持版本校验。非交互采集测试命令为 `python tests/check_exception_capture.py --bin build/runtime-native/Release --output build/capture-test`，输出目录须为新目录。
 
+共享目录重建可在原有 `tools/prepare_shared_runtime.py` 参数后追加
+`--capture-helper build/native/Release/capture_helper.exe`。工具只接受 PE32 x86 EXE，
+将自有采集器复制为 `modules/capture_helper.exe`，同时生成 `Play-diagnostic.cmd` 并登记两者摘要。
+未提供该参数时不生成诊断入口；普通 `Play.cmd` 不默认开启捕获。
+统一测试包沿用共享目录中的可选采集器和入口，不复制额外商业游戏资源或完整游戏副本。
+诊断入口使用当前 configured 设置，仅显式 `-CaptureException` 才传入 `--capture-exception`；
+`-VerifyOnly` 仍保留 launcher 预检路由，不启动游戏。
+
 
 ## 结构译文候选重建
 
