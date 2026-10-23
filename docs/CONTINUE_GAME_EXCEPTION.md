@@ -126,3 +126,28 @@ cmake --build build/native --config Release --target dialogue_post_tick_fixture 
 build/native/Release/dialogue_post_tick_fixture.exe
 python -m unittest discover -s tests -p 'test_dialogue*.py' -v
 ```
+
+## 已安装错误更新包后的修复交付
+
+测试者随后反馈“不错，可以用了”，确认修正版解决了本次继续游戏故障；该反馈
+仅覆盖所报场景，不扩大为全流程验收。模块摘要仍为上述 `5230b57e...`。
+
+`tools/build_continue_game_update.py` 将上一版玩家包的**已安装状态**作为基线，
+不使用本地新增诊断入口后的整份运行清单替换玩家清单。仅修改12份自有模块和
+清单中对应摘要，其余运行元数据、资源摘要、存档和设置保持不变。
+
+旧更新器固定使用 `.text-runtime-update`，后续包直接复用它会被既有 installed
+记录拒绝。修复包使用独立的 `ContinueGame-Fix-20261023` 脚本目录和
+`.continue-game-fix-20261023` 撤回目录，完整保留旧脚本及旧撤回记录，不要求先撤回旧更新。
+脚本默认目录以 `.` 结尾，避免批处理尾部反斜杠在 PowerShell 参数解析时破坏引号；
+真实含空格路径的批处理红绿测试覆盖该问题。
+
+交付为 `MagnaCarta-continue-game-fix-20261023.zip`：关闭游戏后，将全部内容解压至
+有 `Play.cmd`、`runtime.json` 的共享运行目录，再双击 `Repair-ContinueGame.cmd`，
+看到 `REPAIR PASS` 后手动打开原 `Play.cmd`。**仅解压并不会完成安装。**
+重复运行只检查已安装状态；遇到混合版本或未知摘要整批拒绝，不盲目覆盖。
+
+`tools/verify_continue_game_update.py` 对实际交付 ZIP 执行旧包 CheckInstalled →
+修复安装 → 重复运行 → 精确撤回 → 旧包 CheckInstalled → 混合版本拒绝 → 重装。
+夹具只含12份自有模块、运行清单和自有存档/设置/旧撤回哨兵，不复制完整游戏。
+详细命令、输入和原始输出位于本地 `build/continue-game-release/`。
