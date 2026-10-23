@@ -295,3 +295,16 @@ add_executable(scene_texture_probe scene_texture_probe.cpp current_texture_lifet
 target_link_libraries(scene_texture_probe PRIVATE dxguid user32)
 set_property(TARGET scene_texture_probe PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 target_compile_options(scene_texture_probe PRIVATE /W4 /utf-8)
+
+# Standalone real Miles voice playback; no game DLL entry or game process.
+add_executable(dialogue_audio_fixture dialogue_audio_fixture.cpp)
+target_compile_options(dialogue_audio_fixture PRIVATE /W4 /utf-8)
+set_property(TARGET dialogue_audio_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded")
+target_link_libraries(dialogue_audio_fixture PRIVATE advapi32)
+
+# Join original Miles playback to the real production dialogue voice guard.
+add_executable(dialogue_voice_chain_fixture dialogue_voice_chain_fixture.cpp dialogue_reveal.cpp)
+target_compile_definitions(dialogue_voice_chain_fixture PRIVATE DIALOGUE_REVEAL_TEST)
+target_compile_options(dialogue_voice_chain_fixture PRIVATE /W4 /utf-8)
+set_property(TARGET dialogue_voice_chain_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded")
+target_link_libraries(dialogue_voice_chain_fixture PRIVATE user32 advapi32)

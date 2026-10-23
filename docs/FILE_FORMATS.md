@@ -1,5 +1,12 @@
 # 文件格式
 
+## SVD原声包装（2026-10-23）
+
+magic为`19 93 12 25`。实查compact头56字节，storage=u32@8，filter=u32@12，
+参数40字节@16，+4未知保留。旧SoftMax签名头物理payload为108，storage/filter@60/64。
+filter18是无过滤器哨兵，不是编码编号。原生回调固定seek56，与旧头物理偏移分别记录。
+工具`audit_dialogue_resources.py`按两种实证结构解析；见[真实对白链路](DIALOGUE_REAL_CHAIN.md)。
+
 ## 图片清理与跨块标题计划（2026-10-20）
 
 `erase_rects_xyxy` 是半开旧字清理区，与 `mask_xyxy` 的新字排版区分离，两者使用

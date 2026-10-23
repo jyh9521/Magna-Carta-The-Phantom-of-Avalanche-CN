@@ -1,5 +1,11 @@
 # 构建说明
 
+## 真实对白与Miles播放夹具（2026-10-23）
+
+自有Win32目标`dialogue_audio_fixture`、`dialogue_voice_chain_fixture`及真实文字/
+原声采样/剧情barrier回放见[真实对白链路](docs/DIALOGUE_REAL_CHAIN.md)。
+夹具静音播放原声但不启动游戏或执行游戏DLL入口；本轮不更新共享模块。
+
 ## 战斗手柄输入链夹具（2026-10-23）
 
 自有 Win32 生产输入与聚焦适配器 `battle_gamepad_chain_fixture`、
