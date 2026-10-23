@@ -60,5 +60,20 @@ int main(){
  check(releaseRewind.update(releaseState,true,true),"release regression starts with precision pulse");
  releaseState.tick=11;releaseState.count=2;check(!releaseRewind.update(releaseState,false,true),"release poll observes count2");
  releaseState.tick=12;releaseState.count=1;check(!releaseRewind.update(releaseState,false,true)&&!releaseRewind.pending(),"count regression after key-up cancels");
+ ComboAssist rage;ComboState bs{20,true,false,0,0,3,1};bs.burst=true;bs.limit=3;bs.deadline=6;
+ check(rage.update(bs,true,true),"rage initial native press");
+ bs.timed=true;bs.count=1;bs.tick=1;check(!rage.update(bs,false,true),"rage first native key-up poll");
+ bs.tick=2;check(!rage.update(bs,false,true),"rage second native key-up poll settles signed counter");
+ bs.tick=3;check(rage.update(bs,false,true),"rage second press at tick3");
+ bs.count=2;bs.tick=4;check(!rage.update(bs,false,true),"rage second release");
+ bs.tick=5;check(!rage.update(bs,false,true),"rage waits for key counter zero");
+ bs.tick=6;check(rage.update(bs,false,true),"rage final press at inclusive best deadline");
+ bs.count=3;bs.tick=7;check(!rage.update(bs,false,true),"rage final key-up");check(!rage.update(bs,false,true)&&!rage.pending(),"rage completes once");
+ ComboAssist lateRage;bs.count=1;bs.tick=4;
+ check(!lateRage.update(bs,true,true)&&!lateRage.pending(),"rage impossible best-grade takeover cancels");
+ ComboAssist changedMode;bs.tick=1;check(!changedMode.update(bs,true,true)&&changedMode.pending(),"rage mode starts");
+ bs.burst=false;check(!changedMode.update(bs,false,true)&&!changedMode.pending(),"rhythm switch cancels request");
+ bs.burst=true;bs.timed=false;bs.deadline=5;ComboAssist invalidRage;
+ check(!invalidRage.update(bs,true,true),"rage deadline too short rejects before initial input");
  printf("BATTLE_INPUT PASS checks=%u native_space=true edge_only=true cadence=logic_ticks focus_cancel=true scene_cancel=true timeout=bounded game_started=false\n",checks);
 }

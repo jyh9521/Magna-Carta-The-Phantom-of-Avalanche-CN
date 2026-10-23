@@ -30,7 +30,7 @@ SRWLOCK lock=SRWLOCK_INIT;
 DWORD selected=0xffffffff;
 bool backendTried=false;
 combat_input::PadContextGate padContext;
-bool battleReady=false;thread_local bool battleScope=false;combat_input::ComboAssist comboAssist;bool assistPadOwned=false;
+bool battleReady=false;thread_local bool battleScope=false;combat_input::ComboAssist comboAssist;bool assistPadOwned=false,assistBurst=false;
 bool nativeRouting=false;bool passthroughOnly=false,mapReservedKeys=false;volatile LONG mapPadButtons=0;
 BYTE* engine=nullptr;
 thread_local bool worldScope=false;
@@ -94,22 +94,33 @@ void battleEdge(PBYTE keys,BYTE* scene,bool focused){
  }
 }
 void battleAssist(PBYTE keys,BYTE* scene,bool focused,bool padTrigger,bool padEligible){
+ bool normalTrigger=keys&&(keys[VK_F10]&0x80),burstTrigger=keys&&(keys[VK_F11]&0x80);
+ bool keyboardTrigger=normalTrigger||burstTrigger,trigger=keyboardTrigger||padTrigger;
+ if(trigger)assistBurst=burstTrigger;
  combat_input::ComboState state{};
+ state.burst=assistBurst;bool incompatible=false;
  if(scene){state.owner=reinterpret_cast<uintptr_t>(scene);state.active=*reinterpret_cast<int*>(scene+0x1dc4)==1;
   state.timed=*reinterpret_cast<int*>(scene+0x1dcc)==1;state.tick=*reinterpret_cast<unsigned*>(scene+0x1de0);state.count=*reinterpret_cast<unsigned*>(scene+0x1ddc);
+  bool rageTimed=*reinterpret_cast<int*>(scene+0x1de8)==1;
+  incompatible=assistBurst?state.timed:rageTimed;
+  if(assistBurst){state.timed=rageTimed;state.tick=*reinterpret_cast<unsigned*>(scene+0x1df4);state.count=*reinterpret_cast<unsigned*>(scene+0x1df0);}
   state.actor=reinterpret_cast<uintptr_t>(*reinterpret_cast<BYTE**>(scene+0x40));state.action=*reinterpret_cast<unsigned*>(scene+0x1744);
   auto config=*reinterpret_cast<BYTE**>(engine+0xf2428);
   if(state.active&&readable(config,4)){
    using ConfigValue=int(__thiscall*)(void*,int);auto get=reinterpret_cast<ConfigValue>(engine+0xb5b0e);
-   state.interval=get(config,0x23);state.window=get(config,0x24);state.precision=get(config,0x25);
+   if(assistBurst){
+    int duration=get(config,0x39),margin=get(config,0x3b);state.limit=get(config,0x3a);
+    state.deadline=duration>=margin&&margin>=0&&duration<=600?unsigned(duration-margin):0;
+    state.interval=3;state.window=state.precision=1;
+   }else{state.interval=get(config,0x23);state.window=get(config,0x24);state.precision=get(config,0x25);}
   }
  }
- bool keyboardTrigger=keys&&(keys[VK_F10]&0x80);bool trigger=keyboardTrigger||padTrigger;
- if(trigger&&!comboAssist.pending())assistPadOwned=padTrigger&&!keyboardTrigger;
- bool eligible=focused&&keys&&battleMode(scene)==1&&!physicalBattleInput&&(!assistPadOwned||padEligible);
+ if(keyboardTrigger)assistPadOwned=false;
+ else if(trigger&&!comboAssist.pending())assistPadOwned=padTrigger;
+ bool eligible=focused&&keys&&battleMode(scene)==1&&!incompatible&&!(normalTrigger&&burstTrigger)&&!physicalBattleInput&&(!assistPadOwned||padEligible);
  if(comboAssist.update(state,trigger,eligible)){
   keys[VK_SPACE]|=0x80;
-  if(inputTrace)inputTrace(L"BATTLE_COMBO_ASSIST_PULSE route=native_space clock=33ms_logic damage=unchanged");
+  if(inputTrace)inputTrace(assistBurst?L"BATTLE_COMBO_ASSIST_PULSE mode=rage key=F11 route=native_space clock=33ms_logic damage=unchanged":L"BATTLE_COMBO_ASSIST_PULSE route=native_space clock=33ms_logic damage=unchanged");
  }
 }
 void writeControllerCursor(int x,int y){
@@ -351,8 +362,8 @@ bool installModernGamepad(HMODULE module,void(*logger)(const wchar_t*),bool batt
     const BYTE comboTimer[]={0x8b,0x88,0xe0,0x1d,0,0,0x83,0xc1,1};
     battleReady=!memcmp(bytes+0xa0b8d,battleCall,sizeof(battleCall))&&!memcmp(bytes+0xa1711,comboTimer,sizeof(comboTimer))
        &&*reinterpret_cast<DWORD*>(bytes+0xc1964)==reinterpret_cast<DWORD>(bytes+0xa0b7e);
-    padContext.reset();comboAssist.reset();assistPadOwned=false;battleScope=false;spaceEdges.clear();edgeScene=nullptr;
-    if(battleReady&&logger)logger(L"BATTLE_INPUT_READY field_A=Space menu_A=LMB B=RMB_release assist=F10_or_R3 scope=source_locked clock=logic_ticks");
+    padContext.reset();comboAssist.reset();assistPadOwned=assistBurst=false;battleScope=false;spaceEdges.clear();edgeScene=nullptr;
+    if(battleReady&&logger)logger(L"BATTLE_INPUT_READY field_A=Space menu_A=LMB B=RMB_release assist=F10_or_R3 rage_assist=F11 scope=source_locked clock=logic_ticks");
     if(nativeRouting){modern_input::Config config;config.engage=12000;config.release=5500;router=modern_input::Router(config);}
     gameWindow=reinterpret_cast<HWND*>(bytes+0xf1b44);
     originalMessage=systemMessage;messageIat=reinterpret_cast<DWORD>(systemMessage);
@@ -382,5 +393,5 @@ bool removeModernGamepad(HMODULE module){
     if(nativeRouting&&!removeGamepadUi(module)){installWorldGamepad(module,nullptr);return false;}
     DWORD old;if(!VirtualProtect(slot,4,PAGE_READWRITE,&old)){if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}*slot=originalIat;*reinterpret_cast<DWORD*>(p+0xbd42c)=messageIat;DWORD ignored;
     if(!VirtualProtect(slot,4,old,&ignored)){*slot=reinterpret_cast<DWORD>(&keyboardBridge);*reinterpret_cast<DWORD*>(p+0xbd42c)=reinterpret_cast<DWORD>(&messageHook);VirtualProtect(slot,4,old,&ignored);if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}
-    padContext.reset();spaceEdges.clear();edgeScene=nullptr;comboAssist.reset();battleScope=battleReady=false;assistPadOwned=false;router=modern_input::Router();menuDirection=modern_input::MenuDirection();cursorHidden=cursorArmed=cursorRightEngaged=cursorMenu=false;cursorButtons=0;worldScope=false;movement={};syntheticLeftOwned=syntheticRightOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
+    padContext.reset();spaceEdges.clear();edgeScene=nullptr;comboAssist.reset();battleScope=battleReady=false;assistPadOwned=assistBurst=false;router=modern_input::Router();menuDirection=modern_input::MenuDirection();cursorHidden=cursorArmed=cursorRightEngaged=cursorMenu=false;cursorButtons=0;worldScope=false;movement={};syntheticLeftOwned=syntheticRightOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
 }

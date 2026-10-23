@@ -8,15 +8,15 @@
 #include <string>
 #include <vector>
 namespace {
-bool connected=true,keyboardOK=true,f10=false,space=false;
+bool connected=true,keyboardOK=true,f10=false,f11=false,space=false;
 unsigned device=0,polls=0;WORD buttons=0;
-struct Values {int interval,window,precision;} values{10,4,0};
+struct Values {int interval,window,precision,duration=10,limit=3,margin=4;} values{10,4,0};
 std::vector<std::string> traces;
 void logLine(const wchar_t* s){std::string out;while(*s)out.push_back(char(*s++));traces.push_back(out);}
 void check(bool ok,const char* why){if(!ok)throw std::runtime_error(why);}
-BOOL WINAPI keyboard(PBYTE keys){if(!keyboardOK)return FALSE;memset(keys,0,256);if(f10)keys[VK_F10]=0x80;if(space)keys[VK_SPACE]=0x80;return TRUE;}
+BOOL WINAPI keyboard(PBYTE keys){if(!keyboardOK)return FALSE;memset(keys,0,256);if(f10)keys[VK_F10]=0x80;if(f11)keys[VK_F11]=0x80;if(space)keys[VK_SPACE]=0x80;return TRUE;}
 DWORD WINAPI poll(DWORD slot,XINPUT_STATE* state){++polls;if(!connected||slot!=device)return ERROR_DEVICE_NOT_CONNECTED;*state={};state->Gamepad.wButtons=buttons;return ERROR_SUCCESS;}
-int __fastcall getValue(Values* v,void*,int key){return key==0x23?v->interval:key==0x24?v->window:key==0x25?v->precision:0;}
+int __fastcall getValue(Values* v,void*,int key){return key==0x23?v->interval:key==0x24?v->window:key==0x25?v->precision:key==0x39?v->duration:key==0x3a?v->limit:key==0x3b?v->margin:0;}
 std::string hexBytes(const BYTE* data,size_t size){std::ostringstream o;o<<std::hex<<std::setfill('0');for(size_t i=0;i<size;++i)o<<std::setw(2)<<unsigned(data[i]);return o.str();}
 }
 int main(int argc,char** argv){
@@ -50,27 +50,30 @@ int main(int argc,char** argv){
   BYTE scenes[2][0x1e04]{},guis[2][0x1c0]{};
   for(unsigned i=0;i<2;++i){*reinterpret_cast<BYTE**>(scenes[i])=*reinterpret_cast<BYTE**>(image+0x9d426);*reinterpret_cast<BYTE**>(scenes[i]+0x10fc)=guis[i];*reinterpret_cast<BYTE**>(guis[i])=*reinterpret_cast<BYTE**>(image+0xae413);*reinterpret_cast<BYTE**>(guis[i]+0x1bc)=scenes[i];}
   auto keys=image+0xf1b94;auto counter=reinterpret_cast<int*>(image+0xf1c9c+VK_SPACE*4);
-  std::cout<<"{\"ready\":true,\"protocol\":1,\"nativeIdentityFields\":true,\"keyboardOnly\":"<<keyboardOnly<<",\"iatInstalled\":true,\"gameStarted\":false}"<<std::endl;
+  std::cout<<"{\"ready\":true,\"protocol\":1,\"nativeIdentityFields\":true,\"rageStateFields\":true,\"keyboardOnly\":"<<keyboardOnly<<",\"iatInstalled\":true,\"gameStarted\":false}"<<std::endl;
   std::string line;
   while(std::getline(std::cin,line)){
    if(line=="QUIT")break;
    unsigned seq,owner,mode,active,timed,tick,count,interval,window,focused,conn,dev,F10,but,phys,keyOK,nativePad;int before;unsigned precision=0;
    unsigned long long actorIdentity=0,actionIdentity=0;
+   unsigned rageTimed=0,rageTick=0,rageCount=0,duration=10,limit=3,margin=4;
    std::istringstream in(line);check(bool(in>>seq>>owner>>mode>>active>>timed>>tick>>count>>interval>>window>>focused>>conn>>dev>>F10>>but>>phys>>keyOK>>nativePad>>before),"invalid protocol fields");
    in>>std::ws;
    if(!in.eof()){
     check(bool(in>>precision),"invalid precision");in>>std::ws;
     if(!in.eof())check(bool(in>>actorIdentity>>actionIdentity),"identity fields require actor/action pair");
+    in>>std::ws;if(!in.eof())check(bool(in>>rageTimed>>rageTick>>rageCount>>duration>>limit>>margin),"rage state fields require complete tuple");
    }
    check(actorIdentity<=0xffffffffULL&&actionIdentity<=0xffffffffULL,"identity range");
    std::string excess;check(!(in>>excess),"excess fields");
-   check(owner<=2&&active<=1&&timed<=1&&focused<=1&&conn<=1&&dev<=3&&F10<=1&&but<=65535&&phys<=1&&keyOK<=1&&nativePad<=1&&interval>=2&&interval<=300&&window>=1&&window<=interval&&precision<=window,"field range");
+   check(owner<=2&&active<=1&&timed<=1&&focused<=1&&conn<=1&&dev<=3&&F10<=3&&but<=65535&&phys<=1&&keyOK<=1&&nativePad<=1&&interval>=2&&interval<=300&&window>=1&&window<=interval&&precision<=window&&rageTimed<=1&&duration<=600&&limit<=64&&margin<=duration,"field range");
    BYTE* scene=owner?scenes[owner-1]:nullptr;
    if(scene){*reinterpret_cast<unsigned*>(guis[owner-1]+0x190)=mode;*reinterpret_cast<int*>(scene+0x1dc4)=active;*reinterpret_cast<int*>(scene+0x1dcc)=timed;*reinterpret_cast<unsigned*>(scene+0x1de0)=tick;*reinterpret_cast<unsigned*>(scene+0x1ddc)=count;
     // Native identities are opaque 32-bit values; this adapter never dereferences actor.
     *reinterpret_cast<DWORD*>(scene+0x40)=static_cast<DWORD>(actorIdentity);*reinterpret_cast<DWORD*>(scene+0x1744)=static_cast<DWORD>(actionIdentity);
+    *reinterpret_cast<unsigned*>(scene+0x1de8)=rageTimed;*reinterpret_cast<unsigned*>(scene+0x1df4)=rageTick;*reinterpret_cast<unsigned*>(scene+0x1df0)=rageCount;
    }
-   values={int(interval),int(window),int(precision)};connected=conn!=0;device=dev;f10=F10!=0;buttons=WORD(but);space=phys!=0;keyboardOK=keyOK!=0;*counter=before;
+   values={int(interval),int(window),int(precision),int(duration),int(limit),int(margin)};connected=conn!=0;device=dev;f10=(F10&1)!=0;f11=(F10&2)!=0;buttons=WORD(but);space=phys!=0;keyboardOK=keyOK!=0;*counter=before;
    BYTE* outer[2]={scene,nullptr};BYTE* frame[2]={reinterpret_cast<BYTE*>(&outer[1]),image+0xa0b92};
    configureModernGamepadFixture(keyboard,poll,focused!=0);configureModernBattleFixture(nativePad!=0);
    unsigned pollsBefore=polls;size_t logStart=traces.size();BOOL ok=modernBattleKeyboardFixture(keys,frame);

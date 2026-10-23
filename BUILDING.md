@@ -1,5 +1,10 @@
 # 构建说明
 
+## F11 暴走辅助（2026-10-23）
+
+生产输入桥、真实暴走计时/评分和8份原技能后续动作的离线闭环见
+[F11暴走辅助](docs/RAGE_COMBO_ASSIST.md)。普通F10/R3与继续游戏修正保持不变，不启动游戏。
+
 ## 真实对白与Miles播放夹具（2026-10-23）
 
 自有Win32目标`dialogue_audio_fixture`、`dialogue_voice_chain_fixture`及真实文字/

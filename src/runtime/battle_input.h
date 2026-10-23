@@ -7,22 +7,27 @@ struct ComboState {
  bool active=false,timed=false;
  unsigned tick=0,count=0,interval=0,window=0;
  unsigned precision=0;uintptr_t actor=0;unsigned action=0;
+ bool burst=false;unsigned limit=3,deadline=0;
 };
 class ComboAssist {
  uintptr_t owner=0;bool running=false,triggerHeld=false,release=false;
  unsigned age=0,lastCount=0,previousTick=0,previousCount=0;bool timedSeen=false;
- uintptr_t actor=0;unsigned action=0;
+ uintptr_t actor=0;unsigned action=0;bool burst=false;
 public:
- void reset(){owner=0;running=false;release=false;age=lastCount=previousTick=previousCount=0;timedSeen=false;actor=0;action=0;}
+ void reset(){owner=0;running=false;release=false;age=lastCount=previousTick=previousCount=0;timedSeen=false;actor=0;action=0;burst=false;}
  bool pending() const{return running;}
  bool update(const ComboState& s,bool trigger,bool eligible){
   const bool edge=trigger&&!triggerHeld;triggerHeld=trigger;
   if(!eligible||!s.owner||!s.active){reset();return false;}
+  // Rage has a global deadline, not the ordinary interval/precision windows.
+  // The original signed key counter needs two up polls: 1 -> -1 -> 0.
+  // A new down can then become 1 and reach the real GUI key-down listener.
+  if(s.burst&&(!s.limit||s.limit>64||s.deadline>600||uint64_t(s.limit-1)*3>s.deadline)){reset();return false;}
   // A scene object can be reused by the next actor/command. Never carry a
   // request into a rewound sequence even if the scene address is unchanged.
-  if(running&&(owner!=s.owner||actor!=s.actor||action!=s.action||
+  if(running&&(owner!=s.owner||actor!=s.actor||action!=s.action||burst!=s.burst||
       (timedSeen&&(s.tick<previousTick||s.count<previousCount))))reset();
-  if(edge){reset();owner=s.owner;actor=s.actor;action=s.action;running=true;if(!s.timed){release=true;return true;}}
+  if(edge){reset();owner=s.owner;actor=s.actor;action=s.action;burst=s.burst;running=true;if(!s.timed){release=true;return true;}}
   if(!running)return false;
   if(!s.timed&&timedSeen){reset();return false;}
   // Observe every poll, including the mandatory key-up poll.
@@ -32,6 +37,16 @@ public:
   // Give GetKeyboardState one native key-up poll between synthetic presses.
   if(release){release=false;return false;}
   if(!s.timed)return false;
+  if(s.burst){
+   if(s.count>=s.limit){reset();return false;}
+   if(!s.count)return false;
+   const uint64_t target=uint64_t(s.count)*3;
+   const uint64_t earliest=s.tick>target?s.tick:target;
+   // Never turn a too-late takeover into the lower-grade/random penalty path.
+   if(earliest+uint64_t(s.limit-s.count-1)*3>s.deadline){reset();return false;}
+   if(s.tick>=target&&lastCount!=s.count){lastCount=s.count;release=true;return true;}
+   return false;
+  }
   if(s.count>=3){reset();return false;}
   if(s.count<1||s.interval<2||s.interval>300||!s.window||s.window>s.interval)return false;
   const uint64_t start=uint64_t(s.interval)*s.count;
