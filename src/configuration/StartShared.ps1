@@ -118,6 +118,7 @@ try{
  if($settings.native_gamepad){$args+='--native-gamepad'}elseif($selected.maps -or $cameraEnabled){$args+='--input-passthrough'}
  if($selected.texture){$args+='--texture-lifetime'}
  if($CaptureException){$args+='--capture-exception'}
+ if($layout -eq '.'){$args+='--in-place-overlay'}
  if($VerifyOnly){$args+='--verify-only'}
  & (Join-Path $runtimeRoot 'modules/workspace_launcher.exe') @args 1>(Join-Path $cache 'launcher.stdout.txt') 2>(Join-Path $cache 'launcher.stderr.txt')
  $code=$LASTEXITCODE

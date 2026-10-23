@@ -20,16 +20,26 @@ class FlatLaunchTests(unittest.TestCase):
    env=os.environ.copy();env['OWNED_CAPTURE_FILE']=str(root/'capture.txt')
    r=subprocess.run(['powershell.exe','-NoProfile','-ExecutionPolicy','Bypass','-File',str(root/'Start.ps1'),'-VerifyOnly'],capture_output=True,text=True,env=env,timeout=30)
    self.assertEqual(r.returncode,0,r.stdout+r.stderr);self.assertIn('SHARED_RUNTIME PASS',r.stdout)
-   self.assertIn('--workspace|'+str(root)+'|',(root/'capture.txt').read_text())
+   self.assertIn('--workspace|'+str(root)+'|',(root/'capture.txt').read_text());self.assertIn('--in-place-overlay',(root/'capture.txt').read_text())
    self.assertFalse((root/'data').exists());self.assertEqual((root/'DDrawCompat-MagnaCarta.ini').read_bytes(),b'owned baseline\r\n')
+class NativeOverlayLaunchTests(unittest.TestCase):
+ @unittest.skipUnless((ROOT/'build/native/Release/overlay_launch_fixture.exe').exists(),'Build native preflight fixture')
+ def test_real_launcher_rejects_legacy_and_accepts_explicit_overlay_root(self):
+  if not (ROOT/'runtime/data/MagnaCarta.exe').exists():self.skipTest('Source-locked samples not available')
+  with tempfile.TemporaryDirectory(dir=ROOT/'build',prefix='native-flat-') as d:
+   root=Path(d);(root/'modules').mkdir();(root/'cache').mkdir()
+   for n in ['MagnaCarta.exe','MCAlpha.dll']:shutil.copyfile(ROOT/'runtime/data'/n,root/n)
+   (root/'modules/profile.dll').write_bytes(b'owned preflight marker');(root/'cache/profile.bin').write_bytes(bytes(52))
+   r=subprocess.run([str(ROOT/'build/native/Release/overlay_launch_fixture.exe'),str(root)],capture_output=True,text=True,timeout=20)
+   self.assertEqual(r.returncode,0,r.stdout+r.stderr);self.assertIn('registry_writes=0 children=0',r.stdout)
 class OverlayPackageTests(unittest.TestCase):
  def fixture(self,d):
   runtime=d/'runtime';(runtime/'data').mkdir(parents=True);(runtime/'modules').mkdir();(runtime/'config').mkdir()
   original={'sample.bin':b'owned original','unchanged.bin':b'owned unchanged'}
   after=b'owned translated'
   for n,b in {**original,'sample.bin':after,'ddraw.dll':b'owned compatibility','DDrawCompat-MagnaCarta.ini':b'owned ini','Play-Xbox.cmd':b'archived alias'}.items():(runtime/'data'/n).write_bytes(b)
-  for n,b in {'modules/configuration.dll':b'owned runtime module','Play.cmd':b'owned play','Configure.cmd':b'owned configure','Play-camera.cmd':b'archived entry','config/enhancements.json':b'{"resolution":"auto","frame_rate":60}'}.items():(runtime/n).write_bytes(b)
-  manifest=dict(schema=1,data_root='data',files={n:sha((runtime/n).read_bytes()) for n in ['modules/configuration.dll','data/Play-Xbox.cmd','Play-camera.cmd']},data={n:sha((runtime/'data'/n).read_bytes()) for n in ['sample.bin','unchanged.bin','ddraw.dll']},recipes={'camera':{},'configured':{}})
+  for n,b in {'modules/configuration.dll':b'owned runtime module','modules/workspace_launcher.exe':'--in-place-overlay'.encode('utf-16le'),'Play.cmd':b'owned play','Configure.cmd':b'owned configure','Play-camera.cmd':b'archived entry','config/enhancements.json':b'{"resolution":"auto","frame_rate":60}'}.items():(runtime/n).write_bytes(b)
+  manifest=dict(schema=1,data_root='data',files={n:sha((runtime/n).read_bytes()) for n in ['modules/configuration.dll','modules/workspace_launcher.exe','data/Play-Xbox.cmd','Play-camera.cmd']},data={n:sha((runtime/'data'/n).read_bytes()) for n in ['sample.bin','unchanged.bin','ddraw.dll']},recipes={'camera':{},'configured':{}})
   (runtime/'runtime.json').write_text(json.dumps(manifest))
   base=dict(schema=1,source_files={n:sha(b) for n,b in original.items()},changes=[dict(resource='sample.bin',source_sha256=sha(original['sample.bin']),target_sha256=sha(after),target_size=len(after),patch='deltas/0000.mcd',patch_sha256=sha(b'owned delta'))])
   previous=d/'previous.zip'
@@ -63,6 +73,26 @@ class OverlayPackageTests(unittest.TestCase):
     # Wrong-version preflight leaves every file alone.
     (target/'sample.bin').write_bytes(b'foreign');snapshot={p.relative_to(target).as_posix():p.read_bytes() for p in target.rglob('*') if p.is_file()}
     run('Rollback',target,1);self.assertEqual(snapshot,{p.relative_to(target).as_posix():p.read_bytes() for p in target.rglob('*') if p.is_file()})
+ def test_small_launch_repair_actual_install_and_rollback(self):
+  import build_overlay_launch_repair as repair
+  from verify_release_controls_update import verify
+  with tempfile.TemporaryDirectory() as d:
+   d=Path(d);runtime,previous,_=self.fixture(d);base=d/'flat.zip'
+   with patch.object(tool,'validate_engine_fixes',return_value={}):tool.build(previous,tool.sha(previous),runtime,base)
+   native=d/'launcher.exe';native.write_bytes(b'owned new launcher'+ '--in-place-overlay'.encode('utf-16le'))
+   with patch.object(repair,'PREVIOUS_SHA256',sha(base.read_bytes())):record=repair.build(base,native,d/'record-work',d/'repair.zip')
+   report=verify(record,d/'repair.zip',d/'verified',folder=repair.FOLDER)
+   self.assertEqual(report['rollback_state'],'original hashes exact')
+   root=Path(report['modified']);m=json.loads((root/'runtime.json').read_text());overlay=json.loads((root/'Overlay-Manifest.json').read_text())
+   self.assertEqual(m['files']['modules/workspace_launcher.exe'],sha(native.read_bytes()))
+   for n in repair.FILES[:-1]:self.assertEqual(overlay['files'][n],sha((root/n).read_bytes()))
+ def test_builder_rejects_legacy_launcher_for_flat_layout(self):
+  with tempfile.TemporaryDirectory() as d:
+   d=Path(d);runtime,previous,_=self.fixture(d)
+   (runtime/'modules/workspace_launcher.exe').write_bytes(b'legacy launcher')
+   m=json.loads((runtime/'runtime.json').read_text());m['files']['modules/workspace_launcher.exe']=sha(b'legacy launcher');(runtime/'runtime.json').write_text(json.dumps(m))
+   with self.assertRaisesRegex(ValueError,'Flat-capable'):tool.build(previous,tool.sha(previous),runtime,d/'bad.zip')
+   self.assertFalse((d/'bad.zip').exists())
  def test_resource_drift_rejected_before_output(self):
   with tempfile.TemporaryDirectory() as d:
    d=Path(d);runtime,previous,_=self.fixture(d);(runtime/'data/sample.bin').write_bytes(b'foreign')

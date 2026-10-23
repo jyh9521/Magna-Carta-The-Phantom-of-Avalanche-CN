@@ -32,3 +32,13 @@ python tools/build_clean_overlay.py --previous <统一包ZIP> --previous-sha256 
 python -m unittest discover -s tests -p test_overlay_bundle.py
 python -m unittest discover -s tests -p 'test_configuration*.py'
 ```
+
+## 原安装路径启动修订
+
+首版覆盖包在注册表 Directory 指向覆盖目录时被原生启动器拒绝：`Original install must not be used as workspace`。脚本平铺布局验证不足以覆盖原生入口；旧 `--verify-only` 在路径检查前返回，产生检查通过、真正启动失败的缺口。
+
+平铺启动脚本现在明确传 `--in-place-overlay`，仅允许已锁定的免 CD EXE 与本地化引擎。模块位于目标 modules、配置与日志位于目标 cache；与注册目录重叠时只接受同一个根目录，祖先/子目录仍拒绝。旧隔离模式的原路径检查保留；机器安装项不写入，临时配置继续由独立 HKCU 会话接管。
+
+`--verify-only` 移至全部无副作用的原生启动预检之后，包含真实目录关系、版本、图形组合、ANSI 路径与52字节配置检查；不启动进程、不创建会话或日志。自有 `overlay_launch_fixture` 调用生产 wmain，只有安装目录读取用确定性替身，注册写入及进程创建有捕获计数。原代码复现同样报错，随后因 verify-only 错误通过而断言失败；修订后显式平铺成功、旧模式拒绝原路径、独立隔离目录通过、父目录/外部日志拒绝，写入/子进程计数均为0。
+
+`tools/build_overlay_launch_repair.py` 为首版覆盖 ZIP 的准确摘要构建仅四个自有文件的小修复：启动器、Start.ps1、runtime.json、Overlay-Manifest.json。不改资源、存档和个人设置。原生启动器能力标记检查进入完整覆盖构建，避免再次搭配不支持平铺参数的旧启动器。完整修正版可重新生成；首版已解压者只需小修复。

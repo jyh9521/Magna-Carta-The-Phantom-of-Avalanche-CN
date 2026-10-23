@@ -28,6 +28,7 @@ def build(previous,previous_sha256,runtime,output):
   if p.name not in archived:payload[p.name]=p.read_bytes()
  payload['Configure.cmd']=(runtime/'Configure.cmd').read_bytes()
  payload['Start.ps1']=(ROOT/'src/configuration/StartShared.ps1').read_bytes()
+ if '--in-place-overlay'.encode('utf-16le') not in payload.get('modules/workspace_launcher.exe',b''):raise ValueError('Flat-capable native launcher required')
  if b"$layout -notin @('data','.')" not in payload['Start.ps1']:raise ValueError('Flat layout launcher unavailable')
  release['files']['Start.ps1']=raw_sha(payload['Start.ps1'])
  payload['config/enhancements.json']=(json.dumps(dict(schema=2,resolution='1080p',window_mode='borderless',frame_rate=30,native_gamepad=False,free_view=False,window_resolution='1280x720'),indent=2)+'\n').encode()

@@ -165,7 +165,7 @@ int wmain(int argc, wchar_t** argv) {
         }
         fs::path workspace, shim, setting, log;
         std::wstring displayProfile;
-        bool fixture = false, captureException = false, textureLifetime = false, focusGuard = false, nativeTextStep = false, systemMessages = false, modernInput = false, nativeGamepad = false, inputPassthrough=false, verifyOnly = false; DWORD seconds = 0;
+        bool fixture = false, captureException = false, textureLifetime = false, focusGuard = false, nativeTextStep = false, systemMessages = false, modernInput = false, nativeGamepad = false, inputPassthrough=false, verifyOnly = false, inPlaceOverlay=false; DWORD seconds = 0;
         for (int i = 1; i < argc; ++i) {
             std::wstring arg = argv[i];
             if (arg == L"--fixture") fixture = true;
@@ -179,6 +179,7 @@ int wmain(int argc, wchar_t** argv) {
             else if (arg == L"--native-gamepad") {modernInput = true;nativeGamepad = true;}
             else if (i+1<argc&&arg==L"--display-profile") displayProfile=argv[++i];
             else if (arg == L"--verify-only") verifyOnly = true;
+            else if (arg == L"--in-place-overlay") inPlaceOverlay=true;
             else if (i + 1 < argc && arg == L"--workspace") workspace = fs::canonical(argv[++i]);
             else if (i + 1 < argc && arg == L"--shim") shim = fs::canonical(argv[++i]);
             else if (i + 1 < argc && arg == L"--profile") setting = fs::canonical(argv[++i]);
@@ -199,23 +200,10 @@ int wmain(int argc, wchar_t** argv) {
             require(resolveScaledFontOutput(displayProfile,window,desktop.dmPelsWidth,desktop.dmPelsHeight,fontOutput),"Font output policy unsupported");
             scaledOutput=std::to_wstring(fontOutput.width)+L"x"+std::to_wstring(fontOutput.height);
         }
-        if (verifyOnly) {
-            if(!displayProfile.empty()) require(advancedConfigMatches(displayProfile,sha256(workspace/L"DDrawCompat-MagnaCarta.ini")),"Advanced mode/config mismatch");
-            require(!fixture,"Verification requires a version-locked game workspace");
-            require(supportedExecutable(workspace/L"MagnaCarta.exe"),"Unsupported game executable");
-            auto engine=sha256(workspace/L"MCAlpha.dll");
-            bool accepted=engine=="79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f";
-#ifdef LOCALE_ENGINE_SHA256
-            accepted=accepted || engine==LOCALE_ENGINE_SHA256;
-#endif
-            require(accepted,"Unsupported engine module");
-            std::cout<<"WORKSPACE_VERIFY PASS engine="<<engine<<" game_started=false registry_changed=false"<<std::endl;
-            if(!scaledOutput.empty())std::cout<<"SCALED_FONT_OUTPUT selected="<<fontOutput.width<<"x"<<fontOutput.height<<" source=launcher_display_snapshot game_started=false"<<std::endl;
-            return 0;
-        }
+        if(verifyOnly) require(!fixture,"Verification requires a version-locked game workspace");
         require(!shim.empty() && !setting.empty() && !log.empty(), "Missing launch arguments");
         require(seconds <= 86400, "Timeout is out of range");
-        require(!fs::exists(log), "Log path already exists");
+        if(!verifyOnly) require(!fs::exists(log), "Log path already exists");
         fs::path exe = workspace / (fixture ? L"registry_probe.exe" : L"MagnaCarta.exe");
         require(!nativeTextStep || !fixture, "Native text step requires a version-locked game workspace");
         require(!modernInput || !fixture,"Modern input requires a version-locked game workspace");
@@ -241,11 +229,27 @@ int wmain(int argc, wchar_t** argv) {
         LONG result = RegQueryValueExW(installed, L"Directory", nullptr, &type, reinterpret_cast<BYTE*>(original), &bytes);
         RegCloseKey(installed);
         require(result == ERROR_SUCCESS && type == REG_SZ, "Installed directory unavailable");
-        require(!inside(workspace, original) && !inside(original, workspace), "Original install must not be used as workspace");
-        require(!inside(log, original), "Log must not be written inside the original installation");
+        if(inPlaceOverlay){
+            require(!fixture,"Overlay layout requires a localized game");
+#ifdef WORKSPACE_EXE_SHA256
+            require(sha256(exe)==WORKSPACE_EXE_SHA256,"Overlay layout requires the patched executable");
+#else
+            require(false,"Overlay executable identity is unavailable");
+#endif
+#ifdef LOCALE_ENGINE_SHA256
+            require(sha256(workspace/L"MCAlpha.dll")==LOCALE_ENGINE_SHA256,"Overlay layout requires the localized engine");
+#else
+            require(false,"Overlay engine identity is unavailable");
+#endif
+            bool sameRoot=inside(workspace,original)&&inside(original,workspace);
+            require(sameRoot||(!inside(workspace,original)&&!inside(original,workspace)),"Overlay must not contain or be nested in the registered installation");
+            require(inside(shim,workspace/L"modules")&&inside(setting,workspace/L"cache")&&inside(log,workspace/L"cache"),"Overlay module/profile/log paths must stay in their runtime folders");
+        }else{
+            require(!inside(workspace, original) && !inside(original, workspace), "Original install must not be used as workspace");
+            require(!inside(log, original), "Log must not be written inside the original installation");
+        }
         require(ansiPath(workspace.c_str()),
             "Workspace path is not supported by the active ANSI code page");
-        fs::create_directories(log.parent_path());
         fs::path captureHelper = shim.parent_path() / L"capture_helper.exe";
         if (focusGuard) {
             require(!fixture, "Focus guard requires an isolated unpatched borderless trial");
@@ -267,6 +271,16 @@ int wmain(int argc, wchar_t** argv) {
             require(sha256(workspace / L"Core.dll") == "72c91c8102ee268ef491c41b56180babca90760df31a00075f63aed018d62571", "Unsupported exception module");
             require(fs::is_regular_file(captureHelper), "Capture helper missing");
         }
+        // Read-only verification follows the same native launch preflight. It must
+        // not stop before the registered-directory and runtime-path checks.
+        {std::ifstream profile(setting,std::ios::binary);std::vector<BYTE> profileBytes((std::istreambuf_iterator<char>(profile)),{});
+         require(profileBytes.size()==52&&profileBytes[1]<=1,"Unsupported settings layout");}
+        if(verifyOnly){
+            std::cout<<"WORKSPACE_VERIFY PASS engine="<<sha256(workspace/L"MCAlpha.dll")<<" game_started=false registry_changed=false layout="<<(inPlaceOverlay?"overlay":"isolated")<<std::endl;
+            if(!scaledOutput.empty())std::cout<<"SCALED_FONT_OUTPUT selected="<<fontOutput.width<<"x"<<fontOutput.height<<" source=launcher_display_snapshot game_started=false"<<std::endl;
+            return 0;
+        }
+        fs::create_directories(log.parent_path());
         Session session(workspace, setting);
         SetEnvironmentVariableW(L"MC_SCALED_FONT_OUTPUT",scaledOutput.empty()?nullptr:scaledOutput.c_str());
         SetEnvironmentVariableW(L"MC_WORKSPACE_SESSION", session.path.c_str());
