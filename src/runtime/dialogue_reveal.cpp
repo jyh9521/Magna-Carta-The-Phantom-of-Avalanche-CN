@@ -88,16 +88,26 @@ __declspec(naked) void voiceStartBridge(){__asm {
  call voiceStartHook
  ret
 }}
+// Recompute the interior field address after the engine callback. The captured
+// continue-game fault had a valid dialogue object but a null cached phase
+// pointer in ESI. Keep this boundary out of line so /O2 cannot hoist that
+// address across the callback again; do not skip the native update or cleanup.
+__declspec(noinline) void finishTick(BYTE* p){
+ if(readable(p,0x200)&&field(p,0x190)==6)
+  for(auto i=voices.begin();i!=voices.end();)if(i->dialogue==p){if(i->waiting)voiceWaitTrace(*i,L"end",L"confirmed");i=voices.erase(i);}else ++i;
+}
 void __fastcall tickHook(BYTE* p,void*){
+ // Keep the object itself in a stack slot too: changing the helper alone can
+ // make the optimizer reuse ESI for p instead of for p+0x190.
+ BYTE* volatile afterTick=p;
  if(isPaused(p))return;
  if(readable(p,0x200)&&field(p,0x190)==3&&field(p,0x1d0)==0&&voicePlaying(p)){
   // Only suppress automatic expiry; native input dispatch still runs and a
   // genuine confirmation may set phase 6 during this very update.
   field(p,0x1d0)=-1;
-  __try {originalTick(p);} __finally {field(p,0x1d0)=0;}
+  __try {originalTick(p);} __finally {field(afterTick,0x1d0)=0;}
  }else originalTick(p);
- if(readable(p,0x200)&&field(p,0x190)==6)
-  for(auto i=voices.begin();i!=voices.end();)if(i->dialogue==p){if(i->waiting)voiceWaitTrace(*i,L"end",L"confirmed");i=voices.erase(i);}else ++i;
+ finishTick(afterTick);
 }
 int __fastcall eventHook(BYTE* p,void*,void* sender,int event,int a,int b){
  if(sender!=p||(event!=0x14&&event!=0x3b)||!readable(p,0x200))return originalEvent(p,sender,event,a,b);

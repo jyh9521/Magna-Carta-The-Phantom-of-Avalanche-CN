@@ -322,3 +322,10 @@ target_compile_definitions(combo_assist_context_fixture PRIVATE MODERN_INPUT_TES
 target_link_libraries(combo_assist_context_fixture PRIVATE user32)
 set_property(TARGET combo_assist_context_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 target_compile_options(combo_assist_context_fixture PRIVATE /W4 /utf-8)
+
+# Captured post-native-call register-cache failure, owned callback only.
+add_executable(dialogue_post_tick_fixture dialogue_post_tick_fixture.cpp dialogue_reveal.cpp)
+target_compile_definitions(dialogue_post_tick_fixture PRIVATE DIALOGUE_REVEAL_TEST)
+target_compile_options(dialogue_post_tick_fixture PRIVATE /W4 /utf-8)
+set_property(TARGET dialogue_post_tick_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded")
+target_link_libraries(dialogue_post_tick_fixture PRIVATE user32)
