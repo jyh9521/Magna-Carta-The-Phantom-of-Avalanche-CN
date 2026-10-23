@@ -1,5 +1,11 @@
 # 构建说明
 
+## 战斗手柄输入链夹具（2026-10-23）
+
+自有 Win32 生产输入与聚焦适配器 `battle_gamepad_chain_fixture`、
+`battle_gamepad_focus_fixture` 的构建、源样本校验和离线验证见
+[战斗手柄输入链修正](docs/BATTLE_GAMEPAD_CHAIN_REPAIR.md)。不启动游戏。
+
 ## 战斗反馈运行模块（2026-10-23）
 
 复用既有Win32生成头与共享运行目录。构建新增`battle_input_fixture`、

@@ -71,6 +71,12 @@ ITM 实际 88×264 字节记录加头8字节；每记录 ID=u32@0，名称候选
 
 ## BGR：已验证的图片包装
 
+2026-10-23：战斗按钮原生读取 `32457` 已验证包装 offset 4 为矩形数量，
+offset 8 起为 count×16 字节小端有符号 XYXY 表；GPU 资源对象 `+10/+14`
+分别保存数量/矩形指针。FDI 装饰节点的 active/clickable 标记决定这些矩形是否
+进入命中列表，图片宽高或 FDI 帧尺寸不必等于命中区域。当前结论绑定实际战斗
+BGR 样本，不把所有未知包装字段扩展为同一种结构。见[原生战斗输入链](BATTLE_GAMEPAD_CHAIN_REPAIR.md)。
+
 `tools/resource_image.py` 只接受本样本已验证的TGA/BMP形态，不按扩展名自动支持TXRS。
 
 - 404 TGA：wrapper为12/24/40/56字节，payload固定18字节头、ID0、type2、32位BGRA、descriptor8、底行优先，尾部为26字节零扩展/开发者偏移和TRUEVISION-XFILE声明。坐标字段、包装、透明像素的RGB均保留。

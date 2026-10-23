@@ -128,7 +128,10 @@ void cancelPressedButtons(BYTE* p,std::set<BYTE*>& seen){
  for(;child&&chain.size()<128&&readable(child,0x14)&&chain.insert(child).second;child=*reinterpret_cast<BYTE**>(child+0x10))cancelPressedButtons(child,seen);
  // Only the verified native button layout. The helper clears visual press state
  // without calling the release listener or requesting a menu action.
- if(*reinterpret_cast<ULONG_PTR*>(p)==reinterpret_cast<ULONG_PTR>(engine+0xbee80)&&readable(p,0x1a8)&&*reinterpret_cast<int*>(p+0x19c)){
+ auto vt=*reinterpret_cast<BYTE**>(p);
+ // C00DC's constructor (5C550 -> 56850) inherits the same button press
+ // field and clear method; command-menu buttons are not plain BEE80 objects.
+ if((vt==engine+0xbee80||vt==engine+0xc00dc)&&readable(p,0x1a8)&&*reinterpret_cast<int*>(p+0x19c)){
   reinterpret_cast<void(__thiscall*)(void*)>(engine+0x5718f)(p);
  }
 }
@@ -178,7 +181,10 @@ void __fastcall cursorDrawHook(void* value,void*){
 }
 bool write(DWORD* p,DWORD from,DWORD to){if(*p!=from)return false;DWORD old;if(!VirtualProtect(p,4,PAGE_READWRITE,&old))return false;bool good=InterlockedCompareExchange(reinterpret_cast<LONG*>(p),to,from)==static_cast<LONG>(from);DWORD ignored;if(!VirtualProtect(p,4,old,&ignored)){if(good)InterlockedCompareExchange(reinterpret_cast<LONG*>(p),from,to);VirtualProtect(p,4,old,&ignored);return false;}return good;}
 bool set(BYTE* p,bool enabled,void(*logger)(const wchar_t*),bool dry=false){
- if(!readable(p,0x10b000)||memcmp(p+0x55134,prefix,sizeof(prefix))||memcmp(p+0x5718f,cancelPrefix,sizeof(cancelPrefix)))return false;
+ const BYTE inheritedButton[]={0xe8,0xcd,0xa2,0xff,0xff};
+ if(!readable(p,0x10b000)||memcmp(p+0x5c57e,inheritedButton,sizeof(inheritedButton))
+    ||p[0x5c586]!=0xc7||p[0x5c587]!=0x00||*reinterpret_cast<DWORD*>(p+0x5c588)!=reinterpret_cast<DWORD>(p+0xc00dc)
+    ||memcmp(p+0x55134,prefix,sizeof(prefix))||memcmp(p+0x5718f,cancelPrefix,sizeof(cancelPrefix)))return false;
  auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(p);if(dos->e_magic!=IMAGE_DOS_SIGNATURE||dos->e_lfanew<=0||dos->e_lfanew>4096)return false;
  auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(p+dos->e_lfanew);if(nt->Signature!=IMAGE_NT_SIGNATURE||nt->FileHeader.Machine!=IMAGE_FILE_MACHINE_I386||nt->OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR32_MAGIC||nt->OptionalHeader.SizeOfImage!=0x10b000)return false;
  if(memcmp(p+0x38c24,prefix,sizeof(prefix))||memcmp(p+0x48774,cancelPrefix,sizeof(cancelPrefix)))return false;
@@ -202,5 +208,5 @@ bool installGamepadUi(HMODULE m,void(*logger)(const wchar_t*)){return set(reinte
 bool removeGamepadUi(HMODULE m){return set(reinterpret_cast<BYTE*>(m),false,nullptr);}
 bool canSetGamepadUi(HMODULE m,bool enabled){return set(reinterpret_cast<BYTE*>(m),enabled,nullptr,true);}
 #ifdef MODERN_INPUT_TEST
-void initializeGamepadUiFixture(BYTE* p){memcpy(p+0x38c24,prefix,sizeof(prefix));memcpy(p+0x48774,cancelPrefix,sizeof(cancelPrefix));*reinterpret_cast<DWORD*>(p+0xbe380)=reinterpret_cast<DWORD>(p+0x48774);*reinterpret_cast<DWORD*>(p+0xbe38c)=reinterpret_cast<DWORD>(p+0x38c24);memcpy(p+0x5718f,cancelPrefix,sizeof(cancelPrefix));memcpy(p+0x55134,prefix,sizeof(prefix));for(auto s:slots){*reinterpret_cast<DWORD*>(p+s)=reinterpret_cast<DWORD>(p+0x55134);*reinterpret_cast<DWORD*>(p+s+8)=reinterpret_cast<DWORD>(p+0x565d2);*reinterpret_cast<DWORD*>(p+s+0x14)=reinterpret_cast<DWORD>(p+0x5663f);}}
+void initializeGamepadUiFixture(BYTE* p){const BYTE inheritedButton[]={0xe8,0xcd,0xa2,0xff,0xff};memcpy(p+0x5c57e,inheritedButton,sizeof(inheritedButton));p[0x5c586]=0xc7;p[0x5c587]=0;*reinterpret_cast<BYTE**>(p+0x5c588)=p+0xc00dc;memcpy(p+0x38c24,prefix,sizeof(prefix));memcpy(p+0x48774,cancelPrefix,sizeof(cancelPrefix));*reinterpret_cast<DWORD*>(p+0xbe380)=reinterpret_cast<DWORD>(p+0x48774);*reinterpret_cast<DWORD*>(p+0xbe38c)=reinterpret_cast<DWORD>(p+0x38c24);memcpy(p+0x5718f,cancelPrefix,sizeof(cancelPrefix));memcpy(p+0x55134,prefix,sizeof(prefix));for(auto s:slots){*reinterpret_cast<DWORD*>(p+s)=reinterpret_cast<DWORD>(p+0x55134);*reinterpret_cast<DWORD*>(p+s+8)=reinterpret_cast<DWORD>(p+0x565d2);*reinterpret_cast<DWORD*>(p+s+0x14)=reinterpret_cast<DWORD>(p+0x5663f);}}
 #endif

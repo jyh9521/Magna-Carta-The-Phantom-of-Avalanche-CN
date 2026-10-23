@@ -92,6 +92,7 @@ int main(int argc,char** argv){
  initializeGamepadUiFixture(image);BYTE clearPrefix[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc};stub(0x5718f,clearPrefix,sizeof(clearPrefix),reinterpret_cast<void*>(&clearNativePress));
  BYTE guiPrefix[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xf8};stub(0x55134,guiPrefix,sizeof(guiPrefix),reinterpret_cast<void*>(&keyboardGui));stub(0x38c24,guiPrefix,sizeof(guiPrefix),reinterpret_cast<void*>(&cursorPrepare));stub(0x48774,clearPrefix,sizeof(clearPrefix),reinterpret_cast<void*>(&cursorDraw));
  // Match the guarded original message-pump call and constructor operand.
+ image[0xae411]=0xc7;image[0xae412]=0x02;*reinterpret_cast<BYTE**>(image+0xae413)=image+0xc203c;
  image[0x9d424]=0xc7;image[0x9d425]=0;*reinterpret_cast<BYTE**>(image+0x9d426)=image+0xc1960;
  image[0xbdfb]=0xff;image[0xbdfc]=0x15;*reinterpret_cast<BYTE**>(image+0xbdfd)=image+0xbd42c;
  DWORD oldMessage=reinterpret_cast<DWORD>(GetProcAddress(GetModuleHandleW(L"user32.dll"),"GetMessageA"));*reinterpret_cast<DWORD*>(image+0xbd42c)=oldMessage;
@@ -267,6 +268,15 @@ int main(int argc,char** argv){
  buttons=0;run();buttons=XINPUT_GAMEPAD_A;run();buttons=0;run();require(titleRequests==beforeSwitch+1,"replacement controller confirms only after neutral rearm and fresh press");
  controllerSlot=0;buttons=0;run();run();
  printf("GAMEPAD_DISCONNECT_REPLAY PASS synthetic_release=cancelled device_switch=cancelled visual_press=cleared physical_release=preserved neutral_rearm=true focus_path=unchanged game_started=false\n");
+ // Battle command buttons use the source-proven BEE80 subclass C00DC.
+ memcpy(image+0xc00dc,menuVt,0x1e0);*reinterpret_cast<BYTE**>(menuWidgets[0])=image+0xc00dc;
+ physicalX=400;physicalY=420;buttons=0;run();buttons=XINPUT_GAMEPAD_A;run();
+ require(*reinterpret_cast<int*>(menuWidgets[0]+0x19c)==1,"derived command button enters actual owned press state");
+ unsigned beforeDerivedCancel=titleRequests;connected=false;run();
+ require(*reinterpret_cast<int*>(menuWidgets[0]+0x19c)==0&&titleRequests==beforeDerivedCancel,"derived command button cancels without release callback");
+ connected=true;buttons=0;run();run();*reinterpret_cast<BYTE**>(menuWidgets[0])=menuVt;
+ printf("GAMEPAD_DERIVED_BUTTON_CANCEL PASS class=C00DC inherited_ctor=56850 press_field=19c cancelled=true release_action=false game_started=false\n");
+
  // Menu B must release once deliberately, never because a controller disappeared.
  buttons=0;run();int rightBefore=rightReleases;buttons=XINPUT_GAMEPAD_B;run();
  require(rightReleases==rightBefore,"B press does not prematurely dispatch native right release");

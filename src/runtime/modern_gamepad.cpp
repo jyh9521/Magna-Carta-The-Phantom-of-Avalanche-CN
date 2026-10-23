@@ -2,6 +2,7 @@
 #include "modern_input.h"
 #include "battle_input.h"
 #include "battle_edge.h"
+#include "battle_pad_context.h"
 #include "world_gamepad.h"
 #include "gamepad_cursor.h"
 #include "gamepad_ui.h"
@@ -28,6 +29,7 @@ bool cursorHidden=false,cursorArmed=false,cursorMenu=false;WORD cursorButtons=0;
 SRWLOCK lock=SRWLOCK_INIT;
 DWORD selected=0xffffffff;
 bool backendTried=false;
+combat_input::PadContextGate padContext;
 bool battleReady=false;thread_local bool battleScope=false;combat_input::ComboAssist comboAssist;bool assistPadOwned=false;
 bool nativeRouting=false;bool passthroughOnly=false,mapReservedKeys=false;volatile LONG mapPadButtons=0;
 BYTE* engine=nullptr;
@@ -52,6 +54,12 @@ BYTE* battleScene(void* frame){
  auto parent=*reinterpret_cast<BYTE**>(frame);if(reinterpret_cast<ULONG_PTR>(parent)<4||!readable(parent-4,4))return nullptr;
  auto scene=*reinterpret_cast<BYTE**>(parent-4);
  return readable(scene,0x1e04)&&*reinterpret_cast<BYTE**>(scene)==engine+0xc1960?scene:nullptr;
+}
+unsigned battleMode(BYTE* scene){
+ if(!scene)return 0;
+ auto gui=*reinterpret_cast<BYTE**>(scene+0x10fc);
+ if(!readable(gui,0x1c0)||*reinterpret_cast<BYTE**>(gui)!=engine+0xc203c||*reinterpret_cast<BYTE**>(gui+0x1bc)!=scene)return 0;
+ return *reinterpret_cast<unsigned*>(gui+0x190);
 }
 bool battleFocused(){
 #ifdef MODERN_INPUT_TEST
@@ -135,6 +143,10 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     focused=fixtureForeground;
 #endif
     auto battle=battleScene(nativeFrame);battleScope=battle!=nullptr;
+    unsigned mode=battleMode(battle);
+    auto route=battle?combat_input::battlePadRoute(mode):combat_input::BattlePadRoute::Outside;
+    bool battleKeys=route==combat_input::BattlePadRoute::Field||route==combat_input::BattlePadRoute::Result;
+    bool battleBlocked=route==combat_input::BattlePadRoute::Blocked;
     battleEdge(ok?keys:nullptr,battle,focused);
     if(passthroughOnly){movement={};navigation={};battleAssist(ok?keys:nullptr,battle,focused,false,false);if(ok)orbitKeyboard(keys,focused);return ok;}
     AcquireSRWLockExclusive(&lock);
@@ -161,26 +173,30 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     }
     if(sample.connected){sample.buttons=state.Gamepad.wButtons;sample.x=state.Gamepad.sThumbLX;sample.y=state.Gamepad.sThumbLY;
         sample.rx=state.Gamepad.sThumbRX;sample.ry=state.Gamepad.sThumbRY;sample.lt=state.Gamepad.bLeftTrigger;sample.rt=state.Gamepad.bRightTrigger;}
-    if(ok&&nativeRouting&&syntheticLeftOwned&&!physicalLeft&&(!sample.connected||sample.device!=syntheticLeftDevice)){
+    auto routedSample=sample;
+    routedSample.buttons=padContext.update(reinterpret_cast<uintptr_t>(battle),mode,sample.buttons);
+    bool cancelOwned=!ok||!focused||!sample.connected||sample.device!=syntheticLeftDevice||padContext.changed;
+    if(nativeRouting&&syntheticLeftOwned&&!physicalLeft&&cancelOwned){
         // Native titles activate on mouse release. A disappearing controller is
         // cancellation, not a deliberate release; leave the real mouse untouched.
         auto counter=reinterpret_cast<int*>(engine+0xf1c9c+VK_LBUTTON*sizeof(int));
         if(readable(counter,sizeof(int))){*counter=0;InterlockedExchange(&cancelMenuPress,1);}
     }
-    if(ok&&nativeRouting&&syntheticRightOwned&&!physicalRight&&(!sample.connected||sample.device!=syntheticLeftDevice)){
+    if(nativeRouting&&syntheticRightOwned&&!physicalRight&&cancelOwned){
         // B/Start use native right-button release for return/open. Device loss
         // cancels that owned press, not the physical mouse or deliberate release.
         auto counter=reinterpret_cast<int*>(engine+0xf1c9c+VK_RBUTTON*sizeof(int));
-        if(readable(counter,sizeof(int)))*counter=0;
+        if(readable(counter,sizeof(int))){*counter=0;if(!physicalLeft)InterlockedExchange(&cancelMenuPress,1);}
     }
     syntheticLeftOwned=syntheticRightOwned=false;
-    auto frame=router.update(sample,ok!=FALSE,focused);int titlePhase=-1;
-    battleAssist(ok?keys:nullptr,battle,focused,frame.armed&&focused&&(sample.buttons&XINPUT_GAMEPAD_RIGHT_THUMB),frame.armed&&focused&&sample.connected);
+    auto frame=router.update(routedSample,ok!=FALSE,focused);int titlePhase=-1;
+    if(battleBlocked)frame.held=frame.pressed=frame.released=0;
+    battleAssist(ok?keys:nullptr,battle,focused,frame.armed&&focused&&(!battle||route==combat_input::BattlePadRoute::Field)&&(routedSample.buttons&XINPUT_GAMEPAD_RIGHT_THUMB),frame.armed&&focused&&sample.connected);
     if(!ok){cursorHidden=cursorArmed=false;menuDirection.update(sample,false);}
     if(ok&&mapReservedKeys&&nativeRouting&&worldScope&&frame.armed&&focused)InterlockedExchange(&mapPadButtons,((sample.buttons&XINPUT_GAMEPAD_BACK)?1:0)|((sample.buttons&XINPUT_GAMEPAD_RIGHT_THUMB)?2:0));
     if(ok&&nativeRouting){
         bool clicksAllowed=true;
-        uint8_t nativeBindings[7]={VK_UP,VK_DOWN,VK_LEFT,VK_RIGHT,static_cast<uint8_t>(worldScope?0:combat_input::confirmKey(battleScope,VK_LBUTTON)),static_cast<uint8_t>(battleScope?VK_ESCAPE:VK_RBUTTON),static_cast<uint8_t>(battleScope?VK_ESCAPE:VK_RBUTTON)};
+        uint8_t nativeBindings[7]={VK_UP,VK_DOWN,VK_LEFT,VK_RIGHT,static_cast<uint8_t>(worldScope?0:combat_input::confirmKey(battleKeys,VK_LBUTTON)),VK_RBUTTON,VK_RBUTTON};
         // Title update tests key 0x1b and sets +64 for logo/opening skip.
         // Preserve the native Esc path; Space does not set that skip request.
         if(readable(nativeFrame,8)&&reinterpret_cast<BYTE**>(nativeFrame)[1]==engine+0xb71d1){
@@ -213,17 +229,17 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
             }
             if(movement.active)frame.held|=modern_input::Up;
         }else{
-            frame.held=(frame.held&~15u)|menuDirection.update(sample,frame.armed&&focused);
-            if(sample.buttons&XINPUT_GAMEPAD_LEFT_SHOULDER)frame.held|=modern_input::Left;
-            if(sample.buttons&XINPUT_GAMEPAD_RIGHT_SHOULDER)frame.held|=modern_input::Right;
+            frame.held=(frame.held&~15u)|menuDirection.update(routedSample,frame.armed&&focused&&!battleBlocked);
+            if(!battleBlocked&&(routedSample.buttons&XINPUT_GAMEPAD_LEFT_SHOULDER))frame.held|=modern_input::Left;
+            if(!battleBlocked&&(routedSample.buttons&XINPUT_GAMEPAD_RIGHT_SHOULDER))frame.held|=modern_input::Right;
             if(physicalArrows)frame.held&=~uint32_t(15);
         }
         modern_input::mergeKeyboard(keys,frame,nativeBindings);
-        if(frame.armed&&focused){
+        if(frame.armed&&focused&&!battleBlocked){
             // Dedicated X = original Space in all contexts, including dialogue.
             // A remains menu confirm / nearby interaction; never issue both routes.
-            if(sample.buttons&XINPUT_GAMEPAD_X)keys[VK_SPACE]|=0x80;
-            if(sample.buttons&XINPUT_GAMEPAD_Y)keys[VK_TAB]|=0x80;
+            if(routedSample.buttons&XINPUT_GAMEPAD_X)keys[VK_SPACE]|=0x80;
+            if(routedSample.buttons&XINPUT_GAMEPAD_Y)keys[VK_TAB]|=0x80;
         }
         syntheticLeftOwned=frame.armed&&focused&&!worldScope&&clicksAllowed&&!physicalLeft&&(keys[VK_LBUTTON]&0x80);
         syntheticRightOwned=frame.armed&&focused&&!physicalRight&&(keys[VK_RBUTTON]&0x80);
@@ -232,7 +248,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
         int w=*reinterpret_cast<int*>(engine+0xf1b48),h=*reinterpret_cast<int*>(engine+0xf1b4c);
         auto x=reinterpret_cast<int*>(engine+0xf20b0),y=reinterpret_cast<int*>(engine+0xf20a8);
         bool mouseMoved=realMouseKnown&&(*x!=realMouseX||*y!=realMouseY);realMouseKnown=true;realMouseX=*x;realMouseY=*y;
-        bool eligible=frame.armed&&focused&&sample.connected;
+        bool eligible=frame.armed&&focused&&sample.connected&&!battleBlocked;
         cursorMenu=!worldScope; // Menus need a visible locator at their actual click point.
         bool rightEngaged=std::abs(int(sample.rx))>=8689||std::abs(int(sample.ry))>=8689;
         bool mouseUsed=mouseMoved||physicalLeft||physicalRight||*reinterpret_cast<int*>(engine+0xf20a0)!=0;
@@ -242,15 +258,15 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
         else if(!cursorArmed||padUsed)cursorHidden=true;
         cursorArmed=eligible;cursorButtons=sample.buttons;cursorRightEngaged=rightEngaged;
         if(mouseUsed){navMouseBlocked=true;controllerCursor.mouseInput();}if(!(frame.held&15))navMouseBlocked=false;
-        auto point=controllerCursor.update(*x,*y,sample.rx,sample.ry,elapsed,w,h,frame.armed&&focused);
+        auto point=controllerCursor.update(*x,*y,sample.rx,sample.ry,elapsed,w,h,eligible);
         if(point.owned)writeControllerCursor(static_cast<int>(point.x),static_cast<int>(point.y));
         navigation={frame.held&15,(frame.held&15)&~navHeld,++inputSerial,now,
-                    frame.armed&&focused&&!worldScope&&!battleScope&&!keyboardDirection&&!navMouseBlocked
+                    frame.armed&&focused&&!worldScope&&!battleKeys&&!battleBlocked&&!keyboardDirection&&!navMouseBlocked
                     &&std::abs(int(sample.rx))<8689&&std::abs(int(sample.ry))<8689
                     &&!((sample.buttons|lastButtons)&(XINPUT_GAMEPAD_A|XINPUT_GAMEPAD_X|XINPUT_GAMEPAD_B|XINPUT_GAMEPAD_START))};
         navHeld=frame.held&15;lastButtons=sample.buttons;
         unsigned triggers=(sample.lt>=128?1u:0u)|(sample.rt>=128?2u:0u);
-        if(frame.armed&&focused&&!worldScope&&triggers&&triggers!=3&&(triggers!=triggerHeld||DWORD(now-triggerTime)>=150)){
+        if(frame.armed&&focused&&!worldScope&&!battleBlocked&&triggers&&triggers!=3&&(triggers!=triggerHeld||DWORD(now-triggerTime)>=150)){
             // WM_MOUSEWHEEL stores -(signed delta)/120 in this original field.
             *reinterpret_cast<int*>(engine+0xf20a0)=triggers==1?-1:1;triggerTime=now;
         }
@@ -307,7 +323,8 @@ bool installModernGamepad(HMODULE module,void(*logger)(const wchar_t*),bool batt
        bytes[0x2fcf]!=0xff || bytes[0x2fd0]!=0x15 || *reinterpret_cast<DWORD*>(bytes+0x2fd1)!=reinterpret_cast<DWORD>(bytes+0xbd3dc))return false;
     const BYTE ctor[]={0xc7,0x00};
     const BYTE messageCall[]={0xff,0x15};
-    if(memcmp(bytes+0x9d424,ctor,2)||*reinterpret_cast<DWORD*>(bytes+0x9d426)!=reinterpret_cast<DWORD>(bytes+0xc1960)
+    if(bytes[0xae411]!=0xc7||bytes[0xae412]!=0x02||*reinterpret_cast<DWORD*>(bytes+0xae413)!=reinterpret_cast<DWORD>(bytes+0xc203c)
+       ||memcmp(bytes+0x9d424,ctor,2)||*reinterpret_cast<DWORD*>(bytes+0x9d426)!=reinterpret_cast<DWORD>(bytes+0xc1960)
        ||memcmp(bytes+0xbdfb,messageCall,2)||*reinterpret_cast<DWORD*>(bytes+0xbdfd)!=reinterpret_cast<DWORD>(bytes+0xbd42c))return false;
     auto messageSlot=reinterpret_cast<DWORD*>(bytes+0xbd42c);
     auto slot=reinterpret_cast<DWORD*>(bytes+0xbd3dc);
@@ -330,8 +347,8 @@ bool installModernGamepad(HMODULE module,void(*logger)(const wchar_t*),bool batt
     const BYTE comboTimer[]={0x8b,0x88,0xe0,0x1d,0,0,0x83,0xc1,1};
     battleReady=!memcmp(bytes+0xa0b8d,battleCall,sizeof(battleCall))&&!memcmp(bytes+0xa1711,comboTimer,sizeof(comboTimer))
        &&*reinterpret_cast<DWORD*>(bytes+0xc1964)==reinterpret_cast<DWORD>(bytes+0xa0b7e);
-    comboAssist.reset();assistPadOwned=false;battleScope=false;spaceEdges.clear();edgeScene=nullptr;
-    if(battleReady&&logger)logger(L"BATTLE_INPUT_READY A=Space B=Esc assist=F10_or_R3 scope=source_locked clock=logic_ticks");
+    padContext.reset();comboAssist.reset();assistPadOwned=false;battleScope=false;spaceEdges.clear();edgeScene=nullptr;
+    if(battleReady&&logger)logger(L"BATTLE_INPUT_READY field_A=Space menu_A=LMB B=RMB_release assist=F10_or_R3 scope=source_locked clock=logic_ticks");
     if(nativeRouting){modern_input::Config config;config.engage=12000;config.release=5500;router=modern_input::Router(config);}
     gameWindow=reinterpret_cast<HWND*>(bytes+0xf1b44);
     originalMessage=systemMessage;messageIat=reinterpret_cast<DWORD>(systemMessage);
@@ -361,5 +378,5 @@ bool removeModernGamepad(HMODULE module){
     if(nativeRouting&&!removeGamepadUi(module)){installWorldGamepad(module,nullptr);return false;}
     DWORD old;if(!VirtualProtect(slot,4,PAGE_READWRITE,&old)){if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}*slot=originalIat;*reinterpret_cast<DWORD*>(p+0xbd42c)=messageIat;DWORD ignored;
     if(!VirtualProtect(slot,4,old,&ignored)){*slot=reinterpret_cast<DWORD>(&keyboardBridge);*reinterpret_cast<DWORD*>(p+0xbd42c)=reinterpret_cast<DWORD>(&messageHook);VirtualProtect(slot,4,old,&ignored);if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}
-    spaceEdges.clear();edgeScene=nullptr;comboAssist.reset();battleScope=battleReady=false;assistPadOwned=false;router=modern_input::Router();menuDirection=modern_input::MenuDirection();cursorHidden=cursorArmed=cursorRightEngaged=cursorMenu=false;cursorButtons=0;worldScope=false;movement={};syntheticLeftOwned=syntheticRightOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
+    padContext.reset();spaceEdges.clear();edgeScene=nullptr;comboAssist.reset();battleScope=battleReady=false;assistPadOwned=false;router=modern_input::Router();menuDirection=modern_input::MenuDirection();cursorHidden=cursorArmed=cursorRightEngaged=cursorMenu=false;cursorButtons=0;worldScope=false;movement={};syntheticLeftOwned=syntheticRightOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
 }
