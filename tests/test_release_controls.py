@@ -58,6 +58,8 @@ class ReleaseControlsTests(unittest.TestCase):
    with zipfile.ZipFile(d/'hud.zip') as z:
     m=json.loads(z.read(hud.FOLDER+'/package.json'))
     self.assertEqual({r['path'] for r in m['files']},set(hud.CHANGES))
+    self.assertEqual(len({r['payload'] for r in m['files']}),2)
+    self.assertEqual(len({r['payload'] for r in m['files'] if r['path'].startswith('modules/')}),1)
     self.assertNotEqual(hud.BACKUP,package.BACKUP)
    with self.assertRaises(ValueError):hud.prepare(d/'previous.zip',module,d/'bad',d/'bad.zip')
    self.assertFalse((d/'bad').exists())
