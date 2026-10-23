@@ -5,7 +5,10 @@ $runtimeRoot=$PSScriptRoot
 $manifest=Get-Content -LiteralPath (Join-Path $runtimeRoot 'runtime.json') -Raw | ConvertFrom-Json
 if($manifest.schema -ne 1){throw 'Unsupported shared runtime'}
 if($DataRoot -and -not $VerifyOnly){throw 'Data override is only supported for migration preflight'}
-if(-not $DataRoot){$DataRoot=Join-Path $runtimeRoot 'data'}
+$layout='data'
+if($manifest.PSObject.Properties['data_root']){$layout=[string]$manifest.data_root}
+if($layout -notin @('data','.')){throw 'Unsupported shared data layout'}
+if(-not $DataRoot){$DataRoot=Join-Path $runtimeRoot $layout}
 $game=(Resolve-Path -LiteralPath $DataRoot).Path
 function Hash($p){$s=[IO.File]::OpenRead($p);$h=[Security.Cryptography.SHA256]::Create();try{([BitConverter]::ToString($h.ComputeHash($s))).Replace('-','').ToLowerInvariant()}finally{$h.Dispose();$s.Dispose()}}
 foreach($p in $manifest.data.PSObject.Properties){if((Hash (Join-Path $game $p.Name)) -ne $p.Value){throw ('Game input changed: '+$p.Name)}}

@@ -297,3 +297,7 @@ python -m unittest discover -s tests -p 'test_damage*.py' -v
 ## 发布功能调整（2026-10-23）
 
 手柄与自由视角归档，四条模型路径插帧和 F5 随机遇敌开关的构建、增量更新与回滚见 [发布功能调整](docs/RELEASE_CONTROLS_2026-10-23.md)。
+
+## 纯净版直接覆盖格式
+
+平铺 ZIP 的构建、独立纯净备份回滚和布局验证见 [纯净版覆盖测试包](docs/CLEAN_GAME_OVERLAY.md)。该格式直接替换变化资源，不依赖历次小更新；共享运行目录仍使用原 `data/` 布局。
