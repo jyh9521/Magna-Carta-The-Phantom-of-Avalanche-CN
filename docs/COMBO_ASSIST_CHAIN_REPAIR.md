@@ -95,3 +95,16 @@ Python 依赖沿用项目环境或 `runtime/dependencies`；报告必须使用�
 生产辅助类 46 项、生产输入上下文 14 项检查通过。
 完整构建、文档检查、原生旧源/新源/独立恢复旧源三态和运行模块事务均通过。
 这些结果仍不替代实际游戏战斗验收。
+
+## 用户转发用累计测试包
+
+`dist/MagnaCarta-feedback-assist-update-20261023.zip` 面向2026-10-22统一测试包，
+不需要逐个安装中间更新。13个源文件摘要已逐项对照统一包payload，目标模块为本轮修正版。
+包内中文说明列出Verify/Install/CheckInstalled/Rollback、版本前提、存档/设置保留及复验步骤。
+长对白普遍漏句仍在调查，未将累计更新说明写成该问题已经全部解决。
+
+ZIP大小9,650,972字节；SHA256：
+`f8dad7517e55a4eebdd51ce93d868c2e2111be08862e360422079272533c861a`。
+实际PowerShell更新器四态均通过，隔离副本原文件逐字节恢复；不匹配版本拒绝且无写入。
+活动共享运行目录保持不变，未启动游戏。详细证据保留于本机
+`build/feedback-assist-release/VERIFICATION.txt`。
