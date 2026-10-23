@@ -1,5 +1,6 @@
 ﻿param([ValidateSet('configured','baseline','render4k','wide4k','fps60','combined','motion','gamepad','motion-gamepad','texture','camera','camera-gamepad','maps','maps-gamepad')][string]$Recipe='configured',[switch]$VerifyOnly,[string]$DataRoot='',[string]$SettingsFile='',[switch]$WithoutFieldReturnHeight,[switch]$WithoutGuiParentGuard,[switch]$WithoutSceneLoading,[switch]$WithoutNativeLoading,[switch]$WithoutScaledFont,[switch]$CaptureException)
 $ErrorActionPreference='Stop'
+if($Recipe -in @('gamepad','motion-gamepad','camera','camera-gamepad','maps-gamepad')){throw 'This research recipe is archived; use Play.cmd'}
 $runtimeRoot=$PSScriptRoot
 $manifest=Get-Content -LiteralPath (Join-Path $runtimeRoot 'runtime.json') -Raw | ConvertFrom-Json
 if($manifest.schema -ne 1){throw 'Unsupported shared runtime'}
@@ -16,7 +17,8 @@ $selected=$manifest.recipes.$Recipe
 if($selected.settings){$settings=Test-EnhancementSettings $selected.settings}
 $schema=$settings.schema
 $settings=Get-EnhancementRuntimeSettings $settings
-$cameraEnabled=([bool]$selected.camera -or $settings.free_view)
+$settings.native_gamepad=$false;$settings.free_view=$false
+$cameraEnabled=$false
 $module=$selected.module
 if($module -eq 'configured'){
  $key=if($settings.motion60 -and $settings.native_gamepad){'combined'}elseif($settings.motion60 -or $settings.free_view){'motion'}elseif($settings.native_gamepad){'gamepad'}else{'display'}
@@ -69,7 +71,7 @@ if((Hash $ini) -notin $known){throw 'Unknown active display configuration'}
 $mutex=New-Object Threading.Mutex($false,('Local\MagnaCartaShared_'+(Hash (Join-Path $runtimeRoot 'runtime.json')).Substring(0,24)))
 if(-not $mutex.WaitOne(0)){throw 'Another shared runtime entry is active'}
 $environment=@{}
-foreach($key in @('MC_MOTION60_COMPLETE','MC_TITLE_BACKGROUND4K','MC_FREE_VIEW','MC_MAP_OVERLAY','MC_MAP_ASSETS','MC_WINDOWED','MC_WINDOW_RESOLUTION','MC_FIELD_RETURN_HEIGHT','MC_GUI_PARENT_GUARD','MC_SCENE_LOADING','MC_NATIVE_SCENE_LOADING','MC_SCALED_FONT','MC_SCALED_FONT_ASSETS')){$environment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
+foreach($key in @('MC_ENCOUNTER_ON','MC_ENCOUNTER_OFF','MC_MOTION60_COMPLETE','MC_TITLE_BACKGROUND4K','MC_FREE_VIEW','MC_MAP_OVERLAY','MC_MAP_ASSETS','MC_WINDOWED','MC_WINDOW_RESOLUTION','MC_FIELD_RETURN_HEIGHT','MC_GUI_PARENT_GUARD','MC_SCENE_LOADING','MC_NATIVE_SCENE_LOADING','MC_SCALED_FONT','MC_SCALED_FONT_ASSETS')){$environment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
 try{
  foreach($p in (Get-CimInstance Win32_Process -Filter "Name='MagnaCarta.exe'")){
   if(-not $p.ExecutablePath -or [IO.Path]::GetFullPath($p.ExecutablePath) -eq (Join-Path $game 'MagnaCarta.exe')){throw 'Exit game before changing shared settings'}
@@ -90,6 +92,12 @@ try{
  }
  [IO.File]::WriteAllBytes((Join-Path $cache 'profile.bin'),$profile)
  Invoke-EnhancementDisplayTransaction $ini ([IO.File]::ReadAllBytes((Join-Path $runtimeRoot ('config/profiles/'+$settings.display_profile+'.ini')))) ([bool]$VerifyOnly) {
+ $labelsPath=Join-Path $runtimeRoot 'config/encounter-ui.json'
+ if(Test-Path -LiteralPath $labelsPath){
+  $labels=Get-Content -LiteralPath $labelsPath -Raw -Encoding UTF8|ConvertFrom-Json
+  foreach($value in @($labels.on,$labels.off)){if($value -isnot [string] -or $value.Length -lt 1 -or $value.Length -ge 128){throw 'Invalid encounter status label'}}
+  $env:MC_ENCOUNTER_ON=$labels.on;$env:MC_ENCOUNTER_OFF=$labels.off
+ }else{$env:MC_ENCOUNTER_ON='Random encounters: ON [F5]';$env:MC_ENCOUNTER_OFF='Random encounters: OFF [F5]'}
  $env:MC_SCALED_FONT=if($scaledFontEnabled){'1'}else{'0'}
  $env:MC_SCALED_FONT_ASSETS=if($scaledFontEnabled){Join-Path $runtimeRoot 'fonts'}else{''}
  $env:MC_NATIVE_SCENE_LOADING=if($nativeLoadingEnabled){'1'}else{'0'}

@@ -26,7 +26,7 @@ foreach($r in @('1080p','2k','4k','auto')){foreach($w in @('fullscreen','windowe
 foreach($f in @(30,60)){foreach($pad in @($false,$true)){foreach($camera in @($false,$true)){
  $s=New-EnhancementSettings;$s.resolution=$r;$s.window_mode=$w;$s.frame_rate=$f;$s.native_gamepad=$pad;$s.free_view=$camera
  $v=Get-EnhancementRuntimeSettings $s
- if($v.display_profile -ne ('md3-'+$r+'-'+$w+'-'+$f) -or $v.motion60 -ne ($f -eq 60) -or $v.native_gamepad -ne $pad -or $v.free_view -ne $camera){throw 'Routing mismatch'}
+ if($v.display_profile -ne ('md3-'+$r+'-'+$w+'-'+$f) -or $v.motion60 -ne ($f -eq 60) -or $v.native_gamepad -or $v.free_view){throw 'Routing mismatch'}
  $count++
 }}}}}
 'MATERIAL_SETTINGS_MATRIX PASS combinations='+$count
@@ -78,7 +78,7 @@ foreach($p in @('baseline','render4k','wide4k','fps60','combined')){
                                      '-File', str(d/'Configure.ps1'), '-SelfTest', '-PreviewPath', str(preview),
                                      '-PreviewScale', '1.5'], capture_output=True, text=True, timeout=30)
             self.assertEqual(result.returncode, 0, result.stdout+result.stderr)
-            self.assertIn('choices=13 groups=5', result.stdout)
+            self.assertIn('choices=9 groups=3', result.stdout)
             self.assertIn('ENHANCEMENT_MOTION_SELFTEST PASS', result.stdout)
             from PIL import Image
             with Image.open(preview) as image:

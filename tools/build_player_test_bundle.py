@@ -92,6 +92,15 @@ def build(source, runtime, output):
         dest = payload/name
         dest.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(runtime/name, dest)
+    # Research entries are retained in source history, not in player packages.
+    archived = ('gamepad', 'motion-gamepad', 'camera', 'camera-gamepad', 'maps-gamepad')
+    release_manifest = json.loads((payload/'runtime.json').read_text())
+    for recipe in archived:
+        release_manifest.get('recipes',{}).pop(recipe, None)
+        entry = payload/('Play-'+recipe+'.cmd')
+        if entry.exists():entry.unlink()
+    release_manifest['archived_features'] = ['native_gamepad', 'free_view']
+    (payload/'runtime.json').write_text(json.dumps(release_manifest, indent=2)+'\n')
     # Distributable defaults must not inherit the maintainer's mutable settings.
     (payload/'config/enhancements.json').write_text(json.dumps(dict(
         schema=2, resolution='1080p', window_mode='borderless', frame_rate=30,

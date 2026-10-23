@@ -20,6 +20,7 @@ using Message=BOOL(WINAPI*)(LPMSG,HWND,UINT,UINT);
 Message originalMessage=nullptr;DWORD messageIat=0;
 combat_input::SpaceEdgeLatch spaceEdges;BYTE* edgeScene=nullptr;bool physicalBattleInput=false;
 Keyboard original=nullptr;
+void(*keyboardObserver)(PBYTE,bool)=nullptr;
 DWORD originalIat=0;
 Poll poll=nullptr;
 ULONG_PTR caller=0;
@@ -154,6 +155,7 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
 #ifdef MODERN_INPUT_TEST
     focused=fixtureForeground;
 #endif
+    if(keyboardObserver)keyboardObserver(ok?keys:nullptr,focused);
     auto battle=battleScene(nativeFrame);battleScope=battle!=nullptr;
     unsigned mode=battleMode(battle);
     auto route=battle?combat_input::battlePadRoute(mode):combat_input::BattlePadRoute::Outside;
@@ -329,6 +331,10 @@ BOOL modernBattleKeyboardFixture(PBYTE keys,void* frame){return keyboardInner(ke
 #endif
 
 bool installModernGamepad(HMODULE module,void(*logger)(const wchar_t*),bool battleOnly) {
+#ifdef RELEASE_ARCHIVED_INPUT
+    battleOnly=true;
+#endif
+
     auto bytes=reinterpret_cast<BYTE*>(module);
     auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(bytes);
     if(dos->e_magic!=IMAGE_DOS_SIGNATURE || dos->e_lfanew<=0 || dos->e_lfanew>4096)return false;
@@ -395,3 +401,5 @@ bool removeModernGamepad(HMODULE module){
     if(!VirtualProtect(slot,4,old,&ignored)){*slot=reinterpret_cast<DWORD>(&keyboardBridge);*reinterpret_cast<DWORD*>(p+0xbd42c)=reinterpret_cast<DWORD>(&messageHook);VirtualProtect(slot,4,old,&ignored);if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}
     padContext.reset();spaceEdges.clear();edgeScene=nullptr;comboAssist.reset();battleScope=battleReady=false;assistPadOwned=assistBurst=false;router=modern_input::Router();menuDirection=modern_input::MenuDirection();cursorHidden=cursorArmed=cursorRightEngaged=cursorMenu=false;cursorButtons=0;worldScope=false;movement={};syntheticLeftOwned=syntheticRightOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
 }
+
+void setNativeKeyboardObserver(void(*observer)(PBYTE,bool)){keyboardObserver=observer;}

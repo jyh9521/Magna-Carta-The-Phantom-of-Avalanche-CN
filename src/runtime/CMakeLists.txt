@@ -329,3 +329,18 @@ target_compile_definitions(dialogue_post_tick_fixture PRIVATE DIALOGUE_REVEAL_TE
 target_compile_options(dialogue_post_tick_fixture PRIVATE /W4 /utf-8)
 set_property(TARGET dialogue_post_tick_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded")
 target_link_libraries(dialogue_post_tick_fixture PRIVATE user32)
+
+target_sources(workspace_profile PRIVATE encounter_control.cpp)
+add_executable(encounter_control_fixture encounter_control_fixture.cpp encounter_control.cpp)
+target_compile_definitions(encounter_control_fixture PRIVATE ENCOUNTER_CONTROL_TEST)
+target_link_libraries(encounter_control_fixture PRIVATE user32 gdi32)
+set_property(TARGET encounter_control_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+target_compile_options(encounter_control_fixture PRIVATE /W4 /utf-8)
+
+add_executable(native_actor_motion_fixture native_actor_motion_fixture.cpp motion60.cpp render_timeline.cpp free_view.cpp)
+target_compile_definitions(native_actor_motion_fixture PRIVATE MOTION60_TEST)
+set_property(TARGET native_actor_motion_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+target_compile_options(native_actor_motion_fixture PRIVATE /W4 /utf-8)
+target_link_libraries(native_actor_motion_fixture PRIVATE user32)
+
+target_compile_definitions(workspace_profile PRIVATE RELEASE_ARCHIVED_INPUT)

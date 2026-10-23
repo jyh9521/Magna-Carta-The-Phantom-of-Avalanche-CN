@@ -6,14 +6,15 @@ Import-Module (Join-Path $PSScriptRoot 'EnhancementSettings.psm1') -Force
 Add-Type -AssemblyName PresentationFramework,PresentationCore,WindowsBase
 if(-not $SettingsFile){$SettingsFile=Join-Path $PSScriptRoot 'enhancements.json'}
 $text=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'configuration-ui.json') -Raw -Encoding UTF8|ConvertFrom-Json
-$settings=Read-EnhancementSettings $SettingsFile
+$settings=Convert-EnhancementSettings (Read-EnhancementSettings $SettingsFile)
+$settings.native_gamepad=$false;$settings.free_view=$false
 $markup=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'Configure.xaml') -Raw -Encoding UTF8
 if(-not [Windows.SystemParameters]::ClientAreaAnimation){$markup=[regex]::Replace($markup,'Duration="[^"]+"','Duration="0:0:0"')}
 [xml]$xaml=$markup
 $form=[Windows.Markup.XamlReader]::Load([Xml.XmlNodeReader]::new($xaml))
 $form.Title=$text.title
 if(-not $SelfTest){$form.Width=[Math]::Min($form.Width,[Windows.SystemParameters]::WorkArea.Width-32);$form.Height=[Math]::Min($form.Height,[Windows.SystemParameters]::WorkArea.Height-48)}
-$labels=@{Eyebrow='eyebrow';Subtitle='subtitle';Quality='quality';DisplayTitle='display';ResolutionLabel='resolution';ResolutionNote='resolution_note';WindowLabel='window_mode';WindowResolutionLabel='window_resolution';WindowResolutionNote='window_resolution_note';FrameLabel='frame_rate';FrameNote='frame_note';InputTitle='input_title';GamepadLabel='gamepad';GamepadNote='gamepad_note';CameraLabel='free_view';CameraNote='free_view_note';Pending='pending'}
+$labels=@{Eyebrow='eyebrow';Subtitle='subtitle';Quality='quality';DisplayTitle='display';ResolutionLabel='resolution';ResolutionNote='resolution_note';WindowLabel='window_mode';WindowResolutionLabel='window_resolution';WindowResolutionNote='window_resolution_note';FrameLabel='frame_rate';FrameNote='frame_note';Pending='pending'}
 foreach($name in $labels.Keys){$form.FindName($name).Text=$text.($labels[$name])}
 $logo=Join-Path $PSScriptRoot 'configuration-logo.png'
 if(-not (Test-Path -LiteralPath $logo -PathType Leaf)){throw 'Configuration logo is missing'}
@@ -24,7 +25,7 @@ $author.ToolTip=$text.author_url
 $author.add_RequestNavigate({param($sender,$event);if($event.Uri.AbsoluteUri -eq $text.author_url){Start-Process $event.Uri.AbsoluteUri};$event.Handled=$true})
 $script:groups=[ordered]@{}
 $script:loading=$true
-$panels=[ordered]@{resolution='ResolutionChoices';window_mode='WindowChoices';frame_rate='FrameChoices';native_gamepad='GamepadChoices';free_view='CameraChoices'}
+$panels=[ordered]@{resolution='ResolutionChoices';window_mode='WindowChoices';frame_rate='FrameChoices'}
 $status=$form.FindName('Status')
 foreach($field in $panels.Keys){
  $buttons=[ordered]@{}
@@ -54,7 +55,7 @@ function Set-Controls($s){
  try{foreach($field in $script:groups.Keys){$key=([string]$s.$field).ToLowerInvariant();$script:groups[$field][$key].IsChecked=$true};$windowResolution.SelectedItem=@($windowResolution.Items|Where-Object {$_.Tag -eq $s.window_resolution})[0];Update-WindowResolutionVisibility}finally{$script:loading=$false}
 }
 function Get-Controls{
- $value=[ordered]@{schema=2}
+ $value=[ordered]@{schema=2;native_gamepad=$false;free_view=$false}
  foreach($field in $script:groups.Keys){
   $selected=@($script:groups[$field].Values|Where-Object {$_.IsChecked})
   if($selected.Count -ne 1){throw ('Exactly one choice is required: '+$field)}
@@ -139,7 +140,7 @@ if($SelfTest){
  Set-Busy $true;foreach($b in $script:groups.resolution.Values){if($b.IsEnabled){throw 'Busy selection remains enabled'}};Set-Busy $false
  if($author.NavigateUri.AbsoluteUri -ne $text.author_url -or $bitmap.PixelWidth -lt 100){throw 'Brand assets mismatch'}
  if($VerifyEntry){
-  $script:groups.resolution['4k'].IsChecked=$true;$script:groups.frame_rate['30'].IsChecked=$true;$script:groups.native_gamepad['true'].IsChecked=$true
+  $script:groups.resolution['4k'].IsChecked=$true;$script:groups.frame_rate['30'].IsChecked=$true
   Run-Entry $true
   if(-not $script:child.WaitForExit(30000)){throw 'Verify-only entry timed out'}
   $script:child.Refresh();if($script:child.ExitCode -ne 0){throw ('Verify-only entry failed: '+$script:child.ExitCode)}
@@ -161,7 +162,7 @@ if($SelfTest){
   $render.Render($visual);$encoder=[Windows.Media.Imaging.PngBitmapEncoder]::new();$encoder.Frames.Add([Windows.Media.Imaging.BitmapFrame]::Create($render))
   $stream=[IO.File]::Create([IO.Path]::GetFullPath($PreviewPath));try{$encoder.Save($stream)}finally{$stream.Dispose()}
  }
- Write-Output ('ENHANCEMENT_GUI_SELFTEST PASS choices='+$checks+' groups=5 framework=WPF visible=false game_started=false')
+ Write-Output ('ENHANCEMENT_GUI_SELFTEST PASS choices='+$checks+' groups=3 framework=WPF visible=false game_started=false')
  $form.Close();exit 0
 }
 $timer.Start();try{$null=$form.ShowDialog()}finally{$timer.Stop();if($script:child){$script:child.Dispose()}}

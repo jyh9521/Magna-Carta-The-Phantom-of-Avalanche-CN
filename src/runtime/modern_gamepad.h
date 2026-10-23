@@ -20,3 +20,5 @@ BOOL modernBattleKeyboardFixture(PBYTE keys,void* frame);
 #endif
 
 unsigned modernGamepadMapButtons();
+
+void setNativeKeyboardObserver(void(*)(PBYTE,bool));

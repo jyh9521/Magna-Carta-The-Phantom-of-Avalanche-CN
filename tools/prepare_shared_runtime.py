@@ -164,6 +164,8 @@ def prepare(source, modules, atlas, output, scaled_font_cache=None, capture_help
         manifest['scaled_font']=dict(schema=1,enabled=True,module='scaled-font',scale=4)
         if 'launcher_output_snapshot'.encode('utf-16le') in modules['scaled-font'].read_bytes():
             manifest['scaled_font_output']=dict(schema=1,source='launcher_display_snapshot')
+    copy(ROOT/'locales/zh-CN/encounter-ui.json','config/encounter-ui.json')
+    manifest['archived_features']=['native_gamepad','free_view']
     (output/'runtime.json').write_bytes((json.dumps(manifest,indent=2)+'\n').encode('utf8'))
     for recipe in recipes:
         entry='Play.cmd' if recipe=='configured' else 'Play-'+recipe+'.cmd'

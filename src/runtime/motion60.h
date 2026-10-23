@@ -34,3 +34,8 @@ void motion60TestInitialize(BYTE*,MotionAbsoluteFn);
 #ifdef MOTION60_TEST
 void motion60TestFreeView(bool enabled,bool toggle,bool reset,float yaw,float seconds);
 #endif
+
+#ifdef MOTION60_TEST
+bool motion60TestNativeMapped(BYTE*,size_t,bool);
+bool motion60TestNativeSource(void*,bool);
+#endif

@@ -293,3 +293,7 @@ python -m unittest discover -s tests -p 'test_damage*.py' -v
 `combo_assist_context_fixture`（手动接管/模式/生命周期回归）目标。
 原生回放及真实资源摘要见[辅助判定链修正](docs/COMBO_ASSIST_CHAIN_REPAIR.md)。
 该流程不启动游戏；构建适配器后执行 `python -m unittest discover -s tests -p "test_combo*.py" -v`。
+
+## 发布功能调整（2026-10-23）
+
+手柄与自由视角归档，四条模型路径插帧和 F5 随机遇敌开关的构建、增量更新与回滚见 [发布功能调整](docs/RELEASE_CONTROLS_2026-10-23.md)。

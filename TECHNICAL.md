@@ -165,3 +165,7 @@ game_native_font、UTF-16 RT_DIALOG与MessageBoxA分别处理。13处原生字�
 生产辅助读取二者，按精准窗安排边沿并对actor/action和tick/count回退取消请求。
 真实配置/动作记录、原生监听/计时/评分/动作选择及明确边界见
 [辅助判定链修正](docs/COMBO_ASSIST_CHAIN_REPAIR.md)。
+
+## 通用模型与随机遇敌（2026-10-23）
+
+Asura 两条基础 renderer 的直接绝对骨骼调用与 MCAlpha 派生实现不同，资源句柄表也不同；现统一接入显示相位。F5 只包围随机遇敌判定，不改剧情战斗。地址、摘要、静态证据及验证边界见 [发布功能调整](docs/RELEASE_CONTROLS_2026-10-23.md)。

@@ -376,3 +376,7 @@ count=3或三次宽松成功声音，会漏掉精准窗错误和动作降级。�
 GUI不会发出新按下事件。0/3/6保留两次松键采样，并在最佳含端点6以内完成。
 完整原生计数器→GUI→handler→评分/后续动作的闭环才能排除这种假绿；见
 [暴走辅助](RAGE_COMBO_ASSIST.md)。
+
+## Asura 基础模型的插帧入口（2026-10-23）
+
+只替换 MCAlpha 派生 vtable 和它的 MakeAbsoluteMatrix IAT 不覆盖 Asura 基础 renderer 的直接 CALL。基础 action 序列是句柄，不是派生实现中的包装指针；混用会造成旁路或错误解引用。按独立来源守卫入口、调用点、资源表范围并复用相位/恢复，详见 RELEASE_CONTROLS_2026-10-23.md。

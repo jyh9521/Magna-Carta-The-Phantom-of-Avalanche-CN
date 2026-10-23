@@ -7,10 +7,9 @@
   "fps60": "1440×1080 · 4:3 · 60Hz呈现候选",
   "combined": "3840×2160 · 16:9宽屏 · 60Hz呈现候选",
   "motion": "启用完整动作插值候选（人物＋镜头）",
-  "gamepad": "使用手柄",
   "quality": "高清标题 · 汉化保持当前版本",
-  "pending": "60 帧、手柄与自由视角仍需实际游玩验收。",
-  "controls": "左摇杆：镜头相对移动／菜单导航　右摇杆：菜单指针\nA：交互／确认　B、Start：返回／菜单　X：空格（交互／对话）\nY：Tab　LB/RB：菜单左右　LT/RT：滚动\n菜单显示定位指针；探索时动鼠标可恢复指针。",
+  "pending": "60 帧覆盖人物与怪物的通用模型路径；F5 切换随机遇敌，剧情战斗保持原样。",
+  "controls": "F5：随机遇敌开关　F10：普通连招辅助　F11：暴走连招辅助",
   "save": "保存设置",
   "defaults": "恢复默认",
   "verify": "检查入口",
@@ -20,18 +19,14 @@
   "finished": "入口已结束；日志：{0}",
   "failed": "入口失败（退出码{0}）；日志：{1}",
   "error": "配置错误",
-  "default_note": "默认：4K / 无边框窗口化 / 30 帧 / 手柄关 / 自由视角关。",
+  "default_note": "默认：4K / 无边框窗口化 / 30 帧。",
   "subtitle": "增强配置工具",
   "eyebrow": "MAGNA CARTA  /  ENHANCEMENT",
   "resolution": "分辨率",
   "resolution_note": "2K = 2560 × 1440；自适应按当前显示器缩放，保持 16:9 画面。",
   "window_mode": "窗口模式",
   "frame_rate": "帧数",
-  "frame_note": "60 帧启用人物与镜头插值，游戏逻辑速度保持不变。",
-  "input_title": "操作与视角",
-  "gamepad_note": "Xbox / XInput · 左摇杆移动，A 确认，B 返回，右摇杆定位菜单。",
-  "free_view": "自由视角",
-  "free_view_note": "启用环绕视角候选；游戏内 F6 切换，F7 恢复。",
+  "frame_note": "60 帧启用人物、怪物通用模型与镜头插值，游戏逻辑速度保持不变。",
   "author": "伯翎飞云",
   "author_url": "https://blog.blfy.cc/",
   "dirty": "设置已更改 · 保存后生效",
@@ -51,14 +46,6 @@
     "frame_rate": {
       "30": "30",
       "60": "60"
-    },
-    "native_gamepad": {
-      "true": "开",
-      "false": "关"
-    },
-    "free_view": {
-      "true": "开",
-      "false": "关"
     },
     "window_resolution": {
       "960x540": "960 × 540",

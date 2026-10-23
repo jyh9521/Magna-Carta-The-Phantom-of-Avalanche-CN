@@ -1,4 +1,5 @@
 #include "map_overlay.h"
+#include "encounter_control.h"
 #include "window_mode.h"
 #include "world_gamepad.h"
 #include "current_texture_lifetime.h"
@@ -223,6 +224,10 @@ void patch(HMODULE module) {
     if (localizedModule && !systemMessageModuleMatches(module)) {
         trace(L"SYSTEM_MESSAGES_REJECTED");ExitProcess(125);
     }
+    if(localizedModule){
+        if(!installEncounterControl(module,trace)){trace(L"ENCOUNTER_CONTROL_REJECTED");ExitProcess(125);}
+        setNativeKeyboardObserver(&encounterKeyboard);
+    }
     if(localizedModule && !installDamageProjection(module,trace)) {
         trace(L"DAMAGE_PROJECTION_REJECTED");ExitProcess(125);
     }
@@ -316,6 +321,9 @@ BOOL WINAPI DllMain(HINSTANCE instance, DWORD reason, LPVOID) {
         mapOverlay=GetEnvironmentVariableW(L"MC_MAP_OVERLAY",option,8)&&!wcscmp(option,L"1");
         cameraInput=GetEnvironmentVariableW(L"MC_FREE_VIEW",option,8)&&!wcscmp(option,L"1");
         modernInput = GetEnvironmentVariableW(L"MC_MODERN_INPUT",option,8) && !wcscmp(option,L"1");
+#ifdef RELEASE_ARCHIVED_INPUT
+        modernInput=false;cameraInput=false;
+#endif
         wideDisplay=GetEnvironmentVariableW(L"MC_WIDE_DISPLAY",option,8)&&!wcscmp(option,L"1");
         titleBackground4k=GetEnvironmentVariableW(L"MC_TITLE_BACKGROUND4K",option,8)&&!wcscmp(option,L"1");
         render60=GetEnvironmentVariableW(L"MC_RENDER60",option,8)&&!wcscmp(option,L"1");

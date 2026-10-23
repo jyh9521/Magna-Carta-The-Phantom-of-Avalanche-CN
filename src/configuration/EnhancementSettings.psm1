@@ -37,9 +37,9 @@ function Convert-EnhancementSettings($Value){
 }
 function Get-EnhancementRuntimeSettings($Value){
  $s=Test-EnhancementSettings $Value
- if($s.schema -eq 1){return [pscustomobject]@{display_profile=$s.display_profile;motion60=$s.motion60;native_gamepad=$s.native_gamepad;free_view=$false;window_mode='borderless'}}
+ if($s.schema -eq 1){return [pscustomobject]@{display_profile=$s.display_profile;motion60=$s.motion60;native_gamepad=$false;free_view=$false;window_mode='borderless'}}
  $windowResolution=if($s.PSObject.Properties['window_resolution']){$s.window_resolution}else{'1280x720'}
- [pscustomobject]@{window_resolution=$windowResolution;display_profile=('md3-'+$s.resolution+'-'+$s.window_mode+'-'+$s.frame_rate);motion60=($s.frame_rate -eq 60);native_gamepad=$s.native_gamepad;free_view=$s.free_view;window_mode=$s.window_mode}
+ [pscustomobject]@{window_resolution=$windowResolution;display_profile=('md3-'+$s.resolution+'-'+$s.window_mode+'-'+$s.frame_rate);motion60=($s.frame_rate -eq 60);native_gamepad=$false;free_view=$false;window_mode=$s.window_mode}
 }
 function Read-EnhancementSettings([string]$Path) {
  if(-not (Test-Path -LiteralPath $Path)){return New-EnhancementSettings}

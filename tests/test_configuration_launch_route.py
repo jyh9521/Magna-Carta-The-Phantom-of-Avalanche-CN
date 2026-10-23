@@ -63,7 +63,7 @@ class ConfigurationLaunchRouteTests(unittest.TestCase):
 $ErrorActionPreference='Stop'
 if($Recipe -ne 'configured' -or -not $VerifyOnly){exit 81}
 $s=Get-Content -LiteralPath $SettingsFile -Raw|ConvertFrom-Json
-if($s.resolution -ne '4k' -or -not $s.native_gamepad){exit 82}
+if($s.resolution -ne '4k' -or $s.native_gamepad -or $s.free_view){exit 82}
 @{recipe=$Recipe;verify_only=[bool]$VerifyOnly;settings_read=$true}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $PSScriptRoot 'invoked.json') -Encoding UTF8
 """, encoding='utf-8-sig')
             result = subprocess.run(['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-STA', '-File',
