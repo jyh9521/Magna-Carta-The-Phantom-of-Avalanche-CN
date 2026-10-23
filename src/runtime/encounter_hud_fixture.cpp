@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <stdexcept>
 namespace replay {
-ULONGLONG now=1000;bool visible=false;int paints=0,invalidations=0,shows=0;POINT position{};SIZE size{};
+ULONGLONG now=1000;bool visible=false;int paints=0,invalidations=0,shows=0,captured=0;POINT position{};SIZE size{};
 HWND host=reinterpret_cast<HWND>(1),popup=reinterpret_cast<HWND>(2);bool focused=true;
 BOOL WINAPI valid(HWND){return TRUE;}
 BOOL WINAPI iconic(HWND){return FALSE;}
@@ -22,7 +22,7 @@ int WINAPI text(HDC dc,LPCWSTR str,int count,LPRECT rect,UINT flags){
  return DrawTextW(dc,str,count,rect,flags);
 }
 BOOL WINAPI layer(HWND,HDC,POINT* pt,SIZE* s,HDC dc,POINT*,COLORREF,BLENDFUNCTION*,DWORD){
- if(!dc||!pt||!s)return FALSE;position=*pt;size=*s;++paints;return TRUE;
+ if(!dc||!pt||!s)return FALSE;position=*pt;size=*s;++paints;if(visible)++captured;return TRUE;
 }
 }
 #define IsWindow replay::valid
@@ -46,6 +46,7 @@ int main(){try{
  gameWindow=&replay::host;encounterTestReset();
  tick();require(!replay::visible,"HUD visible before first F5 (persistent banner)");
  press();tick();require(replay::visible,"toggle notification missing");
+ require(replay::captured>0,"compat compositor missed bitmap submitted before visibility");
  require(replay::position.x>100&&replay::position.y>100,"unpositioned top-left drawing");
  require(replay::size.cy<=36&&replay::size.cx<=360,"oversized banner");
  int frames=replay::paints,shows=replay::shows;
@@ -54,8 +55,8 @@ int main(){try{
  require(replay::paints==frames&&replay::invalidations==0&&replay::shows==shows,"unchanged HUD redraws every timer");
  replay::now=2799;tick();require(replay::visible,"notification expires too early");
  replay::now=2800;tick();require(!replay::visible,"HUD still visible after two seconds");
- press();tick();require(replay::visible&&replay::paints==frames+1,"second toggle does not refresh bitmap");
+ press();tick();require(replay::visible&&replay::paints==frames+2,"second toggle does not refresh bitmap");
  replay::focused=false;tick();require(!replay::visible,"unfocused HUD visible");
  replay::now+=2100;replay::focused=true;tick();require(!replay::visible,"expired toast reappears on refocus");
- puts("ENCOUNTER_HUD PASS startup=hidden duration=1800ms size=compact redraw=on_change only=layered_bitmap origin=positioned focus=hidden game_started=false");return 0;
+ puts("ENCOUNTER_HUD PASS startup=hidden duration=1800ms size=compact redraw=on_change only=layered_bitmap origin=positioned focus=hidden compat=visible_capture game_started=false");return 0;
 }catch(const std::exception& e){printf("ENCOUNTER_HUD FAIL %s\n",e.what());return 1;}}

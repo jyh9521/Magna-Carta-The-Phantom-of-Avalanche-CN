@@ -128,3 +128,15 @@ Verify / Install / 重复 Install / CheckInstalled / 独立副本 Rollback，并
 ### 两次已交付更新之后的去重小包
 
 `tools/build_encounter_hud_update.py --f11 <F11包> --previous <发布功能调整包> ...` 同时锁定两份交付 ZIP 摘要，并核对 F11 的十三个输出摘要等于发布功能调整包对应的输入摘要。目标是依次装完这两个更新后的版本，不要求先装旧的提示修复包。十二个同摘要模块共用一份 ZIP 载荷，更新器仍逐路径预检、写入、回读和备份。独立 `Encounter-HUD-Compact-20261023` / `.encounter-hud-compact-20261023` 命名空间保留前两次更新证据。十三个目标文件只有两份不同载荷，游戏资源与个人设置不包含在更新载荷中。
+
+### 提示消失反馈与可见后补交（候选）
+
+玩家在共享测试版反馈 F5 无可见提示。该次 `profile.log` 保留多条 `ENCOUNTER_STATE enabled=false/true key=F5`，因此按键与开关状态确实在工作；旧日志没有位图提交与显示结果，不能凭此判定具体显示失败点。
+
+Verified：DDrawCompat 0.7.1 `Gdi/Window.cpp::updateWindow` 对未登记的隐藏窗口直接返回；`updateLayeredWindowInfo` 只给已登记窗口缓存位图。之前的 HUD 在隐藏时提交一次位图，随后显示，状态与位置不变便不再提交。生产消息回放增加可见窗口登记/位图缓存模型后，首次 F5 稳定失败：`compat compositor missed bitmap submitted before visibility`。这证明提交顺序存在兼容缺口，但不是实际游戏最终可见性的证明。
+
+当前候选保留隐藏时定位及初始化位图，显示成功后立即再提交一次相同内容，补足可见窗口登记后的兼容缓存；静止期间仍不持续重绘。首显示失败及位图提交失败分别检查返回值并写日志。新增 `ENCOUNTER_HUD_WINDOW_READY`、每次 F5 的 `ENCOUNTER_HUD_REQUEST`（时龄/目标窗口/前台窗口/PID/最小化）、`ENCOUNTER_HUD_PRESENT` 和按状态限频的失败日志，避免后续再次无记录地丢提示。
+
+增加 `encounter_hidden_fixture`：仅创建隐藏自有窗口，真实调用 DIB/UpdateLayeredWindow；可选加载既有 DDrawCompat，使用 NORMAL cooperative level 和主表面，不改显示模式、不显示窗口、不加载游戏引擎。普通 API 与兼容层两种隐藏检查均通过；这不是全屏合成/游戏画面验收。候选仅部署共享测试目录，先由玩家重启后按 F5 确认，不发布另一轮玩家 ZIP。
+
+上游来源：[DDrawCompat v0.7.1 Gdi/Window.cpp](https://github.com/narzoul/DDrawCompat/blob/v0.7.1/DDrawCompat/Gdi/Window.cpp)、[WinProc.cpp](https://github.com/narzoul/DDrawCompat/blob/v0.7.1/DDrawCompat/Gdi/WinProc.cpp)。本轮只读研究快照与现场日志、原件和回滚证据保存在 `build/encounter-hud-visibility/`，不提交商业引擎或完整游戏副本。

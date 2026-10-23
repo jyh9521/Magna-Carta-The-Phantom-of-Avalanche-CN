@@ -1,5 +1,6 @@
 #include "encounter_control.h"
 #include <cstring>
+#include <cwchar>
 namespace {
 constexpr unsigned rva=0x6e07d,imageSize=0x10b000;
 constexpr BYTE prefix[]={0x55,0x8b,0xec,0x83,0xec,0x0c};
@@ -7,7 +8,7 @@ BYTE* engine=nullptr;BYTE* trampoline=nullptr;
 using Check=int(__thiscall*)(void*);Check original=nullptr;
 volatile LONG enabled=1,uiStarted=0,toastSerial=0;bool held=true;
 alignas(8) volatile LONG64 toastAt=0;
-bool hudShown=false;LONG renderedSerial=0;RECT renderedRect{};
+bool hudShown=false;LONG renderedSerial=0,observedSerial=0,failureSerial=0;RECT renderedRect{};
 void(*trace)(const wchar_t*)=nullptr;
 HANDLE uiThread=nullptr,stopEvent=nullptr;HWND* gameWindow=nullptr;
 wchar_t onLabel[128]=L"Random encounters: ON  [F5]",offLabel[128]=L"Random encounters: OFF  [F5]";
@@ -43,6 +44,7 @@ void paint(HDC dc,int width,int height){
 }
 // All glyphs are drawn into an off-screen DIB. Never issue text drawing to a
 // window DC: legacy DirectDraw wrappers can redirect those calls to the game.
+void hudFailure(const wchar_t*,DWORD,LONG);
 bool present(HWND window,const RECT& area,LONG serial){
  int height=(area.bottom-area.top)/36;if(height<24)height=24;if(height>32)height=32;
  int width=height*10;if(width>area.right-area.left-16)width=area.right-area.left-16;
@@ -55,8 +57,12 @@ bool present(HWND window,const RECT& area,LONG serial){
  POINT position{area.right-width-16,area.bottom-height-24},source{};SIZE size{width,height};
  BLENDFUNCTION blend{AC_SRC_OVER,0,232,0};
  bool ok=UpdateLayeredWindow(window,nullptr,&position,&size,memory,&source,0,&blend,ULW_ALPHA)!=FALSE;
+ DWORD error=ok?0:GetLastError();
  SelectObject(memory,previous);DeleteDC(memory);DeleteObject(bitmap);
- if(ok){renderedSerial=serial;renderedRect=area;}return ok;
+ if(ok){renderedSerial=serial;renderedRect=area;}else hudFailure(L"bitmap_submit",error,serial);return ok;
+}
+void hudFailure(const wchar_t* stage,DWORD error,LONG serial){
+ if(trace&&failureSerial!=serial){failureSerial=serial;wchar_t line[192];swprintf_s(line,L"ENCOUNTER_HUD_FAILED phase=%s error=%lu serial=%ld",stage,error,serial);trace(line);}
 }
 void hideHud(HWND window){if(hudShown){ShowWindow(window,SW_HIDE);hudShown=false;}}
 LRESULT CALLBACK windowProc(HWND window,UINT message,WPARAM w,LPARAM l){
@@ -69,11 +75,20 @@ LRESULT CALLBACK windowProc(HWND window,UINT message,WPARAM w,LPARAM l){
   LONG serial=InterlockedCompareExchange(&toastSerial,0,0);
   ULONGLONG at=static_cast<ULONGLONG>(InterlockedCompareExchange64(&toastAt,0,0));
   HWND game=gameWindow?*gameWindow:nullptr;DWORD pid=0;if(game)GetWindowThreadProcessId(game,&pid);
+  if(serial&&trace&&observedSerial!=serial){observedSerial=serial;wchar_t line[256];swprintf_s(line,L"ENCOUNTER_HUD_REQUEST serial=%ld age_ms=%llu game=%p foreground=%p same_process=%d iconic=%d",serial,GetTickCount64()-at,game,GetForegroundWindow(),pid==GetCurrentProcessId(),game?IsIconic(game):0);trace(line);}
   if(!serial||GetTickCount64()-at>=1800||!game||!IsWindow(game)||IsIconic(game)||GetForegroundWindow()!=game||pid!=GetCurrentProcessId()){hideHud(window);return 0;}
   RECT rect{};POINT origin{};if(!GetClientRect(game,&rect)||!ClientToScreen(game,&origin)||rect.right<=16||rect.bottom<=64){hideHud(window);return 0;}
   rect={origin.x,origin.y,origin.x+rect.right,origin.y+rect.bottom};
   if(serial!=renderedSerial||memcmp(&rect,&renderedRect,sizeof(rect))){if(!present(window,rect,serial)){hideHud(window);return 0;}}
-  if(!hudShown){SetWindowPos(window,HWND_TOPMOST,0,0,0,0,SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOSIZE|SWP_SHOWWINDOW);hudShown=true;}
+  if(!hudShown){
+   if(!SetWindowPos(window,HWND_TOPMOST,0,0,0,0,SWP_NOACTIVATE|SWP_NOMOVE|SWP_NOSIZE|SWP_SHOWWINDOW)){hudFailure(L"show",GetLastError(),serial);return 0;}
+   hudShown=true;
+   // DDrawCompat 0.7.1 only registers visible windows for compositing.
+   // The hidden upload primes Windows safely; this second upload supplies the
+   // now-registered compositor without a window-DC draw or idle redraw loop.
+   if(!present(window,rect,serial)){hideHud(window);return 0;}
+   if(trace){wchar_t line[192];swprintf_s(line,L"ENCOUNTER_HUD_PRESENT serial=%ld client=%ldx%ld path=visible_bitmap duration_ms=1800",serial,rect.right-rect.left,rect.bottom-rect.top);trace(line);}
+  }
   return 0;
  }
  if(message==WM_DESTROY){PostQuitMessage(0);return 0;}return DefWindowProcW(window,message,w,l);
@@ -82,7 +97,10 @@ DWORD WINAPI threadMain(void*){
  HINSTANCE instance=GetModuleHandleW(nullptr);WNDCLASSW cls{};cls.lpfnWndProc=windowProc;cls.hInstance=instance;cls.lpszClassName=L"MagnaCartaEncounterStatus";
  if(!RegisterClassW(&cls)){if(trace)trace(L"ENCOUNTER_HUD_FAILED register_class=true");return 1;}
  HWND window=CreateWindowExW(WS_EX_LAYERED|WS_EX_TRANSPARENT|WS_EX_NOACTIVATE|WS_EX_TOOLWINDOW,cls.lpszClassName,L"",WS_POPUP,0,0,320,40,nullptr,nullptr,instance,nullptr);
- if(window){SetTimer(window,1,50,nullptr);MSG message{};while(GetMessageW(&message,nullptr,0,0)>0){TranslateMessage(&message);DispatchMessageW(&message);}}
+ if(window){
+  if(trace)trace(L"ENCOUNTER_HUD_WINDOW_READY path=hidden_then_visible_bitmap");
+  if(!SetTimer(window,1,50,nullptr)){if(trace)trace(L"ENCOUNTER_HUD_FAILED phase=timer");DestroyWindow(window);UnregisterClassW(cls.lpszClassName,instance);return 1;}
+  MSG message{};while(GetMessageW(&message,nullptr,0,0)>0){TranslateMessage(&message);DispatchMessageW(&message);}}
  if(trace)trace(window?L"ENCOUNTER_HUD_CLOSED":L"ENCOUNTER_HUD_FAILED create_window=true");UnregisterClassW(cls.lpszClassName,instance);return window?0:1;
 }
 void startUi(){
@@ -112,6 +130,6 @@ bool removeEncounterControl(){
 }
 #ifdef ENCOUNTER_CONTROL_TEST
 bool encounterTestMapped(BYTE* p,size_t size,bool on){return mapped(p,size,on);}
-void encounterTestReset(){enabled=1;held=true;toastSerial=0;toastAt=0;hudShown=false;renderedSerial=0;renderedRect={};}
+void encounterTestReset(){enabled=1;held=true;toastSerial=0;toastAt=0;hudShown=false;renderedSerial=observedSerial=failureSerial=0;renderedRect={};}
 void encounterTestPaint(HDC dc,int w,int h){paint(dc,w,h);}
 #endif

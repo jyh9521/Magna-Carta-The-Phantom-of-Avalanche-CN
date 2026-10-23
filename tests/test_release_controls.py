@@ -106,6 +106,13 @@ class ReleaseControlsTests(unittest.TestCase):
  def test_HUD_transient_atomic_presentation(self):
   r=subprocess.run([str(ROOT/'build/native/Release/encounter_hud_fixture.exe')],capture_output=True,text=True,timeout=15)
   self.assertEqual(r.returncode,0,r.stdout+r.stderr);self.assertIn('redraw=on_change only=layered_bitmap',r.stdout)
+ @unittest.skipUnless((ROOT/'build/native/Release/encounter_hidden_fixture.exe').exists(),'Build native fixtures')
+ def test_hidden_window_real_layered_API(self):
+  exe=str(ROOT/'build/native/Release/encounter_hidden_fixture.exe')
+  for args in ([exe],[exe,str(ROOT/'runtime/data/ddraw.dll')]):
+   if len(args)>1 and not Path(args[1]).exists():continue
+   r=subprocess.run(args,capture_output=True,text=True,timeout=20)
+   self.assertEqual(r.returncode,0,r.stdout+r.stderr);self.assertIn('HUD_REAL_API PASS',r.stdout)
  @unittest.skipUnless((ROOT/'build/native/Release/native_actor_motion_fixture.exe').exists(),'Build native fixtures')
  def test_native_actor_midpoints(self):
   r=subprocess.run([str(ROOT/'build/native/Release/native_actor_motion_fixture.exe')],capture_output=True,text=True,timeout=15);self.assertEqual(r.returncode,0,r.stdout+r.stderr);self.assertIn('base_skin=interpolated base_rigid=interpolated',r.stdout)
