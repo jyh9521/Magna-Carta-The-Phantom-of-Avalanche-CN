@@ -98,6 +98,7 @@ def build(source, runtime, output):
     for recipe in archived:
         release_manifest.get('recipes',{}).pop(recipe, None)
         entry = payload/('Play-'+recipe+'.cmd')
+        release_manifest['files'].pop(entry.name,None)
         if entry.exists():entry.unlink()
     release_manifest['archived_features'] = ['native_gamepad', 'free_view']
     (payload/'runtime.json').write_text(json.dumps(release_manifest, indent=2)+'\n')

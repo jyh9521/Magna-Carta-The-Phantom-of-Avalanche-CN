@@ -380,3 +380,5 @@ GUI不会发出新按下事件。0/3/6保留两次松键采样，并在最佳含
 ## Asura 基础模型的插帧入口（2026-10-23）
 
 只替换 MCAlpha 派生 vtable 和它的 MakeAbsoluteMatrix IAT 不覆盖 Asura 基础 renderer 的直接 CALL。基础 action 序列是句柄，不是派生实现中的包装指针；混用会造成旁路或错误解引用。按独立来源守卫入口、调用点、资源表范围并复用相位/恢复，详见 RELEASE_CONTROLS_2026-10-23.md。
+
+发布入口归档时，既要删除玩家载荷中的快捷方式，也要移除发布 runtime.json 中相应 files 摘要；共享目录维护脚本可能已把旧入口加入校验清单。只在 glob 复制阶段排除会从 files 集合重新带回入口，或留下指向缺失入口的摘要。真实统一包 ZIP 回读应检查载荷和 manifest 双向一致。

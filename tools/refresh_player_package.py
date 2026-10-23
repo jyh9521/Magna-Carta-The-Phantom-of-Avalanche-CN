@@ -20,9 +20,11 @@ def refresh(previous,previous_sha256,runtime,output):
             if sha(runtime/'data'/r['resource'])!=r['target_sha256'] or hashlib.sha256(old.read(r['patch'])).hexdigest()!=r['patch_sha256']:
                 raise ValueError('Changed game resource requires rebuild from original: '+r['resource'])
         release=json.loads(json.dumps(current))
+        archived_entries={'Play-'+n+'.cmd' for n in ARCHIVED}
         for name in ARCHIVED:release['recipes'].pop(name,None)
+        for name in archived_entries:release['files'].pop(name,None)
         release['archived_features']=['native_gamepad','free_view']
-        payload={n:(runtime/n).read_bytes() for n in current['files']}
+        payload={n:(runtime/n).read_bytes() for n in current['files'] if n not in archived_entries}
         for n in ('runtime.json','Configure.cmd','config/enhancements.json'):
             payload[n]=(runtime/n).read_bytes()
         for p in runtime.glob('Play*.cmd'):

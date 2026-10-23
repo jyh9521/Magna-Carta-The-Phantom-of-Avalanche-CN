@@ -61,7 +61,7 @@ class ReleaseControlsTests(unittest.TestCase):
   with tempfile.TemporaryDirectory() as d:
    d=Path(d);root=d/'runtime';(root/'data').mkdir(parents=True);(root/'config').mkdir()
    raw=b'owned changed resource';(root/'data/sample.bin').write_bytes(raw)
-   (root/'runtime.json').write_text(json.dumps(dict(schema=1,files={},data={},recipes={'camera':{},'gamepad':{},'configured':{}})))
+   (root/'runtime.json').write_text(json.dumps(dict(schema=1,files={'Play-camera.cmd':hashlib.sha256(b'archived entry').hexdigest()},data={},recipes={'camera':{},'gamepad':{},'configured':{}})))
    (root/'Configure.cmd').write_bytes(b'owned config');(root/'Play.cmd').write_bytes(b'owned play');(root/'Play-camera.cmd').write_bytes(b'archived entry')
    (root/'config/enhancements.json').write_text('{}')
    delta=b'MCD1'+struct.pack('<Q',len(raw))+struct.pack('<QI',0,len(raw))+raw
@@ -73,7 +73,7 @@ class ReleaseControlsTests(unittest.TestCase):
    with patch.object(refresh,'validate_engine_fixes',return_value={}):refresh.refresh(previous,digest,root,d/'new.zip')
    with zipfile.ZipFile(d/'new.zip') as z:
     self.assertNotIn('payload/Play-camera.cmd',z.namelist());self.assertEqual(z.read('sample.mcd'),delta)
-    m=json.loads(z.read('payload/runtime.json'));self.assertEqual(m['recipes'],{'configured':{}})
+    m=json.loads(z.read('payload/runtime.json'));self.assertEqual(m['recipes'],{'configured':{}});self.assertNotIn('Play-camera.cmd',m['files'])
     self.assertFalse(json.loads(z.read('payload/config/enhancements.json'))['native_gamepad'])
    (root/'data/sample.bin').write_bytes(b'drift')
    with patch.object(refresh,'validate_engine_fixes',return_value={}):

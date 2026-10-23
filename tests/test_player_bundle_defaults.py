@@ -27,7 +27,8 @@ class PlayerBundleDefaultsTests(unittest.TestCase):
             local = b'{"schema":2,"resolution":"auto","window_mode":"windowed","frame_rate":60,"native_gamepad":true,"free_view":true,"window_resolution":"1920x1080"}'
             (runtime/'config/enhancements.json').write_bytes(local)
             (runtime/'Configure.cmd').write_bytes(b'owned entry')
-            (runtime/'runtime.json').write_text(json.dumps(dict(data={}, files={})))
+            (runtime/'Play-camera.cmd').write_bytes(b'archived research entry')
+            (runtime/'runtime.json').write_text(json.dumps(dict(data={}, files={'Play-camera.cmd':tool.sha(runtime/'Play-camera.cmd')},recipes={'camera':{},'configured':{}})))
             real_sha = tool.sha
             supported = {'MagnaCarta.exe':'be2ae107373835defc6ec33643eaf435dcc5c882ea0b6e3c47032cd013690651',
                          'MCAlpha.dll':'79e4c3d6af4afb2b75367a2b26fd8450ad25fa9f738612ea96809e312d33cb6f'}
@@ -38,4 +39,7 @@ class PlayerBundleDefaultsTests(unittest.TestCase):
             packaged = output/'payload/config/enhancements.json'
             self.assertEqual(json.loads(packaged.read_text()), dict(schema=2, resolution='1080p', window_mode='borderless', frame_rate=30, native_gamepad=False, free_view=False, window_resolution='1280x720'))
             self.assertEqual((runtime/'config/enhancements.json').read_bytes(), local)
+            release=json.loads((output/'payload/runtime.json').read_text())
+            self.assertNotIn('Play-camera.cmd',release['files']);self.assertNotIn('camera',release['recipes'])
+            self.assertFalse((output/'payload/Play-camera.cmd').exists())
             self.assertEqual(manifest['payload']['config/enhancements.json'], real_sha(packaged))
