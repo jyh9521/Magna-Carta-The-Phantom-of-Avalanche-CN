@@ -158,3 +158,10 @@ game_native_font、UTF-16 RT_DIALOG与MessageBoxA分别处理。13处原生字�
 实际角色头部类别、模型屏幕位置、原生数字资源、透视UI根相机、ASURA队列与D3D7 XYZ提交已纳入
 可复现离线回放；生产查询桥使用真实编译ABI，自有隐藏离屏GPU独立比较头部与数字像素。
 真实绘制链补充、源基线区分和未覆盖边界见[伤害投影修正](docs/DAMAGE_PROJECTION_REPAIR.md)。
+
+## 一次性连招辅助原生结算（2026-10-23）
+
+`0x24`仅决定按键接受窗，`0x25`决定结算精准窗；记录三击不等于精准三击。
+生产辅助读取二者，按精准窗安排边沿并对actor/action和tick/count回退取消请求。
+真实配置/动作记录、原生监听/计时/评分/动作选择及明确边界见
+[辅助判定链修正](docs/COMBO_ASSIST_CHAIN_REPAIR.md)。

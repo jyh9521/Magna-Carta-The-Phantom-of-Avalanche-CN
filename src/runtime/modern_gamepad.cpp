@@ -97,15 +97,16 @@ void battleAssist(PBYTE keys,BYTE* scene,bool focused,bool padTrigger,bool padEl
  combat_input::ComboState state{};
  if(scene){state.owner=reinterpret_cast<uintptr_t>(scene);state.active=*reinterpret_cast<int*>(scene+0x1dc4)==1;
   state.timed=*reinterpret_cast<int*>(scene+0x1dcc)==1;state.tick=*reinterpret_cast<unsigned*>(scene+0x1de0);state.count=*reinterpret_cast<unsigned*>(scene+0x1ddc);
+  state.actor=reinterpret_cast<uintptr_t>(*reinterpret_cast<BYTE**>(scene+0x40));state.action=*reinterpret_cast<unsigned*>(scene+0x1744);
   auto config=*reinterpret_cast<BYTE**>(engine+0xf2428);
   if(state.active&&readable(config,4)){
    using ConfigValue=int(__thiscall*)(void*,int);auto get=reinterpret_cast<ConfigValue>(engine+0xb5b0e);
-   state.interval=get(config,0x23);state.window=get(config,0x24);
+   state.interval=get(config,0x23);state.window=get(config,0x24);state.precision=get(config,0x25);
   }
  }
  bool keyboardTrigger=keys&&(keys[VK_F10]&0x80);bool trigger=keyboardTrigger||padTrigger;
  if(trigger&&!comboAssist.pending())assistPadOwned=padTrigger&&!keyboardTrigger;
- bool eligible=focused&&keys&&!physicalBattleInput&&(!assistPadOwned||padEligible);
+ bool eligible=focused&&keys&&battleMode(scene)==1&&!physicalBattleInput&&(!assistPadOwned||padEligible);
  if(comboAssist.update(state,trigger,eligible)){
   keys[VK_SPACE]|=0x80;
   if(inputTrace)inputTrace(L"BATTLE_COMBO_ASSIST_PULSE route=native_space clock=33ms_logic damage=unchanged");
@@ -191,7 +192,10 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     syntheticLeftOwned=syntheticRightOwned=false;
     auto frame=router.update(routedSample,ok!=FALSE,focused);int titlePhase=-1;
     if(battleBlocked)frame.held=frame.pressed=frame.released=0;
-    battleAssist(ok?keys:nullptr,battle,focused,frame.armed&&focused&&(!battle||route==combat_input::BattlePadRoute::Field)&&(routedSample.buttons&XINPUT_GAMEPAD_RIGHT_THUMB),frame.armed&&focused&&sample.connected);
+    // A/X are manual native confirmations. Preserve them, but cancel the
+    // assist before mergeKeyboard can mask a synthetic key-up sample.
+    if(nativeRouting&&frame.armed&&focused&&(sample.buttons&(XINPUT_GAMEPAD_A|XINPUT_GAMEPAD_X)))physicalBattleInput=true;
+    battleAssist(ok?keys:nullptr,battle,focused,frame.armed&&focused&&(!battle||route==combat_input::BattlePadRoute::Field)&&(routedSample.buttons&XINPUT_GAMEPAD_RIGHT_THUMB),frame.armed&&focused&&sample.connected&&!padContext.changed);
     if(!ok){cursorHidden=cursorArmed=false;menuDirection.update(sample,false);}
     if(ok&&mapReservedKeys&&nativeRouting&&worldScope&&frame.armed&&focused)InterlockedExchange(&mapPadButtons,((sample.buttons&XINPUT_GAMEPAD_BACK)?1:0)|((sample.buttons&XINPUT_GAMEPAD_RIGHT_THUMB)?2:0));
     if(ok&&nativeRouting){

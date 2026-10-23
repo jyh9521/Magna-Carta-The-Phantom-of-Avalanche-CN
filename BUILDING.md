@@ -273,3 +273,10 @@ python -m unittest discover -s tests -p 'test_damage*.py' -v
 
 原生资源链和GPU像素检查命令见[伤害数字绘制链](docs/DAMAGE_PROJECTION_REPAIR.md)。
 离屏HAL依赖本机系统D3D7能力；设备拒绝的分辨率如实保存HRESULT，不通过切换桌面模式规避。
+
+## 一次性连招辅助闭环回归
+
+新增 `combo_assist_chain_fixture`（生产输入持久适配器）和
+`combo_assist_context_fixture`（手动接管/模式/生命周期回归）目标。
+原生回放及真实资源摘要见[辅助判定链修正](docs/COMBO_ASSIST_CHAIN_REPAIR.md)。
+该流程不启动游戏；构建适配器后执行 `python -m unittest discover -s tests -p "test_combo*.py" -v`。

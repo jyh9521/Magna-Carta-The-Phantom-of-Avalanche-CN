@@ -308,3 +308,17 @@ target_compile_definitions(dialogue_voice_chain_fixture PRIVATE DIALOGUE_REVEAL_
 target_compile_options(dialogue_voice_chain_fixture PRIVATE /W4 /utf-8)
 set_property(TARGET dialogue_voice_chain_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded")
 target_link_libraries(dialogue_voice_chain_fixture PRIVATE user32 advapi32)
+
+# Persistent production input adapter for closed-loop original battle replay.
+add_executable(combo_assist_chain_fixture combo_assist_chain_fixture.cpp modern_gamepad.cpp modern_input.cpp world_gamepad.cpp camera_relative_input.cpp gamepad_cursor.cpp gamepad_ui.cpp ui_focus.cpp)
+target_compile_definitions(combo_assist_chain_fixture PRIVATE MODERN_INPUT_TEST)
+target_link_libraries(combo_assist_chain_fixture PRIVATE user32)
+set_property(TARGET combo_assist_chain_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+target_compile_options(combo_assist_chain_fixture PRIVATE /W4 /utf-8)
+
+# White-box input ownership checks include modern_gamepad.cpp exactly once.
+add_executable(combo_assist_context_fixture combo_assist_context_fixture.cpp modern_input.cpp world_gamepad.cpp camera_relative_input.cpp gamepad_cursor.cpp gamepad_ui.cpp ui_focus.cpp)
+target_compile_definitions(combo_assist_context_fixture PRIVATE MODERN_INPUT_TEST)
+target_link_libraries(combo_assist_context_fixture PRIVATE user32)
+set_property(TARGET combo_assist_context_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+target_compile_options(combo_assist_context_fixture PRIVATE /W4 /utf-8)
