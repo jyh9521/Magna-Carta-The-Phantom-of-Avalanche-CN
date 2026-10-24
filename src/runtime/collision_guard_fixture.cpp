@@ -5,10 +5,12 @@
 #include <vector>
 #include <cmath>
 static BYTE* image;static BYTE actor[0x340],scene[0x1740],gui[0x198],visual[0x150],model[0x80],bounds[0x80],level[0x100],guide[0x130],tree[0x40],node[0x50];
+static BYTE dealer[0x80],slots[3*40],parameters[56],characters[8],otherActor[0x340];
+static bool scriptDuringPhysics=false;
 static unsigned checks=0,calls=0,syncs=0,queries=0;static CollisionVec requested{},observed{};
 unsigned& word(void* p,unsigned o){return *reinterpret_cast<unsigned*>(static_cast<BYTE*>(p)+o);}
 void require(bool b,const char* why){++checks;if(!b){std::fprintf(stderr,"COLLISION_GUARD FAIL %s\n",why);ExitProcess(1);}}
-void __fastcall physics(void* p,void*){++calls;require(GetLastError()==0x2468,"original incoming error");memcpy(static_cast<BYTE*>(p)+0x154,&requested,12);SetLastError(0x1234);}
+void __fastcall physics(void* p,void*){++calls;require(GetLastError()==0x2468,"original incoming error");memcpy(static_cast<BYTE*>(p)+0x154,&requested,12);if(scriptDuringPhysics){word(slots,0)=202;word(slots,4)=1;word(slots,0x14)=DWORD(parameters);word(parameters,0)=10000;}SetLastError(0x1234);}
 int __fastcall point(void*,void*,float x,float,float){++queries;memset(tree+0x14,0x87,28);SetLastError(0xdead);return x<0;}
 void __fastcall synchronize(void* p,void*,float x,float y,float z){++syncs;observed={x,y,z};memcpy(static_cast<BYTE*>(p)+0x48,&observed,12);SetLastError(0xdead);}
 void logger(const wchar_t*){SetLastError(0xbad);}
@@ -21,10 +23,13 @@ CollisionVec run(float before,float after){reset(before);requested={after,0,0};B
 int __cdecl wall(CollisionVec p,void*){return p.x>=-1&&p.x<=1;}
 int __cdecl unknown(CollisionVec,void*){return -1;}
 int main(int argc,char** argv){
+ bool scripted=argc==2&&!strcmp(argv[1],"--scripted-motion");
  bool baseline=argc==2&&!strcmp(argv[1],"--baseline");
  image=static_cast<BYTE*>(VirtualAlloc(nullptr,0x10b000,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE));require(image!=nullptr,"owned image");initializeCollisionGuardFixture(image);
  word(actor,0)=DWORD(image+0xc11e4);word(actor,0x20)=DWORD(scene);word(actor,0x2dc)=DWORD(visual);
  word(scene,0)=DWORD(image+0xc12bc);word(scene,0x1564)=DWORD(actor);word(scene,0x1558)=DWORD(level);
+ word(scene,0x3c)=DWORD(dealer);word(dealer,0)=DWORD(image+0xc1320);word(dealer,0x54)=DWORD(scene);word(dealer,0x34)=DWORD(slots);word(dealer,0x38)=3;
+ word(scene,0x155c)=DWORD(characters);word(scene,0x1560)=2;word(characters,0)=DWORD(actor);word(characters,4)=DWORD(otherActor);word(otherActor,0x328)=1;
  word(scene,0x10c8)=DWORD(gui);word(gui,0x190)=1;
  word(level,0)=DWORD(image+0xc15ac);word(level,0xf4)=DWORD(guide);word(guide,0x120)=DWORD(tree);word(tree,0x30)=DWORD(node);
  word(visual,0x140)=DWORD(model);word(model,0x58)=DWORD(bounds);
@@ -32,6 +37,31 @@ int main(int argc,char** argv){
  configureCollisionGuardFixture(reinterpret_cast<void(__thiscall*)(void*)>(&physics),reinterpret_cast<int(__thiscall*)(void*,float,float,float)>(&point),reinterpret_cast<void(__thiscall*)(void*,float,float,float)>(&synchronize));
  if(baseline){reset(10);requested={-1,0,0};SetLastError(0x2468);physics(actor,nullptr);std::puts("COLLISION_GUARD BASELINE invalid_endpoint=accepted policy=absent game_started=false");return 1;}
  std::vector<BYTE> pristine(image,image+0x10b000);DWORD old;require(VirtualProtect(image,0x10b000,PAGE_EXECUTE_READ,&old)!=0,"owned RX image");require(installCollisionGuard(HMODULE(image),logger),"install");require(installCollisionGuard(HMODULE(image),logger),"idempotent");
+ if(scripted){
+  // Native 7591c resolves argument 10000 through scene+155c by actor+328.
+  // Mode 2 and zero event locks alone do not grant manual movement ownership.
+  word(slots,0)=202;word(slots,4)=1;word(slots,0x14)=DWORD(parameters);word(parameters,0)=10000;
+  auto p=run(10,-1);
+  if(p.x!=-1||syncs!=0){std::puts("SCRIPTED_MOTION FAIL mode=2 locks=0 opcode=202 authored_endpoint=rewritten game_started=false");return 1;}
+  for(unsigned op=202;op<=206;++op){word(slots,0)=op;for(unsigned tick=0;tick<30;++tick){
+   reset(10);requested={200,31,99.25f};SetLastError(0x2468);unsigned q=queries;invokeCollisionGuardFixture(actor);
+   memcpy(&p,actor+0x154,12);require(!memcmp(&p,&requested,12)&&queries==q&&syncs==0,"script XYZ retained, no collision queries");
+  }}
+  word(slots,0)=202;word(parameters,0)=10001;p=run(10,-1);
+  require(p.x>=2&&syncs==1,"ambient NPC script does not disable manual-player collision");
+  word(parameters,0)=10000;word(slots,0)=700;p=run(10,-1);
+  require(p.x>=2&&syncs==2,"non-movement commands retain collision protection");
+  word(slots,0)=0xffffffff;p=run(10,-1);require(p.x>=2&&syncs==3,"completed slot releases movement ownership despite stale parameters");
+  word(slots,0)=207;p=run(10,-1);require(p.x>=2&&syncs==4,"rotation-only script retains position collision");
+  word(slots,0)=202;word(slots,4)=0;p=run(10,-1);require(p.x==-1&&syncs==4,"pending mover owns next update too");
+  word(slots,0)=0xffffffff;scriptDuringPhysics=true;p=run(10,-1);scriptDuringPhysics=false;
+  require(p.x==-1&&syncs==4,"ownership acquired during native update excludes post correction");
+  word(actor,0x328)=7;word(parameters,0)=10007;p=run(10,-1);require(p.x==-1&&syncs==4,"current controlled actor need not have ID zero");word(actor,0x328)=0;word(parameters,0)=10000;
+  memcpy(slots+80,slots,40);word(slots,0)=0xffffffff;p=run(10,-1);require(p.x==-1&&syncs==4,"last allocated command slot included");word(slots+80,0)=0xffffffff;word(slots,0)=202;
+  word(dealer,0x38)=257;p=run(10,-1);require(p.x==-1&&syncs==4,"unknown script context preserves native movement");word(dealer,0x38)=3;
+  require(removeCollisionGuard(HMODULE(image)),"script rollback");require(!memcmp(image,pristine.data(),pristine.size()),"script whole image byte exact rollback");
+  std::puts("SCRIPTED_MOTION PASS opcodes=202-206 xyz=exact mode=2 locks=0 npc_collision=retained pending=excluded rollback=byte_exact game_started=false");return 0;
+ }
  auto p=run(10,9);require(p.x==9&&syncs==0,"free movement exact");
  p=run(10,-1);require(p.x>=2&&p.x<2.01f&&syncs==1&&observed.x==p.x,"new overlap clipped and visual synced");
  p=run(1,1);require(p.x>=2&&p.x<=2.5f&&syncs==2,"inside start recovered rather than all directions locked");

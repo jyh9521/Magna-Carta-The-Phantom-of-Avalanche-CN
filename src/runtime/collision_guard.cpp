@@ -26,11 +26,38 @@ int __cdecl query(CollisionVec v,void* value){
  __finally {memcpy(c->tree+0x14,scratch,28);SetLastError(incoming);}
  return result;
 }
+// Manual control is a separate ownership decision from the scene's mode and
+// event locks. Native handlers 7591c..766a3 can move the player while those
+// values still describe exploration. Never apply wall recovery to that motion.
+bool manualMovement(BYTE* actor,BYTE* scene){
+ auto dealer=ptr(scene,0x3c);
+ if(!readable(dealer,0x58)||ptr(dealer,0)!=engine+0xc1320||ptr(dealer,0x54)!=scene)return false;
+ auto slots=ptr(dealer,0x34);unsigned count=word(dealer,0x38);
+ if(count<1||count>256||!readable(slots,size_t(count)*40))return false;
+ for(unsigned i=0;i<count;++i){auto slot=slots+i*40;unsigned op=word(slot,0);
+  if(op<202||op>206)continue;
+  auto parameters=ptr(slot,0x14);if(!readable(parameters,56))return false;
+  int target=*reinterpret_cast<const int*>(parameters);if(target<10000)continue;
+  // Match native 6f14c exactly: first character with +328 == target-10000.
+  // Reading the list avoids invoking an additional engine method during physics.
+  unsigned n=word(scene,0x1560);auto characters=ptr(scene,0x155c);
+  if(n>4096||!readable(characters,size_t(n)*4))return false;
+  for(unsigned j=0;j<n;++j){auto candidate=ptr(characters,j*4);if(!candidate)continue;
+   if(!readable(candidate,0x32c))return false;
+   if(word(candidate,0x328)==unsigned(target-10000)){
+    if(candidate==actor)return false;
+    break;
+   }
+  }
+ }
+ return true;
+}
 bool select(BYTE* actor,Context& c,CollisionVec* offsets){
  if(!engine||!readable(actor,0x340)||ptr(actor,0)!=engine+0xc11e4)return false;
  auto scene=ptr(actor,0x20);
  if(!readable(scene,0x1738)||ptr(scene,0)!=engine+0xc12bc||ptr(scene,0x1564)!=actor
   ||word(scene,0x156c)!=2||word(scene,0x1574)!=0||word(scene,0x28)||word(scene,0x2c)||word(scene,0x30))return false;
+ if(!manualMovement(actor,scene))return false;
  auto gui=ptr(scene,0x10c8);if(!readable(gui,0x194)||word(gui,0x190)!=1)return false;
  // Read the exact eight offsets used by native 65c83 -> 47bef; no guessed radius.
  auto visual=ptr(actor,0x2dc);if(!readable(visual,0x144))return false;
@@ -79,7 +106,7 @@ bool set(BYTE* p,bool on,void(*logger)(const wchar_t*)){
   original=reinterpret_cast<Physics>(b);point=reinterpret_cast<Point>(p+0x8a6a4);synchronize=reinterpret_cast<Position>(p+0x4cc88);
 #endif
   if(!write(p+site,prefix,target,9)){VirtualFree(b,0,MEM_RELEASE);engine=bridge=nullptr;return false;}
-  if(trace)trace(L"COLLISION_GUARD_READY scope=exploration_player native_physics=retained offsets=native8 clearance_step=15 recovery_max=16 map_specific=false candidate=true");
+  if(trace)trace(L"COLLISION_GUARD_READY scope=manual_exploration_player scripted_movement=excluded native_physics=retained offsets=native8 clearance_step=15 recovery_max=16 map_specific=false candidate=true");
  }else{if(!write(p+site,target,prefix,9))return false;VirtualFree(bridge,0,MEM_RELEASE);engine=bridge=nullptr;trace=nullptr;}return true;
 }
 }

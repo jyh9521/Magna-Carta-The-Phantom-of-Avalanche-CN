@@ -24,6 +24,12 @@ class CollisionGuardTests(unittest.TestCase):
         self.assertEqual(a.returncode,0,a.stdout+a.stderr)
         self.assertIn('bounds=native8 rollback=byte_exact',a.stdout)
 
+    def test_scripted_player_motion_retains_native_xyz(self):
+        q=subprocess.run([str(self.fixture()),'--scripted-motion'],capture_output=True,text=True,timeout=30)
+        self.assertEqual(q.returncode,0,q.stdout+q.stderr)
+        self.assertIn('xyz=exact mode=2 locks=0 npc_collision=retained',q.stdout)
+        self.assertIn('rollback=byte_exact game_started=false',q.stdout)
+
     def test_real_bsp_compiled_kernel(self):
         p=ROOT/'runtime/data/MCAlpha.dll';k=ROOT/'build/native/Release/collision_kernel_replay.dll'
         if not p.exists() or not k.exists():self.skipTest('Local game geometry and owned compiled kernel required')
