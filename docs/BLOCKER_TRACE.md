@@ -66,3 +66,42 @@ powershell -NoProfile -ExecutionPolicy Bypass -File runtime/Shared-Blocker-Trace
 
 完整回归913项，3项按条件跳过，其余通过；之后更新的BSP父指针和计数检查由9项专项再次通过。
 原生回放、观察ABI、安装/撤回证据与实际游戏画面验收分别记录，不互相替代。
+
+## 258开场复测判断
+
+2026-10-24完整人工复测的日志SHA256为
+`4cc680ab9f3892e8d862d0fb82cd1dc4bd787285c6644182a10189ac757b9cba`。
+实际依次经过715、254、255、256、257、258；257→258在GetTickCount=347758187发生。
+现场描述为两次战斗及吉尔伯特对话后出现求救声、“那时……”独白，随后乔克出现恢复普通对白。
+该描述对应258/map279/FPB233，不应继续把最初715→254的记录当作这次黑屏点。
+
+**已验证脚本顺序**：258/event1/action1为503(8,1,0,0,100)，主动生成100%淡出幕；
+action6、8、11为603(470,1)、603(471,1)、603(472,1)独立声音。
+action10为507(30,0)，将既有淡出幕退回0并在完成后隐藏。
+前三条声音没有700普通对白命令；首条700在action29，FPB tag5、SVD1342。
+FPB233前部文字内容与现场求救及独白描述匹配，tag5为乔克出场时的短句。
+因此“先全黑仅声音、再恢复对话”的开场高置信判为原版演出，不是该存档损坏的证据。
+
+**原生依据**：MCAlpha SHA256为7e8649425217d3b99d52d11c679761a88c57b125c241b331aea5c25e00e3b15e，
+Field258为cff00dc78522d6de1845c1c80b5e697abd64cee94a2e9895c2910c6ab9cec9f8。
+dispatcher71b9b将503映到79bac、507映到79e34、603映到7ae06。
+79bac调用5850a操作scene+109c；79e34调用58821从现值向0移动，完成后隐藏；
+7ae06创建49720独立声音，loop=1时等待49b4c完成，不构造700的对白框。
+REA证据：ev_169f6135ef024267a3d82ac3bf3bbe8d2682363a18507e3fd66f90cb397251cb、
+ev_a351bc6acf0d074af6286252dc1837c0653863b6f420f6aab02f60a35eb0606b、
+ev_7aebcf3018c1e637f9cb489dab694d3feda246da88194c3d46b594ef6bc3fc00、
+ev_8fc8a0fd0d4458ae8d1975744cea67b989ab4b4c569a1e28f897112ae174e90d。
+
+**边界**：258只有进入时一组碰撞后状态采样，随后演出不再触发玩家碰撞采样。
+没有最终像素，也不能从缺少后续BLOCKER_FADE行推断幕停住。
+部分box_valid=0的未初始化/未使用效果对象含不确定阶段值，不能把pause=-1或这些值单独当作故障。
+未独立核验黑幕在具体语音字句上的消退时刻；该判断不外推到其他黑屏或水之迷宫卡死。
+本轮不修改游戏、运行模块、存档和设置，不强行取消原生黑幕。
+
+```powershell
+python tools/audit_story_blackout.py --source runtime/data --trace build/story-black-screen-20261024/profile.log --report build/story-black-screen-20261024/report.json
+python -m unittest discover -s tests -p test_story_blackout.py -v
+```
+
+审计对源摘要、目标黑幕、独立声音、退幕及首个普通对白顺序作精确检查；反例分别改变目标为0、
+移除退幕、提前插入普通对白及截断命令，均拒绝当作该演出。该检查验证脚本意图，不伪装成画面红绿测试。
