@@ -6,7 +6,8 @@
 static BYTE* image;
 static void* partObject=nullptr;
 static BYTE bones[12]{};
-static float offset=0,body=0,part=0;
+static float offset=0,body=0,part=0,bodyHeight=0,partHeight=0;
+static bool cutCase=false;
 static bool throwing=false;
 static bool affineSkin=false;
 static float partScale=.5f;
@@ -16,12 +17,12 @@ void __cdecl absolute(void*,unsigned,MotionMatrix*,MotionMatrix*){++calls;}
 void __fastcall draw(void* value,void*,int,MotionMatrix* parent,int,int,int,int,int){
  auto o=static_cast<BYTE*>(value);auto pose=*reinterpret_cast<MotionMatrix**>(o+0x8c);
  float scale=affineSkin&&value==partObject?partScale:1.f;
- pose[0]=identity(offset/scale);
+ pose[0]=identity(offset/scale);if(cutCase)pose[0].v[14]=offset/scale;
  *reinterpret_cast<MotionMatrix*>(o+0xc)=parent?*parent:identity(0);
  (*reinterpret_cast<MotionAbsoluteFn*>(image+0xbd0a4))(bones,0,pose,nullptr);
  auto w=reinterpret_cast<MotionMatrix*>(o+0xc);
  float x=pose[0].v[12]*w->v[0]+w->v[12];
- if(value==partObject)part=x;else body=x;
+ if(value==partObject){part=x;partHeight=pose[0].v[14]*w->v[10]+w->v[14];}else{body=x;bodyHeight=pose[0].v[14]*w->v[10]+w->v[14];}
  if(throwing)RaiseException(0xe0000101,0,0,nullptr);
 }
 void require(bool ok,const char* s){if(!ok){printf("RIGID_MOTION FAIL %s body=%.6f part=%.6f\n",s,body,part);fflush(stdout);ExitProcess(1);}}
@@ -31,6 +32,7 @@ void emit(unsigned rva,unsigned prefix){
 }
 bool seh(MotionRenderFn r,void* o,MotionMatrix* parent){__try{r(o,1,parent,0,0,0,0,0);}__except(EXCEPTION_EXECUTE_HANDLER){return true;}return false;}
 int main(int argc,char** argv){
+ bool sceneCut=argc==2&&(!strcmp(argv[1],"--scene-cut")||!strcmp(argv[1],"--scene-cut-baseline"));bool oldCut=argc==2&&!strcmp(argv[1],"--scene-cut-baseline");cutCase=sceneCut;
  affineSkin=argc==2&&(!strcmp(argv[1],"--affine-skin")||!strcmp(argv[1],"--reflected-skin"));
  if(argc==2&&!strcmp(argv[1],"--reflected-skin"))partScale=-.5f;
  image=static_cast<BYTE*>(VirtualAlloc(nullptr,0x10b000,MEM_COMMIT|MEM_RESERVE,PAGE_EXECUTE_READWRITE));require(image,"allocation");motion60TestInitialize(image,absolute);
@@ -52,9 +54,22 @@ int main(int argc,char** argv){
  auto parent=identity(0),partParent=identity(0);
  if(affineSkin){partParent.v[0]=partScale;partParent.v[5]=partParent.v[10]=.5f;}
  motion60TestTick(0,0,1000);skin(a,0,&parent,0,0,0,0,0);rigid(b,0,&partParent,0,0,0,0,0);
- offset=10;parent=identity(20);partParent.v[12]=20;motion60TestTick(1,0,1033);*reinterpret_cast<unsigned*>(a+0xf8)=1;
+ offset=10;parent=identity(20);partParent.v[12]=20;if(cutCase)parent.v[14]=partParent.v[14]=20;motion60TestTick(1,0,1033);*reinterpret_cast<unsigned*>(a+0xf8)=1;
  if(affineSkin)*reinterpret_cast<unsigned*>(b+0xf8)=1;
  skin(a,1,&parent,0,0,0,0,0);rigid(b,1,&partParent,0,0,0,0,0);
+ if(sceneCut){
+  // Same model, action, pose allocation and logical tick; a new Field/CG must
+  // not inherit the preceding scene's body height or camera/world history.
+  if(!oldCut)motion60SceneBoundary(reinterpret_cast<void*>(1),346,4);
+  skin(a,1,&parent,0,0,0,0,0);rigid(b,1,&partParent,0,0,0,0,0);
+  require(std::abs(body-30)<.0001f&&std::abs(part-30)<.0001f&&std::abs(bodyHeight-30)<.0001f&&std::abs(partHeight-30)<.0001f,"CG_cut_must_not_replay_old_scene_position");
+  if(!oldCut)motion60SceneBoundary(reinterpret_cast<void*>(1),346,4);
+  motion60TestTick(0,16,1049);skin(a,1,&parent,0,0,0,0,0);rigid(b,1,&partParent,0,0,0,0,0);
+  require(std::abs(body-30)<.0001f&&std::abs(part-30)<.0001f&&std::abs(bodyHeight-30)<.0001f&&std::abs(partHeight-30)<.0001f,"held_cut_frame_must_remain_at_new_position");
+  require(pa.v[12]==10&&pb.v[12]==10,"native_pose_restored_after_cut");
+  require(motion60TestSetMapped(image,0x10b000,absolute,false),"cut rollback");
+  puts("CG_SCENE_CUT PASS reused_model=true old_position=discarded body_part_height=exact held_frame=stable render60=retained native_pose=restored game_started=false");return 0;
+ }
  require(std::abs(body-part)<.0001f,"body_and_rigid_part_must_share_tick_start");
  for(unsigned r=1;r<33;++r){motion60TestTick(0,r,1033+r);skin(a,1,&parent,0,0,0,0,0);rigid(b,1,&partParent,0,0,0,0,0);
   require(std::abs(body-part)<.0001f&&std::abs(body-30.f*r/33)<.0001f,"body_and_rigid_part_must_share_all_midpoints");

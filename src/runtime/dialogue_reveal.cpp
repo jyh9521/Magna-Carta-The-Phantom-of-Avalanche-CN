@@ -12,8 +12,10 @@ using Playing=int(__thiscall*)(void*,int);
 constexpr unsigned voiceCallRva=0x5afee;
 constexpr BYTE nativeVoiceCall[]={0xe8,0xd8,0xee,0xfe,0xff};
 constexpr BYTE playingPrefix[]={0x55,0x8b,0xec,0x83,0xec,0x08,0x89,0x4d,0xf8,0x8b,0x45,0x08,0x50,0x8b,0x4d,0xf8};
+using PauseStream=void(WINAPI*)(void*,int);
+PauseStream originalPause=nullptr;
 Tick originalVoice=nullptr;Playing originalPlaying=nullptr;
-struct Voice {BYTE* dialogue;DWORD source;BYTE* object;DWORD resource;int channel;DWORD stream;ULONGLONG deadline;bool waiting;};
+struct Voice {BYTE* dialogue;DWORD source;BYTE* object;DWORD resource;int channel;DWORD stream;ULONGLONG deadline;bool waiting;bool audioPaused=false;ULONGLONG remaining=0;};
 std::vector<Voice> voices;
 #ifdef DIALOGUE_REVEAL_TEST
 void* audioFixture=nullptr;
@@ -57,12 +59,12 @@ void voiceWaitTrace(const Voice& voice,const wchar_t* stage,const wchar_t* reaso
 bool voicePlaying(BYTE* p){
  for(auto i=voices.begin();i!=voices.end();){
   if(i->dialogue!=p){++i;continue;}
-  if(i->source!=DWORD(field(p,0x1e0))||field(p,0x190)==6||GetTickCount64()>=i->deadline||
+  if(i->source!=DWORD(field(p,0x1e0))||field(p,0x190)==6||(!i->audioPaused&&GetTickCount64()>=i->deadline)||
      !readable(i->object,0x134)||!readable(reinterpret_cast<void*>(i->resource),8)||
      DWORD(field(i->object,0))!=DWORD(engine+0xbe620)||DWORD(field(i->object,0x120))!=i->resource||field(i->object,0x124)!=2||
      field(reinterpret_cast<BYTE*>(i->resource),4)!=i->channel){if(i->waiting)voiceWaitTrace(*i,L"end",L"identity_or_lifetime");i=voices.erase(i);continue;}
   void* audio=audioManager();if(!i->stream||voiceStream(audio,i->channel)!=i->stream){if(i->waiting)voiceWaitTrace(*i,L"end",L"stream_changed");voices.erase(i);return false;}
-  bool playing=audio&&originalPlaying&&originalPlaying(audio,i->channel)>0;
+  bool playing=i->audioPaused||(audio&&originalPlaying&&originalPlaying(audio,i->channel)>0);
   if(playing&&!i->waiting)voiceWaitTrace(*i,L"begin",L"automatic_expiry");
   if(!playing&&i->waiting)voiceWaitTrace(*i,L"end",L"playback_complete");
   i->waiting=playing;return playing;
@@ -133,7 +135,16 @@ bool codeWrite(BYTE* p,const BYTE* from,const BYTE* to){
  if(!ok)memcpy(p,from,5);DWORD ignored;
  if(!VirtualProtect(p,5,old,&ignored)){memcpy(p,from,5);FlushInstructionCache(GetCurrentProcess(),p,5);VirtualProtect(p,5,old,&ignored);return false;}return ok;
 }
+void WINAPI pauseStreamHook(void* stream,int pause){
+ DWORD error=GetLastError();auto now=GetTickCount64();
+ for(auto& v:voices)if(v.stream==DWORD(stream)){
+  if(pause&&!v.audioPaused){v.remaining=v.deadline>now?v.deadline-now:0;v.audioPaused=true;}
+  else if(!pause&&v.audioPaused){v.deadline=now+v.remaining;v.audioPaused=false;}
+ }
+ SetLastError(error);originalPause(stream,pause);
+}
 bool set(BYTE* p,bool on,void(*logger)(const wchar_t*)){
+ originalPause=reinterpret_cast<PauseStream>(GetProcAddress(GetModuleHandleW(L"Mss32.dll"),"_AIL_pause_stream@8"));
  // PE sections have independent page protections, and discarded sections may
  // be unreadable. Check only the exact headers/code/slots used by this hook.
  if(!readable(p,sizeof(IMAGE_DOS_HEADER)))return false;auto d=reinterpret_cast<IMAGE_DOS_HEADER*>(p);if(d->e_magic!=IMAGE_DOS_SIGNATURE||d->e_lfanew<=0||d->e_lfanew>4096)return false;
@@ -149,19 +160,26 @@ bool set(BYTE* p,bool on,void(*logger)(const wchar_t*)){
  if(!readable(p+voiceCallRva-3,8)||memcmp(p+voiceCallRva-3,"\x8b\x4d\xe0",3)||!readable(p+0x6329,sizeof(playingPrefix))||memcmp(p+0x6329,playingPrefix,sizeof(playingPrefix)))return false;
  BYTE voiceHook[5]={0xe8};*reinterpret_cast<DWORD*>(voiceHook+1)=DWORD(&voiceStartBridge)-DWORD(p+voiceCallRva+5);
  bool voiceBase=!memcmp(p+voiceCallRva,nativeVoiceCall,5),voiceInstalled=!memcmp(p+voiceCallRva,voiceHook,5);
- unsigned rvas[]={tables[0]+4,tables[0]+36,tables[1]+4,tables[1]+36};
- DWORD native[]={DWORD(p+0x5b1c5),DWORD(p+0x5c277),DWORD(p+0x5b1c5),DWORD(p+0x5c277)};
- DWORD hooks[]={DWORD(&tickHook),DWORD(&eventHook),DWORD(&tickHook),DWORD(&eventHook)};
- bool allBase=true,allHook=true;for(unsigned i=0;i<4;++i){DWORD v=*reinterpret_cast<DWORD*>(p+rvas[i]);allBase&=v==native[i];allHook&=v==hooks[i];}
+ bool usePause=originalPause&&readable(p+0xbd4ec,4);
+#ifdef DIALOGUE_REVEAL_TEST
+ usePause=usePause&&(DWORD(field(p,0xbd4ec))==DWORD(originalPause)||(engine==p&&DWORD(field(p,0xbd4ec))==DWORD(&pauseStreamHook)));
+#else
+ if(!usePause)return false;
+#endif
+ const unsigned count=usePause?5:4;
+ unsigned rvas[]={tables[0]+4,tables[0]+36,tables[1]+4,tables[1]+36,0xbd4ec};
+ DWORD native[]={DWORD(p+0x5b1c5),DWORD(p+0x5c277),DWORD(p+0x5b1c5),DWORD(p+0x5c277),DWORD(originalPause)};
+ DWORD hooks[]={DWORD(&tickHook),DWORD(&eventHook),DWORD(&tickHook),DWORD(&eventHook),DWORD(&pauseStreamHook)};
+ bool allBase=true,allHook=true;for(unsigned i=0;i<count;++i){DWORD v=*reinterpret_cast<DWORD*>(p+rvas[i]);allBase&=v==native[i];allHook&=v==hooks[i];}
  allBase&=voiceBase;allHook&=voiceInstalled;if(!allBase&&!(allHook&&engine==p))return false;if(on&&allHook)return true;if(!on&&allBase)return true;
  if(on){engine=p;trace=logger;paused=nullptr;voices.clear();
 #ifndef DIALOGUE_REVEAL_TEST
  originalVoice=reinterpret_cast<Tick>(p+0x49ecb);originalPlaying=reinterpret_cast<Playing>(p+0x6329);originalTick=reinterpret_cast<Tick>(p+0x5b1c5);originalEvent=reinterpret_cast<Event>(p+0x5c277);originalReveal=reinterpret_cast<Tick>(p+0x5b9af);
 #endif
  }
- unsigned done=0;for(;done<4;++done)if(!write(reinterpret_cast<DWORD*>(p+rvas[done]),on?native[done]:hooks[done],on?hooks[done]:native[done])){for(unsigned j=0;j<done;++j)write(reinterpret_cast<DWORD*>(p+rvas[j]),on?hooks[j]:native[j],on?native[j]:hooks[j]);return false;}
+ unsigned done=0;for(;done<count;++done)if(!write(reinterpret_cast<DWORD*>(p+rvas[done]),on?native[done]:hooks[done],on?hooks[done]:native[done])){for(unsigned j=0;j<done;++j)write(reinterpret_cast<DWORD*>(p+rvas[j]),on?hooks[j]:native[j],on?native[j]:hooks[j]);return false;}
  if(!codeWrite(p+voiceCallRva,on?nativeVoiceCall:voiceHook,on?voiceHook:nativeVoiceCall)){
-  for(unsigned j=0;j<4;++j)write(reinterpret_cast<DWORD*>(p+rvas[j]),on?hooks[j]:native[j],on?native[j]:hooks[j]);return false;
+  for(unsigned j=0;j<count;++j)write(reinterpret_cast<DWORD*>(p+rvas[j]),on?hooks[j]:native[j],on?native[j]:hooks[j]);return false;
  }
  if(!on){paused=nullptr;voices.clear();}if(on&&trace)trace(L"DIALOGUE_REVEAL_READY mouse=left_press keyboard=space_release native_page_boundary=preserved");return true;
 }
@@ -173,4 +191,14 @@ void initializeDialogueRevealFixture(BYTE* p){memset(p,0,imageSize);auto d=reint
 void configureDialogueRevealFixture(Event e,Tick t,Tick r){originalEvent=e;originalTick=t;originalReveal=r;}
 void configureDialogueVoiceFixture(Tick start,Playing playing,void* audio){originalVoice=start;originalPlaying=playing;audioFixture=audio;}
 void startDialogueVoiceFixture(BYTE* voice,BYTE* dialogue,int duration){voiceStartHook(voice,dialogue,duration);}
+#endif
+
+void* dialogueCaptionStream(void* value){
+ auto p=static_cast<BYTE*>(value);if(!engine||!readable(p,0x200)||field(p,0x190)<2||field(p,0x190)>4)return nullptr;
+ for(const auto& v:voices)if(v.dialogue==p&&v.source==DWORD(field(p,0x1e0))&&readable(v.object,0x134)&&readable(reinterpret_cast<void*>(v.resource),8)&&DWORD(field(v.object,0))==DWORD(engine+0xbe620)&&DWORD(field(v.object,0x120))==v.resource&&field(v.object,0x124)==2&&voiceStream(audioManager(),v.channel)==v.stream)return reinterpret_cast<void*>(v.stream);
+ return nullptr;
+}
+
+#ifdef DIALOGUE_REVEAL_TEST
+void expireDialogueVoiceDeadlineFixture(){for(auto& voice:voices)voice.deadline=0;}
 #endif

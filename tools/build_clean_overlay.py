@@ -43,7 +43,8 @@ def enable_test_candidates(release,payload):
  payload['Play-stable.cmd']=b'@echo off\r\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Start.ps1" -Recipe configured -WithoutTestCandidates\r\nif errorlevel 1 pause\r\n'
  for n in ('Start.ps1','Play-stable.cmd'):release['files'][n]=raw_sha(payload[n])
 
-def build(previous,previous_sha256,runtime,output,*,test_candidates=False):
+def build(previous,previous_sha256,runtime,output,*,test_candidates=False,frame_rate=30):
+ if type(frame_rate) is not int or frame_rate not in (30,60):raise ValueError('Unsupported test frame rate')
  previous,runtime,output=map(lambda p:Path(p).resolve(),(previous,runtime,output))
  if output.exists() or output.suffix!='.zip' or output.is_relative_to(runtime) or output==previous:raise ValueError('Independent new archive required')
  if sha(previous)!=previous_sha256:raise ValueError('Source package drift')
@@ -66,7 +67,7 @@ def build(previous,previous_sha256,runtime,output,*,test_candidates=False):
  if '--in-place-overlay'.encode('utf-16le') not in payload.get('modules/workspace_launcher.exe',b''):raise ValueError('Flat-capable native launcher required')
  if b"$layout -notin @('data','.')" not in payload['Start.ps1']:raise ValueError('Flat layout launcher unavailable')
  release['files']['Start.ps1']=raw_sha(payload['Start.ps1'])
- payload['config/enhancements.json']=(json.dumps(dict(schema=2,resolution='1080p',window_mode='borderless',frame_rate=30,native_gamepad=False,free_view=False,window_resolution='1280x720'),indent=2)+'\n').encode()
+ payload['config/enhancements.json']=(json.dumps(dict(schema=2,resolution='1080p',window_mode='borderless',frame_rate=frame_rate,native_gamepad=False,free_view=False,window_resolution='1280x720'),indent=2)+'\n').encode()
  with zipfile.ZipFile(previous) as old:
   if old.testzip():raise ValueError('Source ZIP CRC')
   base=json.loads(old.read('package.json'))
@@ -96,17 +97,17 @@ def build(previous,previous_sha256,runtime,output,*,test_candidates=False):
   '保留测试者已有的纯净备份，不要覆盖唯一备份。包内不是完整游戏，不含未修改的游戏资源。\r\n'
   '解压完成直接双击本层 Play.cmd 启动，Configure.cmd 设置分辨率、窗口模式及30/60帧。\r\n'
   '不需要 Install.cmd、Python、旧更新包或移动到data目录。不要直接启动原 MagnaCarta.exe。\r\n'
-  '默认1080P、无边框、30帧、键鼠；可选择60帧。手柄和自由视角已经归档，不包含在现行功能中。\r\n'
+  f'默认1080P、无边框、{frame_rate}帧、键鼠；设置中仍可选择30/60帧。手柄和自由视角已经归档，不包含在现行功能中。\r\n'
   'F10普通连招辅助、F11暴走辅助；F5随机遇敌开关默认开启，切换后右下角短提示1.8秒。\r\n'
-  '包含四类模型插帧、宽屏与高分辨率文字、高清标题/图片、继续游戏/键鼠、楼梯/GUI等既有修正及当前F5提示候选。\r\n'
-  '所有候选的游戏画面仍由测试者确认；F5提示消失问题正在复核；换区崩溃和眼球偶发外突未宣称修复。\r\n'
+  '包含四类模型插帧、宽屏与高分辨率文字、高清标题/图片、继续游戏/键鼠、楼梯/GUI等既有修正及F5后缓冲提示、剧情字幕及CG转场历史隔离。\r\n'
+  '所有候选的游戏画面仍由测试者确认；换区崩溃和眼球偶发外突未宣称修复。\r\n'
   '可选双击 Verify-Overlay.cmd 检查覆盖文件。cache/profile.log保留运行记录。\r\n'
   '撤回：双击 Restore-Original.cmd，输入独立纯净备份目录；先完整预检摘要，再恢复覆盖的原资源。\r\n'
   '回滚保留存档、个人设置、显示INI和日志；恢复后使用原游戏入口，现代化入口会按版本锁拒绝原资源。\r\n').encode()
  if test_candidates:
   payload['README-Overlay.txt']+=('本版统一测试：普通Play.cmd及Configure.cmd中的启动均默认启用通用卡墙、采样声音后端候选及接触记录。\r\n'
    '卡墙候选阻止新增穿入并尝试局部脱离；声音候选优先软件后端，失败时保留原生后备。\r\n'
-   '两项仍需游戏内验收，不是宣称卡墙和全部连招缺声已经修好。正常剧情黑幕保留。\r\n'
+   '两项仍需游戏内验收，不是宣称卡墙和全部连招缺声已经修好。正常剧情黑幕保留，字幕绘制在黑幕上方；音频暂停、跳过和切场按实际生命周期处理，60帧保留。\r\n'
    '对照测试用Play-stable.cmd：保留此前修复，只关闭本次卡墙/声音候选和接触记录。\r\n'
    '不要叠加旧的Blocker、Contact-Audio或Collision小更新；本包已包含最新模块。\r\n').encode('utf8')
  manifest=dict(schema=1,kind='clean_game_overlay',layout='flat',source_files=base['source_files'],changes=[{k:r[k] for k in ('resource','source_sha256','target_sha256','target_size')} for r in base['changes']],files={n:raw_sha(b) for n,b in payload.items()},source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),previous_sha256=previous_sha256,in_game_verified=False,engine_fixes=validate_engine_fixes(runtime,current))
@@ -127,5 +128,6 @@ if __name__=='__main__':
  p=argparse.ArgumentParser(description=__doc__)
  for n in ('previous','runtime','output'):p.add_argument('--'+n,type=Path,required=True)
  p.add_argument('--previous-sha256',required=True)
+ p.add_argument('--frame-rate',type=int,choices=(30,60),default=30)
  p.add_argument('--test-candidates',action='store_true')
  build(**vars(p.parse_args()))

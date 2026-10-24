@@ -191,3 +191,8 @@ game_native_font、UTF-16 RT_DIALOG与MessageBoxA分别处理。13处原生字�
 [声音后端候选](docs/AUDIO_PROVIDER_POLICY.md)。黑屏与通用卡墙仍为开放问题。
 
 Asura 两条基础 renderer 的直接绝对骨骼调用与 MCAlpha 派生实现不同，资源句柄表也不同；现统一接入显示相位。F5 只包围随机遇敌判定，不改剧情战斗。地址、摘要、静态证据及验证边界见 [发布功能调整](docs/RELEASE_CONTROLS_2026-10-23.md)。
+
+## 剧情字幕与最终画面层（2026-10-25）
+
+全量Field音频审计、原黑幕上方字幕、真实音频生命周期、首次F5后缓冲提示、
+60帧CG转场渲染历史隔离及验证边界见 [剧情画面层](docs/STORY_OVERLAY.md)。

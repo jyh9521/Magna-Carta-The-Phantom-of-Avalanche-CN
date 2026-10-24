@@ -382,3 +382,39 @@ endif()
 if(LOCALE_ENGINE_SHA256)
  target_compile_definitions(overlay_launch_fixture PRIVATE LOCALE_ENGINE_SHA256="${LOCALE_ENGINE_SHA256}")
 endif()
+
+target_sources(workspace_profile PRIVATE frame_overlay.cpp)
+add_executable(frame_overlay_fixture frame_overlay_fixture.cpp frame_overlay.cpp encounter_control.cpp)
+target_compile_definitions(frame_overlay_fixture PRIVATE FRAME_OVERLAY_TEST ENCOUNTER_CONTROL_TEST)
+target_link_libraries(frame_overlay_fixture PRIVATE user32 gdi32)
+set_property(TARGET frame_overlay_fixture PROPERTY MSVC_RUNTIME_LIBRARY MultiThreaded)
+
+target_sources(workspace_profile PRIVATE sample_clock.cpp)
+add_executable(sample_clock_fixture sample_clock_fixture.cpp sample_clock.cpp)
+target_compile_definitions(sample_clock_fixture PRIVATE SAMPLE_CLOCK_TEST)
+set_property(TARGET sample_clock_fixture PROPERTY MSVC_RUNTIME_LIBRARY MultiThreaded)
+
+find_package(Python3 COMPONENTS Interpreter REQUIRED)
+set(STORY_CAPTION_CATALOG "${CMAKE_CURRENT_SOURCE_DIR}/../../locales/zh-CN/story-captions.json" CACHE FILEPATH "Locale caption catalog")
+set(STORY_CAPTION_SOURCE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../runtime/data" CACHE PATH "User supplied source resource directory")
+file(GLOB STORY_TRANSLATION_FILES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../../locales/*/text/*.json")
+add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/story_caption_data.h"
+ COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/../../tools/build_story_captions.py" --catalog "${STORY_CAPTION_CATALOG}" --source "${STORY_CAPTION_SOURCE_ROOT}" --output "${CMAKE_CURRENT_BINARY_DIR}/story_caption_data.h"
+ DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../../tools/build_story_captions.py" "${STORY_CAPTION_CATALOG}" ${STORY_TRANSLATION_FILES}
+ VERBATIM)
+add_custom_target(story_caption_data DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/story_caption_data.h")
+add_dependencies(workspace_profile story_caption_data)
+target_include_directories(workspace_profile PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+target_sources(workspace_profile PRIVATE story_captions.cpp)
+
+add_executable(story_captions_fixture story_captions_fixture.cpp story_captions.cpp sample_clock.cpp)
+target_compile_definitions(story_captions_fixture PRIVATE STORY_CAPTIONS_TEST SAMPLE_CLOCK_TEST)
+target_include_directories(story_captions_fixture PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+add_dependencies(story_captions_fixture story_caption_data)
+target_link_libraries(story_captions_fixture PRIVATE user32 gdi32)
+set_property(TARGET story_captions_fixture PROPERTY MSVC_RUNTIME_LIBRARY MultiThreaded)
+
+add_library(owned_sample_api SHARED owned_sample_api.cpp)
+set_target_properties(owned_sample_api PROPERTIES OUTPUT_NAME Mss32 RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/owned_audio_clock")
+set_property(TARGET owned_sample_api PROPERTY MSVC_RUNTIME_LIBRARY MultiThreaded)
+add_dependencies(sample_clock_fixture owned_sample_api)

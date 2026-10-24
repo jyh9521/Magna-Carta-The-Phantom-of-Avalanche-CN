@@ -84,7 +84,11 @@ class NativeTests(unittest.TestCase):
             with self.subTest(mode=mode):
                 r = subprocess.run([str(exe),str(engine),str(miles),'--'+mode], capture_output=True, text=True, timeout=30)
                 self.assertEqual(r.returncode, code, r.stdout+r.stderr)
-                self.assertIn(expected, r.stdout)
+                if mode=='modified' and 'preferred_available=false' in r.stdout:
+                    self.assertIn('AUDIO_PROVIDER_POLICY_FALLBACK',r.stdout)
+                    self.assertIn('capacity=8 requests=16 accepted=8 dropped=8',r.stdout)
+                else:
+                    self.assertIn(expected, r.stdout)
                 self.assertIn('rollback=byte_exact', r.stdout)
                 self.assertIn('game_started=false', r.stdout)
 

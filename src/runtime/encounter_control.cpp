@@ -1,6 +1,7 @@
 #include "encounter_control.h"
 #include <cstring>
 #include <cwchar>
+#include "panel_canvas.h"
 namespace {
 constexpr unsigned rva=0x6e07d,imageSize=0x10b000;
 constexpr BYTE prefix[]={0x55,0x8b,0xec,0x83,0xec,0x0c};
@@ -105,11 +106,22 @@ DWORD WINAPI threadMain(void*){
 }
 void startUi(){
 #ifndef ENCOUNTER_CONTROL_TEST
+ if(frameOverlayAvailable())return;
  if(InterlockedCompareExchange(&uiStarted,1,0))return;
  stopEvent=CreateEventW(nullptr,TRUE,FALSE,nullptr);if(stopEvent)uiThread=CreateThread(nullptr,0,threadMain,nullptr,0,nullptr);
  if(!uiThread){if(stopEvent)CloseHandle(stopEvent);stopEvent=nullptr;if(trace)trace(L"ENCOUNTER_HUD_FAILED thread_creation=true");}
 #endif
 }
+}
+bool encounterFramePanel(int width,int height,FramePanel& out){
+ const LONG serial=InterlockedCompareExchange(&toastSerial,0,0);
+ const auto at=static_cast<ULONGLONG>(InterlockedCompareExchange64(&toastAt,0,0));
+ if(!serial||GetTickCount64()-at>=1800||width<64||height<96)return false;
+ int h=height/36;if(h<24)h=24;if(h>48)h=48;int w=h*10;if(w>width-16)w=width-16;
+ static PanelCanvas canvas;static LONG painted=0;bool changed=canvas.width!=w||canvas.height!=h;
+ if(!canvas.resize(w,h))return false;
+ if(changed||painted!=serial){paint(canvas.dc,w,h);GdiFlush();painted=serial;}
+ out={width-w-8,height-h-8,w,h,canvas.pixels};return true;
 }
 bool encountersEnabled(){return InterlockedCompareExchange(&enabled,0,0)!=0;}
 const wchar_t* encounterStatus(){return encountersEnabled()?onLabel:offLabel;}
@@ -122,10 +134,16 @@ bool installEncounterControl(HMODULE module,void(*logger)(const wchar_t*)){
  if(!mapped(reinterpret_cast<BYTE*>(module),imageSize,true))return false;trace=logger;
  wchar_t label[128]{};DWORD n=GetEnvironmentVariableW(L"MC_ENCOUNTER_ON",label,128);if(n&&n<128)wcscpy_s(onLabel,label);
  n=GetEnvironmentVariableW(L"MC_ENCOUNTER_OFF",label,128);if(n&&n<128)wcscpy_s(offLabel,label);
+#ifndef ENCOUNTER_CONTROL_TEST
+ if(frameOverlayAvailable()){setFramePanel(1,&encounterFramePanel);if(trace)trace(L"ENCOUNTER_FRAME_READY cold_start=direct_backbuffer alt_tab_required=false duration_ms=1800");}
+#endif
  if(trace)trace(L"ENCOUNTER_CONTROL_READY initial=on key=F5 scope=random_only counters=preserved scripts=unchanged");return true;
 }
 bool removeEncounterControl(){
  if(!engine)return true;if(!mapped(engine,imageSize,false))return false;
+#ifndef ENCOUNTER_CONTROL_TEST
+ if(frameOverlayAvailable())setFramePanel(1,nullptr);
+#endif
  if(stopEvent){SetEvent(stopEvent);WaitForSingleObject(uiThread,3000);CloseHandle(uiThread);CloseHandle(stopEvent);uiThread=stopEvent=nullptr;}return true;
 }
 #ifdef ENCOUNTER_CONTROL_TEST

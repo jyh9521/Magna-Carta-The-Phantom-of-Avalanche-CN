@@ -487,3 +487,19 @@ bool motion60TestDriverSet(BYTE* p,bool enabled){return setDriver(p,enabled,null
 bool motion60TestNativeMapped(BYTE* p,size_t size,bool enabled){return nativeMapped(p,size,enabled);}
 bool motion60TestNativeSource(void* p,bool rigid){return nativeSourceCall(p,rigid);}
 #endif
+
+void motion60SceneBoundary(void* scene,unsigned field,unsigned mode){
+ static void* previousScene=nullptr;static unsigned previousField=~0u,previousMode=~0u;
+ if(previousScene==scene&&previousField==field&&previousMode==mode)return;
+ previousScene=scene;previousField=field;previousMode=mode;
+ // A new scene/CG can reuse the same model, action and matrix allocation.
+ // Render history is invalid across that authored cut, even when the engine
+ // scheduler owner/generation and animation frame happen to stay unchanged.
+ motion60SceneCut();
+ if(trace)trace(L"MOTION60_SCENE_BOUNDARY history=discarded logic_clock=unchanged renderer60=retained");
+}
+
+void motion60SceneCut(){
+ AcquireSRWLockExclusive(&cacheLock);caches.clear();histories.clear();ReleaseSRWLockExclusive(&cacheLock);
+ cameraTrack.reset();cameraState.valid=false;render_input::inputView.reset();
+}

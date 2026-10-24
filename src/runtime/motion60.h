@@ -39,3 +39,6 @@ void motion60TestFreeView(bool enabled,bool toggle,bool reset,float yaw,float se
 bool motion60TestNativeMapped(BYTE*,size_t,bool);
 bool motion60TestNativeSource(void*,bool);
 #endif
+
+void motion60SceneBoundary(void*,unsigned,unsigned);
+void motion60SceneCut();

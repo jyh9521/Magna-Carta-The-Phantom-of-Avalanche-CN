@@ -1,5 +1,7 @@
 #include "map_overlay.h"
 #include "encounter_control.h"
+#include "frame_overlay.h"
+#include "story_captions.h"
 #include "window_mode.h"
 #include "world_gamepad.h"
 #include "current_texture_lifetime.h"
@@ -240,6 +242,8 @@ void patch(HMODULE module) {
         trace(L"SYSTEM_MESSAGES_REJECTED");ExitProcess(125);
     }
     if(localizedModule){
+        if(!installFrameOverlay(module,trace)){trace(L"FRAME_OVERLAY_REJECTED");ExitProcess(125);}
+        if(!installStoryCaptions(module,trace)){trace(L"STORY_CAPTIONS_REJECTED");ExitProcess(125);}
         if(!installEncounterControl(module,trace)){trace(L"ENCOUNTER_CONTROL_REJECTED");ExitProcess(125);}
         setNativeKeyboardObserver(&encounterKeyboard);
     }

@@ -1,0 +1,752 @@
+{
+  "schema": 1,
+  "locale": "zh-CN",
+  "scope": "all_field_opcode603_resources",
+  "resources": [
+    {
+      "id": 69,
+      "audio_sha256": "d223f69e82bc968ae2c258d958bb028a2c8e1b141dba84e2d6b2c628d075a7be",
+      "duration_ms": 496,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 101,
+      "audio_sha256": "368dd6509010a210031b1f7fb575e4b48430d55ae8ea3f5e97e630c21a9fe381",
+      "duration_ms": 4097,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 119,
+      "audio_sha256": "7444075fd5685fa5948f31aa03e1227799d6af8b95dfb0865850a6d72c16a3c5",
+      "duration_ms": 1292,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 121,
+      "audio_sha256": "3108c6a2e2639c835482b0ba907072d8fe6b7d583c2ec777e2e6b8a4f0ff4cc3",
+      "duration_ms": 2017,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 132,
+      "audio_sha256": "70413d75d88d8b41f34331c9bad5e545ff10c560c1c2e42561e944287cfe58d2",
+      "duration_ms": 885,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 138,
+      "audio_sha256": "e6522b4926138780f896a0ced5769095cb92cab0545ad2cc78076a1f26b36472",
+      "duration_ms": 4145,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 139,
+      "audio_sha256": "bdf8f7fd14314daf8740a87cd6fac2befbc51ef4d07451490e514ede75c51c11",
+      "duration_ms": 17197,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 140,
+      "audio_sha256": "057a8f2e0fa4844ce86cd20907c6ea83014251754f440042819bf2c471bec281",
+      "duration_ms": 612,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 141,
+      "audio_sha256": "f0e3093857e04ea578a56318c90a565ebcda5ae6fd958784c5941e9bd251a1bd",
+      "duration_ms": 8522,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 143,
+      "audio_sha256": "d9a3c2fbfd2aff302909b35c785dc55e1daa3fc1facc2c3d0c5b4532b87ed317",
+      "duration_ms": 662,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 144,
+      "audio_sha256": "ec72e124e3999292157482bc08111383c468ea54b58c4e55be3dd9ef134740d5",
+      "duration_ms": 749,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 148,
+      "audio_sha256": "773ccc0957bc30f38866df097520060e8c1aa65f34596fc998e4f0560142a150",
+      "duration_ms": 1866,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 151,
+      "audio_sha256": "0bdffbcb9d27669b33328cfd4543764bb02ead7aacfb3116668588ed9a0d20a6",
+      "duration_ms": 6870,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 153,
+      "audio_sha256": "27d059578d325062a95e23e1a7ed8f02671971dc5e3b327c373feb4542baf4ec",
+      "duration_ms": 573,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 154,
+      "audio_sha256": "155986b701824e849bdb91e6a308391372f534cbcd47d977443976df6dbeed46",
+      "duration_ms": 242,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 156,
+      "audio_sha256": "4602a1203b7ffed963bdabd860545820fd929f469c6b972061f30686235aed32",
+      "duration_ms": 4807,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 162,
+      "audio_sha256": "e8b78f6360644d334dfccd328166d62f7d8b6699da37447eafd3efe9bc03062f",
+      "duration_ms": 589,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 184,
+      "audio_sha256": "bd129341daa4a4ba58a6e192fcbe1916c642949e6ce3fe59d3feb223472c1d36",
+      "duration_ms": 5845,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 190,
+      "audio_sha256": "c1a29c93fbf4abedbea5035d8d8639e8a738df8969eed578b6c6533697cfe335",
+      "duration_ms": 1254,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 191,
+      "audio_sha256": "1d5a3b8a8de065acd4b398f6cb0bd1ee96b083981246287dab072aaf47814e36",
+      "duration_ms": 696,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 193,
+      "audio_sha256": "99024b85523edc90c8fa8f8c7d48c3d11e72a6d2c907bb406ea9c1c6e35a14d9",
+      "duration_ms": 10542,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 0,
+          "end_ms": 1740,
+          "source_ko": "안 돼!",
+          "target": "不！放手！",
+          "state": "translated"
+        },
+        {
+          "start_ms": 2700,
+          "end_ms": 4540,
+          "source_ko": "내 아기!",
+          "target": "我的孩子！",
+          "state": "translated"
+        },
+        {
+          "start_ms": 4940,
+          "end_ms": 5940,
+          "source_ko": "내 아기!",
+          "target": "我的孩子！",
+          "state": "translated"
+        }
+      ],
+      "existing_translation_reference": "Fpb/0187.fpb:text:3:3",
+      "source_crosscheck_ko": "안 돼! 내 아기! 내 아기!"
+    },
+    {
+      "id": 208,
+      "audio_sha256": "a1e31620c39d7430e0a1bcb60d9c80f7b8d26e9709c30994d08c5a77b5409718",
+      "duration_ms": 4551,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 259,
+      "audio_sha256": "01550ed387a712bf601fd4e3ec43b56ad7a113a0b72dca52151a4f6127857d82",
+      "duration_ms": 9938,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 500,
+          "end_ms": 3500,
+          "source_ko": "그건 믿을 수 없는 일이었어요.",
+          "target": "真是难以置信。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 3500,
+          "end_ms": 8500,
+          "source_ko": "그녀의 주변이 환하게 빛나면서 그녀는 황여전화가 됐어요.",
+          "target": "她周围发出耀眼的光芒，接着就变成了皇女殿下。",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "그건 믿을 수 없는 일이었어요. 그녀의 주변이 환하게 빛나면서 그녀는 황녀 전하가 됐어요."
+    },
+    {
+      "id": 260,
+      "audio_sha256": "af74363246f586340c8eddf59bcd8d955791075ae81e86f0981528d25fd1b2f4",
+      "duration_ms": 11053,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 20,
+          "end_ms": 3020,
+          "source_ko": "우리는 무슨 일이 일어났는지 모릅니다.",
+          "target": "我们也不知道究竟发生了什么。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 3020,
+          "end_ms": 6020,
+          "source_ko": "오락함께 이 사실을 알리지 말아주세요.",
+          "target": "请不要把这件事告诉奥拉坎。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 6020,
+          "end_ms": 9020,
+          "source_ko": "우린 그저 우연히 엿본줄 밖에 없습니다.",
+          "target": "我们只是偶然撞见的。",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "우리는 무슨 일이 일어났는지 모릅니다. 오라칸께 이 사실을 알리지 말아주세요. 우린 그저 우연히 엿본질밖에 없습니다."
+    },
+    {
+      "id": 261,
+      "audio_sha256": "75213d5bb5114c4a36d6e463d90a11d3190cc8c3f4623bb636d5763386cde931",
+      "duration_ms": 9752,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 400,
+          "end_ms": 3640,
+          "source_ko": "그녀는 저 나와 똑같았습니다.",
+          "target": "她和殿下一模一样。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 3640,
+          "end_ms": 7840,
+          "source_ko": "말투도 행동도 마치 고스란히 옮겨놓은 것처럼...",
+          "target": "说话的语气、举止，简直像是原封不动地复制过来。",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "그녀는 전하와 똑같았습니다. 말투도 행동도 마치 고스란히 옮겨놓은 것처럼."
+    },
+    {
+      "id": 262,
+      "audio_sha256": "b0c54f5120f166e2a83c5bce89026f402d31d90f07daa219aec796b23ddb72f2",
+      "duration_ms": 4760,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 0,
+          "end_ms": 3000,
+          "source_ko": "어떻게 그런 기적이 있을 수 있는지...",
+          "target": "怎么会有这样的奇迹……",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "어떻게 그런 기적이 있을 수 있는지..."
+    },
+    {
+      "id": 270,
+      "audio_sha256": "0dbe5fcacc3bc1b912004a4379372f244745f3c6f1849b106071639d2b47898c",
+      "duration_ms": 6862,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 0,
+          "end_ms": 2000,
+          "source_ko": "내 이름을 부르면 갈게",
+          "target": "叫我的名字，我就会来。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 2000,
+          "end_ms": 4000,
+          "source_ko": "너한테만 가르쳐준거야",
+          "target": "这件事只告诉了你，",
+          "state": "translated"
+        },
+        {
+          "start_ms": 4000,
+          "end_ms": 6000,
+          "source_ko": "알겠지?",
+          "target": "知道吗？",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "내 이름을 부르면 갈게. 너한테만 가르쳐준 거야. 알겠지?"
+    },
+    {
+      "id": 271,
+      "audio_sha256": "f74942b8eb4c17ae11e5d380154a1be93ed0082176420ea740cfe1699f4870e6",
+      "duration_ms": 2743,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 1490,
+          "end_ms": 2743,
+          "source_ko": "느끼자네",
+          "target": "真肉麻。",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "느끼자네"
+    },
+    {
+      "id": 286,
+      "audio_sha256": "07559f9e4274a373f157fc88b363c968bac56dd4c76453757c50405c9fbeb357",
+      "duration_ms": 2814,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 346,
+      "audio_sha256": "37403224e3ff94910930501c514010e9e92fe286a58134731f442f68890ff993",
+      "duration_ms": 3747,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 0,
+          "end_ms": 2360,
+          "source_ko": "언제까지 그런 감성에 처져 있을 거냐",
+          "target": "要沉浸在那种伤感里，到什么时候？",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "언제까지 그런 감성이 처져있을 거냐.",
+      "existing_translation_reference": "Fpb/0306.fpb:text:1:1"
+    },
+    {
+      "id": 347,
+      "audio_sha256": "6ab7f6b73d470c8c405e69a772b331391ce3fb488bfb0395a89069485f18d6a5",
+      "duration_ms": 7148,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 0,
+          "end_ms": 2000,
+          "source_ko": "자기처지를 잘하면",
+          "target": "很明白自己的处境。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 2840,
+          "end_ms": 4840,
+          "source_ko": "넌 결국은 그 정도밖에 안 되는 놈이지",
+          "target": "到头来，你也不过如此。",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "자기 처지를 잘 알아. 넌 결국은 그 정도밖에 안 되는 놈이지.",
+      "existing_translation_reference": "Fpb/0306.fpb:text:3:3"
+    },
+    {
+      "id": 348,
+      "audio_sha256": "385878d41d1e77d2912853f92f98d8226b38e651c7fbe10a970265145cdc4cb6",
+      "duration_ms": 12546,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 0,
+          "end_ms": 3100,
+          "source_ko": "흥... 우수꾼...",
+          "target": "哈，真可笑。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 3100,
+          "end_ms": 4360,
+          "source_ko": "복수?",
+          "target": "复仇？",
+          "state": "translated"
+        },
+        {
+          "start_ms": 4360,
+          "end_ms": 7800,
+          "source_ko": "복수하고 싶다고...",
+          "target": "想复仇？",
+          "state": "translated"
+        },
+        {
+          "start_ms": 8640,
+          "end_ms": 10640,
+          "source_ko": "이미 했잖아...",
+          "target": "不是已经做过了吗？",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "하, 우수꾼. 복수? 복수하고 싶다고? 이미 했잖아.",
+      "existing_translation_reference": "Fpb/0306.fpb:text:5:5"
+    },
+    {
+      "id": 365,
+      "audio_sha256": "56a8c5746f6398d1f26335ca4d32eaa50f944c2fe7bbbbe9387c29d500c38207",
+      "duration_ms": 654,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 461,
+      "audio_sha256": "3c54c7fce7195e81794669ae29839173fd47184dd1c1fabc252694ed4bfa7ebe",
+      "duration_ms": 3680,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 0,
+          "end_ms": 2760,
+          "source_ko": "니 아버지는 로페이든이지",
+          "target": "你父亲是洛佩伊登。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 2760,
+          "end_ms": 3680,
+          "source_ko": "트리스터린",
+          "target": "特里斯坦是……",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "네 아버지는 로페이든이지 트리스타는",
+      "existing_translation_reference": "Fpb/0310.fpb:text:18:18"
+    },
+    {
+      "id": 470,
+      "audio_sha256": "1742b2dcf8d982e85d525fcdb526d83efbb570950f36fba9366587ba24335db6",
+      "duration_ms": 3318,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 0,
+          "end_ms": 3318,
+          "source_ko": "도와줘! 살려줘!",
+          "target": "帮帮我，救救我，啊……！",
+          "state": "translated"
+        }
+      ],
+      "existing_translation_reference": "Fpb/0233.fpb:text:1:1",
+      "source_crosscheck_ko": "도와줘! 살려줘!"
+    },
+    {
+      "id": 471,
+      "audio_sha256": "1d5b1f0040769cdff377fa5a7cbf60642e786b02b47062edafdb2db2c269154b",
+      "duration_ms": 7210,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 0,
+          "end_ms": 7210,
+          "source_ko": "아버지! 이거 놔!",
+          "target": "唔……唔……父亲……放开……唔……",
+          "state": "translated"
+        }
+      ],
+      "existing_translation_reference": "Fpb/0233.fpb:text:2:2",
+      "source_crosscheck_ko": "아버지! 이거 놔!"
+    },
+    {
+      "id": 472,
+      "audio_sha256": "c930439574d16195982dbf78fc1e3253a6b8788519194499006ea81041791de1",
+      "duration_ms": 7105,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 20,
+          "end_ms": 3020,
+          "source_ko": "그때 부르지 못했다",
+          "target": "那时，没能呼唤他。",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "그때 부르지 못했다.",
+      "existing_translation_reference": "Fpb/0233.fpb:text:3:4"
+    },
+    {
+      "id": 473,
+      "audio_sha256": "0bb509c307f7dc8db32f562394e67a0786a3dd877eda9e41f75a3dd6ae280b52",
+      "duration_ms": 23798,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 240,
+          "end_ms": 6120,
+          "source_ko": "황제 슈렌로드와 태우 레오나의 죽음으로 황가는 그 대가 완전히 끊어졌다.",
+          "target": "皇帝修伦罗德与太后蕾欧娜去世后，皇家的血脉彻底断绝了。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 6120,
+          "end_ms": 11720,
+          "source_ko": "결국 남은 귀족들의 결정에 의해 길버트 오라버니가 섭정이 되었다.",
+          "target": "最后，留下来的贵族们决定，由哥哥吉尔伯特出任摄政。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 11720,
+          "end_ms": 18780,
+          "source_ko": "앞으로 게스크랄다 가문이 새로운 황가가 될지, 아니면 또 새로운 섭정이 뽑힐지는 모르겠지만,",
+          "target": "今后究竟会由德斯克拉尔达家成为新的皇室，还是另选新的摄政，我也不知道。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 18780,
+          "end_ms": 23260,
+          "source_ko": "어쨌든 오라버니가 섭정이 된 후 많은 것들이 변했다.",
+          "target": "不过，哥哥出任摄政以后，许多事情都改变了。",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "황제 슈렐로드와 태우 레오나의 죽음으로 황가는 그 대가 완전히 끊어졌다. 결국 남은 귀족들의 결정에 의해 길버트 오라버니가 섭정이 되었다. 앞으로 데스크랄다 가문이 새로운 황가가 될지 아니면 또 새로운 섭정이 뽑힐지는 모르겠지만 어쨌든 오라버니가 섭정이 된 후 많은 것들이 변했다."
+    },
+    {
+      "id": 474,
+      "audio_sha256": "3d38968e6e1c78f078bc313390dc8e158537f10b77cbc874d2cf55c10f5d3f2a",
+      "duration_ms": 19174,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 820,
+          "end_ms": 9460,
+          "source_ko": "각 국을 대표하는 사절이면서 그 나라의 왕족이나 대기족 출신으로 한정에서 뽑던 오라칸 제도가 폐지되었다.",
+          "target": "从前，奥拉坎既是各国的使节，也只能由各国王族或大贵族出身的人担任。这个制度被废除了。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 9460,
+          "end_ms": 19060,
+          "source_ko": "그동안 오라칸이 자기 나라의 이익을 위해 황가의 세력을 차지하려고 서로 암투를 벌여 그 폐해가 막심했기 때문이다.",
+          "target": "因为奥拉坎们为本国的利益，争夺皇家的权势，彼此暗斗，造成了极大的祸害。",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "각 국을 대표하는 사절이면서 그 나라의 왕족이나 대기족 출신으로 한정해서 뽑던 오라칸 제도가 폐지되었다. 그동안 오라칸이 자기 나라의 이익을 위해 황가의 세력을 차지하려고 서로 암투를 벌여 그 폐해가 막심했기 때문이다."
+    },
+    {
+      "id": 475,
+      "audio_sha256": "036671d277b59209297bdc070b2b03b1f996ece88c52a94574871d2274039030",
+      "duration_ms": 19722,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 240,
+          "end_ms": 7240,
+          "source_ko": "결국 각국을 대표하는 사절로스의 오라카는 계속 존재했지만, 그 세력은 상당히 약화됐다.",
+          "target": "作为各国使节的奥拉坎仍然存在，但他们的势力已经大大削弱。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 7240,
+          "end_ms": 11240,
+          "source_ko": "한때 국가의 중대 사안을 결정하는 데 참여했던 그들이지만,",
+          "target": "他们曾经参与决定国家的重要事务，",
+          "state": "translated"
+        },
+        {
+          "start_ms": 11240,
+          "end_ms": 19240,
+          "source_ko": "지금은 슈델미루 출신의 재상을 중심으로 능력 위주로 관료들을 채용한 새로운 의회가 생겨났다.",
+          "target": "如今则建立了新的议会，以修德尔米尔出身的宰相为中心，按才能选拔官员。",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "결국 각국을 대표하는 사절로스의 오라카는 계속 존재했지만 그 세력은 상당히 약화됐다 한때 국가의 중대 사안을 결정하는 데 참여했던 그들이지만 지금은 슈델미르 출신의 재상을 중심으로 능력 위주로 관료들을 채용한 새로운 의회가 생겨났다"
+    },
+    {
+      "id": 476,
+      "audio_sha256": "284fc054f0329533d75eac0ef470711ed71abc5a54ce69a21773e6d3e0a8b2aa",
+      "duration_ms": 18782,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 80,
+          "end_ms": 6080,
+          "source_ko": "그리고 그동안 범일리온이 황가와 오랫동안 대립하게 된 원인이었던 크로이스 재건.",
+          "target": "还有重建克罗伊斯这件事——这正是贝尔米利昂长期与皇室对立的原因。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 6080,
+          "end_ms": 13080,
+          "source_ko": "그것은 오라버니가 크로이스의 자치권을 어느정도 인정함으로써 다소 가라앉았다.",
+          "target": "哥哥在一定程度上承认了克罗伊斯的自治权，这场纷争也就稍稍平息了。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 13080,
+          "end_ms": 18080,
+          "source_ko": "뭐 여전히 만족하지 못하고 날뛰는 녀석들도 있었지만...",
+          "target": "当然，仍然有人不肯满足，继续闹个不停……",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "그리고 그동안 버밀리온이 황가와 오랫동안 대립하게 된 원인이었던 크로이스 재건. 그것은 오라버니가 크로이스의 자치권을 어느 정도 인정함으로써 다소 가라앉았다. 뭐 여전히 만족하지 못하고 날뛰는 녀석들도 있었지만."
+    },
+    {
+      "id": 477,
+      "audio_sha256": "38e58473610324e0b0f96814fb14310478a5203b6d968c954698904a1513f460",
+      "duration_ms": 19618,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 340,
+          "end_ms": 6340,
+          "source_ko": "페르난과 로제는 범일리온의 운베터의 진실을 밝힌 뒤 크로이스로 떠났다.",
+          "target": "费尔南和萝洁揭开贝尔米利昂与温贝特的真相后，启程前往克罗伊斯。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 6340,
+          "end_ms": 9340,
+          "source_ko": "그들을 따르는 범일리원들과 함께.",
+          "target": "追随他们的贝尔米利昂成员，也一同离开了。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 9340,
+          "end_ms": 13340,
+          "source_ko": "둘 다 크로이스 재건이란 목적을 결과적으로 이루긴 했지만,",
+          "target": "两人最终虽然实现了重建克罗伊斯的目标，",
+          "state": "translated"
+        },
+        {
+          "start_ms": 13340,
+          "end_ms": 19340,
+          "source_ko": "운베터와 디얼킨 씁쓸했던 지난 날들을 한동안은 잊기 힘들 것이다.",
+          "target": "但与温贝特纠缠在一起的那些苦涩往事，恐怕很长时间都难以忘记。",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "페르난과 로제는 버밀리언의 운베터의 진실을 밝힌 뒤 크로이스로 떠났다. 그들을 따르는 버밀리언들과 함께. 둘 다 크로이스 재건이란 목적을 결과적으로 이루긴 했지만 운베터와 뒤얽힌 씁쓸했던 지난 날들을 한동안은 잊기 힘들 것이다."
+    },
+    {
+      "id": 478,
+      "audio_sha256": "6626bc9efc05776685eabc8de3c48c1068f37c633f166e44b5dda764562848dc",
+      "duration_ms": 28552,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 140,
+          "end_ms": 5640,
+          "source_ko": "페르난과 로제와 더불어 조커와 필리시아도 크레이스로 돌아간다고 했다.",
+          "target": "除了费尔南和萝洁，乔克与菲莉西亚也说要回克罗伊斯。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 5640,
+          "end_ms": 11640,
+          "source_ko": "조커는 크레이스로 돌아가 거기에서 아무 일 없이 평온하게 살아가겠다고 했다.",
+          "target": "乔克说，他要回到克罗伊斯，在那里平静地生活，不再卷入任何事。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 11640,
+          "end_ms": 14640,
+          "source_ko": "필리시아도 함께 갔으니 함께 살겠지.",
+          "target": "菲莉西亚也和他一起去了，大概会一起生活吧。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 14640,
+          "end_ms": 19640,
+          "source_ko": "나중에 다시 만나면 조커는 그 귀게한 옷을 벗어버렸을지",
+          "target": "真期待下次见面时，乔克是否已经脱下那身古怪的衣服，",
+          "state": "translated"
+        },
+        {
+          "start_ms": 19640,
+          "end_ms": 25640,
+          "source_ko": "그리고 필리시아는 자폐적인 성격을 고치고 옛날의 성격으로 돌아갔을지 기대된다.",
+          "target": "菲莉西亚是否也摆脱了封闭的性格，变回从前的模样。",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "페르난과 로제와 더불어 조코와 필리시아도 크로이스로 돌아간다고 했다. 조코는 크로이스로 돌아가 거기에서 아무 일 없이 평온하게 살아가겠다고 했다. 필리시아도 함께 갔으니 함께 살겠지. 나중에 다시 만나면 조코는 그 귀기한 옷을 벗어버렸을지 그리고 필리시아는 자폐적인 성격을 고치고 옛날의 성격으로 돌아갔을지 기대된다."
+    },
+    {
+      "id": 479,
+      "audio_sha256": "b4e3dad78ed3932e4c60ed731a8a02b9ab751abb490c5282007b7b4794258bc2",
+      "duration_ms": 15229,
+      "kind": "speech",
+      "cues": [
+        {
+          "start_ms": 0,
+          "end_ms": 4140,
+          "source_ko": "결국 슈발츠 칠조는 이런식으로 뿔뿔이 흩어졌다",
+          "target": "施瓦茨第7组，就这样各奔东西了。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 4720,
+          "end_ms": 8580,
+          "source_ko": "하긴 조장인 칼린츠가 제일 먼저 관뒀으니까",
+          "target": "不过，毕竟身为组长的卡林兹，是第一个退出的人。",
+          "state": "translated"
+        },
+        {
+          "start_ms": 9380,
+          "end_ms": 14080,
+          "source_ko": "안그래도 오늘 로프마와 함께 칼린츠를 찾아가볼 생각이다",
+          "target": "正好，今天我打算和罗普玛一起去看看卡林兹。",
+          "state": "translated"
+        }
+      ],
+      "source_crosscheck_ko": "결국 슈발츠 칠조는 이런 식으로 뿔뿔이 흩어졌다, 하긴 조장인 칼린츠가 제일 먼저 관뒀으니까, 안 그래도 오늘 로프마와 함께 칼린츠를 찾아가 볼 생각이다."
+    },
+    {
+      "id": 563,
+      "audio_sha256": "45470da374dbab556f1488aedc2facebc3538d4b57f50bd637b3f4b2a48ead92",
+      "duration_ms": 3105,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 570,
+      "audio_sha256": "f50e8b962602c4f12fed28095148354ebc943ebc9cc8fd628d576c8777a491cd",
+      "duration_ms": 2431,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 571,
+      "audio_sha256": "d932dd6b3d43480c05de977b47eaaf92e4c44e7f359d8d4c5e8a05fae1cecb91",
+      "duration_ms": 2229,
+      "kind": "non_lexical_audio",
+      "cues": []
+    },
+    {
+      "id": 573,
+      "audio_sha256": "a646528522ef48c45d2bec08ccb947bf804a4c282a2b3676e559beb104b64118",
+      "duration_ms": 3304,
+      "kind": "non_lexical_audio",
+      "cues": []
+    }
+  ],
+  "font_family": "Microsoft YaHei",
+  "review_method": "Original audio hashes, Field command bindings, existing FPB translations where present; independent offline decoding and gain-normalized non-VAD review for quiet voices."
+}

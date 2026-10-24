@@ -339,3 +339,10 @@ Play.cmd和Configure.cmd共同默认启用卡墙/声音候选，Play-stable.cmd�
 ## 技能隐藏模型弹字回归
 
 构建damage_projection_fixture、damage_projection_bridge和workspace_profile后，执行`python -m unittest discover -s tests -p "test_damage*.py" -v`。原生资源链现为11组，包含隐藏模型、父级变换、旧缓存和回血；命令、负对照与离屏像素检查见[伤害投影修正](docs/DAMAGE_PROJECTION_REPAIR.md)。仅离线执行，不启动游戏。
+
+## 剧情字幕数据重建
+
+CMake自动运行 `tools/build_story_captions.py`，从locale数据和用户提供的原资源生成字幕头文件。
+默认数据为 `locales/zh-CN/story-captions.json`；可用 `STORY_CAPTION_CATALOG` 和
+`STORY_CAPTION_SOURCE_ROOT` 覆盖目录。原音频摘要或译文校验失败即停止构建。
+离线夹具和复核说明见 [剧情画面层](docs/STORY_OVERLAY.md)。

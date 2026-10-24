@@ -1,6 +1,6 @@
 // Bounded native audio initialization and allocation, real shipped Miles.
 // MCAlpha is mapped without imports/entry execution. Filter enumeration alone
-// is an explicit owned boundary. No game process, resource or sound plays.
+// and the WinMM digital-driver bootstrap are explicit owned boundaries. No game process, resource or sound plays.
 #include "audio_provider_policy.h"
 #include <wincrypt.h>
 #include <filesystem>
@@ -11,7 +11,11 @@
 #include <vector>
 #include <stdexcept>
 #include <cstring>
+#include <mmsystem.h>
 namespace fs=std::filesystem;
+static const char* phase="start";
+static LONG WINAPI fault(EXCEPTION_POINTERS* e){DWORD stack[4]{};SIZE_T n=0;ReadProcessMemory(GetCurrentProcess(),reinterpret_cast<void*>(e->ContextRecord->Esp),stack,sizeof(stack),&n);fprintf(stderr,"POOL_FAULT address=%p stage=%s stack=%08lx,%08lx,%08lx,%08lx\n",e->ExceptionRecord->ExceptionAddress,phase,stack[0],stack[1],stack[2],stack[3]);fflush(stderr);return EXCEPTION_EXECUTE_HANDLER;}
+
 static void require(bool yes,const char* what){if(!yes)throw std::runtime_error(what);}
 static std::string digest(const fs::path& path){
  HCRYPTPROV p=0;HCRYPTHASH h=0;require(CryptAcquireContextW(&p,nullptr,nullptr,PROV_RSA_AES,CRYPT_VERIFYCONTEXT)&&CryptCreateHash(p,CALG_SHA_256,0,0,&h),"hash init");
@@ -22,8 +26,18 @@ static std::string digest(const fs::path& path){
 template<class T>T api(HMODULE m,const char* name){auto p=GetProcAddress(m,name);require(p!=nullptr,name);return reinterpret_cast<T>(p);}
 static DWORD& word(void* p,size_t n){return *reinterpret_cast<DWORD*>(static_cast<BYTE*>(p)+n);}
 static int __stdcall noFilters(void*,void*,void*){return 0;}
-static void trace(const wchar_t* s){std::wcout<<s<<L'\n';}
+static bool policyFallback=false;
+static void trace(const wchar_t* s){if(wcsstr(s,L"AUDIO_PROVIDER_POLICY_FALLBACK"))policyFallback=true;std::wcout<<s<<L'\n';}
 using Open=int(__stdcall*)(DWORD);
+using WaveOpen=int(__stdcall*)(void**,HWAVEOUT*,unsigned,WAVEFORMATEX*);
+static WaveOpen waveOpen=nullptr;static int(__stdcall* preference)(unsigned,int)=nullptr;
+static void* __stdcall ownedDigitalBootstrap(unsigned rate,int bits,int channels,unsigned flags){
+ // No game HWND exists in this bounded replay. Use the real SDK's WinMM
+ // digital driver rather than its window-dependent DirectSound bootstrap.
+ if(rate!=44100||bits!=16||channels!=2||flags!=0)ExitProcess(7);
+ preference(15,1);WAVEFORMATEX f{};f.wFormatTag=WAVE_FORMAT_PCM;f.nChannels=WORD(channels);f.nSamplesPerSec=rate;f.wBitsPerSample=WORD(bits);f.nBlockAlign=WORD(channels*bits/8);f.nAvgBytesPerSec=rate*f.nBlockAlign;
+ void* driver=nullptr;HWAVEOUT out=nullptr;if(waveOpen(&driver,&out,WAVE_MAPPER,&f)!=0)return nullptr;return driver;
+}
 static Open realOpen=nullptr;static DWORD preferred=0;static unsigned rejected=0;
 static int __stdcall rejectPreferred(DWORD p){if(p==preferred){++rejected;return 8;}return realOpen(p);}
 static void bind(BYTE* image,HMODULE miles,bool fallback){
@@ -36,6 +50,7 @@ static void bind(BYTE* image,HMODULE miles,bool fallback){
   auto names=reinterpret_cast<IMAGE_THUNK_DATA32*>(image+d->OriginalFirstThunk),slots=reinterpret_cast<IMAGE_THUNK_DATA32*>(image+d->FirstThunk);
   for(;names->u1.AddressOfData;++names,++slots){require(!IMAGE_SNAP_BY_ORDINAL32(names->u1.Ordinal),"ordinal import");auto symbol=reinterpret_cast<IMAGE_IMPORT_BY_NAME*>(image+names->u1.AddressOfData)->Name;
    auto target=GetProcAddress(module,reinterpret_cast<char*>(symbol));require(target!=nullptr,"native import");
+   if(!strcmp(reinterpret_cast<char*>(symbol),"_AIL_open_digital_driver@16"))target=reinterpret_cast<FARPROC>(&ownedDigitalBootstrap);
    if(!strcmp(reinterpret_cast<char*>(symbol),"_AIL_enumerate_filters@12"))target=reinterpret_cast<FARPROC>(&noFilters);
    if(fallback&&!strcmp(reinterpret_cast<char*>(symbol),"_AIL_open_3D_provider@4"))target=reinterpret_cast<FARPROC>(&rejectPreferred);
    DWORD old;require(VirtualProtect(slots,4,PAGE_READWRITE,&old),"IAT protection");slots->u1.Function=DWORD(target);DWORD unused;require(VirtualProtect(slots,4,old,&unused),"IAT restore");
@@ -43,6 +58,7 @@ static void bind(BYTE* image,HMODULE miles,bool fallback){
  }
 }
 int wmain(int argc,wchar_t** argv){
+ SetUnhandledExceptionFilter(&fault);
  try{
   require(argc==4,"usage: native_audio_pool_fixture engine.dll mss32.dll --baseline|--modified|--rollback|--fallback");
   auto enginePath=fs::canonical(argv[1]),milesPath=fs::canonical(argv[2]);std::wstring mode=argv[3];
@@ -53,9 +69,11 @@ int wmain(int argc,wchar_t** argv){
   auto redist=milesPath.parent_path()/L"redist";require(AddDllDirectory(redist.c_str())!=nullptr,"redist path");
   auto miles=LoadLibraryExW(milesPath.c_str(),nullptr,LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR|LOAD_LIBRARY_SEARCH_USER_DIRS|LOAD_LIBRARY_SEARCH_SYSTEM32);require(miles!=nullptr,"Miles load");
   auto image=reinterpret_cast<BYTE*>(LoadLibraryExW(enginePath.c_str(),nullptr,DONT_RESOLVE_DLL_REFERENCES));require(image!=nullptr,"native no-entry mapping");
-  realOpen=api<Open>(miles,"_AIL_open_3D_provider@4");bind(image,miles,mode==L"--fallback");
-  api<const char*(__stdcall*)(const char*)>(miles,"_AIL_set_redist_directory@4")(redist.string().c_str());
+  waveOpen=api<WaveOpen>(miles,"_AIL_waveOutOpen@16");preference=api<int(__stdcall*)(unsigned,int)>(miles,"_AIL_set_preference@8");realOpen=api<Open>(miles,"_AIL_open_3D_provider@4");bind(image,miles,mode==L"--fallback");
+  const std::string redistPath=redist.string();api<const char*(__stdcall*)(const char*)>(miles,"_AIL_set_redist_directory@4")(redistPath.c_str());
   require(api<int(__stdcall*)()>(miles,"_AIL_startup@0")()!=0,"Miles startup");
+  // Keep offline 2D driver initialization on WinMM; 3D provider policy below stays native.
+  api<int(__stdcall*)(unsigned,int)>(miles,"_AIL_set_preference@8")(15,1);
   int cursor=0;DWORD provider;const char* name;
   while(api<int(__stdcall*)(int*,DWORD*,const char**)>(miles,"_AIL_enumerate_3D_providers@12")(&cursor,&provider,&name))
    if(!strcmp(name,"DirectSound3D 7+ Software - Pan and Volume"))preferred=provider;
@@ -75,7 +93,7 @@ int wmain(int argc,wchar_t** argv){
   std::vector<BYTE> manager(0x400874);
   word(manager.data(),0x40)=16;word(manager.data(),0x44)=2;word(manager.data(),0x48)=44100;
   using Init=void(__thiscall*)(void*);using Allocate=int(__thiscall*)(void*);using Release=void(__thiscall*)(void*,int);
-  reinterpret_cast<Init>(image+0x6685)(manager.data());
+  phase="native_6685";reinterpret_cast<Init>(image+0x6685)(manager.data());phase="native_pools";
   reinterpret_cast<Init>(image+0x52ae)(manager.data());
   reinterpret_cast<Init>(image+0x509a)(manager.data());
   reinterpret_cast<Init>(image+0x51de)(manager.data());
@@ -111,10 +129,10 @@ int wmain(int argc,wchar_t** argv){
   if(mode!=L"--baseline"&&mode!=L"--rollback")require(removeAudioProviderPolicy(reinterpret_cast<HMODULE>(image)),"remove");
   require(!memcmp(original,image+0x6875,6),"final byte rollback");
   bool modified=mode==L"--modified";
-  require(modified?(capacity==56&&accepted==16):(capacity==8&&accepted==8),"unexpected backend or native allocation result");
+  require(modified&&!policyFallback?(capacity==56&&accepted==16):(capacity==8&&accepted==8),"unexpected backend or native allocation result");
   if(mode==L"--fallback")require(rejected==1,"fallback attempted once");
   std::wcout<<L"NATIVE_AUDIO_POOL "<<(mode==L"--baseline"?L"FAIL":L"PASS")<<L" mode="<<mode<<L" capacity="<<capacity<<L" requests="<<requests<<L" accepted="<<accepted<<L" dropped="<<requests-accepted
-   <<L" exhaustion=bounded release=reusable streams=2 guards=pass rollback=byte_exact filters=owned_boundary playback_started=false game_started=false\n";
+   <<L" preferred_available="<<(modified&&!policyFallback?L"true":L"false")<<L" digital_bootstrap=owned_winmm exhaustion=bounded release=reusable streams=2 guards=pass rollback=byte_exact filters=owned_boundary playback_started=false game_started=false\n";
   FreeLibrary(reinterpret_cast<HMODULE>(image));FreeLibrary(miles);return mode==L"--baseline"?1:0;
  }catch(const std::exception& e){std::cerr<<"NATIVE_AUDIO_POOL ERROR "<<e.what()<<'\n';return 2;}
 }
