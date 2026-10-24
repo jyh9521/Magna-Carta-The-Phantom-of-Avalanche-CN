@@ -15,7 +15,7 @@ void __fastcall nopBool(void*,void*,unsigned,BYTE*){++boolCalls;}
 int main(int argc,char** argv){try{
  bool baseline=argc==2&&!strcmp(argv[1],"--baseline");
  BYTE* e=static_cast<BYTE*>(VirtualAlloc(nullptr,0x10b000,MEM_COMMIT|MEM_RESERVE,PAGE_EXECUTE_READWRITE));check(e!=nullptr);initializeDamageProjectionFixture(e);
- DWORD sites[]={0x474cf,0x474ec,0x47509,0xaa0ba,0xaa398,0xaa629,0xaa916,0xaab88,0xab128,0xab453,0xab6e1,0xaba34};BYTE original[12][6];for(int i=0;i<12;++i)memcpy(original[i],e+sites[i],6);
+ DWORD sites[]={0x474cf,0x474ec,0x47509,0xaa0ba,0xaa398,0xaa629,0xaa916,0xaab88,0xab128,0xab453,0xab6e1,0xaba34,0xc19d8};BYTE original[13][6];for(int i=0;i<13;++i)memcpy(original[i],e+sites[i],6);
  BYTE* driver=static_cast<BYTE*>(VirtualAlloc(nullptr,0x2c000,MEM_COMMIT|MEM_RESERVE,PAGE_EXECUTE_READWRITE));check(driver!=nullptr);
  jump(driver+0x1897c,reinterpret_cast<BYTE*>(&nopRaster));jump(driver+0x80a4,reinterpret_cast<BYTE*>(&nopFloat));jump(driver+0x9b8c,reinterpret_cast<BYTE*>(&nopBool));damageProjectionFixtureDriver(driver);
  void* table[230]{};table[0x394/4]=driver+0x1897c;table[0x1b4/4]=driver+0x80a4;table[0x1a4/4]=driver+0x9b8c;
@@ -27,8 +27,8 @@ int main(int argc,char** argv){try{
  for(int i=1;i<3;++i){memcpy(e+0x400+i*0x20,queryStub,10);jump(e+0x40a+i*0x20,e+sites[i]);memcpy(e+sites[i]+6,ret8,3);}
  using Raster=void(__thiscall*)(void*,const float*);using Float=void(__thiscall*)(void*,unsigned,float*);using Bool=void(__thiscall*)(void*,unsigned,BYTE*);
  auto raster=reinterpret_cast<Raster>(e+0x400);auto floats=reinterpret_cast<Float>(e+0x420);auto boolean=reinterpret_cast<Bool>(e+0x440);
- for(int i=0;i<12;++i){e[sites[i]]^=1;check(!setDamageProjection(e,0x10b000,true));e[sites[i]]^=1;for(int j=0;j<12;++j)check(!memcmp(e+sites[j],original[j],6));}
- for(int i=0;i<12;++i){damageProjectionWriteFailure(i);check(!setDamageProjection(e,0x10b000,true));for(int j=0;j<12;++j)check(!memcmp(e+sites[j],original[j],6));}
+ for(int i=0;i<13;++i){e[sites[i]]^=1;check(!setDamageProjection(e,0x10b000,true));e[sites[i]]^=1;for(int j=0;j<13;++j)check(!memcmp(e+sites[j],original[j],6));}
+ for(int i=0;i<13;++i){damageProjectionWriteFailure(i);check(!setDamageProjection(e,0x10b000,true));for(int j=0;j<13;++j)check(!memcmp(e+sites[j],original[j],6));}
  if(!baseline){check(setDamageProjection(e,0x10b000,true));check(setDamageProjection(e,0x10b000,true));}
  float point[]={.5f,.5f,.5f},out[4]{};BYTE valid=1;*reinterpret_cast<int*>(e+0xf1b48)=800;*reinterpret_cast<int*>(e+0xf1b4c)=600;
  raster(&d,point);floats(&d,0xb07,out);boolean(&d,0xb08,&valid);
@@ -49,7 +49,7 @@ int main(int argc,char** argv){try{
  float sentinel=123;floats(&d,0xba6,&sentinel);check(sentinel==123&&floatCalls==1);valid=99;boolean(&d,0xb60,&valid);check(valid==99&&boolCalls==1);
  // An unrecognized driver must execute its original raster/query methods.
  table[0x394/4]=nopRaster;raster(&d,point);valid=99;boolean(&d,0xb08,&valid);check(valid==99&&boolCalls==2&&rasterCalls==1);sentinel=123;floats(&d,0xb07,&sentinel);check(sentinel==123&&floatCalls==2);table[0x394/4]=driver+0x1897c;
- check(setDamageProjection(e,0x10b000,false));for(int i=0;i<12;++i)check(!memcmp(e+sites[i],original[i],6));
+ check(setDamageProjection(e,0x10b000,false));for(int i=0;i<13;++i)check(!memcmp(e+sites[i],original[i],6));
  memset(out,0,sizeof(out));point[0]=.5f;point[2]=.5f;raster(&d,point);floats(&d,0xb07,out);check(out[0]==0&&out[1]==0);
  VirtualFree(driver,0,MEM_RELEASE);VirtualFree(e,0,MEM_RELEASE);std::cout<<"DAMAGE_PROJECTION_FIXTURE PASS checks="<<checks<<" matrices=current logical_canvas=640,800,853,1067 clip=guarded queries=delegated unknown_driver=passthrough mismatch=rejected write_failure=transactional rollback=exact restored_position=0,600 game_started=false\n";return 0;
 }catch(const std::exception& x){std::cerr<<x.what()<<'\n';return 2;}}

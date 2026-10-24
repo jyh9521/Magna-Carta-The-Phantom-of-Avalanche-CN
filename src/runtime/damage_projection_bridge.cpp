@@ -16,6 +16,7 @@ static void installed(const wchar_t* line){installerReady=std::wcsstr(line,L"DAM
 static void __fastcall rasterLeaf(void*,void*,const float*){++nativeRaster;}
 static void __fastcall floatLeaf(void*,void*,unsigned,float*){++nativeFloat;}
 static void __fastcall boolLeaf(void*,void*,unsigned,BYTE*){++nativeBool;}
+static void __fastcall hideLeaf(BYTE* object,void*,int hidden){*reinterpret_cast<int*>(object+0xd0)=hidden;}
 static void jump(BYTE* p,void* target){p[0]=0xe9;*reinterpret_cast<int32_t*>(p+1)=static_cast<int32_t>(reinterpret_cast<uintptr_t>(target)-reinterpret_cast<uintptr_t>(p+5));}
 // Invoke the patched native ABI sites while explicitly testing their stack and
 // nonvolatile register contract. No commercial machine code executes here.
@@ -83,6 +84,7 @@ int main(int argc,char** argv){try{
  const unsigned anchors[]={0xaa0ba,0xaa398,0xaa629,0xaa916,0xaab88,0xab128,0xab453,0xab6e1,0xaba34};
  const BYTE tails[]={0xc7,0x83,0xc7,0x83,0xc7,0x8b,0x83,0x8b,0x83};
  for(unsigned i=0;i<9;++i){image[anchors[i]]=0xe8;*reinterpret_cast<int*>(image+anchors[i]+1)=0xac590-anchors[i]-5;image[anchors[i]+5]=tails[i];}
+ *reinterpret_cast<BYTE**>(image+0xc19d8)=image+0x4c893;jump(image+0x4c893,reinterpret_cast<void*>(&hideLeaf));
  // Original self-contained coordinate getter, used by native/rollback controls.
  const BYTE getter[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc,0x8b,0x45,0xfc,0x8b,0x88,0x38,1,0,0,0x8b,0x90,0x3c,1,0,0,0x8b,0x45,8,0x89,8,0x89,0x50,4,0x8b,0x45,8,0x8b,0xe5,0x5d,0xc2,4,0};
  memcpy(image+0xac590,getter,sizeof(getter));
@@ -90,9 +92,20 @@ int main(int argc,char** argv){try{
  for(unsigned i=0;i<3;++i){memcpy(image+sites[i],calls[i],6);auto p=image+0x400+i*0x20;memcpy(p,i?queryStub:rasterStub,i?10:6);jump(p+(i?10:6),image+sites[i]);image[sites[i]+6]=0xc2;image[sites[i]+7]=i?8:4;image[sites[i]+8]=0;}
  if(hook&&!installDamageProjection(reinterpret_cast<HMODULE>(image),installed))throw std::runtime_error("production hook installation");
  if(rollback){if(!setDamageProjection(image,0x10b000,false))throw std::runtime_error("explicit rollback");for(unsigned i=0;i<3;++i)if(memcmp(image+sites[i],calls[i],6))throw std::runtime_error("explicit rollback bytes");hook=false;}
- auto checkAnchors=[&](){for(unsigned i=0;i<9;++i)if(image[anchors[i]]!=0xe8||*reinterpret_cast<int*>(image+anchors[i]+1)!=int(0xac590-anchors[i]-5)||image[anchors[i]+5]!=tails[i])throw std::runtime_error("exact anchor rollback bytes");};
+ auto checkAnchors=[&](){for(unsigned i=0;i<9;++i)if(image[anchors[i]]!=0xe8||*reinterpret_cast<int*>(image+anchors[i]+1)!=int(0xac590-anchors[i]-5)||image[anchors[i]+5]!=tails[i])throw std::runtime_error("exact anchor rollback bytes");if(*reinterpret_cast<BYTE**>(image+0xc19d8)!=image+0x4c893)throw std::runtime_error("exact visibility rollback pointer");};
  if(rollback)checkAnchors();
  std::string id;while(std::cin>>id){
+  if(id=="visibility"){
+   int hidden,popupFlag,numberFlag;unsigned count;if(!(std::cin>>hidden>>popupFlag>>numberFlag>>count)||count>16)throw std::runtime_error("visibility header");
+   BYTE popup[0x100]{},number[0x100]{};std::vector<BYTE> digits(count*0x100);void* table[11]{};table[10]=reinterpret_cast<void*>(&hideLeaf);*reinterpret_cast<void***>(number)=table;
+   *reinterpret_cast<BYTE**>(popup+0xf4)=number;*reinterpret_cast<int*>(popup+0xd0)=popupFlag;*reinterpret_cast<int*>(number+0xd0)=numberFlag;
+   for(unsigned i=0;i<count;++i){auto digit=digits.data()+i*0x100;*reinterpret_cast<void***>(digit)=table;if(!(std::cin>>*reinterpret_cast<int*>(digit+0xd0)))throw std::runtime_error("digit visibility flag");if(i+1<count)*reinterpret_cast<BYTE**>(digit+0x10)=digit+0x100;}
+   if(count)*reinterpret_cast<BYTE**>(number+0x18)=digits.data();
+   unsigned abi=auditCall(*reinterpret_cast<void**>(image+0xc19d8),popup,static_cast<uintptr_t>(hidden),0,1);
+   std::cout<<"{\"popup\":"<<*reinterpret_cast<int*>(popup+0xd0)<<",\"number\":"<<*reinterpret_cast<int*>(number+0xd0)<<",\"digits\":[";
+   for(unsigned i=0;i<count;++i){if(i)std::cout<<',';std::cout<<*reinterpret_cast<int*>(digits.data()+i*0x100+0xd0);}
+   std::cout<<"],\"abi_error_bits\":"<<abi<<",\"hook_enabled\":"<<(hook?"true":"false")<<",\"rollback_exact\":"<<(rollback?"true":"false")<<",\"game_started\":false}"<<std::endl;continue;
+  }
   if(id=="anchor"||id=="anchor-flags"){
    int width,height;unsigned count,index,driverMatch;double fov,nearPlane,farPlane;
    if(!(std::cin>>width>>height>>index>>driverMatch>>fov>>nearPlane>>farPlane)||index>=9||driverMatch>1)throw std::runtime_error("anchor header");

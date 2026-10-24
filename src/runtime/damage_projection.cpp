@@ -78,16 +78,34 @@ int* __fastcall anchorHook(BYTE* model,void*,int* output){
  output[0]=static_cast<int>((x/w+1)*width*.5);output[1]=height-static_cast<int>((y/w+1)*height*.5);
  *reinterpret_cast<int*>(model+0x138)=output[0];*reinterpret_cast<int*>(model+0x13c)=output[1];return output;
 }
-struct Site{DWORD rva;BYTE original[6];void* hook;};
+// Numeric widgets are registered below the battle GUI, not below the popup.
+// Hiding only the popup leaves their independently drawn digit children visible
+// at an invalid or stale position during a skill-camera cut.
+void __fastcall popupVisibilityHook(BYTE* popup,void*,int hidden){
+ using Hide=void(__thiscall*)(BYTE*,int);
+ reinterpret_cast<Hide>(engine+0x4c893)(popup,hidden);
+ auto number=*reinterpret_cast<BYTE**>(popup+0xf4);if(!number)return;
+ auto hide=[&](BYTE* object){reinterpret_cast<Hide>((*reinterpret_cast<void***>(object))[0x28/4])(object,hidden);};
+ hide(number);
+ BYTE* seen[16]{};unsigned count=0;
+ for(auto digit=*reinterpret_cast<BYTE**>(number+0x18);digit;digit=*reinterpret_cast<BYTE**>(digit+0x10)){
+  if(count==16)return;for(unsigned i=0;i<count;++i)if(seen[i]==digit)return;seen[count++]=digit;
+  hide(digit);
+ }
+}
+struct Site{DWORD rva;BYTE original[6];void* hook;DWORD pointerOriginal=0;};
 Site sites[]={{0x474cf,{0xff,0x92,0x94,3,0,0},rasterHook},{0x474ec,{0xff,0x92,0xb4,1,0,0},floatHook},{0x47509,{0xff,0x92,0xa4,1,0,0},boolHook},
  {0xaa0ba,{0xe8,0xd1,0x24,0,0,0xc7},anchorHook},{0xaa398,{0xe8,0xf3,0x21,0,0,0x83},anchorHook},
  {0xaa629,{0xe8,0x62,0x1f,0,0,0xc7},anchorHook},{0xaa916,{0xe8,0x75,0x1c,0,0,0x83},anchorHook},
  {0xaab88,{0xe8,0x03,0x1a,0,0,0xc7},anchorHook},{0xab128,{0xe8,0x63,0x14,0,0,0x8b},anchorHook},
  {0xab453,{0xe8,0x38,0x11,0,0,0x83},anchorHook},{0xab6e1,{0xe8,0xaa,0x0e,0,0,0x8b},anchorHook},
- {0xaba34,{0xe8,0x57,0x0b,0,0,0x83},anchorHook}};
+ {0xaba34,{0xe8,0x57,0x0b,0,0,0x83},anchorHook},
+ {0xc19d8,{},popupVisibilityHook,0x4c893}};
 constexpr unsigned siteCount=sizeof(sites)/sizeof(sites[0]);
-void changed(const Site& s,BYTE* image,BYTE* output){output[0]=0xe8;*reinterpret_cast<int*>(output+1)=static_cast<int>(reinterpret_cast<ULONG_PTR>(s.hook)-reinterpret_cast<ULONG_PTR>(image+s.rva+5));output[5]=s.original[0]==0xe8?s.original[5]:0x90;}
-bool write(BYTE* p,const BYTE* data){DWORD old;if(!VirtualProtect(p,6,PAGE_EXECUTE_READWRITE,&old))return false;memcpy(p,data,6);FlushInstructionCache(GetCurrentProcess(),p,6);DWORD ignored;bool ok=VirtualProtect(p,6,old,&ignored)!=FALSE;
+unsigned length(const Site& s){return s.pointerOriginal?4:6;}
+void original(const Site& s,BYTE* image,BYTE* output){if(s.pointerOriginal)*reinterpret_cast<BYTE**>(output)=image+s.pointerOriginal;else memcpy(output,s.original,6);}
+void changed(const Site& s,BYTE* image,BYTE* output){if(s.pointerOriginal){*reinterpret_cast<void**>(output)=s.hook;return;}output[0]=0xe8;*reinterpret_cast<int*>(output+1)=static_cast<int>(reinterpret_cast<ULONG_PTR>(s.hook)-reinterpret_cast<ULONG_PTR>(image+s.rva+5));output[5]=s.original[0]==0xe8?s.original[5]:0x90;}
+bool write(BYTE* p,const BYTE* data,unsigned size){DWORD old;if(!VirtualProtect(p,size,PAGE_EXECUTE_READWRITE,&old))return false;memcpy(p,data,size);FlushInstructionCache(GetCurrentProcess(),p,size);DWORD ignored;bool ok=VirtualProtect(p,size,old,&ignored)!=FALSE;
 #ifdef DAMAGE_PROJECTION_TEST
  if(failWrite==0){failWrite=-1;return false;}if(failWrite>0)--failWrite;
 #endif
@@ -98,15 +116,15 @@ bool setDamageProjection(BYTE* image,size_t available,bool enabled){
  if(!image||available<0x10b000)return false;
  auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);if(dos->e_magic!=IMAGE_DOS_SIGNATURE||dos->e_lfanew<=0||dos->e_lfanew>4096)return false;
  auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(image+dos->e_lfanew);if(nt->Signature!=IMAGE_NT_SIGNATURE||nt->FileHeader.Machine!=IMAGE_FILE_MACHINE_I386||nt->OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR32_MAGIC||nt->OptionalHeader.SizeOfImage!=0x10b000)return false;
- BYTE patches[siteCount][6],previous[siteCount][6];bool already=true;
- for(unsigned i=0;i<siteCount;++i){auto& s=sites[i];changed(s,image,patches[i]);memcpy(previous[i],image+s.rva,6);if(memcmp(previous[i],s.original,6)&&memcmp(previous[i],patches[i],6))return false;if(memcmp(previous[i],enabled?patches[i]:s.original,6))already=false;}
+ BYTE patches[siteCount][6]{},previous[siteCount][6]{},originals[siteCount][6]{};bool already=true;
+ for(unsigned i=0;i<siteCount;++i){auto& s=sites[i];auto size=length(s);original(s,image,originals[i]);changed(s,image,patches[i]);memcpy(previous[i],image+s.rva,size);if(memcmp(previous[i],originals[i],size)&&memcmp(previous[i],patches[i],size))return false;if(memcmp(previous[i],enabled?patches[i]:originals[i],size))already=false;}
  if(already)return !enabled||engine==image;
- for(unsigned i=0;i<siteCount;++i)if(!write(image+sites[i].rva,enabled?patches[i]:sites[i].original)){for(unsigned j=0;j<=i;++j)write(image+sites[j].rva,previous[j]);return false;}
+ for(unsigned i=0;i<siteCount;++i)if(!write(image+sites[i].rva,enabled?patches[i]:originals[i],length(sites[i]))){for(unsigned j=0;j<=i;++j)write(image+sites[j].rva,previous[j],length(sites[j]));return false;}
  engine=enabled?image:nullptr;raster={};return true;
 }
-bool installDamageProjection(HMODULE module,void(*logger)(const wchar_t*)){bool ok=setDamageProjection(reinterpret_cast<BYTE*>(module),0x10b000,true);if(ok&&logger)logger(L"DAMAGE_PROJECTION_READY revision=spatial_flags_v2 source=driver_matrices logical_canvas=true raster_valid=clip_guard native_float=preserved popup_anchor=fresh_scene_camera hidden_mesh=independent spatial_skip=native_exact_one validation=offline");return ok;}
+bool installDamageProjection(HMODULE module,void(*logger)(const wchar_t*)){bool ok=setDamageProjection(reinterpret_cast<BYTE*>(module),0x10b000,true);if(ok&&logger)logger(L"DAMAGE_PROJECTION_READY revision=numeric_visibility_v3 source=driver_matrices logical_canvas=true raster_valid=clip_guard native_float=preserved popup_anchor=fresh_scene_camera hidden_mesh=independent spatial_skip=native_exact_one digit_visibility=popup_state validation=offline");return ok;}
 #ifdef DAMAGE_PROJECTION_TEST
-void initializeDamageProjectionFixture(BYTE* image){memset(image,0,0x10b000);auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x80;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(image+0x80);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;for(auto& s:sites)memcpy(image+s.rva,s.original,6);}
+void initializeDamageProjectionFixture(BYTE* image){memset(image,0,0x10b000);auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x80;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(image+0x80);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;for(auto& s:sites)original(s,image,image+s.rva);}
 void damageProjectionWriteFailure(int index){failWrite=index;}
 void damageProjectionFixtureDriver(BYTE* driver){fixtureDriver=driver;}
 #endif

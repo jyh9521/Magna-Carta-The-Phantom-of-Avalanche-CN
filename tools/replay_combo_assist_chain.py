@@ -65,12 +65,13 @@ class Producer:
 
 
 class AssistReplay(QueueReplay):
-    def __init__(self, image, values, abi, producer, hz, scenario, data):
+    def __init__(self, image, values, abi, producer, hz, scenario, data, action=3):
+        self.action = action
         self.producer, self.scenario, self.sequence = producer, scenario, 0
         self.accepted_inputs, self.completed = [], False
         self.values = values
         super().__init__(image, values, hz, [])
-        resources = setupCombatResources(self, data)
+        resources = setupCombatResources(self, data, action=action)
         require(sha(abi) == resources['abi'], 'Ability argument does not match mapped resource')
         self.resource_config = resources['config']
         value_rows = self.hooks.allocate(8*len(values))
@@ -85,7 +86,7 @@ class AssistReplay(QueueReplay):
         self.transition_calls = 0
         self.stub(0xa7303, 'selected_action_animation_boundary', 0, self.action_transition)
         self.stubs.pop(BASE+0xa4ecd)
-        self.native_resources = dict(**resources, ability_sha256=sha(abi), ability_id=3,
+        self.native_resources = dict(**resources, ability_sha256=sha(abi), ability_id=action,
                                     interval=values[0x23], window=values[0x24], precision=values[0x25])
 
     def action_transition(self):
@@ -109,7 +110,7 @@ class AssistReplay(QueueReplay):
                 self.settlement = dict(perfect=self.read(fp-0x298), success_count=self.read(fp-0x2b4))
                 self.scoring_phase = 'getter'
                 sp = fp-0x600
-                self.write(sp, STOP+0x600); self.write(sp+4, 3)
+                self.write(sp, STOP+0x600); self.write(sp+4, self.action)
                 cpu.reg_write(UC_X86_REG_ESP, sp)
                 cpu.reg_write(UC_X86_REG_ECX, self.resource_config)
                 cpu.reg_write(UC_X86_REG_EIP, BASE+0xb5967)
@@ -166,11 +167,11 @@ class AssistReplay(QueueReplay):
         return int(row['ok'])
 
 
-def run_case(image, values, abi, bridge, hz, scenario, expect_perfect=False, data=None):
+def run_case(image, values, abi, bridge, hz, scenario, expect_perfect=False, data=None, action=3):
     require(hz in (30, 60) and scenario in ('f10', 'r3', 'held_a', 'held_x', 'f10_focus', 'r3_disconnect'), 'Unsupported chain scenario')
     producer = Producer(bridge, scenario.startswith('f10'))
     try:
-        q = AssistReplay(image, values, abi, producer, hz, scenario, data)
+        q = AssistReplay(image, values, abi, producer, hz, scenario, data, action)
         for frame in range(1, hz*2+1):
             q.frame(frame*1000//hz)
             if q.completed:
@@ -191,12 +192,14 @@ def run_case(image, values, abi, bridge, hz, scenario, expect_perfect=False, dat
                     'Native combo result included failed confirmation')
             if expect_perfect:
                 require(producer.ready.get('nativeIdentityFields') is True, 'Rebuild producer with native identity transport')
-                require(result['native_perfect_window'] and result['settlement']['success_count'] == 3 and result['settlement']['selected_action'] == 7,
+                from replay_native_combo_scoring import native_call
+                row=native_call(q,0xb5967,q.resource_config,action)
+                require(result['native_perfect_window'] and result['settlement']['success_count'] == 3 and result['settlement']['selected_action'] == q.read(row+0x50),
                         'Production assist misses original precise combo windows')
         else:
             require(result['native_handler_calls'] == 1 and result['settlement']['success_count'] == 1
                     and result['settlement']['perfect'] == 0
-                    and result['settlement']['selected_action'] == 3,
+                    and result['settlement']['selected_action'] == action,
                     'Cancelled/manual request must not receive automatic successful combo')
         result['producer_rollback'] = producer.close()
         return result

@@ -39,9 +39,13 @@ class DamageReplay(NativeTitle):
   self.write(BASE+0xf1b48,width);self.write(BASE+0xf1b4c,height)
  def projection_bridge(self,path):
   exe=Path(path).resolve();self.bridge_path=exe;dll=exe.parent/'AsrD3DDrv.dll';require(exe.is_file() and dll.is_file(),'Owned compiled projection bridge required');self.bridge_dll=dll;self.raster_result=None;self.raster_cases=[]
+ def bridge_request(self,line,options=()):
+  process=subprocess.run([str(self.bridge_path),str(self.bridge_dll),*options],input=' '.join(map(str,line))+'\n',text=True,capture_output=True,timeout=10)
+  require(process.returncode==0,'Compiled projection bridge: '+process.stderr)
+  return json.loads(process.stdout)
  def raster(self):
   point=list(struct.unpack('<3f',self.cpu.mem_read(self.arg(0),12)));mv=list(struct.unpack('<16f',self.cpu.mem_read(self.driver+0x5c,64)));pr=list(struct.unpack('<16f',self.cpu.mem_read(self.driver+0x9c,64)));w,h=self.read(BASE+0xf1b48),self.read(BASE+0xf1b4c);line=[len(self.raster_cases),w,h,0x1897c,0x80a4,0x9b8c,*mv,*pr,*point,0,0,0,0,0]
-  process=subprocess.run([str(self.bridge_path),str(self.bridge_dll)],input=' '.join(map(str,line))+'\n',text=True,capture_output=True,timeout=10);require(process.returncode==0,'Compiled hook bridge failed/rollback: '+process.stderr);out=process.stdout;require(bool(out),'Owned compiled bridge output missing');self.raster_result=json.loads(out);require(self.raster_result['abi_error_bits']==0,'Projection native ABI');self.raster_cases.append(dict(point=point,modelview=mv,projection=pr,result=self.raster_result));return 0
+  self.raster_result=self.bridge_request(line);require(self.raster_result['abi_error_bits']==0,'Projection native ABI');self.raster_cases.append(dict(point=point,modelview=mv,projection=pr,result=self.raster_result));return 0
  def fresh_anchor(self):
   model=self.cpu.reg_read(UC_X86_REG_ECX);camera=self.read(BASE+0xf2290);lens=self.read(camera+4)
   sites=[0xaa0ba,0xaa398,0xaa629,0xaa916,0xaab88,0xab128,0xab453,0xab6e1,0xaba34]
@@ -55,8 +59,7 @@ class DamageReplay(NativeTitle):
   while node:
    flags.extend([self.read(node+0x10c),self.read(node+0x110)]);node=self.read(node+8)
   line=['anchor-flags',self.read(BASE+0xf1b48),self.read(BASE+0xf1b4c),sites.index(caller),1,fov,near,far,*floats(camera+0x80,16),len(matrices),*[v for m in matrices for v in m],*flags,*floats(model+0xb4,16),*floats(model+0x12c,3),*struct.unpack('<2i',self.cpu.mem_read(model+0x138,8))]
-  process=subprocess.run([str(self.bridge_path),str(self.bridge_dll),*getattr(self,'anchor_options',[])],input=' '.join(map(str,line))+'\n',text=True,capture_output=True,timeout=10)
-  require(process.returncode==0,'Compiled fresh anchor bridge: '+process.stderr);result=json.loads(process.stdout);require(result['abi_error_bits']==0,'Fresh anchor ABI')
+  result=self.bridge_request(line,getattr(self,'anchor_options',[]));require(result['abi_error_bits']==0,'Fresh anchor ABI')
   raw=struct.pack('<2i',*result['screen']);self.cpu.mem_write(model+0x138,raw);self.cpu.mem_write(self.arg(0),raw);return self.arg(0)
  def render(self):
   args=[self.arg(i) for i in range(14)];self.calls.append(dict(args=args,vertices=list(struct.unpack('<20f',self.cpu.mem_read(args[2],80))),matrix=list(struct.unpack('<16f',self.cpu.mem_read(args[12],64)))));return 0
