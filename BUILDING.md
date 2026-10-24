@@ -311,6 +311,10 @@ python -m unittest discover -s tests -p 'test_damage*.py' -v
 
 ## 纯净版直接覆盖格式
 
+2026-10-24完整测试集合可用build_clean_overlay.py的`--test-candidates`生成：
+Play.cmd和Configure.cmd共同默认启用卡墙/声音候选，Play-stable.cmd提供保留此前修复的对照。
+该默认只作用于包内副本，本机共享版仍保留原可选路由；内容与验证见[统一测试集合](docs/CLEAN_GAME_OVERLAY.md)。
+
 黑屏/卡墙专项记录、真实GID原生离线链和共享data/布局专用更新见
 [阻断问题调查](docs/BLOCKER_TRACE.md)。共享更新与平铺更新须分别使用，载荷不含复现存档。
 

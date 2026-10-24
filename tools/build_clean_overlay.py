@@ -8,7 +8,42 @@ def raw_sha(b):return hashlib.sha256(b).hexdigest()
 def safe_name(n):
  if not isinstance(n,str) or not n or n.startswith('/') or any(x in n for x in ('\\',':','\x00')) or any(v in ('','.','..') for v in n.split('/')):raise ValueError('Invalid package path')
  return n
-def build(previous,previous_sha256,runtime,output):
+def enable_test_candidates(release,payload):
+ """Bundle-only defaults; never modify the maintainer's shared runtime/settings."""
+ guard=release.get('collision_guard',{})
+ if guard.get('schema')!=1 or not guard.get('candidate'):
+  raise ValueError('Source runtime lacks the collision candidate')
+ module=payload.get('modules/configuration.dll',b'')
+ for marker in ('COLLISION_GUARD_READY','AUDIO_PROVIDER_POLICY_READY','CONTACT_AUDIO_READY'):
+  if marker.encode('utf-16le') not in module:raise ValueError('Candidate module marker missing: '+marker)
+ for n in ('Play-contact-audio.cmd','Play-collision-fix.cmd'):
+  payload.pop(n,None);release['files'].pop(n,None)
+ release.pop('blocker_trace',None)
+ guard['default_enabled']=True;guard['entry']='Play.cmd'
+ release['test_candidates']=dict(schema=1,collision_guard=True,audio_provider_policy=True,
+  contact_audio_trace=True,in_game_verified=False,stable_entry='Play-stable.cmd')
+ text=payload['Start.ps1'].decode('utf-8-sig').replace('\r\n','\n')
+ anchor='[switch]$CaptureException)'
+ if text.count(anchor)!=1:raise ValueError('Shared startup parameter anchor drift')
+ text=text.replace(anchor,'[switch]$CaptureException,[switch]$WithoutTestCandidates)')
+ anchor="'MC_SCALED_FONT_ASSETS'))"
+ if text.count(anchor)!=1:raise ValueError('Scoped environment anchor drift')
+ text=text.replace(anchor,"'MC_SCALED_FONT_ASSETS','MC_COLLISION_GUARD','MC_AUDIO_PROVIDER_POLICY','MC_CONTACT_AUDIO_TRACE'))")
+ anchor=' $env:MC_SCALED_FONT='
+ if text.count(anchor)!=1:raise ValueError('Candidate startup routing anchor drift')
+ route=""" # TEST_CANDIDATES_DEFAULT_ROUTE: applies equally to Play and Configure launch.
+ if($manifest.test_candidates.schema -ne 1){throw 'Invalid test candidate defaults'}
+ $testCandidatesEnabled=$Recipe -ne 'baseline' -and -not $WithoutTestCandidates
+ $env:MC_COLLISION_GUARD=if($testCandidatesEnabled -and $manifest.test_candidates.collision_guard){'1'}else{'0'}
+ $env:MC_AUDIO_PROVIDER_POLICY=if($testCandidatesEnabled -and $manifest.test_candidates.audio_provider_policy){'1'}else{'0'}
+ $env:MC_CONTACT_AUDIO_TRACE=if($testCandidatesEnabled -and $manifest.test_candidates.contact_audio_trace){'1'}else{'0'}
+"""
+ text=text.replace(anchor,route+anchor)
+ payload['Start.ps1']=text.encode('utf-8-sig')
+ payload['Play-stable.cmd']=b'@echo off\r\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Start.ps1" -Recipe configured -WithoutTestCandidates\r\nif errorlevel 1 pause\r\n'
+ for n in ('Start.ps1','Play-stable.cmd'):release['files'][n]=raw_sha(payload[n])
+
+def build(previous,previous_sha256,runtime,output,*,test_candidates=False):
  previous,runtime,output=map(lambda p:Path(p).resolve(),(previous,runtime,output))
  if output.exists() or output.suffix!='.zip' or output.is_relative_to(runtime) or output==previous:raise ValueError('Independent new archive required')
  if sha(previous)!=previous_sha256:raise ValueError('Source package drift')
@@ -45,6 +80,7 @@ def build(previous,previous_sha256,runtime,output):
   for n in ('ddraw.dll','DDrawCompat-MagnaCarta.ini'):payload[n]=old.read('payload/data/'+n)
   for n in old.namelist():
    if n.startswith('licenses/'):payload[n]=old.read(n)
+ if test_candidates:enable_test_candidates(release,payload)
  for n,h in release['data'].items():
   effective=raw_sha(payload[n]) if n in payload else base['source_files'].get(n)
   if effective!=h:raise ValueError('Overlay+pristine data dependency mismatch: '+n)
@@ -67,7 +103,14 @@ def build(previous,previous_sha256,runtime,output):
   '可选双击 Verify-Overlay.cmd 检查覆盖文件。cache/profile.log保留运行记录。\r\n'
   '撤回：双击 Restore-Original.cmd，输入独立纯净备份目录；先完整预检摘要，再恢复覆盖的原资源。\r\n'
   '回滚保留存档、个人设置、显示INI和日志；恢复后使用原游戏入口，现代化入口会按版本锁拒绝原资源。\r\n').encode()
+ if test_candidates:
+  payload['README-Overlay.txt']+=('本版统一测试：普通Play.cmd及Configure.cmd中的启动均默认启用通用卡墙、采样声音后端候选及接触记录。\r\n'
+   '卡墙候选阻止新增穿入并尝试局部脱离；声音候选优先软件后端，失败时保留原生后备。\r\n'
+   '两项仍需游戏内验收，不是宣称卡墙和全部连招缺声已经修好。正常剧情黑幕保留。\r\n'
+   '对照测试用Play-stable.cmd：保留此前修复，只关闭本次卡墙/声音候选和接触记录。\r\n'
+   '不要叠加旧的Blocker、Contact-Audio或Collision小更新；本包已包含最新模块。\r\n').encode('utf8')
  manifest=dict(schema=1,kind='clean_game_overlay',layout='flat',source_files=base['source_files'],changes=[{k:r[k] for k in ('resource','source_sha256','target_sha256','target_size')} for r in base['changes']],files={n:raw_sha(b) for n,b in payload.items()},source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),previous_sha256=previous_sha256,in_game_verified=False,engine_fixes=validate_engine_fixes(runtime,current))
+ if test_candidates:manifest['test_candidates']=release['test_candidates']
  payload['Overlay-Manifest.json']=(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n').encode()
  names=[n.casefold() for n in payload]
  if len(names)!=len(set(names)) or any(n.startswith(('data/','payload/','deltas/','cache/')) or n.endswith(('.sav','.log')) for n in names):raise ValueError('Invalid flat overlay file set')
@@ -84,4 +127,5 @@ if __name__=='__main__':
  p=argparse.ArgumentParser(description=__doc__)
  for n in ('previous','runtime','output'):p.add_argument('--'+n,type=Path,required=True)
  p.add_argument('--previous-sha256',required=True)
+ p.add_argument('--test-candidates',action='store_true')
  build(**vars(p.parse_args()))

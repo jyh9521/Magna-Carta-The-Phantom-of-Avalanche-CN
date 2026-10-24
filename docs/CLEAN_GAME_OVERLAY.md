@@ -1,5 +1,31 @@
 # 纯净版直接覆盖测试包
 
+## 2026-10-24 全修复统一测试集合
+
+`MagnaCarta-clean-game-all-fixes-test-20261024.zip`可直接覆盖受支持的纯净版，不需要历史全合一包
+或Contact-Audio、Blocker、Collision等小更新。814项既有变化资源和全部最新自有模块一并交付，
+11,784项源资源映射与当前共享数据逐一摘要核对，无额外未收录变化。存档、日志、维护端设置不进入包。
+
+本版通过`--test-candidates`明确生成测试默认值，仅改变包内副本，不改本机共享运行目录：
+
+- 普通Play.cmd及Configure.cmd的同一Start.ps1路由，默认启用通用卡墙、采样声音后端候选及接触观察。
+  不依赖某个专项CMD遗留的环境变量。声音后端不可用时保留原生后备。
+- Play-stable.cmd使用`-WithoutTestCandidates`，保留此前修复集合，仅关闭上述两项候选及接触观察。
+  baseline配方也不启用两项候选。正常剧情黑幕不修改。
+- 三个进程环境变量进入既有保存/恢复事务，正常结束及失败均还原；验证入口不启动游戏、不改变显示状态。
+- 默认1080P、无边框、30帧、键鼠；60帧等设置仍经Configure.cmd选择。归档手柄/自由视角不重新启用。
+- 候选尚未完成实际水之迷宫、全角色F10/F11验收；完整测试集合不是所有已知问题已经修复的声明。
+
+包内仍为平铺布局，解压到MagnaCarta.exe同层后直接运行Play.cmd；无需Python、历史Install.cmd或data子目录。
+Verify-Overlay.cmd检查覆盖完整性，Restore-Original.cmd从独立纯净备份撤回，保留存档、个人设置和日志。
+针对平铺启动、候选默认值、配置器共用路由、对照/基线禁用、失败还原及覆盖/独立撤回的12项回归通过。
+基础运行模块沿用此前921项（3项条件跳过）回归验证，不将该结果冒充新增整包游戏实测。
+
+```powershell
+python tools/build_clean_overlay.py --previous dist/MagnaCarta-unified-test-hud-fix-20261023.zip --previous-sha256 e75802844d12b01368a63383c4174baec67652c08431ab134791dcdf8bbc966a --runtime runtime --output dist/MagnaCarta-clean-game-all-fixes-test-20261024.zip --test-candidates
+python -m unittest discover -s tests -p 'test_overlay*.py' -v
+```
+
 该格式是直接解压替换的完整功能集合，不依赖 F11、发布控制或后续 HUD 小更新。保留既有纯净备份，只覆盖用于测试的纯净安装目录。不要把唯一的纯净备份作为覆盖目标。
 
 ## 使用
