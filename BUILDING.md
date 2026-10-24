@@ -306,6 +306,9 @@ python -m unittest discover -s tests -p 'test_damage*.py' -v
 
 ## 纯净版直接覆盖格式
 
+黑屏/卡墙专项记录、真实GID原生离线链和共享data/布局专用更新见
+[阻断问题调查](docs/BLOCKER_TRACE.md)。共享更新与平铺更新须分别使用，载荷不含复现存档。
+
 采样声音后端候选的真实Miles原生夹具、构建、诊断版专用更新及撤回见
 [声音后端候选](docs/AUDIO_PROVIDER_POLICY.md)。默认关闭，未完成游戏内F10/F11验收。
 

@@ -33,19 +33,25 @@ def read_previous(path, expected):
     return before
 
 
-def build(previous, previous_sha256, module, work, output):
+def build(previous, previous_sha256, module, work, output, policy='audio'):
+    if policy not in ('audio', 'blockers'):
+        raise ValueError('Unknown update policy')
+    FOLDER, BACKUP, ENTRY = (('Audio-Provider-Fix-20261024', '.audio-provider-fix-20261024', 'Play-audio-fix.cmd')
+        if policy == 'audio' else ('Blocker-Trace-20261024', '.blocker-trace-20261024', 'Play-contact-audio.cmd'))
+    FILES = (*MODULES, 'runtime.json', 'Overlay-Manifest.json', ENTRY)
     previous, module, work, output = [Path(x).resolve() for x in (previous, module, work, output)]
     if work.exists() or output.exists() or output.suffix != '.zip' or any(x.is_relative_to(work) for x in (previous, module, output)):
         raise ValueError('Independent new output paths required')
     before = read_previous(previous, previous_sha256)
     native = module.read_bytes()
     check_module(native)
-    for marker in ('AUDIO_PROVIDER_POLICY_READY', 'CONTACT_AUDIO_READY'):
+    for marker in ('AUDIO_PROVIDER_POLICY_READY' if policy == 'audio' else 'BLOCKER_TRACE_READY', 'CONTACT_AUDIO_READY'):
         if marker.encode('utf-16le') not in native:
             raise ValueError('Candidate marker missing')
     runtime = json.loads(before['runtime.json'])
     overlay = json.loads(before['Overlay-Manifest.json'])
-    if runtime['data_root'] != '.' or overlay['kind'] != 'clean_game_overlay' or ENTRY in runtime['files'] or ENTRY in overlay['files']:
+    if (runtime['data_root'] != '.' or overlay['kind'] != 'clean_game_overlay'
+            or (policy == 'audio' and (ENTRY in runtime['files'] or ENTRY in overlay['files']))):
         raise ValueError('Expected installed flat observer baseline')
     for n, blob in before.items():
         if n != 'Overlay-Manifest.json' and overlay['files'].get(n) != sha(blob):
@@ -60,12 +66,20 @@ def build(previous, previous_sha256, module, work, output):
     for n, blob in after.items():
         overlay['files'][n] = sha(blob)
     overlay['contact_audio_diagnostic']['module_sha256'] = sha(native)
-    overlay['audio_provider_policy'] = dict(default_enabled=False, in_game_verified=False,
+    overlay['contact_audio_diagnostic']['source_sha256'] = {n:sha((ROOT/n).read_bytes()) for n in
+        ('src/runtime/contact_audio_trace.cpp', 'src/runtime/contact_audio_trace.h', 'src/runtime/workspace_profile.cpp')}
+    metadata = dict(default_enabled=False, in_game_verified=False,
         preferred='DirectSound3D 7+ Software - Pan and Volume', native_fallback=True,
         capacity='provider_reported', source_sha256={n:sha((ROOT/n).read_bytes()) for n in
             ('src/runtime/audio_provider_policy.cpp', 'src/runtime/audio_provider_policy.h', 'src/runtime/workspace_profile.cpp')})
+    if policy == 'audio':
+        overlay['audio_provider_policy'] = metadata
+    else:
+        overlay['blocker_trace'] = dict(default_enabled=False, read_only=True,
+            scene_gates=True, native_fades=4, no_extra_collision_queries=True,
+            source_sha256=overlay['contact_audio_diagnostic']['source_sha256'])
     after['Overlay-Manifest.json'] = (json.dumps(overlay, ensure_ascii=False, indent=2)+'\n').encode()
-    before[ENTRY] = None
+    before.setdefault(ENTRY, None)
     work.mkdir(parents=True)
     payload, rows, dedup = {}, [], {}
     for n in FILES:
@@ -90,7 +104,8 @@ def build(previous, previous_sha256, module, work, output):
     anchor = r'runtime\.json|modules/'
     if script.count(anchor) != 1:
         raise ValueError('Updater allow-list anchor drift')
-    script = script.replace(anchor, r'Overlay-Manifest\.json|Play-audio-fix\.cmd|runtime\.json|modules/')
+    escaped_entry = ENTRY.replace('.', r'\.')
+    script = script.replace(anchor, r'Overlay-Manifest\.json|'+escaped_entry+r'|runtime\.json|modules/')
     anchor = '$seen=@{};$prepared=@{};$before=@{}'
     if script.count(anchor) != 1:
         raise ValueError('Updater state anchor drift')
@@ -104,7 +119,10 @@ def build(previous, previous_sha256, module, work, output):
     wrapper = wrapper.replace(b'Overlay-Launch-Fix-20261023', FOLDER.encode()).replace(
         b'Overlay-Launch-Fix.log', b'Audio-Provider-Install.log').replace(
         b'Applying overlay launch repair...', b'Installing opt-in audio provider candidate...')
-    payload['Install-Audio-Fix.cmd'] = wrapper
+    if policy == 'blockers':
+        wrapper = wrapper.replace(b'Audio-Provider-Install.log', b'Blocker-Trace-Install.log').replace(
+            b'Installing opt-in audio provider candidate...', b'Installing read-only scene and collision observations...')
+    payload['Install-Audio-Fix.cmd' if policy == 'audio' else 'Install-Blocker-Trace.cmd'] = wrapper
     payload['README-Audio-Fix.txt'] = ("声音候选修复包；黑屏和卡墙尚未修复。\r\n"
         "适用：已成功安装2026-10-24碰撞与声音诊断包的覆盖版；其它版本会拒绝安装。\r\n"
         "退出游戏，完整解压至原Play.cmd所在目录，双击Install-Audio-Fix.cmd。\r\n"
@@ -116,6 +134,17 @@ def build(previous, previous_sha256, module, work, output):
         "日志应包含AUDIO_PROVIDER_POLICY_SELECTED，后续声音记录可查看slots_capacity及失败数。\r\n"
         "不更改存档、设置、场景资源、技能、碰撞、动作及播放时序。\r\n"
         f"撤回：powershell -NoProfile -ExecutionPolicy Bypass -File {FOLDER}/Update.ps1 -Action Rollback -Runtime .\r\n").encode('utf-8')
+    if policy == 'blockers':
+        payload.pop('README-Audio-Fix.txt')
+        payload['README-Blocker-Trace.txt'] = ("黑屏与卡墙补充状态记录；不是修复包，不测试音效。\r\n"
+            "适用：已成功安装2026-10-24碰撞/声音诊断包的平铺版；其它模块会拒绝混装。\r\n"
+            "原始存档与profile.log已保留；上一份探针缺少淡出层状态，本包补充四个全屏层及场景控制状态。\r\n"
+            "退出游戏，完整解压至原Play.cmd目录，运行Install-Blocker-Trace.cmd，看到MODIFIED PASS后\r\n"
+            "手动运行Play-contact-audio.cmd，读同一个原存档，往前触发整屏黑屏后停留约3秒，再退出。\r\n"
+            "保留这一次的cache/profile.log；应新增BLOCKER_TRACE_READY、BLOCKER_STATE及BLOCKER_FADE。\r\n"
+            "无需重发上一份日志，不改原存档/设置/游戏资源，不额外查询碰撞，不改任何碰撞返回或遮罩状态。\r\n"
+            "水之迷宫卡死若另测，复现吸入后尝试反向移动，再退出保留另一份日志；不要覆盖黑屏日志。\r\n"
+            f"撤回：powershell -NoProfile -ExecutionPolicy Bypass -File {FOLDER}/Update.ps1 -Action Rollback -Runtime .\r\n").encode('utf-8')
     output.parent.mkdir(parents=True, exist_ok=True)
     with zipfile.ZipFile(output, 'x', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
         for n, blob in sorted(payload.items()):
@@ -128,7 +157,7 @@ def build(previous, previous_sha256, module, work, output):
     if sha(previous.read_bytes()) != previous_sha256 or module.read_bytes() != native:
         raise ValueError('Input changed')
     output.with_suffix('.zip.sha256').write_text(sha(output.read_bytes())+'  '+output.name+'\n')
-    print('AUDIO_PROVIDER_PACKAGE PASS files=15 default_enabled=false game_started=false')
+    print(('AUDIO_PROVIDER_PACKAGE' if policy == 'audio' else 'BLOCKER_TRACE_PACKAGE')+' PASS files=15 default_enabled=false game_started=false')
     return output
 
 

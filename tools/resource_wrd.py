@@ -54,11 +54,12 @@ def parse(data):
    if any(not math.isfinite(x) for x in first):raise ValueError('Nonfinite instance matrix')
    tracks.append(dict(index=index,references=references,first_matrix=first))
   instances.append(dict(group=group,metadata_hex=part_metadata.hex(),animation_flags=animation_flags,animation_type=animation_type,frames=frames,tracks=tracks))
- pairs=r.count();r.take(pairs*8);matrices=r.count();r.take(matrices*64);r.take(16)
+ pairs=r.count();r.take(pairs*8);matrices=r.count();r.take(matrices*64)
+ trailer=r.take(16);guide_resource_id=struct.unpack_from('<i',trailer,12)[0]
  if r.pos!=len(data):raise ValueError(f'Unexpected WRD trailing data: {len(data)-r.pos}')
  points=[p for m in meshes for p in m['points']]
  bounds=[min(p[k] for p in points) for k in range(3)]+[max(p[k] for p in points) for k in range(3)] if points else None
- return dict(schema=1,version=version,sha256=hashlib.sha256(data).hexdigest(),size=len(data),consumed=r.pos,groups=groups,texture_count=texture_count,vertices=len(points),triangles=triangle_total,raw_bounds=bounds,meshes=meshes,instances=instances,navigation_verified=False)
+ return dict(schema=1,version=version,sha256=hashlib.sha256(data).hexdigest(),size=len(data),consumed=r.pos,groups=groups,texture_count=texture_count,vertices=len(points),triangles=triangle_total,raw_bounds=bounds,meshes=meshes,instances=instances,guide_resource_id=guide_resource_id,navigation_verified=False)
 
 def preview_svg(result,width=1200,height=900):
  b=result['raw_bounds']

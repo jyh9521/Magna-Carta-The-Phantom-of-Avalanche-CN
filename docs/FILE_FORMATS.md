@@ -1,5 +1,14 @@
 # 文件格式
 
+## GID BSP与WRD绑定（2026-10-24）
+
+GID原生加载器fb56先读1024保留字节和计数sublevel，每项3个DWORD及count×32顶点；随后为
+节点数和前序树。叶记录2个DWORD，内部记录flag、22字节polygon、16字节平面、共面项计数及
+count×22字节、前后子树。resource_gid.py验证计数、深度、浮点、节点数及EOF，polygon字段保持不透明。
+WRD末尾16字节最后DWORD才是Guide资源ID，不保证与WRD同名；例如106→59、109→62、111→64。
+内存树节点父指针+10用于命中平面定位，仅读子树/平面而不重建父指针会丢失反射法线。
+证据、真实源查询和边界见[阻断问题调查](BLOCKER_TRACE.md)。
+
 ## SVD原声包装（2026-10-23）
 
 magic为`19 93 12 25`。实查compact头56字节，storage=u32@8，filter=u32@12，

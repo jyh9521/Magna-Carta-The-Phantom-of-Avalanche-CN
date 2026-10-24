@@ -15,6 +15,9 @@ void(*trace)(const wchar_t*)=nullptr;
 SRWLOCK budgetLock=SRWLOCK_INIT;
 DWORD epoch=0;unsigned contacts=0,corrections=0,sounds=0,droppedContacts=0,droppedSounds=0;
 volatile LONG serial=0;
+bool blockerEnabled=false;
+BYTE* blockerScene=nullptr;DWORD blockerEpoch=0;
+unsigned blockerField=~0u,blockerMode=~0u;
 bool readable(const void* value,size_t n){
  auto p=reinterpret_cast<uintptr_t>(value);if(!p||!n||n>~uintptr_t(0)-p)return false;auto end=p+n;
  while(p<end){MEMORY_BASIC_INFORMATION m{};if(!VirtualQuery(reinterpret_cast<void*>(p),&m,sizeof(m))||m.State!=MEM_COMMIT||(m.Protect&(PAGE_GUARD|PAGE_NOACCESS)))return false;
@@ -24,6 +27,28 @@ bool readable(const void* value,size_t n){
 }
 unsigned word(const void* p,unsigned off){return *reinterpret_cast<const unsigned*>(static_cast<const BYTE*>(p)+off);}
 BYTE* ptr(const void* p,unsigned off){return reinterpret_cast<BYTE*>(word(p,off));}
+void blockerState(void* scene,DWORD now){
+ if(!blockerEnabled||!trace||!readable(scene,0x1738))return;
+ unsigned field=word(scene,0x10cc),mode=word(scene,0x156c);
+ AcquireSRWLockExclusive(&budgetLock);
+ bool emit=blockerScene!=scene||blockerField!=field||blockerMode!=mode||DWORD(now-blockerEpoch)>=500;
+ if(emit){blockerScene=static_cast<BYTE*>(scene);blockerField=field;blockerMode=mode;blockerEpoch=now;}
+ ReleaseSRWLockExclusive(&budgetLock);
+ if(!emit)return;
+ auto player=ptr(scene,0x1564);Vec position{};bool validPlayer=readable(player,0x340);
+ if(validPlayer)position=*reinterpret_cast<Vec*>(player+0x154);
+ wchar_t state[640];swprintf_s(state,L"BLOCKER_STATE ms=%lu field=%u map=%u mode=%u scene=%p scene_draw_gate=%d scene_update_gate=%d scene_gate=%d event_lock=%d loading_gate=%u player_valid=%d player_state=%u position=%.9g,%.9g,%.9g rendered_picture_observed=false",
+  now,field,word(scene,0x10d0),mode,scene,int(word(scene,0x28)),int(word(scene,0x30)),int(word(scene,0x2c)),int(word(scene,0x1574)),word(scene,0x1730),int(validPlayer),validPlayer?word(player,0x2f0):~0u,double(position.x),double(position.y),double(position.z));trace(state);
+ const unsigned offsets[]={0x1098,0x109c,0x10a4,0x10a8};
+ const wchar_t* names[]={L"curtain_in",L"curtain_out",L"scene_in",L"scene_out"};
+ for(unsigned i=0;i<4;++i){
+  auto fade=ptr(scene,offsets[i]);bool valid=readable(fade,0x1ac);
+  auto box=valid?ptr(fade,0x194):nullptr;bool validBox=readable(box,0x1c8);
+  auto mover=valid?ptr(fade,0x198):nullptr;bool validMover=readable(mover,0x154);
+  wchar_t line[640];swprintf_s(line,L"BLOCKER_FADE ms=%lu field=%u kind=%s object=%p valid=%d hidden=%d pause=%d inherited_pause=%d complete=%u phase=%u box_valid=%d effect=%u percentage=%d mover_valid=%d mover_active=%u",
+   now,field,names[i],fade,int(valid),valid?int(word(fade,0xd0)):-2,valid?int(word(fade,0xd4)):-2,valid?int(word(fade,0xd8)):-2,valid?word(fade,0x190):~0u,valid?word(fade,0x19c):~0u,int(validBox),validBox?word(box,0x1b8):~0u,validBox?int(word(box,0x1bc)):-2,int(validMover),validMover?word(mover,0xf0):~0u);trace(line);
+ }
+}
 bool admit(bool sound,DWORD now,bool changed=false){
  unsigned dc=0,ds=0;bool allowed;
  AcquireSRWLockExclusive(&budgetLock);
@@ -42,6 +67,7 @@ Vec* __fastcall contactHook(void* scene,void*,Vec* out,void* actor,const Vec* of
  SetLastError(incomingError);auto result=originalContact(scene,out,actor,offsets,count,position,reflected,velocity,elasticity,extra);
  DWORD error=GetLastError();
  DWORD now=GetTickCount();
+ if(observe)blockerState(scene,now);
  bool changed=observe&&readable(result,sizeof(Vec))&&memcmp(result,&before,sizeof(Vec))!=0;
  if(observe&&trace&&admit(false,now,changed)){
   Vec output{},after{},actual{};bool valid=readable(result,sizeof(Vec))&&readable(velocity,sizeof(Vec))&&readable(actor,0x160);
@@ -105,11 +131,14 @@ bool set(BYTE* p,bool enabled,void(*logger)(const wchar_t*)){
    VirtualFree(t,0,MEM_RELEASE);engine=trampoline=nullptr;trace=nullptr;return false;
   }
   epoch=GetTickCount();contacts=corrections=sounds=droppedContacts=droppedSounds=0;InterlockedExchange(&serial,0);
+  wchar_t blockerFlag[8]{};blockerEnabled=GetEnvironmentVariableW(L"MC_BLOCKER_TRACE",blockerFlag,8)==1&&blockerFlag[0]==L'1';
+  blockerScene=nullptr;blockerField=blockerMode=~0u;blockerEpoch=0;
   if(trace)trace(L"CONTACT_AUDIO_READY diagnostic_only=true collision=passthrough sound_start=passthrough no_extra_collision_queries=true");
+  if(trace&&blockerEnabled)trace(L"BLOCKER_TRACE_READY scene_gates=true native_fades=4 read_only=true no_extra_collision_queries=true rendered_picture_observed=false");
  }else{
   if(!write(p+slotRva,reinterpret_cast<BYTE*>(&newSlot),reinterpret_cast<BYTE*>(&oldSlot),4))return false;
   if(!write(p+startRva,hook,startPrefix,7)){write(p+slotRva,reinterpret_cast<BYTE*>(&oldSlot),reinterpret_cast<BYTE*>(&newSlot),4);return false;}
-  VirtualFree(trampoline,0,MEM_RELEASE);trampoline=engine=nullptr;originalContact=nullptr;originalStart=nullptr;trace=nullptr;
+  VirtualFree(trampoline,0,MEM_RELEASE);trampoline=engine=nullptr;originalContact=nullptr;originalStart=nullptr;trace=nullptr;blockerEnabled=false;blockerScene=nullptr;
  }
  return true;
 }
