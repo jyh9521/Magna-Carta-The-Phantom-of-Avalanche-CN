@@ -1,5 +1,10 @@
 # 构建说明
 
+## 通用移动碰撞修复候选（2026-10-24）
+
+完整玩家物理提交保护、自有Win32夹具、编译后内核→真实BSP回放、共享14项安装/撤回及人工入口
+见[通用碰撞候选](docs/COLLISION_GUARD.md)。MC_COLLISION_GUARD默认关闭，不与剧情黑幕或音效后端候选混用。
+
 ## 贴墙与连招声音可选诊断（2026-10-24）
 
 `workspace_profile`、`contact_audio_trace_fixture` 与纯净版v2专用诊断增量包的构建、
