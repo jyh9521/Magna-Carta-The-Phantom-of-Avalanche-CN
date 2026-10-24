@@ -50,7 +50,8 @@ int __fastcall dispatch(void* value,void*,int index){
  SetLastError(error);return result;
 }
 bool hidden(BYTE* box){if(word(box,0xd0))return true;auto gui=ptr(scene,0x10c8);if(readable(gui,0x1a0)){auto parent=ptr(gui,0x19c);if(readable(parent,0xd4)&&word(parent,0xd0))return true;}
- for(unsigned o:{0x1098u,0x109cu,0x10a4u,0x10a8u}){auto fade=ptr(scene,o);if(!readable(fade,0x19c)||word(fade,0xd0))continue;auto rectangle=ptr(fade,0x194);if(readable(rectangle,0x1c0)&&!word(rectangle,0xd0)&&word(rectangle,0x1bc)>=95)return true;}return false;}
+ // A full curtain can be behind a visible dialogue box; opacity is not visibility evidence.
+ return false;}
 const wchar_t* text(){
  if(!engine||frame!=word(engine,0xf1b5c)||!readable(scene,0x1738)||ptr(scene,0)!=engine+0xc12bc)return nullptr;
  auto dealer=ptr(scene,0x3c);if(!readable(dealer,0x58)||ptr(dealer,0)!=engine+0xc1320||ptr(dealer,0x54)!=scene||word(dealer,0x4c))return nullptr;

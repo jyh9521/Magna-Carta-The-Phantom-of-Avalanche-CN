@@ -15,6 +15,8 @@ class StoryCaptionsTests(unittest.TestCase):
   self.assertIn('cold_F5=first_frame caption=above_curtain',self.run_fixture('frame_overlay_fixture.exe'))
  def test_audio_lifecycle_and_source_identity(self):
   self.assertIn('pause=held restart=reset skip=cleared scene_frame=guarded',self.run_fixture('story_captions_fixture.exe',ROOT/'build/native/owned_audio_clock/Release/Mss32.dll'))
+ def test_visible_native_dialogue_over_curtain_is_not_duplicated(self):
+  self.assertIn('SUBTITLE_DEDUP PASS visible_native=priority curtain_slots=4 opacity_cases=4 hidden_box=retained visibility_transition=immediate',self.run_fixture('story_captions_fixture.exe'))
  def test_real_import_slot_calls_and_rollback(self):
   api=ROOT/'build/native/owned_audio_clock/Release/Mss32.dll'
   self.assertTrue(api.exists())

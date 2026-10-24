@@ -8,7 +8,7 @@ static BYTE* image;static BYTE scene[0x1740],dealer[0x80],slots[80],sound[0x138]
 static unsigned state=4;
 unsigned& word(void* p,unsigned o){return *reinterpret_cast<unsigned*>(static_cast<BYTE*>(p)+o);}
 unsigned WINAPI status(void*){return state;}
-void require(bool v,const char* message){if(!v){printf("STORY_CAPTIONS FAIL %s\n",message);ExitProcess(1);}}
+void require(bool v,const char* message){if(!v){printf("STORY_CAPTIONS FAIL %s\n",message);fflush(stdout);ExitProcess(1);}}
 bool paint(){FramePanel p{};bool ok=storyCaptionPanel(1280,720,p);if(ok){require(p.pixels&&p.width>0&&p.height>0,"owned caption panel");unsigned lit=0;for(int i=0;i<p.width*p.height;++i)if((p.pixels[i]&0xffffff)>0x404040)++lit;require(lit>10,"visible glyphs not empty box");}return ok;}
 static unsigned draws=0;
 void __fastcall nativeDraw(void*,void*){++draws;}
@@ -35,7 +35,17 @@ int main(int argc,char** argv){
  BYTE box[0x200]{},fade[0x1a0]{},rectangle[0x1c0]{};int dialogueParameters[14]={10002,101,0,100,0,3,5,1342,80};
  word(scene,0x10cc)=258;word(slots,0)=700;word(slots,0x14)=DWORD(dialogueParameters);word(slots,0x18)=DWORD(box);word(box,0)=DWORD(image+0xbfcec);word(box,0x190)=3;
  require(!paint(),"visible ordinary box does not get duplicate subtitle");word(box,0xd0)=1;require(paint(),"hidden ordinary voice box gets fallback");word(box,0xd0)=0;
- word(scene,0x1098)=DWORD(fade);word(fade,0x194)=DWORD(rectangle);word(rectangle,0x1bc)=100;require(paint(),"ordinary voice text survives full curtain");
+ for(unsigned offset:{0x1098u,0x109cu,0x10a4u,0x10a8u}){
+  word(scene,offset)=DWORD(fade);word(fade,0x194)=DWORD(rectangle);
+  for(unsigned opacity:{0u,94u,95u,100u}){
+   word(rectangle,0x1bc)=opacity;word(box,0xd0)=0;require(!paint(),"visible ordinary box above full curtain must not duplicate subtitle");
+   word(box,0xd0)=1;require(paint(),"hidden ordinary box still gets fallback regardless of curtain");
+   word(box,0xd0)=0;require(!paint(),"native box becoming visible immediately suppresses fallback");
+  }
+  word(scene,offset)=0;
+ }
+ BYTE gui[0x1a0]{},parent[0xd4]{};word(scene,0x10c8)=DWORD(gui);word(gui,0x19c)=DWORD(parent);word(parent,0xd0)=1;require(paint(),"hidden dialogue root retains fallback");word(parent,0xd0)=0;require(!paint(),"visible dialogue root suppresses fallback");word(box,0xd0)=1;
+ puts("SUBTITLE_DEDUP PASS visible_native=priority curtain_slots=4 opacity_cases=4 hidden_box=retained visibility_transition=immediate");
  word(box,0x190)=4;require(paint(),"paused ordinary text remains visible");word(box,0x190)=6;require(!paint(),"confirmed/skipped ordinary box clears caption");
  word(dealer,0x38)=0x100000;require(!paint(),"foreign table size guarded");
  if(argc==2){

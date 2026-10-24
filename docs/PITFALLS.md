@@ -447,3 +447,6 @@ DirectSound，单独预设偏好15不足以固定该环境。
 本机软件3D提供者返回4时，测试必须验证真实原生后备及8个通道，不把硬件不可用伪装成56通道成功；
 软件路径可用时仍要求56通道与16次请求全部成功，自有守卫夹具另覆盖确定的可用/失败分支。
 这不改变游戏候选的生产后端或原SDK，也不扩大音效修复声明。
+
+### Curtain opacity does not imply dialogue occlusion
+A fully opaque field curtain may be drawn behind the native dialogue box. Never infer that a visible dialogue needs an overlay from opacity alone. Require explicit box/root hidden state; regress all four curtain slots and visibility transitions.

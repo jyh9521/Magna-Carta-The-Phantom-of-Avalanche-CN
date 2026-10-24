@@ -99,7 +99,7 @@ def build(previous,previous_sha256,runtime,output,*,test_candidates=False,frame_
   '不需要 Install.cmd、Python、旧更新包或移动到data目录。不要直接启动原 MagnaCarta.exe。\r\n'
   f'默认1080P、无边框、{frame_rate}帧、键鼠；设置中仍可选择30/60帧。手柄和自由视角已经归档，不包含在现行功能中。\r\n'
   'F10普通连招辅助、F11暴走辅助；F5随机遇敌开关默认开启，切换后右下角短提示1.8秒。\r\n'
-  '包含四类模型插帧、宽屏与高分辨率文字、高清标题/图片、继续游戏/键鼠、楼梯/GUI等既有修正及F5后缓冲提示、剧情字幕及CG转场历史隔离。\r\n'
+  '包含四类模型插帧、宽屏与高分辨率文字、高清标题/图片、继续游戏/键鼠、楼梯/GUI等既有修正及F5后缓冲提示、剧情字幕（原生对白优先去重）及CG转场历史隔离。\r\n'
   '所有候选的游戏画面仍由测试者确认；换区崩溃和眼球偶发外突未宣称修复。\r\n'
   '可选双击 Verify-Overlay.cmd 检查覆盖文件。cache/profile.log保留运行记录。\r\n'
   '撤回：双击 Restore-Original.cmd，输入独立纯净备份目录；先完整预检摘要，再恢复覆盖的原资源。\r\n'
