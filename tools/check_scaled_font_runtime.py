@@ -9,7 +9,8 @@ ROOT=Path(__file__).resolve().parents[1]
 
 
 def check(mode,cache=None,presentation=False):
-    cache=(cache or ROOT/'build/scaled-font-evidence/cache').resolve(strict=True)
+    # Reuse the protected shared cache, not a disposable historical build copy.
+    cache=(cache or ROOT/'runtime/fonts').resolve(strict=True)
     driver=ROOT/'runtime/data/Drv/AsrD3DDrv.dll';ddraw=ROOT/'runtime/data/ddraw.dll'
     c=json.loads((ROOT/'assets/runtime/scaled-font-contract.json').read_bytes())
     if hashlib.sha256(driver.read_bytes()).hexdigest()!=c['driver_sha256']:

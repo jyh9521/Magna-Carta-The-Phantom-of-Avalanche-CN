@@ -306,4 +306,7 @@ python -m unittest discover -s tests -p 'test_damage*.py' -v
 
 ## 纯净版直接覆盖格式
 
+采样声音后端候选的真实Miles原生夹具、构建、诊断版专用更新及撤回见
+[声音后端候选](docs/AUDIO_PROVIDER_POLICY.md)。默认关闭，未完成游戏内F10/F11验收。
+
 平铺 ZIP 的构建、独立纯净备份回滚和布局验证见 [纯净版覆盖测试包](docs/CLEAN_GAME_OVERLAY.md)。该格式直接替换变化资源，不依赖历次小更新；共享运行目录仍使用原 `data/` 布局。

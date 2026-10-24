@@ -174,4 +174,7 @@ game_native_font、UTF-16 RT_DIALOG与MessageBoxA分别处理。13处原生字�
 
 ## 通用模型与随机遇敌（2026-10-23）
 
+现场声道饱和、原生3D池预算、DS3D7软件首选、精确后备及EBP调用桥见
+[声音后端候选](docs/AUDIO_PROVIDER_POLICY.md)。黑屏与通用卡墙仍为开放问题。
+
 Asura 两条基础 renderer 的直接绝对骨骼调用与 MCAlpha 派生实现不同，资源句柄表也不同；现统一接入显示相位。F5 只包围随机遇敌判定，不改剧情战斗。地址、摘要、静态证据及验证边界见 [发布功能调整](docs/RELEASE_CONTROLS_2026-10-23.md)。

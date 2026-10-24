@@ -13,6 +13,7 @@
 #include "damage_projection.h"
 #include "field_return_height.h"
 #include "contact_audio_trace.h"
+#include "audio_provider_policy.h"
 #include "gui_parent_guard.h"
 #include "native_scene_loading.h"
 #include "native_font.h"
@@ -223,6 +224,10 @@ void patch(HMODULE module) {
     }
     bool localizedModule=systemMessages && !_wcsicmp(base,L"MCAlpha.dll");
     wchar_t contactAudioFlag[8]{};
+    wchar_t audioProviderFlag[8]{};
+    if(!_wcsicmp(base,L"MCAlpha.dll") && GetEnvironmentVariableW(L"MC_AUDIO_PROVIDER_POLICY",audioProviderFlag,8)==1 && audioProviderFlag[0]==L'1'){
+        if(!installAudioProviderPolicy(module,trace)){trace(L"AUDIO_PROVIDER_POLICY_REJECTED");ExitProcess(125);}
+    }
     if(!_wcsicmp(base,L"MCAlpha.dll") && GetEnvironmentVariableW(L"MC_CONTACT_AUDIO_TRACE",contactAudioFlag,8)==1 && contactAudioFlag[0]==L'1'){
         if(!installContactAudioTrace(module,trace)){trace(L"CONTACT_AUDIO_REJECTED");ExitProcess(125);}
     }
