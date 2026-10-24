@@ -93,7 +93,7 @@ int main(int argc,char** argv){try{
  auto checkAnchors=[&](){for(unsigned i=0;i<9;++i)if(image[anchors[i]]!=0xe8||*reinterpret_cast<int*>(image+anchors[i]+1)!=int(0xac590-anchors[i]-5)||image[anchors[i]+5]!=tails[i])throw std::runtime_error("exact anchor rollback bytes");};
  if(rollback)checkAnchors();
  std::string id;while(std::cin>>id){
-  if(id=="anchor"){
+  if(id=="anchor"||id=="anchor-flags"){
    int width,height;unsigned count,index,driverMatch;double fov,nearPlane,farPlane;
    if(!(std::cin>>width>>height>>index>>driverMatch>>fov>>nearPlane>>farPlane)||index>=9||driverMatch>1)throw std::runtime_error("anchor header");
    BYTE camera[0x140]{},lens[0xb0]{},object[0x100]{};void* table[230]{};*reinterpret_cast<void***>(object)=table;
@@ -104,6 +104,7 @@ int main(int argc,char** argv){try{
    if(!(std::cin>>count)||!count||count>64)throw std::runtime_error("anchor hierarchy size");
    std::vector<BYTE> nodes(count*0x144);
    for(unsigned n=0;n<count;++n){auto node=nodes.data()+n*0x144;for(unsigned i=0;i<16;++i)reinterpret_cast<float*>(node+0x4c)[i]=number();if(n+1<count)*reinterpret_cast<BYTE**>(node+8)=node+0x144;}
+   if(id=="anchor-flags")for(unsigned n=0;n<count;++n){int a,b;if(!(std::cin>>a>>b))throw std::runtime_error("anchor spatial flags");*reinterpret_cast<int*>(nodes.data()+n*0x144+0x10c)=a;*reinterpret_cast<int*>(nodes.data()+n*0x144+0x110)=b;}
    for(unsigned i=0;i<16;++i)reinterpret_cast<float*>(nodes.data()+0xb4)[i]=number();
    for(unsigned i=0;i<3;++i)reinterpret_cast<float*>(nodes.data()+0x12c)[i]=number();
    int cachedX,cachedY;if(!(std::cin>>cachedX>>cachedY))throw std::runtime_error("anchor cached coordinates");

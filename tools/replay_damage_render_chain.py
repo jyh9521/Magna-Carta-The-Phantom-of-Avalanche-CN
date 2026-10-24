@@ -51,7 +51,10 @@ class DamageReplay(NativeTitle):
   while node:
    require(len(matrices)<64,'Bounded native parent hierarchy');matrices.append(floats(node+0x4c,16));node=self.read(node+8)
   fov,aspect,near,far=struct.unpack('<4d',self.cpu.mem_read(lens+0x10,32))
-  line=['anchor',self.read(BASE+0xf1b48),self.read(BASE+0xf1b4c),sites.index(caller),1,fov,near,far,*floats(camera+0x80,16),len(matrices),*[v for m in matrices for v in m],*floats(model+0xb4,16),*floats(model+0x12c,3),*struct.unpack('<2i',self.cpu.mem_read(model+0x138,8))]
+  flags=[];node=model
+  while node:
+   flags.extend([self.read(node+0x10c),self.read(node+0x110)]);node=self.read(node+8)
+  line=['anchor-flags',self.read(BASE+0xf1b48),self.read(BASE+0xf1b4c),sites.index(caller),1,fov,near,far,*floats(camera+0x80,16),len(matrices),*[v for m in matrices for v in m],*flags,*floats(model+0xb4,16),*floats(model+0x12c,3),*struct.unpack('<2i',self.cpu.mem_read(model+0x138,8))]
   process=subprocess.run([str(self.bridge_path),str(self.bridge_dll),*getattr(self,'anchor_options',[])],input=' '.join(map(str,line))+'\n',text=True,capture_output=True,timeout=10)
   require(process.returncode==0,'Compiled fresh anchor bridge: '+process.stderr);result=json.loads(process.stdout);require(result['abi_error_bits']==0,'Fresh anchor ABI')
   raw=struct.pack('<2i',*result['screen']);self.cpu.mem_write(model+0x138,raw);self.cpu.mem_write(self.arg(0),raw);return self.arg(0)
@@ -98,6 +101,8 @@ class DamageReplay(NativeTitle):
  def _instruction(self,cpu,address,size,data):
   self.last=address;self.steps+=1;self.history.append(hex(address));self.history=self.history[-16:]
   if not hasattr(self,'stubs'):return super()._instruction(cpu,address,size,data)
+  if getattr(self,'popup_producer_stop',0)==address:
+   self.ret(0,cpu.reg_read(UC_X86_REG_EAX));return
   if address==BASE+0x8cd1:self.ui_root=list(struct.unpack('<16f',self.cpu.mem_read(self.driver+0x5c,64)))
   if hasattr(self,'bridge_path'):
    if address==BASE+0xac590 and getattr(self,'use_fresh_anchor',False):self.ret(4,self.fresh_anchor());return
@@ -126,7 +131,7 @@ class DamageReplay(NativeTitle):
 
 
 def fbits(value):return struct.unpack('<I',struct.pack('<f',value))[0]
-def run_chain(data,bridge,width=800,height=600,damage=760,char_id=7,kind='damage',hidden=False,fresh_anchor=True,anchor_options=(),parented=False,stale=False,transformed=False):
+def run_chain(data,bridge,width=800,height=600,damage=760,char_id=7,kind='damage',hidden=False,fresh_anchor=True,anchor_options=(),parented=False,stale=False,transformed=False,spatial_flags=(0,0),producer_route=None,parent_flags=(0,0)):
  import math
  require((width,height) in [(640,480),(800,600),(853,480),(1067,600)],'Supported logical canvas')
  require(char_id in (7,72,82) and kind in ('damage','heal'),'Source-derived actor/popup cases')
@@ -152,9 +157,11 @@ def run_chain(data,bridge,width=800,height=600,damage=760,char_id=7,kind='damage
   parent=0
   if parented:
    parent=q.hooks.allocate(0x120);q.call(0x385af,parent,0,152)
+   q.write(parent+0x10c,parent_flags[0]);q.write(parent+0x110,parent_flags[1])
    q.cpu.mem_write(parent+0x24,struct.pack('<3f',-15,10,5));q.call(0x38c61,parent)
   model=q.hooks.allocate(0x144);q.call(0x471f0,model,model_id,0xffffffff,parent,152)
   require(q.read(model)==BASE+0xbe200,'Native model constructor vtable')
+  q.write(model+0x10c,spatial_flags[0]);q.write(model+0x110,spatial_flags[1])
   q.write(actor+0x2dc,model);q.call(0x65e80,model,*struct.unpack('<3I',q.cpu.mem_read(vec,12)))
   # Explicit world/camera fixture inputs. Native ASURA and driver multiplication
   # propagate these, and no screen coordinate is written by the test.
@@ -190,7 +197,17 @@ def run_chain(data,bridge,width=800,height=600,damage=760,char_id=7,kind='damage
   ui=q.hooks.allocate(0x60);q.call(0x8990,ui)
   gui=q.hooks.allocate(0x200);q.call(0x54fce,gui,99,0,0,0,ui,1)
   scene=q.hooks.allocate(0x2000);q.write(scene+0x10fc,gui)
-  popup=q.hooks.allocate(0x100);q.call(0xa9ef0 if kind=='damage' else 0xaa459,popup,damage,actor,scene,0,0x144)
+  if producer_route is None:
+   popup=q.hooks.allocate(0x100);q.call(0xa9ef0 if kind=='damage' else 0xaa459,popup,damage,actor,scene,0,0x144)
+  else:
+   require(kind=='damage' and producer_route in (0,1),'Two original numeric damage producer blocks')
+   # Settlement result is the seam: execute original receive-handler argument
+   # construction, allocation and constructor, not a Python constructor surrogate.
+   fp=q.hooks.allocate(0x500)+0x300
+   q.write(fp-0x1f8,actor);q.write(fp-0x10,scene);q.write(fp-0x14,damage)
+   q.cpu.reg_write(UC_X86_REG_EBP,fp)
+   q.popup_producer_stop=BASE+(0x8c3cb if producer_route==0 else 0x8c883)
+   popup=q.call(0x8c38e if producer_route==0 else 0x8c83d,actor)
   number=q.read(popup+0xf4);require(q.read(number)==BASE+0xc0914,'Real numeric GUI constructor')
   if hidden:
    initial=list(struct.unpack('<2f',q.cpu.mem_read(number+0x24,8)))
@@ -209,7 +226,7 @@ def run_chain(data,bridge,width=800,height=600,damage=760,char_id=7,kind='damage
   result=dict(logical_canvas=[width,height],damage=damage,popup_kind=kind,enemy_char_id=char_id,model_id=model_id,head_anchor=anchor,actor_position_input=[50,-20,0],camera_input=camera_matrix,projection_parameters=projection_parameters,
     raster=q.raster_cases,native_screen=screen,ui_root_matrix=q.ui_root,frames=frames,resources=q.resource_hashes,native_steps=q.steps,
     boundaries=sorted({x[0] for x in q.stubs.values()}),skipped_non_bgr_decorations=q.skipped_decorations,
-    hidden_model=hidden,parented_model=parented,stale_cache=stale,result='fresh_popup_anchor_through_native_ASRRegRender_submission',
+    hidden_model=hidden,parented_model=parented,stale_cache=stale,spatial_flags=list(spatial_flags),producer_route=producer_route,result='fresh_popup_anchor_through_native_ASRRegRender_submission',
     limits=['Mesh lifecycle/render is excluded after anchor propagation; character head uses native resource height category, not a guessed mesh bounding box.',
     'Actor placement and camera matrix are explicit fixture inputs, not a captured running-game scene.',
     'Texture upload is a boundary; actual BGR metadata, vertex UVs and image pixels remain source-derived.',

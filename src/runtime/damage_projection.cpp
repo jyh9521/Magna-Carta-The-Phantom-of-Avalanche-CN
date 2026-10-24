@@ -65,7 +65,11 @@ int* __fastcall anchorHook(BYTE* model,void*,int* output){
  BYTE* seen[64]{};unsigned depth=0;
  for(auto node=model;node;node=*reinterpret_cast<BYTE**>(node+8)){
   if(depth==64)return output;for(unsigned i=0;i<depth;++i)if(seen[i]==node)return output;seen[depth++]=node;
-  transform(reinterpret_cast<float*>(node+0x4c),p,tmp);memcpy(p,tmp,sizeof(p));
+  // Native 392fd -> 39aa0 omits this node's spatial transform when either
+  // flag is exactly 1. A skipped child still inherits non-skipped ancestors.
+  if(*reinterpret_cast<int*>(node+0x10c)!=1&&*reinterpret_cast<int*>(node+0x110)!=1){
+   transform(reinterpret_cast<float*>(node+0x4c),p,tmp);memcpy(p,tmp,sizeof(p));
+  }
  }
  transform(reinterpret_cast<float*>(camera+0x80),p,tmp);
  double scale=1/std::tan(fov*3.14159265358979323846/360),w=-tmp[2];
@@ -100,7 +104,7 @@ bool setDamageProjection(BYTE* image,size_t available,bool enabled){
  for(unsigned i=0;i<siteCount;++i)if(!write(image+sites[i].rva,enabled?patches[i]:sites[i].original)){for(unsigned j=0;j<=i;++j)write(image+sites[j].rva,previous[j]);return false;}
  engine=enabled?image:nullptr;raster={};return true;
 }
-bool installDamageProjection(HMODULE module,void(*logger)(const wchar_t*)){bool ok=setDamageProjection(reinterpret_cast<BYTE*>(module),0x10b000,true);if(ok&&logger)logger(L"DAMAGE_PROJECTION_READY source=driver_matrices logical_canvas=true raster_valid=clip_guard native_float=preserved popup_anchor=fresh_scene_camera hidden_mesh=independent validation=offline");return ok;}
+bool installDamageProjection(HMODULE module,void(*logger)(const wchar_t*)){bool ok=setDamageProjection(reinterpret_cast<BYTE*>(module),0x10b000,true);if(ok&&logger)logger(L"DAMAGE_PROJECTION_READY revision=spatial_flags_v2 source=driver_matrices logical_canvas=true raster_valid=clip_guard native_float=preserved popup_anchor=fresh_scene_camera hidden_mesh=independent spatial_skip=native_exact_one validation=offline");return ok;}
 #ifdef DAMAGE_PROJECTION_TEST
 void initializeDamageProjectionFixture(BYTE* image){memset(image,0,0x10b000);auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x80;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(image+0x80);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;for(auto& s:sites)memcpy(image+s.rva,s.original,6);}
 void damageProjectionWriteFailure(int index){failWrite=index;}

@@ -12,11 +12,13 @@ IDENTITY = [float(i % 5 == 0) for i in range(16)]
 @unittest.skipUnless(BRIDGE.is_file(), 'Build documented damage_projection_bridge')
 class PopupAnchorTests(unittest.TestCase):
     def run_anchor(self, index=0, point=(2, 1, -4), parent=None, camera=None,
-                   fov=90, options=(), cached=(0, 0), known_driver=True):
+                   fov=90, options=(), cached=(0, 0), known_driver=True, flags=None):
         matrices = [IDENTITY] + ([] if parent is None else [parent])
-        fields = ['anchor', 800, 600, index, int(known_driver), fov, 1, 1000,
+        fields = ['anchor-flags' if flags is not None else 'anchor', 800, 600, index, int(known_driver), fov, 1, 1000,
                   *(camera or IDENTITY), len(matrices),
-                  *[v for m in matrices for v in m], *IDENTITY, *point, *cached]
+                  *[v for m in matrices for v in m],
+                  *([] if flags is None else [v for pair in flags for v in pair]),
+                  *IDENTITY, *point, *cached]
         result = subprocess.run([str(BRIDGE), str(BRIDGE.parent/'AsrD3DDrv.dll'), *options],
                                 input=' '.join(map(str, fields))+'\n', text=True,
                                 capture_output=True, timeout=15)
@@ -30,6 +32,15 @@ class PopupAnchorTests(unittest.TestCase):
         for index in range(9):
             with self.subTest(index=index):
                 self.assertEqual(self.run_anchor(index)['screen'], [550, 225])
+
+    def test_native_spatial_skip_flags_on_child_and_ancestors(self):
+        parent = IDENTITY.copy(); parent[12] = -1
+        for index in range(9):
+            for flag in ((1, 0), (0, 1), (1, 1)):
+                with self.subTest(index=index, flag=flag):
+                    self.assertEqual(self.run_anchor(index, parent=parent, flags=[(0, 0), flag])['screen'], [550, 225])
+            # Native predicate compares exactly 1; other values retain the transform.
+            self.assertEqual(self.run_anchor(index, parent=parent, flags=[(0, 0), (2, -1)])['screen'], [475, 225])
 
     def test_scene_camera_and_parent_replace_stale_cache(self):
         parent = IDENTITY.copy(); parent[12] = -1

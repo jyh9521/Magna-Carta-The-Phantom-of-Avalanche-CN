@@ -50,6 +50,21 @@ class NativeResourceTests(unittest.TestCase):
 
 @unittest.skipUnless(READY and BRIDGE.is_file(),'Build documented damage-render-fixture CMake target before full native chain replay')
 class NativeDamageDrawTests(unittest.TestCase):
+ def test_native_parent_skip_and_heal_at_widescreen(self):
+  for flags in [(1,0),(0,1)]:
+   case=run_chain(DATA,BRIDGE,1067,600,318,72,'heal',hidden=True,parented=True,parent_flags=flags)
+   self.assertEqual(case['frames'][0]['number_position'][:2],case['native_screen'])
+ def test_both_original_numeric_damage_producer_blocks(self):
+  for route in (0,1):
+   for flags in [(0,0),(1,0),(0,1)]:
+    with self.subTest(route=route,flags=flags):
+     case=run_chain(DATA,BRIDGE,damage=318,hidden=True,spatial_flags=flags,producer_route=route)
+     self.assertEqual(case['frames'][0]['number_position'][:2],case['native_screen'])
+ def test_native_spatial_skip_matches_visible_draw_for_hidden_damage(self):
+  for flags in [(1,0),(0,1),(1,1),(2,0)]:
+   with self.subTest(flags=flags):
+    case=run_chain(DATA,BRIDGE,damage=318,hidden=True,spatial_flags=flags)
+    self.assertEqual(case['frames'][0]['number_position'][:2],case['native_screen'])
  def test_hidden_skill_damage_origin_and_parent_transform(self):
   for width,height,parented,stale in [(800,600,False,False),(1067,600,True,False),(853,480,True,True),(640,480,False,True)]:
    with self.subTest(width=width,parented=parented,stale=stale):
