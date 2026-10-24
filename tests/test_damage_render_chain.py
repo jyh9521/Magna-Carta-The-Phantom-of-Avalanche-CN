@@ -50,6 +50,24 @@ class NativeResourceTests(unittest.TestCase):
 
 @unittest.skipUnless(READY and BRIDGE.is_file(),'Build documented damage-render-fixture CMake target before full native chain replay')
 class NativeDamageDrawTests(unittest.TestCase):
+ def test_hidden_skill_damage_origin_and_parent_transform(self):
+  for width,height,parented,stale in [(800,600,False,False),(1067,600,True,False),(853,480,True,True),(640,480,False,True)]:
+   with self.subTest(width=width,parented=parented,stale=stale):
+    case=run_chain(DATA,BRIDGE,width,height,1706,hidden=True,parented=parented,stale=stale)
+    self.assertEqual(case['frames'][0]['number_position'][:2],case['native_screen'])
+    self.assertEqual(len(case['frames'][0]['draws']),4)
+ def test_hidden_heal_uses_fresh_anchor_too(self):
+  case=run_chain(DATA,BRIDGE,800,600,12345,72,'heal',hidden=True)
+  self.assertEqual(case['frames'][0]['number_position'][:2],case['native_screen'])
+ def test_hidden_rotated_scaled_parent_and_secondary_transform(self):
+  case=run_chain(DATA,BRIDGE,damage=1706,hidden=True,parented=True,transformed=True)
+  self.assertEqual(case['frames'][0]['number_position'][:2],case['native_screen'])
+ def test_hidden_negative_control_reproduces_top_left(self):
+  with self.assertRaisesRegex(ValueError,r'Hidden popup origin actual=\[0.0, 0.0\]'):
+   run_chain(DATA,BRIDGE,damage=1706,hidden=True,fresh_anchor=False)
+ def test_hidden_explicit_rollback_restores_top_left(self):
+  with self.assertRaisesRegex(ValueError,r'Hidden popup origin actual=\[0.0, 0.0\]'):
+   run_chain(DATA,BRIDGE,damage=1706,hidden=True,anchor_options=('--rollback',))
  def test_four_logical_canvases(self):
   for width,height in [(640,480),(800,600),(853,480),(1067,600)]:
    with self.subTest(width=width):

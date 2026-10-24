@@ -40,9 +40,49 @@ void __fastcall boolHook(void* object,void*,unsigned name,BYTE* output){
  if(name==0xb08&&raster.driver==object){*output=raster.valid;return;}
  using Query=void(__thiscall*)(void*,unsigned,BYTE*);reinterpret_cast<Query>((*reinterpret_cast<void***>(object))[0x1a4/4])(object,name,output);
 }
+// Popup updates run independently of mesh visibility. Never use the UI driver's
+// current matrices here: UI rendering has already replaced the scene camera.
+int* __fastcall anchorHook(BYTE* model,void*,int* output){
+ output[0]=*reinterpret_cast<int*>(model+0x138);output[1]=*reinterpret_cast<int*>(model+0x13c);
+ auto d=*reinterpret_cast<BYTE**>(engine+0xf1b70);
+#ifdef DAMAGE_PROJECTION_TEST
+ auto driver=fixtureDriver;
+#else
+ auto driver=reinterpret_cast<BYTE*>(GetModuleHandleW(L"AsrD3DDrv.dll"));
+#endif
+ if(!d||!driver)return output;
+ auto table=*reinterpret_cast<BYTE***>(d);
+ if(table[0x1b4/4]!=driver+0x80a4||table[0x1a4/4]!=driver+0x9b8c||table[0x394/4]!=driver+0x1897c)return output;
+ output[0]=output[1]=-1;
+ auto camera=*reinterpret_cast<BYTE**>(engine+0xf2290);if(!camera)return output;
+ auto lens=*reinterpret_cast<BYTE**>(camera+4);if(!lens)return output;
+ int width=*reinterpret_cast<int*>(engine+0xf1b48),height=*reinterpret_cast<int*>(engine+0xf1b4c);
+ double fov=*reinterpret_cast<double*>(lens+0x10),nearPlane=*reinterpret_cast<double*>(lens+0x20),farPlane=*reinterpret_cast<double*>(lens+0x28);
+ if(width<=0||height<=0||!std::isfinite(fov)||fov<=0||fov>=180||!std::isfinite(nearPlane)||!std::isfinite(farPlane)||nearPlane<=0||farPlane<=nearPlane)return output;
+ double p[]={*reinterpret_cast<float*>(model+0x12c),*reinterpret_cast<float*>(model+0x130),*reinterpret_cast<float*>(model+0x134),1},tmp[4];
+ transform(reinterpret_cast<float*>(model+0xb4),p,tmp);memcpy(p,tmp,sizeof(p));
+ // Native traversal applies each ancestor's +4c, but only this model's +b4.
+ BYTE* seen[64]{};unsigned depth=0;
+ for(auto node=model;node;node=*reinterpret_cast<BYTE**>(node+8)){
+  if(depth==64)return output;for(unsigned i=0;i<depth;++i)if(seen[i]==node)return output;seen[depth++]=node;
+  transform(reinterpret_cast<float*>(node+0x4c),p,tmp);memcpy(p,tmp,sizeof(p));
+ }
+ transform(reinterpret_cast<float*>(camera+0x80),p,tmp);
+ double scale=1/std::tan(fov*3.14159265358979323846/360),w=-tmp[2];
+ double x=tmp[0]*scale*height/width,y=tmp[1]*scale,z=(tmp[2]*farPlane+nearPlane*farPlane)/(nearPlane-farPlane);
+ if(!std::isfinite(x)||!std::isfinite(y)||!std::isfinite(z)||!std::isfinite(w)||w<=0||x < -w||x>w||y < -w||y>w||z<0||z>w)return output;
+ output[0]=static_cast<int>((x/w+1)*width*.5);output[1]=height-static_cast<int>((y/w+1)*height*.5);
+ *reinterpret_cast<int*>(model+0x138)=output[0];*reinterpret_cast<int*>(model+0x13c)=output[1];return output;
+}
 struct Site{DWORD rva;BYTE original[6];void* hook;};
-Site sites[]={{0x474cf,{0xff,0x92,0x94,3,0,0},rasterHook},{0x474ec,{0xff,0x92,0xb4,1,0,0},floatHook},{0x47509,{0xff,0x92,0xa4,1,0,0},boolHook}};
-void changed(const Site& s,BYTE* image,BYTE* output){output[0]=0xe8;*reinterpret_cast<int*>(output+1)=static_cast<int>(reinterpret_cast<ULONG_PTR>(s.hook)-reinterpret_cast<ULONG_PTR>(image+s.rva+5));output[5]=0x90;}
+Site sites[]={{0x474cf,{0xff,0x92,0x94,3,0,0},rasterHook},{0x474ec,{0xff,0x92,0xb4,1,0,0},floatHook},{0x47509,{0xff,0x92,0xa4,1,0,0},boolHook},
+ {0xaa0ba,{0xe8,0xd1,0x24,0,0,0xc7},anchorHook},{0xaa398,{0xe8,0xf3,0x21,0,0,0x83},anchorHook},
+ {0xaa629,{0xe8,0x62,0x1f,0,0,0xc7},anchorHook},{0xaa916,{0xe8,0x75,0x1c,0,0,0x83},anchorHook},
+ {0xaab88,{0xe8,0x03,0x1a,0,0,0xc7},anchorHook},{0xab128,{0xe8,0x63,0x14,0,0,0x8b},anchorHook},
+ {0xab453,{0xe8,0x38,0x11,0,0,0x83},anchorHook},{0xab6e1,{0xe8,0xaa,0x0e,0,0,0x8b},anchorHook},
+ {0xaba34,{0xe8,0x57,0x0b,0,0,0x83},anchorHook}};
+constexpr unsigned siteCount=sizeof(sites)/sizeof(sites[0]);
+void changed(const Site& s,BYTE* image,BYTE* output){output[0]=0xe8;*reinterpret_cast<int*>(output+1)=static_cast<int>(reinterpret_cast<ULONG_PTR>(s.hook)-reinterpret_cast<ULONG_PTR>(image+s.rva+5));output[5]=s.original[0]==0xe8?s.original[5]:0x90;}
 bool write(BYTE* p,const BYTE* data){DWORD old;if(!VirtualProtect(p,6,PAGE_EXECUTE_READWRITE,&old))return false;memcpy(p,data,6);FlushInstructionCache(GetCurrentProcess(),p,6);DWORD ignored;bool ok=VirtualProtect(p,6,old,&ignored)!=FALSE;
 #ifdef DAMAGE_PROJECTION_TEST
  if(failWrite==0){failWrite=-1;return false;}if(failWrite>0)--failWrite;
@@ -54,13 +94,13 @@ bool setDamageProjection(BYTE* image,size_t available,bool enabled){
  if(!image||available<0x10b000)return false;
  auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);if(dos->e_magic!=IMAGE_DOS_SIGNATURE||dos->e_lfanew<=0||dos->e_lfanew>4096)return false;
  auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(image+dos->e_lfanew);if(nt->Signature!=IMAGE_NT_SIGNATURE||nt->FileHeader.Machine!=IMAGE_FILE_MACHINE_I386||nt->OptionalHeader.Magic!=IMAGE_NT_OPTIONAL_HDR32_MAGIC||nt->OptionalHeader.SizeOfImage!=0x10b000)return false;
- BYTE patches[3][6],previous[3][6];bool already=true;
- for(int i=0;i<3;++i){auto& s=sites[i];changed(s,image,patches[i]);memcpy(previous[i],image+s.rva,6);if(memcmp(previous[i],s.original,6)&&memcmp(previous[i],patches[i],6))return false;if(memcmp(previous[i],enabled?patches[i]:s.original,6))already=false;}
+ BYTE patches[siteCount][6],previous[siteCount][6];bool already=true;
+ for(unsigned i=0;i<siteCount;++i){auto& s=sites[i];changed(s,image,patches[i]);memcpy(previous[i],image+s.rva,6);if(memcmp(previous[i],s.original,6)&&memcmp(previous[i],patches[i],6))return false;if(memcmp(previous[i],enabled?patches[i]:s.original,6))already=false;}
  if(already)return !enabled||engine==image;
- for(int i=0;i<3;++i)if(!write(image+sites[i].rva,enabled?patches[i]:sites[i].original)){for(int j=0;j<=i;++j)write(image+sites[j].rva,previous[j]);return false;}
+ for(unsigned i=0;i<siteCount;++i)if(!write(image+sites[i].rva,enabled?patches[i]:sites[i].original)){for(unsigned j=0;j<=i;++j)write(image+sites[j].rva,previous[j]);return false;}
  engine=enabled?image:nullptr;raster={};return true;
 }
-bool installDamageProjection(HMODULE module,void(*logger)(const wchar_t*)){bool ok=setDamageProjection(reinterpret_cast<BYTE*>(module),0x10b000,true);if(ok&&logger)logger(L"DAMAGE_PROJECTION_READY source=driver_matrices logical_canvas=true raster_valid=clip_guard native_float=preserved validation=offline");return ok;}
+bool installDamageProjection(HMODULE module,void(*logger)(const wchar_t*)){bool ok=setDamageProjection(reinterpret_cast<BYTE*>(module),0x10b000,true);if(ok&&logger)logger(L"DAMAGE_PROJECTION_READY source=driver_matrices logical_canvas=true raster_valid=clip_guard native_float=preserved popup_anchor=fresh_scene_camera hidden_mesh=independent validation=offline");return ok;}
 #ifdef DAMAGE_PROJECTION_TEST
 void initializeDamageProjectionFixture(BYTE* image){memset(image,0,0x10b000);auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x80;auto nt=reinterpret_cast<IMAGE_NT_HEADERS32*>(image+0x80);nt->Signature=IMAGE_NT_SIGNATURE;nt->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;nt->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;nt->OptionalHeader.SizeOfImage=0x10b000;for(auto& s:sites)memcpy(image+s.rva,s.original,6);}
 void damageProjectionWriteFailure(int index){failWrite=index;}

@@ -80,11 +80,41 @@ int main(int argc,char** argv){try{
  auto image=static_cast<BYTE*>(VirtualAlloc(nullptr,0x10b000,MEM_COMMIT|MEM_RESERVE,PAGE_EXECUTE_READWRITE));if(!image)throw std::runtime_error("owned image allocation");
  auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x80;auto pe=reinterpret_cast<IMAGE_NT_HEADERS32*>(image+0x80);pe->Signature=IMAGE_NT_SIGNATURE;pe->FileHeader.Machine=IMAGE_FILE_MACHINE_I386;pe->OptionalHeader.Magic=IMAGE_NT_OPTIONAL_HDR32_MAGIC;pe->OptionalHeader.SizeOfImage=0x10b000;
  const unsigned sites[]={0x474cf,0x474ec,0x47509};const BYTE calls[][6]={{0xff,0x92,0x94,3,0,0},{0xff,0x92,0xb4,1,0,0},{0xff,0x92,0xa4,1,0,0}};
+ const unsigned anchors[]={0xaa0ba,0xaa398,0xaa629,0xaa916,0xaab88,0xab128,0xab453,0xab6e1,0xaba34};
+ const BYTE tails[]={0xc7,0x83,0xc7,0x83,0xc7,0x8b,0x83,0x8b,0x83};
+ for(unsigned i=0;i<9;++i){image[anchors[i]]=0xe8;*reinterpret_cast<int*>(image+anchors[i]+1)=0xac590-anchors[i]-5;image[anchors[i]+5]=tails[i];}
+ // Original self-contained coordinate getter, used by native/rollback controls.
+ const BYTE getter[]={0x55,0x8b,0xec,0x51,0x89,0x4d,0xfc,0x8b,0x45,0xfc,0x8b,0x88,0x38,1,0,0,0x8b,0x90,0x3c,1,0,0,0x8b,0x45,8,0x89,8,0x89,0x50,4,0x8b,0x45,8,0x8b,0xe5,0x5d,0xc2,4,0};
+ memcpy(image+0xac590,getter,sizeof(getter));
  BYTE rasterStub[]={0x8b,0x11,0xff,0x74,0x24,0x04},queryStub[]={0x8b,0x11,0xff,0x74,0x24,0x08,0xff,0x74,0x24,0x08};
  for(unsigned i=0;i<3;++i){memcpy(image+sites[i],calls[i],6);auto p=image+0x400+i*0x20;memcpy(p,i?queryStub:rasterStub,i?10:6);jump(p+(i?10:6),image+sites[i]);image[sites[i]+6]=0xc2;image[sites[i]+7]=i?8:4;image[sites[i]+8]=0;}
  if(hook&&!installDamageProjection(reinterpret_cast<HMODULE>(image),installed))throw std::runtime_error("production hook installation");
  if(rollback){if(!setDamageProjection(image,0x10b000,false))throw std::runtime_error("explicit rollback");for(unsigned i=0;i<3;++i)if(memcmp(image+sites[i],calls[i],6))throw std::runtime_error("explicit rollback bytes");hook=false;}
+ auto checkAnchors=[&](){for(unsigned i=0;i<9;++i)if(image[anchors[i]]!=0xe8||*reinterpret_cast<int*>(image+anchors[i]+1)!=int(0xac590-anchors[i]-5)||image[anchors[i]+5]!=tails[i])throw std::runtime_error("exact anchor rollback bytes");};
+ if(rollback)checkAnchors();
  std::string id;while(std::cin>>id){
+  if(id=="anchor"){
+   int width,height;unsigned count,index,driverMatch;double fov,nearPlane,farPlane;
+   if(!(std::cin>>width>>height>>index>>driverMatch>>fov>>nearPlane>>farPlane)||index>=9||driverMatch>1)throw std::runtime_error("anchor header");
+   BYTE camera[0x140]{},lens[0xb0]{},object[0x100]{};void* table[230]{};*reinterpret_cast<void***>(object)=table;
+   table[0x394/4]=db+(driverMatch?0x1897c:0x18980);table[0x1b4/4]=db+0x80a4;table[0x1a4/4]=db+0x9b8c;
+   *reinterpret_cast<BYTE**>(image+0xf1b70)=object;*reinterpret_cast<BYTE**>(image+0xf2290)=camera;*reinterpret_cast<BYTE**>(camera+4)=lens;
+   *reinterpret_cast<double*>(lens+0x10)=fov;*reinterpret_cast<double*>(lens+0x20)=nearPlane;*reinterpret_cast<double*>(lens+0x28)=farPlane;
+   for(unsigned i=0;i<16;++i)reinterpret_cast<float*>(camera+0x80)[i]=number();
+   if(!(std::cin>>count)||!count||count>64)throw std::runtime_error("anchor hierarchy size");
+   std::vector<BYTE> nodes(count*0x144);
+   for(unsigned n=0;n<count;++n){auto node=nodes.data()+n*0x144;for(unsigned i=0;i<16;++i)reinterpret_cast<float*>(node+0x4c)[i]=number();if(n+1<count)*reinterpret_cast<BYTE**>(node+8)=node+0x144;}
+   for(unsigned i=0;i<16;++i)reinterpret_cast<float*>(nodes.data()+0xb4)[i]=number();
+   for(unsigned i=0;i<3;++i)reinterpret_cast<float*>(nodes.data()+0x12c)[i]=number();
+   int cachedX,cachedY;if(!(std::cin>>cachedX>>cachedY))throw std::runtime_error("anchor cached coordinates");
+   *reinterpret_cast<int*>(nodes.data()+0x138)=cachedX;*reinterpret_cast<int*>(nodes.data()+0x13c)=cachedY;
+   *reinterpret_cast<int*>(image+0xf1b48)=width;*reinterpret_cast<int*>(image+0xf1b4c)=height;
+   int out[2]{};auto target=image+anchors[index]+5+*reinterpret_cast<int*>(image+anchors[index]+1);
+   unsigned abi=auditCall(target,nodes.data(),reinterpret_cast<uintptr_t>(out),0,1);
+   for(unsigned i=0;i<9;++i)if(image[anchors[i]+5]!=tails[i])throw std::runtime_error("anchor next instruction changed");
+   std::cout<<"{\"screen\":["<<out[0]<<','<<out[1]<<"],\"abi_error_bits\":"<<abi<<",\"hook_enabled\":"<<(hook?"true":"false")<<",\"rollback_exact\":"<<(rollback?"true":"false")<<",\"game_started\":false}"<<std::endl;
+   continue;
+  }
   int width,height;unsigned rva[3],valid;if(!(std::cin>>width>>height>>rva[0]>>rva[1]>>rva[2]))throw std::runtime_error("case header");
   BYTE object[0x100]{};void* table[230]{};*reinterpret_cast<void***>(object)=table;
   for(unsigned i=0;i<16;++i)reinterpret_cast<float*>(object+0x5c)[i]=number();for(unsigned i=0;i<16;++i)reinterpret_cast<float*>(object+0x9c)[i]=number();
@@ -97,5 +127,5 @@ int main(int argc,char** argv){try{
   std::cout<<"{\"id\":\""<<id<<"\",\"raster_float\":[";for(unsigned i=0;i<4;++i){if(i)std::cout<<',';if(std::isfinite(output[i]))std::cout<<std::setprecision(9)<<output[i];else std::cout<<"null";}
   std::cout<<"],\"float_bits\":[";for(unsigned i=0;i<4;++i){uint32_t v;memcpy(&v,output+i,4);if(i)std::cout<<',';std::cout<<v;}std::cout<<"],\"valid\":"<<unsigned(boolean)<<",\"abi_error_bits\":"<<abi<<",\"delegated\":["<<nativeRaster<<','<<nativeFloat<<','<<nativeBool<<"],\"hook_enabled\":"<<(hook?"true":"false")<<",\"installer_ready\":"<<(installerReady?"true":"false")<<",\"rollback_exact\":"<<(rollback?"true":"false")<<",\"driver_lookup\":"<<(GetModuleHandleW(L"AsrD3DDrv.dll")==driver?"true":"false")<<",\"commercial_dll_loaded\":false,\"game_started\":false}"<<std::endl;
  }
- if(hook&&!setDamageProjection(image,0x10b000,false))throw std::runtime_error("production hook rollback");for(unsigned i=0;i<3;++i)if(memcmp(image+sites[i],calls[i],6))throw std::runtime_error("exact rollback bytes");VirtualFree(image,0,MEM_RELEASE);FreeLibrary(driver);return 0;
+ if(hook&&!setDamageProjection(image,0x10b000,false))throw std::runtime_error("production hook rollback");for(unsigned i=0;i<3;++i)if(memcmp(image+sites[i],calls[i],6))throw std::runtime_error("exact rollback bytes");checkAnchors();VirtualFree(image,0,MEM_RELEASE);FreeLibrary(driver);return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}

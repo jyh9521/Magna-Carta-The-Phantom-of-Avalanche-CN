@@ -322,3 +322,7 @@ Play.cmd和Configure.cmd共同默认启用卡墙/声音候选，Play-stable.cmd�
 [声音后端候选](docs/AUDIO_PROVIDER_POLICY.md)。默认关闭，未完成游戏内F10/F11验收。
 
 平铺 ZIP 的构建、独立纯净备份回滚和布局验证见 [纯净版覆盖测试包](docs/CLEAN_GAME_OVERLAY.md)。该格式直接替换变化资源，不依赖历次小更新；共享运行目录仍使用原 `data/` 布局。
+
+## 技能隐藏模型弹字回归
+
+构建damage_projection_fixture、damage_projection_bridge和workspace_profile后，执行`python -m unittest discover -s tests -p "test_damage*.py" -v`。原生资源链现为11组，包含隐藏模型、父级变换、旧缓存和回血；命令、负对照与离屏像素检查见[伤害投影修正](docs/DAMAGE_PROJECTION_REPAIR.md)。仅离线执行，不启动游戏。

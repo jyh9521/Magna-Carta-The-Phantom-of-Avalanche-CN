@@ -115,3 +115,61 @@ python tools/replay_damage_pixels.py build/damage-render-chain/native-final.json
 
 报告保存源摘要、实际提交参数、原生资源选择、像素包围盒、退出状态及未覆盖边界；
 回放输出必须位于资源目录之外。重新运行时使用新的报告路径，保留既有基线与撤回证据。
+
+## 技能期间隐藏模型的独立缺口（2026-10-24）
+
+### 已验证
+
+此前“未发现新缺陷”只适用于正常模型 Draw 的六组夹具，不涵盖本节的新输入。
+原生 `38A2F` 检查模型 `+114/+118`，`47416` 在隐藏时直接返回，三处查询修正没有执行机会。
+`AC590` 却无条件返回 `+138/+13c` 的旧缓存；普通伤害、回血及其它弹字的九个调用位置共用它。
+以构造态零缓存、隐藏标志和数值1706运行原生构造/数字资源/绘制链，数字确实从 `(0,0)` 创建，
+而同一模型的可见头部投影为 `(572,163)`。已有非零缓存也会留下过期位置。
+
+新增修正保留原三处驱动查询桥，同时将九个弹字读取 CALL 改到即时投影桥：
+`AA0BA/AA398/AA629/AA916/AAB88/AB128/AB453/AB6E1/ABA34`。
+按模型头部 `+12c`、本体 `+b4`、当前及父级 `+4c`、当前场景相机 `f2290 → +80`、
+相机 `+4` 指向的投影参数（垂直视角/近远面），计算新位置。只在已识别的D3D驱动启用，
+其它驱动保留原缓存读取。此处不读取已经被UI覆盖的当前驱动矩阵，不强制显示隐藏模型。
+父链最多64级并拒绝环；无效投影输出原生隐藏标记 `(-1,-1)`，不钳位到左上角。
+有效结果同时更新原缓存。伤害数值、浮动曲线、数字资源和技能时序保持原生行为。
+
+十二处指令整批预检、写失败补偿及撤回；九个五字节CALL后的下一条指令首字节保持原样。
+自有Win32夹具覆盖所有位置的未知字节、逐次写失败与精确撤回（353项），
+生产ABI桥逐一验证九个弹字入口；原生链另覆盖隐藏、过期缓存、父级变换、四种画布和回血。
+关闭新桥或显式撤回时，同一隐藏输入重新得到 `(0,0)`。
+
+```powershell
+cmake --build build/native --config Release --target damage_projection_fixture damage_projection_bridge workspace_profile
+$env:PYTHONPATH="$PWD/runtime/dependencies;$PWD/tools"
+python -m unittest discover -s tests -p 'test_damage*.py' -v
+python tools/replay_damage_render_chain.py --data runtime/data --bridge build/native/Release/damage-render-fixture/damage_projection_bridge.exe --report build/damage-skill-evidence/native.json
+python tools/replay_damage_pixels.py build/damage-skill-evidence/native.json --gpu build/native/Release/damage-render-fixture/damage_projection_gpu_fixture.exe --case-index 7 --case-index 8 --output build/damage-skill-evidence/pixels
+```
+
+### 尚待游戏画面确认
+
+截图证实1706在左上角，但没有提供技能名或运行状态采样；截图中具体技能是否触发上述隐藏分支，
+仍属于高置信推断，而非已采样事实。本次原生回放中的隐藏/父级/位置是显式输入，不是完整技能脚本。
+全部技能、特殊挂接模型、相机切换时序和实景遮挡继续由测试者手动验收。
+不把离线资源链或离屏GPU检查称作完整战斗验收。
+
+### 交付与恢复
+
+共享运行目录只更新十二个自有模块及其摘要清单，原引擎、游戏资源、存档及个人设置不变。
+`tools/update_runtime_modules.py` 的事务记录保留原模块；单项内存补丁也支持精确撤回。
+独立最小模块目录执行实际模块更新/撤回后逐项恢复原摘要，共享运行目录保持候选状态。
+原生产源另在独立文件副本上恢复、重编译ABI桥；同一1706隐藏回放恢复左上角失败，
+与新源通过形成基线、修改、撤回闭环。
+
+完整平铺测试包为 `dist/MagnaCarta-clean-game-skill-damage-fix-20261024.zip`，
+沿用当前统一包全部汉化资源、卡墙/声音候选与稳定对照入口；无需历史小更新。
+包内 `Play.cmd` 和 `Configure.cmd` 均走新模块，回滚仍用 `Restore-Original.cmd`。
+此包仅表示候选集合已更新，不表示截图中的完整技能已完成游戏画面验收。
+
+```powershell
+python tools/update_runtime_modules.py apply --runtime runtime --module build/native/Release/workspace_profile.dll --record build/damage-skill-evidence/runtime-transaction
+python tools/build_clean_overlay.py --previous dist/MagnaCarta-unified-test-hud-fix-20261023.zip --previous-sha256 e75802844d12b01368a63383c4174baec67652c08431ab134791dcdf8bbc966a --runtime runtime --output dist/MagnaCarta-clean-game-skill-damage-fix-20261024.zip --test-candidates
+# 共享模块撤回（退出游戏后，与后续更新互斥）：
+python tools/update_runtime_modules.py rollback --record build/damage-skill-evidence/runtime-transaction
+```
