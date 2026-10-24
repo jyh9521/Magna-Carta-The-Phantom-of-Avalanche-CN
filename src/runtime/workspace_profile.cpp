@@ -12,6 +12,7 @@
 #include "dialogue_reveal.h"
 #include "damage_projection.h"
 #include "field_return_height.h"
+#include "contact_audio_trace.h"
 #include "gui_parent_guard.h"
 #include "native_scene_loading.h"
 #include "native_font.h"
@@ -221,6 +222,10 @@ void patch(HMODULE module) {
         if(!installFieldReturnHeight(module,trace)){trace(L"FIELD_RETURN_HEIGHT_REJECTED");ExitProcess(125);}
     }
     bool localizedModule=systemMessages && !_wcsicmp(base,L"MCAlpha.dll");
+    wchar_t contactAudioFlag[8]{};
+    if(!_wcsicmp(base,L"MCAlpha.dll") && GetEnvironmentVariableW(L"MC_CONTACT_AUDIO_TRACE",contactAudioFlag,8)==1 && contactAudioFlag[0]==L'1'){
+        if(!installContactAudioTrace(module,trace)){trace(L"CONTACT_AUDIO_REJECTED");ExitProcess(125);}
+    }
     if (localizedModule && !systemMessageModuleMatches(module)) {
         trace(L"SYSTEM_MESSAGES_REJECTED");ExitProcess(125);
     }
