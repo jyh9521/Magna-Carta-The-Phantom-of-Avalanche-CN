@@ -6,6 +6,8 @@
 static unsigned ends=0;
 HRESULT WINAPI endScene(void*){++ends;return S_OK;}
 static HDC dc;static DWORD* bits;static unsigned presents=0,gets=0,releases=0;static bool acquired=false,lost=false;
+static HDC mapDC=nullptr;static DWORD* mapBits=nullptr;
+bool alphaMap(int,int,FramePanel& p){p={10,10,64,64,mapBits,mapDC};return true;}
 static DWORD caption[200*40];static bool captionEnabled=true;
 void require(bool x,const char* m){if(!x){printf("FRAME_OVERLAY FAIL %s\n",m);fflush(stdout);ExitProcess(1);}}
 HRESULT WINAPI getDC(void*,HDC* out){++gets;if(lost)return E_FAIL;acquired=true;*out=dc;return S_OK;}
@@ -44,6 +46,17 @@ int main(int argc,char** argv){
  frameOverlayFixtureFocus(false);run();require(bits[20*640+20]==0&&gets==1,"focus loss bypass");frameOverlayFixtureFocus(true);
  lost=true;run();require(gets==2&&releases==1,"lost surface no retry");lost=false;
  captionEnabled=false;encounterTestReset();unsigned q=gets;run();require(gets==q,"no panels no DC acquisition");
+ // Third provider blends only once, BEFORE captions/notifications, into the same retained surface.
+ info.bmiHeader.biWidth=64;info.bmiHeader.biHeight=-64;
+ mapDC=CreateCompatibleDC(nullptr);auto mapBitmap=CreateDIBSection(mapDC,&info,DIB_RGB_COLORS,reinterpret_cast<void**>(&mapBits),nullptr,0);auto mapOld=SelectObject(mapDC,mapBitmap);
+ for(unsigned i=0;i<64*64;++i)mapBits[i]=0x80643219;mapBits[0]=0;
+ setFramePanel(2,&alphaMap);captionEnabled=true;unsigned oldGets=gets,oldPresents=presents;run();
+ require((bits[15*640+15]&0xffffff)==0x643219,"premultiplied map alpha blends into retained surface");
+ require(bits[10*640+10]==0,"transparent map pixel preserves scene");
+ require((bits[20*640+20]&0xffffff)==0xeeeeee,"captions remain above map");
+ require(gets==oldGets+1&&presents==oldPresents+1,"map has one DC and one native present, no independent window");
+ setFramePanel(2,nullptr);captionEnabled=false;SelectObject(mapDC,mapOld);DeleteObject(mapBitmap);DeleteDC(mapDC);
+ puts("MAP_FRAME_COMPOSITOR PASS alpha=premultiplied transparent=preserved layer_order=map_caption_notice presents=one window_dc=false");
  require(removeFrameOverlay(HMODULE(image)),"remove");require(!memcmp(original.data(),image,original.size()),"whole image rollback exact");
  run();require(bits[20*640+20]==0,"original behavior restored");
  image[0xc20c]^=1;require(!installFrameOverlay(HMODULE(image),nullptr),"source mismatch rejected");

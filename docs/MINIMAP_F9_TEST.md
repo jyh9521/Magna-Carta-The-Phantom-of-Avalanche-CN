@@ -2,14 +2,16 @@
 
 2026-10-25。本页记录新增地图功能的源码、构建与人工验收流程。
 正式 v1.0、发行 ZIP 与安装包不随本轮测试功能更新；部署结果以实际部署记录为准。
+本轮画面修复、缓存和指南针锚点证据见 [呈现修复记录](MINIMAP_PRESENTATION_REPAIR.md)。
 历史 [地图候选](MAP_OVERLAY_CANDIDATE.md) 的 F8/F9 双键说明不适用于本页版本。
 
 ## 操作与显示
 
 - 初始关闭，F9 每次有效按下依次切换：**小地图 → 全屏半透明地图 → 关闭**。
-- 小地图位于左上角，玩家保持居中；可视范围约为 240 世界单位，受地图采样范围限制。
-- 全屏模式覆盖游戏客户区，地形保持等比缩放，不拉伸成宽屏比例。背景色键为
-  `RGB(19,32,39)`，背景透出游戏画面；线条、图例和标记使用 `150/255` 的统一不透明度。
+- 小地图位于右上角指南针下方，玩家保持居中；可视范围约为 720 世界单位（原 240 的三倍），受地图采样范围限制。
+- 全屏模式覆盖游戏原生帧，地形保持等比缩放，不拉伸成宽屏比例。空白像素为零 alpha，
+  背景透出游戏画面；线条和标记使用 `150/255` 的不透明度。小图使用铜金细框与深褐底，
+  大图只保留线稿和标记，不再显示调试标题、网格、图例或坐标。
 - 图层不暂停游戏、不抢前台、不接收鼠标点击；F8 保留原输入语义，不再切换地图。
 - 长按不连续切换。输入桥缓存 F9 消息按下沿，避免两次界面刷新之间的短按丢失；
   失焦或无有效探索快照时丢弃待处理按下沿，重新取得控制后先松键再触发。
@@ -52,7 +54,7 @@
 [共享运行布局](SHARED_RUNTIME_LAYOUT.md)。以下命令不启动游戏。
 
 ```powershell
-cmake --build build/native --config Release --target workspace_profile map_overlay_fixture map_collectibles_fixture modern_gamepad_fixture
+cmake --build build/native --config Release --target workspace_profile map_overlay_fixture map_collectibles_fixture modern_gamepad_fixture map_presentation_fixture frame_overlay_fixture
 $env:PYTHONPATH="$PWD/runtime/dependencies"
 python tools/build_map_atlas.py --source runtime/data/MAP --output build/map-f9-atlas --size 2048 --style feature-edges --labels locales/zh-CN/map-ui.json
 python tools/build_map_points.py --source runtime/data/Field --engine runtime/data/MCAlpha.dll --output build/map-f9-atlas/points
@@ -66,7 +68,7 @@ SHA-256，源资源在构建结束时重新核对；未知格式继续拒绝。�
 清单 `labels` 记录 JSON 源 SHA-256、编码与生成文件摘要，不记录本机绝对路径。
 标题为必填字段，图例与提示可选；字段须非空、最多 255 个 UTF-16 代码单元，拒绝 NUL、
 换行、重复键与未知字段。通用渲染器不硬编码中文，省略 `--labels` 时保持原有仅生成地形的行为。
-部署仍要求 `label.txt`，图例、提示作为可选 locale 资产进入部署摘要清单。
+部署仍要求 `label.txt`，图例、提示作为可选 locale 资产进入部署摘要清单；当前精简 UI 不绘制这些文字。
 旧 atlas 缺少提示时仍可加载，但不会因此改变地图坐标或自动补入中文文字。
 
 ## 测试版部署与撤回
@@ -80,7 +82,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File runtime/Start.ps1 -Recipe ma
 powershell -NoProfile -ExecutionPolicy Bypass -File runtime/Start.ps1 -Recipe baseline -VerifyOnly
 ```
 
-部署器校验已有运行清单、源 WRD/Field/引擎摘要、坐标投影和新 Win32 模块标记，保留每个变化文件的
+部署器校验已有运行清单、源 WRD/Field/引擎摘要、指南针 FDI/BGR 摘要、坐标投影和新 Win32 模块标记，保留每个变化文件的
 原字节及前后摘要，并读回校验。记录目录必须全新；平铺测试布局的记录须位于运行目录之外。
 发生未知摘要、已有未登记目标或后续改动时停止，不覆盖成另一版本。
 
@@ -115,14 +117,15 @@ python -m unittest discover -s tests -p test_minimap_deployment.py -v
 ```
 
 原生夹具使用自有位置与对象，输出生产绘制路径的离屏 PNG；PNG 不是游戏截图。
-离线测试覆盖状态循环、全客户区布局、透明度、点击穿透、资产坐标、入口路由及部署撤回，
+离线测试覆盖状态循环、原生帧唯一合成、24 组分辨率/UI 高度布局、透明度、地形缓存、资产坐标、入口路由及部署撤回，
 不替代真实全屏合成、实际人物与地形对齐或完整剧情切换验收。
 
 完成预检后，通过测试运行目录的正常游戏入口手动启动：
 
 1. 进入探索区域，短按 F9 三次，核对小地图、全屏半透明地图、关闭的顺序；长按只切一次。
 2. 沿直路和转角移动、原地转身，检查箭头朝向；移动 NPC 的绿点应实时跟随，领取箱体或 NPC 道具后检查对应标记变化。
-3. 全屏图打开时确认场景仍可见，移动和鼠标点击保持正常，F8 不切换地图。
+3. 全屏图打开时确认场景仍可见，左上角没有小图闪烁，移动和鼠标点击保持正常，F8 不切换地图；与关闭地图对照帧率。
+   在不同分辨率和窗口模式下，确认小图始终在右上角指南针下方，视距明显拉远。
 4. 打开菜单、进入战斗、切区、读档及返回标题，确认不残留旧场景图或旧位置。
 5. 切到其它程序时确认地图隐藏；返回后松开按键，再验证 F9 顺序与短按响应。
 6. 在黑色贴图旁检查青色换区菱形；触发后确认新场景出口重新加载，空心标记不视为已解除剧情条件。

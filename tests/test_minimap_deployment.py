@@ -76,6 +76,26 @@ class MinimapDeploymentTests(unittest.TestCase):
         tool.rollback(self.runtime, self.record)
         self.assertEqual(self.snapshot(), self.before)
 
+    def test_frame_map_requires_verified_compass_sources(self):
+        self.native.write_bytes(self.native.read_bytes() + 'MAP_FRAME_PRESENT_V2'.encode('utf-16le'))
+        with self.assertRaisesRegex(ValueError, 'Compass layout source drift'):
+            self.apply()
+        self.assertEqual(self.snapshot(), self.before)
+        self.assertFalse(self.record.exists())
+
+    def test_frame_map_records_compass_inputs_and_restores_manifest(self):
+        self.native.write_bytes(self.native.read_bytes() + 'MAP_FRAME_PRESENT_V2'.encode('utf-16le'))
+        compass = self.runtime/'data/FrameData/0136.fdi'
+        compass.parent.mkdir()
+        compass.write_bytes(b'owned compass position source')
+        before = self.snapshot()
+        with patch.object(tool, 'COMPASS_SOURCES', {'FrameData/0136.fdi': tool.digest(compass)}):
+            self.apply()
+        state = json.loads((self.runtime/'runtime.json').read_text())
+        self.assertEqual(state['data']['FrameData/0136.fdi'], tool.digest(compass))
+        tool.rollback(self.runtime, self.record)
+        self.assertEqual(self.snapshot(), before)
+
     def test_record_reuse_rejected_before_changes(self):
         self.record.mkdir()
         with self.assertRaises(ValueError):

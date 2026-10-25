@@ -192,7 +192,7 @@ void patch(HMODULE module) {
         trace(L"CAMERA_INPUT_REJECTED");ExitProcess(125);
     }
     if(mapOverlay&&!_wcsicmp(base,L"MCAlpha.dll")){
-        if(!installWorldGamepad(module,trace)||!installMapOverlay(module,trace)){trace(L"MAP_OVERLAY_REJECTED");ExitProcess(125);}
+        if(!installFrameOverlay(module,trace)||!installWorldGamepad(module,trace)||!installMapOverlay(module,trace)){trace(L"MAP_OVERLAY_REJECTED");ExitProcess(125);}
         setWorldTickObserver(&observeMapWorld);
     }
     if((wideDisplay||render60)&&!_wcsicmp(base,L"MCAlpha.dll")&&!installAdvancedEngine(module,wideDisplay,render60,trace)){trace(L"ADVANCED_ENGINE_REJECTED");ExitProcess(125);}

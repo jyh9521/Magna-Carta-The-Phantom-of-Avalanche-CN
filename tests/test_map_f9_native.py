@@ -65,7 +65,7 @@ class NativeMapF9Tests(unittest.TestCase):
             with Image.open(output) as opened:
                 image = opened.convert('RGB')
             def center(x, y):
-                return round(268+(x+80)*500/240), round(286-(y-260)*500/240)
+                return round(268+(x+80)*516*viewport[2]/min(720*viewport[2],512)), round(292-(y-260)*516*viewport[2]/min(720*viewport[2],512))
             cyan = (75, 205, 244)
             self.assertEqual(image.getpixel(center(-140, 280)), cyan)
             self.assertNotEqual(image.getpixel(center(-20, 300)), cyan)
@@ -96,7 +96,7 @@ class NativeMapF9Tests(unittest.TestCase):
                 with Image.open(output) as opened:
                     images[flag] = opened.convert('RGB')
             def center(x, y):
-                return round(268+(x+80)*500/240), round(286-(y-260)*500/240)
+                return round(268+(x+80)*516*viewport[2]/min(720*viewport[2],512)), round(292-(y-260)*516*viewport[2]/min(720*viewport[2],512))
             npc = center(-100, 250)
             box = center(-180, 320)
             for image in images.values():
@@ -158,14 +158,14 @@ class NativeMapF9Tests(unittest.TestCase):
             self.assertEqual(image.getpixel((0, 0)), (19, 32, 39, 0))
             self.assertEqual(image.getpixel((1279, 719)), (19, 32, 39, 0))
             self.assertEqual(set(image.getchannel('A').getdata()), {0, 150})
-            # Full client is 1280x720; the atlas remains a 636px square at (322,36).
+            # Full client is 1280x720; the atlas remains a 700px square at (290,10).
             # The owned fixture ends at player (-80,260), NPC (-100,250), box (-180,320).
             for point, color in [((-80, 260), (255, 166, 35, 150)),
                                  ((-100, 250), (75, 220, 110, 150)),
                                  ((-180, 320), (181, 114, 235, 150))]:
                 px = viewport[0]+(point[0]-bounds[0])*viewport[2]
                 py = 512-viewport[1]-(point[1]-bounds[1])*viewport[2]
-                expected = (round(322+px*636/512), round(36+py*636/512))
+                expected = (round(290+px*700/512), round(10+py*700/512))
                 self.assertEqual(image.getpixel(expected), color)
             self.assertEqual(source_hashes,
                              {name: hashlib.sha256((root/name).read_bytes()).hexdigest()
@@ -192,9 +192,9 @@ class NativeMapF9Tests(unittest.TestCase):
                     self.assertIn('MAP_LIVE_MARKERS PASS NPC=live_green', result.stdout)
                     with Image.open(output) as opened:
                         image = opened.convert('RGB')
-                    self.assertEqual(image.getpixel((268, 286)), (255, 166, 35))
-                    self.assertEqual(image.getpixel((268+6*dx, 286+6*dy)), (255, 166, 35))
-                    self.assertNotEqual(image.getpixel((268-7*dx, 286-7*dy)), (255, 166, 35))
+                    self.assertEqual(image.getpixel((268, 292)), (255, 166, 35))
+                    self.assertEqual(image.getpixel((268+6*dx, 292+6*dy)), (255, 166, 35))
+                    self.assertNotEqual(image.getpixel((268-7*dx, 292-7*dy)), (255, 166, 35))
 
 
 if __name__ == '__main__':

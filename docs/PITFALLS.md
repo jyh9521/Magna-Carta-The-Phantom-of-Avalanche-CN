@@ -1,5 +1,7 @@
 # 技术陷阱
 
+2026-10-25：地图 `WM_PAINT` 的窗口 DC 在旧 DDrawCompat 环境可进入虚拟屏幕路径，叠加游戏本身的呈现，造成左上角残影风险。不要用叠加窗口的位置/重绘频率掩盖此问题。地图改用既有 EndScene 后、native present 前的 backbuffer 通道；固定槽位按 map → caption → notice 合成。地形缓存必须随尺寸/模式/裁剪变化失效，缓存 DIB 读写前须 GdiFlush；见 [回归与测量](MINIMAP_PRESENTATION_REPAIR.md)。
+
 ## 地图状态与场景身份（2026-10-25）
 
 箱体仍在活动链表、object `+d4` 未禁用均不能证明尚未领取；必须读取唯一 object 记录与

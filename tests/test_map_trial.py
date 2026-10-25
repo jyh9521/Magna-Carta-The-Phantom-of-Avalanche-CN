@@ -15,4 +15,4 @@ class MapTrial(unittest.TestCase):
    self.assertEqual((prior/'workspace_profile.dll').read_bytes(),b'baseline');self.assertIn('-WithoutMap',(output/'Play-without-maps.cmd').read_text())
  def test_read_only_source_bindings(self):
   root=Path(__file__).resolve().parents[1];s=(root/'src/runtime/map_overlay.cpp').read_text(encoding='utf8')
-  self.assertIn('scene+0x10d0',s);self.assertIn('actor+0x154',s);self.assertIn('sameMap&&controlled',s);self.assertIn('WS_EX_NOACTIVATE',s);self.assertIn('SWP_NOACTIVATE',s);self.assertNotIn('SetForegroundWindow(',s);self.assertNotIn('SetCursorPos(',s)
+  self.assertIn('scene+0x10d0',s);self.assertIn('actor+0x154',s);self.assertIn('sameMap&&controlled',s);self.assertNotIn('CreateWindowExW(',s);self.assertNotIn('BeginPaint(',s);self.assertIn('setFramePanel(2,&mapFramePanel)',s);self.assertNotIn('SetForegroundWindow(',s);self.assertNotIn('SetCursorPos(',s)

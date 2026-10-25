@@ -1,5 +1,7 @@
 # 技术说明
 
+地图现复用 `frame_overlay` 原生 backbuffer 合成，不再通过窗口 DC 绘制；指南针 FDI 0136/BGR 0234 与虚拟 UI 高度的源码锁定证据见 [地图呈现修复](docs/MINIMAP_PRESENTATION_REPAIR.md)。
+
 ## F9 区域地图与半透明图层（2026-10-25）
 
 只读世界快照、F9 三态循环、客户区全屏色键/透明度与 174/176 区域线稿投影见

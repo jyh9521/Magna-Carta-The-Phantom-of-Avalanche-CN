@@ -1,9 +1,12 @@
 #pragma once
 #include <windows.h>
+#include "frame_overlay.h"
+#define MAP_FRAME_PRESENT_V2 1
+bool mapFramePanel(int,int,FramePanel&);
 #include "map_collectibles.h"
 struct MapLandmark {int id=0,kind=0;float x=0,y=0,z=0;MapCollectibleState collectible=MapCollectibleState::Unknown;};
 struct MapTrailPoint {float x=0,y=0;};
-struct MapSnapshot {int identifier=-1,fieldIdentifier=-1,actorIdentifier=-1;float x=0,y=0,z=0,directionX=0,directionY=0;DWORD timestamp=0;bool valid=false,landmarksTruncated=false;unsigned landmarkCount=0,trailCount=0;MapLandmark landmarks[64]{};MapTrailPoint trail[128]{};};
+struct MapSnapshot {int uiHeight=480;int identifier=-1,fieldIdentifier=-1,actorIdentifier=-1;float x=0,y=0,z=0,directionX=0,directionY=0;DWORD timestamp=0;bool valid=false,landmarksTruncated=false;unsigned landmarkCount=0,trailCount=0;MapLandmark landmarks[64]{};MapTrailPoint trail[128]{};};
 bool installMapOverlay(HMODULE,void(*logger)(const wchar_t*));
 void stopMapOverlay();
 void observeMapWorld(BYTE*,bool);
@@ -21,18 +24,14 @@ bool mapPointAssetValid(const MapPointHeader&,const MapExitPoint*,size_t bytes,i
 bool mapExitApplies(const MapExitPoint&,const MapSnapshot&);
 enum class MapDisplayMode {Off,Mini,Full};
 struct MapDisplayState {MapDisplayMode mode=MapDisplayMode::Off;bool held=true;};
-// Inactive frames hide the window and require a release before the next cycle.
+// Inactive frames hide the panel and require a release before the next cycle.
 MapDisplayMode mapDisplayStep(MapDisplayState&,bool active,bool pressed);
 MapDisplayMode mapDisplayCycle(MapDisplayState&);
 struct MapOverlayLayout {int x=0,y=0,width=0,height=0;float scale=1;};
-bool mapOverlayLayout(int clientWidth,int clientHeight,MapDisplayMode,MapOverlayLayout&);
+bool mapOverlayLayout(int clientWidth,int clientHeight,MapDisplayMode,MapOverlayLayout&,int uiHeight=480);
 BYTE mapOverlayOpacity(MapDisplayMode);
 #ifdef MAP_OVERLAY_TEST
 void mapOverlayTestInitialize(BYTE*);
-bool mapOverlayTestHiddenWindow();
-bool mapOverlayTestWait();
-bool mapOverlayTestClickThrough();
-bool mapOverlayTestWindowAppearance(MapDisplayMode);
 bool mapOverlayTestResetState();
 unsigned mapOverlayTestLoadPoints(const wchar_t* assets,int fieldIdentifier,int mapIdentifier);
 MapExitPoint mapOverlayTestPoint(unsigned index);

@@ -1,5 +1,7 @@
 # 构建说明
 
+地图画面修复使用 `map_presentation_fixture` 与 `frame_overlay_fixture` 验证唯一原生帧合成、缓存和指南针锚点；见 [构建与验收记录](docs/MINIMAP_PRESENTATION_REPAIR.md)。仅部署共享测试 runtime，不重建发行安装包。
+
 ## F9 地图测试版（2026-10-25）
 
 174/176 区域的线稿地图、F9 小图/全屏半透明/关闭循环、增量部署与精确撤回见

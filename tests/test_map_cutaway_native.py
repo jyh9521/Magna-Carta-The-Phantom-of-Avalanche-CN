@@ -54,9 +54,9 @@ class NativeMapCutawayTests(unittest.TestCase):
             # Original fixture player ends at (-80,260); compute the same metadata projection.
             px = viewport[0]+220*viewport[2]; py = 512-viewport[1]-160*viewport[2]
             if mini:
-                expected = (268, 286)  # 500px square at (18,36), player-centered.
+                expected = (268, 292)  # 516px square at (10,34), player-centered.
             else:
-                expected = (round(18+px*500/512), round(36+py*500/512))
+                expected = (round(10+px*516/512), round(34+py*516/512))
             self.assertEqual(images[1].getpixel(expected), (255, 166, 35))
 
     def test_large_native_view_keeps_markers_and_coordinates(self):

@@ -15,6 +15,10 @@ from prepare_shared_runtime import map_assets
 from integrate_native_loading import runtime_lock
 
 ROOT = Path(__file__).resolve().parents[1]
+COMPASS_SOURCES = {
+    'FrameData/0136.fdi': '175056f4553947d5b2b6725d9f93d24b7271676220ea79adba16a01d40b54254',
+    'BGR/0234.BGR': 'a17914d8c60bc0014830c6d8d1920974f8bb6004a4f1040b8883e13f694159aa',
+}
 
 
 def sha(data):
@@ -106,6 +110,13 @@ def apply_locked(runtime, native, atlas, record):
             raise ValueError('Game input drift: ' + name)
     module = native.read_bytes()
     check_module(module)
+    if 'MAP_FRAME_PRESENT_V2'.encode('utf-16le') in module:
+        for name, expected in COMPASS_SOURCES.items():
+            source = child(game, name)
+            if not source.is_file() or digest(source) != expected:
+                raise ValueError('Compass layout source drift: ' + name)
+            # Future launches guard the same UI anchor evidence, without changing resources.
+            state['data'][name] = expected
     assets = map_assets(atlas, require_nonempty=True)
     stale_points = {name for name in state['files'] if name.startswith('maps/points/')} - set(assets)
     if stale_points:

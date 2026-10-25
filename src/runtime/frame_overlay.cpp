@@ -2,10 +2,11 @@
 #include <cstring>
 #include <cstdint>
 #include <intrin.h>
+#include <initializer_list>
 namespace {
 constexpr unsigned site=0xc20c,engineSize=0x10b000;
 BYTE* engine=nullptr;BYTE* bridge=nullptr;
-FramePanelSource sources[2]{};void(*trace)(const wchar_t*)=nullptr;
+FramePanelSource sources[3]{};void(*trace)(const wchar_t*)=nullptr;
 #ifdef FRAME_OVERLAY_TEST
 BYTE* fixtureDriver=nullptr;bool fixtureFocus=true;
 #endif
@@ -61,8 +62,8 @@ bool draw(){
  if(!readable(surface,4))return false;auto v=*reinterpret_cast<void***>(surface);
  if(!readable(v,0x6c)||!callable(v[0x44/4])||!callable(v[0x68/4])||!callable(table[0x14/4]))return false;
 
- FramePanel panels[2];bool any=false;
- for(unsigned i=0;i<2;++i)if(sources[i]&&sources[i](w,h,panels[i]))any=true;
+ FramePanel panels[3];bool any=false;
+ for(unsigned i=0;i<3;++i)if(sources[i]&&sources[i](w,h,panels[i]))any=true;
  if(!any)return true;
  // Native BackOut (driver RVA 3155) ends the active D3D scene immediately
  // before presenting. Pixels must be inserted AFTER that same EndScene, not
@@ -78,9 +79,15 @@ bool draw(){
  using GetDC=HRESULT(WINAPI*)(void*,HDC*);using ReleaseDC=HRESULT(WINAPI*)(void*,HDC);
  HDC dc=nullptr;if(FAILED(reinterpret_cast<GetDC>(v[17])(surface,&dc)))return false;
  bool ok=dc!=nullptr;
- if(dc)for(auto& panel:panels){
+ if(dc)for(unsigned index:{2u,0u,1u}){
+  auto& panel=panels[index];
   if(!panel.pixels)continue;
   if(panel.width<1||panel.height<1||panel.x<0||panel.y<0||panel.x+panel.width>w||panel.y+panel.height>h){ok=false;continue;}
+  if(panel.alphaDC){
+   BLENDFUNCTION blend{AC_SRC_OVER,0,255,AC_SRC_ALPHA};
+   if(!AlphaBlend(dc,panel.x,panel.y,panel.width,panel.height,panel.alphaDC,0,0,panel.width,panel.height,blend))ok=false;
+   continue;
+  }
   BITMAPINFO info{};info.bmiHeader.biSize=sizeof(BITMAPINFOHEADER);info.bmiHeader.biWidth=panel.width;info.bmiHeader.biHeight=-panel.height;info.bmiHeader.biPlanes=1;info.bmiHeader.biBitCount=32;info.bmiHeader.biCompression=BI_RGB;
   int n=StretchDIBits(dc,panel.x,panel.y,panel.width,panel.height,0,0,panel.width,panel.height,panel.pixels,&info,DIB_RGB_COLORS,SRCCOPY);
   if(!n||n==GDI_ERROR)ok=false;
@@ -93,7 +100,7 @@ void jump(BYTE* p,const void* target){p[0]=0xe9;*reinterpret_cast<DWORD*>(p+1)=D
 bool replace(BYTE* p,const BYTE* from,const BYTE* to){if(memcmp(p,from,8))return false;DWORD old;if(!VirtualProtect(p,8,PAGE_EXECUTE_READWRITE,&old))return false;memcpy(p,to,8);FlushInstructionCache(GetCurrentProcess(),p,8);DWORD ignored;return VirtualProtect(p,8,old,&ignored)!=0;}
 }
 bool frameOverlayAvailable(){return engine&&bridge;}
-void setFramePanel(unsigned index,FramePanelSource source){if(index<2)sources[index]=source;}
+void setFramePanel(unsigned index,FramePanelSource source){if(index<3)sources[index]=source;}
 bool installFrameOverlay(HMODULE m,void(*logger)(const wchar_t*)){
  auto p=reinterpret_cast<BYTE*>(m);if(!identity(p,0x3ed73966,engineSize))return false;
  BYTE native[8],patch[8];nativeBytes(p,native);memset(patch,0x90,8);
