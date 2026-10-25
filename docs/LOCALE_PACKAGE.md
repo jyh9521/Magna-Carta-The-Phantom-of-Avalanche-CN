@@ -37,7 +37,7 @@ python PACKAGE/apply_locale.py rollback --package PACKAGE --source SOURCE --targ
 
 回滚前验证全部目标摘要与安装标记；额外修改会拒绝全部写入。原字节恢复后保留自有工具/记录，不删除用户存档或原安装。原型LPD1为源引用与变更literal组成的zlib压缩增量；格式、大小、路径、压缩边界和重建摘要均验证。生成包和完整副本留在忽略的dist/build，不提交商业资源。
 
-`.locale-runtime/Start.ps1`是明确手动入口，不由安装或校验自动执行。它只读取原有设置，在副本内生成会话配置，然后使用版本锁定隔离工具；不替换图形驱动。脚本已做语法检查，但没有执行。手工验收清单随包提供。
+`.locale-runtime/Start.ps1`是明确手动入口，不由安装或校验自动执行。该脚本只读取原有设置，在副本内生成会话配置，然后使用版本锁定隔离工具；不替换图形驱动。脚本已做语法检查，但没有执行。手工验收清单随包提供。
 
 `all_game_text_complete=false`、`release_ready=false`及`in_game_verified=false`保持明确；离线文件与模型证明不能替代实际游玩、所有场景及渲染验收。
 

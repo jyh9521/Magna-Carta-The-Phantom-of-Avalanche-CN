@@ -11,7 +11,7 @@ REA重新读取支持版本MCAlpha.dll的55134、565d2、567ed、4d3a0，
 SHA256 `5c701de93af6267b959c49e6927bee525bc0f3c68c8c6f51413515d13809d427`，
 Evidence `ev_157d116052ecd271a7da32655d4da26c6b9c57066014e4ece83ac9129df751d9`。
 55134先分发子GUI，再检查自身资格；子节点或自身消费时返回1，否则返回0。
-+160与+e8两个基础资格字段仅检查当前对象，不自动抹掉子节点自己的资格。
++160与+e8两个基础资格字段仅检查当前对象，不自动抹掉子节点资格。
 旧收集器在遍历前拒绝非活动父节点，与该原生顺序不一致。
 修正序号后的中间版本仍实际失败：
 `FAIL inactive parent must retain active descendant navigation like native child-first dispatcher`。

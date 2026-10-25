@@ -15,7 +15,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File build/advanced-display-g
 输出目录必须是仓库 build 下的全新独立目录。准备工具复制并逐文件验证原资源；不启动游戏。
 PrepareOnly 取得既有 Direct3D 配置并选择对应 INI，也不启动游戏。
 原 `build/disc-gate-game`、汉化资源、原存档和旧启动工具不改。
-候选带有开始时复制的存档；玩家在候选内保存会产生自己的进度，回滚不覆盖任何存档。
+候选带有开始时复制的存档；玩家在候选内保存会产生独立进度，回滚不覆盖任何存档。
 
 ## 玩家入口
 

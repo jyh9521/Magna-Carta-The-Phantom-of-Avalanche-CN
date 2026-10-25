@@ -4,7 +4,7 @@
 
 适用于45,056字节的MagnaCarta.exe，原始SHA-256为`be2ae107373835defc6ec33643eaf435dcc5c882ea0b6e3c47032cd013690651`。启动函数VA`0x401000`扫描A至Z，要求GetDriveTypeA返回5，再查找根目录`\\MC_03`。不存在时显示重试/取消提示；不是MC_PLAY卷标比较。
 
-匹配后FindClose关闭查找句柄，原逻辑加载MCAlpha.dll，取得`_GameMain@16`，使用原模块句柄、`/job:51 /file:0`及显示参数调用。返回非零时卸载并重载模块。MCBeta.dll与protect.dll不在这条启动器加载链中；它们的存在不证明当前EXE实际调用了保护模块。
+匹配后FindClose关闭查找句柄，原逻辑加载MCAlpha.dll，取得`_GameMain@16`，使用原模块句柄、`/job:51 /file:0`及显示参数调用。返回非零时卸载并重载模块。MCBeta.dll与protect.dll不在这条启动器加载链中；相关文件的存在不证明当前EXE实际调用了保护模块。
 
 补丁仅修改文件偏移`0x1025`的5字节：`BB 41 00 00 00`改为`E9 A7 00 00 00`，从VA`0x401025`跳往`0x4010D1`原LoadLibrary入口。跳过扫描和FindClose，避免对不存在的查找句柄执行关闭。导入表、大小、资源、其他代码均不改。目标SHA-256为`6046b29600b5e009903b3495bd11df0b4d89fc3545adde028193ea9fbff8d4de`。
 

@@ -346,3 +346,23 @@ CMake自动运行 `tools/build_story_captions.py`，从locale数据和用户提�
 默认数据为 `locales/zh-CN/story-captions.json`；可用 `STORY_CAPTION_CATALOG` 和
 `STORY_CAPTION_SOURCE_ROOT` 覆盖目录。原音频摘要或译文校验失败即停止构建。
 离线夹具和复核说明见 [剧情画面层](docs/STORY_OVERLAY.md)。
+
+## v1.0 正式桌面入口
+
+正式发布包使用小型 `Configure.exe` 与 `Game.exe`，依赖外置 PowerShell/WPF 脚本，不打包自包含运行时。
+
+```powershell
+python tools/build_desktop_entries.py --output build/desktop-entries
+python tools/build_release_v1.py --source dist/ACCEPTED_OVERLAY.zip --source-sha256 ACCEPTED_SHA256 --entries build/desktop-entries --output dist/MagnaCarta-zh-CN-v1.0.zip
+```
+
+输入须为已经通关验收的覆盖包。构建器先校验全包及资源摘要，再更换紧凑配置与 EXE 入口，游戏资源和修复模块保持字节不变。原始包与摘要须保留用于重建与对照；完整流程见 [v1.0 发布说明](docs/RELEASE_V1.0.md)。旧测试包构建命令保留用于重现历史技术阶段，不再代表当前玩家入口。
+
+### 发布后的本地清理
+
+```powershell
+python tools/cleanup_release.py
+python tools/cleanup_release.py --apply
+```
+
+首条命令只生成绝对路径清单；第二条仅删除已被正式包替代的旧交付 ZIP 与校验文件。正式 v1.0 ZIP、通关输入覆盖包、原始统一增量包、原盘、共享游戏数据、存档及构建/回滚证据保留。根目录 `Clean-generated.cmd` 调用此保留式清理，不再执行历史整目录删除流程。

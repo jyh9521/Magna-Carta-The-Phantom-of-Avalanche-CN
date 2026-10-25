@@ -38,7 +38,7 @@ Play-baseline.cmd保留原模块对照，8份旧模块、上次正常楼梯模�
 Play-texture.cmd单独测试纹理生命周期修复；
 Play-maps.cmd测试区域地图；
 Play-motion.cmd提供动作对照。
-各固定配方有自己的预设，不一定使用Configure保存的显示设置。
+各固定配方具有独立预设，不一定使用Configure保存的显示设置。
 所有入口共享data内同一套游戏和存档；关闭前一个游戏再切入口。
 不要直接启动data/MagnaCarta.exe，那会绕过现代化运行模块。
 地图F8大图、F9小图；地图打开时游戏继续运行。

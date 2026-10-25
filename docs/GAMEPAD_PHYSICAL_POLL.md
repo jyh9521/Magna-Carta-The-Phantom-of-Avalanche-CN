@@ -16,7 +16,7 @@ ev_ac68d97e8ab3a3f51a415655e08a628dd51182a0353fa1f3328067351ccdb622。
 ## 修正与回归
 
 此前把手柄写入的虚拟光标当作下次真实鼠标基线。旧夹具没有重放原生GetCursorPos刷新，
-所以“自己的提交不是鼠标移动”测试虽然通过，却漏掉实际顺序。
+所以“控制器提交不是鼠标移动”测试虽然通过，却漏掉实际顺序。
 新增集成夹具每次输入都先恢复固定的真实OS坐标，再进入原有IAT桥：旧代码失败
 `FAIL native physical mouse polling must not erase controller menu focus`。
 现在真实轮询基线只随实际采样更新；虚拟输出不再调用acknowledgeWrite，不调用SetCursorPos。
@@ -29,7 +29,7 @@ ev_ac68d97e8ab3a3f51a415655e08a628dd51182a0353fa1f3328067351ccdb622。
 本次用户确认入口能进入，但动作仍抽动、手柄方向有效而A不确认；这是未通过的实机验收，
 不能被夹具覆盖。最新日志显示约59.4–60Hz绘制和33ms逻辑、每秒30–31次更新。
 所以当前是约30Hz原生逻辑加约60Hz显示插值，不是原生逻辑已变成60Hz。
-日志仍有骨骼unsupported与资源阶段重置，尚未证明它们分别造成哪些可见抽动。
+日志仍有骨骼unsupported与资源阶段重置，尚未证明相关异常分别造成哪些可见抽动。
 本轮只修菜单轮询，不宣称60FPS抽动已修。
 
 入口 runtime/Play-gamepad.cmd 单独验收手柄；runtime/Play-motion-gamepad.cmd组合对照。

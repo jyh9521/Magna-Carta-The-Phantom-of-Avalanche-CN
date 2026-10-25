@@ -30,7 +30,7 @@ Evidence `ev_506c02d6b379708a3cfd40dbd94655b683a7efd2e8d30f3307ae5a01710bc2b4`�
 新tick临时投影先看到旧相机0，随后原生刷新为-20；同tick最终场景加载时，
 旧钩子把该变化视为不稳定输入，丢掉previous/current并立即显示-20。
 自有x86调用桩在engine+1da20发出同形虚表CALL，真实返回地址为engine+1da26，
-另一个桩发出临时Load；它们经过实际安装的driver hook，而不是传入伪造分类布尔量。
+另一个桩发出临时Load；两类调用经过实际安装的driver hook，而不是传入伪造分类布尔量。
 旧核心回归失败：
 `FAIL temporary projection must not commit stale camera as new tick interpolation endpoint`。
 

@@ -8,7 +8,7 @@
 原插值只安装蒙皮 renderer RVA `3b0c0` / vtable slot `bd9f8`，
 只接受 MakeAbsoluteMatrix 返回点 `3b801`。
 另一条动画 renderer RVA `3d12f` / slot `bda18` 调用同一绝对骨骼函数，
-返回点 `3d534`。它逐刚性子网格注册 world * absoluteBone；原路径完全未插值。
+返回点 `3d534`。该函数逐刚性子网格注册 world * absoluteBone；原路径完全未插值。
 REA `ev_d9e5eed237706a97e3872ae279ce9f178a2e637e962ed497bccd76cb30e5e8ce`。
 构造器 `3cd4a` 从 ASRObsStatic 派生；对象布局没有蒙皮的 `f0/f4/f8/fc` 历史字段：
 `ev_c428cc2d14d5cba0eb635623e5069037f53ccdb5a7e8f53745597310e684369f`。

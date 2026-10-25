@@ -235,10 +235,10 @@ modelview→actorWorld链路必须验证往返误差和静止人物不漂移，�
 必须分别回归非活动子节点、活动无listener子节点及可交互子节点；
 源槽和资格字段证据见 `GAMEPAD_INACTIVE_CHILDREN.md`。
 
-## 虚拟光标自己的提交不是新的物理鼠标输入
+## 虚拟光标提交不是新的物理鼠标输入
 
 比较输入字段前后坐标时，必须确认控制器消费者写回的整数值，否则方向焦点
-与连续右摇杆会被自己的上一帧提交阻断。既要覆盖“自己写入→下一次实际轮询”，
+与连续右摇杆会被光标上一帧提交阻断。既要覆盖“光标写入→下一次实际轮询”，
 也要保留真正不同坐标的鼠标优先、持续偏转阻断及回中接管。见 `GAMEPAD_CURSOR_OWNERSHIP.md`。
 
 ## Shared launcher log reuse (2026-10-14)
@@ -401,7 +401,7 @@ GUI不会发出新按下事件。0/3/6保留两次松键采样，并在最佳含
 
 ## Asura 基础模型的插帧入口（2026-10-23）
 
-只替换 MCAlpha 派生 vtable 和它的 MakeAbsoluteMatrix IAT 不覆盖 Asura 基础 renderer 的直接 CALL。基础 action 序列是句柄，不是派生实现中的包装指针；混用会造成旁路或错误解引用。按独立来源守卫入口、调用点、资源表范围并复用相位/恢复，详见 RELEASE_CONTROLS_2026-10-23.md。
+只替换 MCAlpha 派生 vtable 和对应的 MakeAbsoluteMatrix IAT 不覆盖 Asura 基础 renderer 的直接 CALL。基础 action 序列是句柄，不是派生实现中的包装指针；混用会造成旁路或错误解引用。按独立来源守卫入口、调用点、资源表范围并复用相位/恢复，详见 RELEASE_CONTROLS_2026-10-23.md。
 
 发布入口归档时，既要删除玩家载荷中的快捷方式，也要移除发布 runtime.json 中相应 files 摘要；共享目录维护脚本可能已把旧入口加入校验清单。只在 glob 复制阶段排除会从 files 集合重新带回入口，或留下指向缺失入口的摘要。真实统一包 ZIP 回读应检查载荷和 manifest 双向一致。
 
@@ -435,7 +435,7 @@ DDrawCompat 0.7.1 仅为已登记窗口缓存 UpdateLayeredWindow 位图，未�
 ## 原Miles离线流夹具的后端（2026-10-25）
 
 本机默认DirectSound分支在 `_AIL_waveOutOpen` 初始化期间出现SDK内部COM Release低地址异常。
-该失败发生在字幕逻辑、原引擎映射和流启动之前；延长路径字符串生命周期没有消除它。
+该失败发生在字幕逻辑、原引擎映射和流启动之前；延长路径字符串生命周期没有消除该失败。
 原SDK偏好表位于RVA4fc28，初始化分支读取4fc64，即索引15。夹具通过正式
 `AIL_set_preference(15,1)`选择WinMM，再验证静音原SVD的暂停游标、语音身份和结束清理。
 只约束离线测试环境，不修改游戏音频后端或原DLL。夹具保留阶段化异常记录，

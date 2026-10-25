@@ -1452,7 +1452,7 @@
       "category": "人物称谓",
       "status": "待复核",
       "translation_state": "approved",
-      "meaning": "0145、0218归来者身份遭质疑；0315、0317区分真本人、假形象和特里斯坦。",
+      "meaning": "0145、0218归来者身份遭质疑；0315、0317区分真实身份、假形象和特里斯坦。",
       "relation": "pending",
       "reference_candidates": [],
       "resource_ids": [
@@ -1543,7 +1543,7 @@
       "category": "人物",
       "status": "待复核",
       "translation_state": "approved",
-      "meaning": "0317卡林兹父亲；0316明确运贝特与此名关联，真本人和假形象需按场景区分。",
+      "meaning": "0317卡林兹父亲；0316明确运贝特与此名关联，真实身份和假形象需按场景区分。",
       "relation": "pending",
       "reference_candidates": [],
       "resource_ids": [

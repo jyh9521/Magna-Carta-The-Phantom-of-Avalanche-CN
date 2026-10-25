@@ -7,7 +7,7 @@
 
 解压 `MagnaCarta-display-motion-hotfix-20261019.zip`，运行 `Update.cmd`，
 输入原测试包安装目录（该目录直接包含 `runtime.json`、`Play.cmd`）。
-它不是 `data` 子目录，也不是原版安装目录。未知版本或模块/开场资源变化时整批拒绝。
+目标不是 `data` 子目录，也不是原版安装目录。未知版本或模块/开场资源变化时整批拒绝。
 也可执行 `Update.cmd -Target "D:\MagnaCarta-PlayerTest"`。
 回滚：`Update.cmd -Action Rollback -Target "D:\MagnaCarta-PlayerTest"`。
 仅在 `.runtime-updates/display-motion-20261019` 保存9份小型运行文件，保留存档和设置。
@@ -28,7 +28,7 @@
 先按runtime.json预检全部旧模块；将所有8份modules/*.dll替换为本次workspace_profile.dll，
 更新runtime.json对应摘要并加入locale opening-layout.json的resource SHA256源锁。
 变更记录格式沿用update_configuration_runtime.py的changes.json（before/after），原文件位于original/。
-本机记录为build/eye-vow-repair/runtime-deployment；它只包含9份小型运行文件。
+本机记录为build/eye-vow-repair/runtime-deployment；该记录只包含9份小型运行文件。
 
 ```powershell
 python tools/build_runtime_hotfix.py --runtime runtime --record build/eye-vow-repair/runtime-deployment --metadata locales/zh-CN/opening-layout.json --output dist/NEW_HOTFIX

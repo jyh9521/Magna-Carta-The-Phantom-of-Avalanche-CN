@@ -8,7 +8,7 @@ StartMotion/StartGamepad脚本及旧DLL。当前`runtime/Play-motion.cmd`则使�
 未证明玩家此前具体使用了哪条路径，不能据此断言所有反馈都来自旧版本。
 
 源码打包器原来将动作、手柄和组合固定映射到`modern`，即使明确提供
-`motion-space`与`input-diagnostics`也不选择它们。旧源码的新回归失败：
+`motion-space`与`input-diagnostics`也不选择上述模块。旧源码的新回归失败：
 `AssertionError: 'modern' != 'motion-space'`，另缺少`motion-gamepad`配方。
 
 ## 修正
@@ -24,7 +24,7 @@ StartMotion/StartGamepad脚本及旧DLL。当前`runtime/Play-motion.cmd`则使�
 - 实际迁移11个Play入口和1个Configure入口，均转到共享运行器/配置工具。
   完整60fps入口→motion；Xbox入口→motion-gamepad；Xbox30fps入口→gamepad。
   fps60/combined仍是原显示对照，不冒充完整动作插帧；明确LegacyPose与历史Rollback
-  入口本轮未迁移，不把它们当作当前验收入口。
+  入口本轮未迁移，上述入口不作为当前验收入口。
 - 已迁移脚本纳入运行清单摘要；常用旧入口不再加载历史`.advanced-runtime`DLL。
 
 8项打包/迁移测试通过，覆盖候选选择、组合开关、源文件不复制、只读规划、幂等性、

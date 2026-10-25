@@ -6,42 +6,51 @@
 
 当前目标语言为简体中文 `zh-CN`。仓库保存结构化译文、术语、资源提取与重建工具，以及显示、输入等增强模块；语言数据与通用工具分离，保留后续适配其他语言的基础。
 
-## 支持版本与当前状态
+## 发布版本 v1.0
 
 当前针对项目已记录指纹的 PC 安装样本开发，未知版本会被校验工具拒绝。样本与所提供 1.04 补丁的差异见[版本调查](docs/SAMPLE_AUDIT.md)，不将所有标为 1.04 的安装视为相同版本。
 
 - **文本与字体**：当前结构目录共 4,137 个字段，包含 4,091 条译文和 46 条明确保留项；427 份结构资源与两套原生字库已完成重建、逆解码及重复构建验证。
-- **图片、视频与系统提示**：已有中文候选并纳入增量构建；SOFTMAX 开头 Logo、开发人员名单、指定保留图及旧存档名字不作汉化或改写。
-- **兼容性与增强**：已有共享运行目录、图形兼容层、4K/宽屏、动作与手柄、自由视角、地图等候选。各功能的验收状态不同，测试通过不等于全部场景可用。
-- **发布状态**：已建立统一玩家测试补丁包构建流程，尚非完成整体验收的正式汉化发行版。
+- **图片、视频与系统提示**：已完成中文资源并纳入发布构建；SOFTMAX 开头 Logo、开发人员名单、指定保留图及旧存档名字不作汉化或改写。
+- **兼容性与增强**：集成图形兼容层、高清标题、1080P/2K/4K/自适应、窗口模式、30/60 帧、地图、连招辅助及最终修复。手柄与自由视角研究功能已归档，不列入正式功能。
+- **发布状态**：**Release v1.0 已发布**。2026-10-25 收到完整流程通关、测试无误的验收反馈。汉化与最终修复合并为单一 ZIP。
 
-结构目录完成不等于全文汉化完成，离线重建和自动测试也不代替完整游玩。详细范围见[全文候选与增量包](docs/LOCALE_PACKAGE.md)，当前限制见[已知问题](docs/KNOWN_ISSUES.md)。
+发布验收以完整流程通关反馈为依据；新增桌面入口与紧凑配置界面另经离线验证。详细范围见[全文候选与增量包](docs/LOCALE_PACKAGE.md)，历史问题与调查见[已知问题](docs/KNOWN_ISSUES.md)。
 
 ## 下载与使用
 
 仓库提供源码、译文和构建工具，不包含游戏本体，也不包含本机 `runtime/` 运行目录。测试包说明见[统一玩家测试补丁包](docs/PLAYER_TEST_PACKAGE.md)。
 
-### 测试包
+### 正式发布包
 
-使用已构建测试包中的 `Install.cmd`，选择匹配的原版目录与新的目标目录；安装工具校验原版后，在新副本中生成补丁资源，不覆盖原安装。
+[下载 Release v1.0](https://github.com/jyh9521/Magna-Carta-The-Phantom-of-Avalanche-CN/releases/tag/v1.0)。
+文件名：`MagnaCarta-zh-CN-v1.0.zip`。
 
-安装后，从新副本根目录运行 `Configure.cmd` 调整增强设置，使用 `Play.cmd` 启动。其他 `Play-*.cmd` 是独立候选入口，不代表相应功能已合入默认配置。校验、恢复原版资源与验收边界见[测试包说明](docs/PLAYER_TEST_PACKAGE.md)。
+将 ZIP 中全部文件解压到匹配的纯净游戏目录（`MagnaCarta.exe` 所在层），替换同名文件。
+原版独立备份须保留。双击 **`Configure.exe`** 配置，双击 **`Game.exe`** 启动；不再使用 CMD 作为玩家入口。
+两份 EXE 各约 7 KiB，依赖 Windows 自带 .NET Framework 4.x、Windows PowerShell 5.1 与 WPF。
+`config/`、`modules/`、`fonts/`、`maps/` 与 `Start.ps1` 为外置运行组件，须完整保留。
+默认 1080P、无边框、60 帧；配置工具支持切换 30/60 帧。
+完整安装、校验、恢复与构建说明见 [v1.0 发布说明](docs/RELEASE_V1.0.md)。
 
 ### 本地开发运行目录
 
-已准备好的共享运行目录使用 `runtime/Configure.cmd` 与 `runtime/Play.cmd`，各入口共用一份游戏数据与存档。历史 `build/*-game` 入口不再作为当前使用入口，目录准备与原生重建见[共享运行布局](docs/SHARED_RUNTIME_LAYOUT.md)。
+共享运行目录使用 `runtime/Configure.exe` 与 `runtime/Game.exe`，共用既有数据与存档。
+历史 `Play-*.cmd` 与研究文档仅保留技术对照用途，不作为正式发布入口。
+目录准备与原生重建见[共享运行布局](docs/SHARED_RUNTIME_LAYOUT.md)。
 
 ## 从源码重建
 
 依赖、版本校验、译文检查、字体生成、资源重建及原生模块编译见[构建说明](BUILDING.md)。原版游戏和字体等输入须按文档单独准备；克隆仓库并不包含这些输入。
 
-在已有、摘要校验通过的共享运行目录基础上，构建统一测试包：
+正式包基于摘要锁定的通关覆盖包构建：
 
 ```powershell
-python tools/build_player_test_bundle.py --source ORIGINAL_GAME --runtime runtime --output dist/NEW_TEST_PACKAGE
+python tools/build_desktop_entries.py --output build/desktop-entries
+python tools/build_release_v1.py --source dist/ACCEPTED_OVERLAY.zip --source-sha256 ACCEPTED_SHA256 --entries build/desktop-entries --output dist/MagnaCarta-zh-CN-v1.0.zip
 ```
 
-`ORIGINAL_GAME` 指匹配的原版目录，`NEW_TEST_PACKAGE` 须为新的输出目录。该命令打包已有候选，不替代前置资源与模块构建。生成物保存在 `build/`、`dist/` 或 `out/`，不进入源码仓库。
+输入身份与完整命令见 [v1.0 发布说明](docs/RELEASE_V1.0.md)。原始资源提取、增量重建及历史测试包流程仍保留在 [构建说明](BUILDING.md)，用于独立复现技术管线。生成物保存在 `build/`、`dist/` 或 `out/`，不进入源码仓库。
 
 ## 参与翻译 / 添加语言
 

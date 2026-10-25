@@ -17,7 +17,7 @@ REA/Ghidra确认Asura `MakeAbsoluteMatrix`（RVA44f0d，Evidence `ev_e533b891ab9
 
 ### Verified：首轮呈现补丁未提高动作状态更新频率
 
-首轮 `advanced_display.cpp` 解除了计时器等待分支，保留 33 ms 固定 callback 的比较/消耗，并在驱动呈现处按 60 Hz 节奏返回。它未安装人物姿态/摄像机插值，也未修改动作采样相位。因此玩家反馈与当前实现完全相符：60 次呈现可能重复显示约 30 次动作状态。
+首轮 `advanced_display.cpp` 解除了计时器等待分支，保留 33 ms 固定 callback 的比较/消耗，并在驱动呈现处按 60 Hz 节奏返回。该实现未安装人物姿态/摄像机插值，也未修改动作采样相位。因此玩家反馈与当前实现完全相符：60 次呈现可能重复显示约 30 次动作状态。
 
 ### High-confidence deduction：动作包含整数帧推进和同帧事件
 
@@ -69,7 +69,7 @@ REA 补充：骨骼渲染 Evidence `ev_ba778b5a7bfbfc3380d19d326da11eccb3b30907a
 
 候选按对象、action、骨骼树、局部姿态数组、骨骼数和整数帧维护 previous/current。整数帧改变后，在约33ms内插值 previous→current，增加约一个逻辑tick的视觉延迟。旋转采用最短弧四元数归一化线性插值，位移线性插值；非刚性/镜像/非有限矩阵保持当前原样。首帧、动作变更、跳帧、暂停超过250ms及对象状态变化重置缓存，最多128个对象，每个最多512根骨骼。
 
-MakeAbsoluteMatrix 首先计算不修改的 absolute baseline，再对插值后的局部姿态运行同一个原变换。绘制后通过独立 SEH `__finally` 恢复精确 baseline absolute 数组；它不是把局部矩阵错误地留给下一次逻辑。动作tick、帧计数、事件、碰撞、音频保持原样。**世界位移、模型朝向和摄像机未插值，因此不标记全游戏完整真60FPS。**
+MakeAbsoluteMatrix 首先计算不修改的 absolute baseline，再对插值后的局部姿态运行同一个原变换。绘制后通过独立 SEH `__finally` 恢复精确 baseline absolute 数组；恢复过程并非把局部矩阵错误地留给下一次逻辑。动作tick、帧计数、事件、碰撞、音频保持原样。**世界位移、模型朝向和摄像机未插值，因此不标记全游戏完整真60FPS。**
 
 独立原生夹具 `motion60_fixture` 执行自建 renderer→scoped绝对矩阵hook→original stub 调用，验证实际半步骨骼姿态、旋转中间态、绘制后精确恢复与SEH恢复。PE32映像夹具验证重复安装、重复移除、源前缀/调用点/IAT/尺寸漂移拒绝与精确槽位回滚。结果27项通过；不执行商业引擎，不替代实际动作与游玩验收。
 

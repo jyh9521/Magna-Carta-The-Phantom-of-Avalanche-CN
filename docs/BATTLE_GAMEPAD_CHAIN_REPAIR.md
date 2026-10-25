@@ -100,7 +100,7 @@ python build/battle-gamepad-chain/input/stage_check.py rollback
 
 三条命令的退出码分别为 `1/0/1`，恢复后重新出现原缺陷。检查项包含原生右键
 路由、三种菜单左键路由、菜单导航、上下文 held rearm、失焦/断线/换设备取消；
-它们在基线和回滚态为 0，修改态为 1。每阶段实际 CMake 命令、输入、逐字输出与
+相关字段在基线和回滚态为 0，修改态为 1。每阶段实际 CMake 命令、输入、逐字输出与
 源码摘要保存于本地 `build/battle-gamepad-chain/input/input-stage-results.json`。
 该输入层三态结果须与原生 PE 结果一起使用，不能单独证明战斗状态已改变。
 
@@ -111,7 +111,7 @@ A307F → A421C/A424E`，经构造指令 `8B153` 绑定的角色虚表 `C1644` �
 `653C6/655A1`，角色 `+104` 角度在左按后由 0 变为 `0.15000000596`，右按恢复 0，
 左摇杆也产生相同真实浮点状态写入。角色状态资格 `8E0EF` 使用原始 getter。
 角色朝向的矩阵提交和 ASR 外部接口为具名契约边界；此结果证明方向指令到达
-原生角色朝向状态，不把它描述为已选中敌人或已渲染移动。
+原生角色朝向状态，不把该状态描述为已选中敌人或已渲染移动。
 
 ## 实际菜单状态写入
 
@@ -145,7 +145,7 @@ python tools/update_runtime_modules.py rollback --record build/battle-gamepad-ch
 
 现有真实事务为 `deployment-final`；默认 `ROLLBACK.sh` 只在另一份自有模块/清单
 副本执行安装及精确回滚，活动模块保留修正。显式 `ROLLBACK.sh --active` 才恢复
-活动运行目录的上一版模块；它也会恢复上一版战斗手柄缺陷，不触碰存档和设置。
+活动运行目录的上一版模块；回滚也会恢复上一版战斗手柄缺陷，不触碰存档和设置。
 
 小更新包 `dist/MagnaCarta-battle-controller-update-20261023.zip` 适用于上一版
 连击输入边沿修正；`dist/MagnaCarta-feedback-battle-update-20261023.zip` 为从

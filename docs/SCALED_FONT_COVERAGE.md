@@ -171,7 +171,7 @@ MODIFIED_FILE.cpp、DIFF_FILE.patch、VERIFICATION.txt及ROLLBACK.sh；ROLLBACK.
   不声称墨迹逐点位置不变。末尾保留完整逻辑空行，兼容前景y=1。
 
 `src/runtime/scaled_font.cpp` 仅链接独立夹具，**不链接workspace_profile**。
-它复用生产 `blendNativePixel` 和投影后的原逻辑裁剪，保留直通BGRA语义。
+夹具复用生产 `blendNativePixel` 和投影后的原逻辑裁剪，保留直通BGRA语义。
 夹具逐字比较全部低分辨率白色前景像素与生产 `drawNativeCoverage`，检查步进、
 越界哨兵、未知字形拒绝；高分辨率仍使用原四向黑边/前景偏移。
 

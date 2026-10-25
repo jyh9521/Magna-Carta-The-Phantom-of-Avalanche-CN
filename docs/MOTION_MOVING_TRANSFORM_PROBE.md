@@ -50,7 +50,7 @@ TransformTrack记录每次sample已执行的原分支。日志追加world/camera
 用原runtime/Play-motion.cmd，同一存档，进入游戏后立即：待机10秒→走动10秒→
 停止10秒，重复两轮；全部在两分钟内，避免超过诊断窗口上限。正常退出。
 反馈起步、持续走动、停步阶段；无需期待这次纯观察更新改善画面。
-日志仍是runtime/cache/profile.log，每次实际启动重建；VerifyOnly不删除它。
+日志仍是runtime/cache/profile.log，每次实际启动重建；VerifyOnly不删除该日志。
 若world_unstable与移动同时增长，继续查原父矩阵和源变换同tick变化；若camera_unstable
 增长，查相机重复加载；若两路均稳定，继续查骨骼根变换、绘制批次和顶点缓冲，
 不把任意一个计数直接判为玩家抽动原因。

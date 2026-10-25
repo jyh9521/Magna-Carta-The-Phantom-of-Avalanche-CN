@@ -1,3 +1,3 @@
 @echo off
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0tools\CleanupGenerated.ps1"
+python "%~dp0tools\cleanup_release.py" --apply
 pause
