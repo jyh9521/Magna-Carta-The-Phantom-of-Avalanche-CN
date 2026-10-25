@@ -34,8 +34,8 @@ F5切换随机遇敌  F9切换小地图  F10普通自动连招  F11暴走模式�
 输入仍为已验收覆盖 ZIP 和明确摘要，不构造完整游戏副本。MC.ico 由调用者提供，不提交图标原文件。命令中的输入摘要必须来自对应文件，不使用占位值绕过校验。
 
 ```powershell
-python tools/build_compiled_release.py --source dist/MagnaCarta-zh-CN-v1.0.zip --source-sha256 44875140bcb101c017aa3759a3570f80949d8d1f7b99ad41989977f70eb38911 --icon V:/MC.ico --runtime runtime --work build/compiled-release-v1-width720 --output dist/MagnaCarta-zh-CN-v1.0-desktop-compact.zip
-python tools/verify_compiled_release.py --archive dist/MagnaCarta-zh-CN-v1.0-desktop-compact.zip --icon V:/MC.ico
+python tools/build_compiled_release.py --source dist/MagnaCarta-zh-CN-v1.0.zip --source-sha256 44875140bcb101c017aa3759a3570f80949d8d1f7b99ad41989977f70eb38911 --icon V:/MC.ico --runtime runtime --work build/compiled-release-v1-header --output dist/MagnaCarta-zh-CN-v1.0-desktop-centered.zip
+python tools/verify_compiled_release.py --archive dist/MagnaCarta-zh-CN-v1.0-desktop-centered.zip --icon V:/MC.ico
 python -m unittest discover -s tests -p test_compiled_desktop.py
 python -m unittest discover -s tests -p test_configuration_material.py
 ```
@@ -66,3 +66,5 @@ python -m unittest discover -s tests -p test_configuration_material.py
 本轮测试记录：全套 1076 项通过（3 项跳过）；随后横排提示调整的编译桌面 18 项与 WPF 5 项重新通过。720×600 离屏预览回读正常，默认布局无需滚动。自有数据独立回滚恢复 1 项、移除 12 项新增文件，存档和用户设置保持原字节；正常修改副本保留。详细命令、输出与本地归档摘要保留在 runtime/maintenance/compiled-desktop-v1-20261025。
 
 横向收紧修订：窗口宽度 790 → 720 DIP，高度和文字字号不变；四项快捷键保持横排。此修订单独重跑桌面与 WPF 测试，使用独立界面资源副本验证 720 → 790 的撤回；不运行游戏。
+
+顶部栏修订：移除“高清标题 · 汉化保持当前版本”显示节点及 C#/PowerShell 标签绑定。HeaderGrid 采用 `* / 220 / *` 对称列，LOGO 在顶部栏水平、垂直居中，不再随左侧 210 / 右侧 90 的非对称列向右偏移。WPF 自检测量 LOGO 中心相对 HeaderGrid 的偏差（容差 0.5 DIP），并检查旧提示节点不存在。19 项编译桌面测试、5 项原 WPF 测试通过；独立 DLL 副本精确回滚并重跑原布局自检通过，正常修改副本保留。窗口仍为 720×600，未运行游戏。

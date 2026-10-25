@@ -19,7 +19,7 @@ if(-not [Windows.SystemParameters]::ClientAreaAnimation){$markup=[regex]::Replac
 $form=[Windows.Markup.XamlReader]::Load([Xml.XmlNodeReader]::new($xaml))
 $form.Title=$text.title
 if(-not $SelfTest){$form.Width=[Math]::Min($form.Width,[Windows.SystemParameters]::WorkArea.Width-32);$form.Height=[Math]::Min($form.Height,[Windows.SystemParameters]::WorkArea.Height-48)}
-$labels=@{Eyebrow='eyebrow';Subtitle='subtitle';Quality='quality';DisplayTitle='display';ResolutionLabel='resolution';ResolutionNote='resolution_note';WindowLabel='window_mode';WindowResolutionLabel='window_resolution';WindowResolutionNote='window_resolution_note';FrameLabel='frame_rate';FrameNote='frame_note';Pending='pending'}
+$labels=@{Eyebrow='eyebrow';Subtitle='subtitle';DisplayTitle='display';ResolutionLabel='resolution';ResolutionNote='resolution_note';WindowLabel='window_mode';WindowResolutionLabel='window_resolution';WindowResolutionNote='window_resolution_note';FrameLabel='frame_rate';FrameNote='frame_note';Pending='pending'}
 foreach($name in $labels.Keys){$form.FindName($name).Text=$text.($labels[$name])}
 $logo=Join-Path $PSScriptRoot 'configuration-logo.png'
 if(-not (Test-Path -LiteralPath $logo -PathType Leaf)){throw 'Configuration logo is missing'}

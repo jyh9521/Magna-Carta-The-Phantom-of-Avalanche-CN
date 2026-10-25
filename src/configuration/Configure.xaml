@@ -72,10 +72,10 @@
    <StackPanel x:Name="ContentRoot">
     <StackPanel.RenderTransform><TranslateTransform Y="0"/></StackPanel.RenderTransform>
     <Border CornerRadius="28" Margin="0,0,0,14" Height="116" Background="#172D3A">
-     <Grid Margin="18,12">
-      <Grid.ColumnDefinitions><ColumnDefinition Width="210"/><ColumnDefinition Width="*"/><ColumnDefinition Width="90"/></Grid.ColumnDefinitions>
-      <StackPanel VerticalAlignment="Center"><TextBlock Name="Eyebrow" Foreground="#9AC7D9" FontSize="10"/><TextBlock Name="Subtitle" Foreground="#EFF8FC" FontSize="22" Margin="0,12,0,8"/><TextBlock Name="Quality" Foreground="#B5CFDA" FontSize="11" TextWrapping="Wrap"/></StackPanel>
-      <Image x:Name="LogoImage" Grid.Column="1" Margin="8,12" Stretch="Uniform"/>
+     <Grid x:Name="HeaderGrid" Margin="18,12">
+      <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="220"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+      <StackPanel VerticalAlignment="Center"><TextBlock Name="Eyebrow" Foreground="#9AC7D9" FontSize="10"/><TextBlock Name="Subtitle" Foreground="#EFF8FC" FontSize="22" Margin="0,12,0,0"/></StackPanel>
+      <Image x:Name="LogoImage" Grid.Column="1" Width="220" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Uniform"/>
       <Border Grid.Column="2" Background="#2C4655" CornerRadius="14" Padding="12,8" HorizontalAlignment="Right" VerticalAlignment="Top"><TextBlock Foreground="#C4E8F6" FontSize="11" Text="PC EDITION"/></Border>
      </Grid>
     </Border>

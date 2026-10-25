@@ -159,6 +159,17 @@ class CompiledDesktopTests(unittest.TestCase):
         self.assertIn('Width="720" Height="600"',markup)
         self.assertIn('Name="Pending" Style="{StaticResource Hint}" Margin="12,0,12,0" LineHeight="17"',markup)
 
+    def test_header_has_no_quality_note_and_symmetric_logo_columns(self):
+        import xml.etree.ElementTree as ET
+        ns={'w':'http://schemas.microsoft.com/winfx/2006/xaml/presentation'}
+        name='{http://schemas.microsoft.com/winfx/2006/xaml}Name'
+        tree=ET.parse(ROOT/'src/configuration/Configure.xaml')
+        self.assertFalse(any(n.get('Name')=='Quality' for n in tree.iter()))
+        header=next(n for n in tree.iter() if n.get(name)=='HeaderGrid')
+        widths=[n.get('Width') for n in header.find('w:Grid.ColumnDefinitions',ns)]
+        self.assertEqual(widths,['*','220','*'])
+        self.assertIn('COMPILED_HEADER PASS centered=true quality_note=absent',self.run_entry('Configure','--self-test'))
+
     def test_no_interpreter_code_in_compiled_sources(self):
         source='\n'.join((ROOT/'src/desktop'/n).read_text() for n in ('RuntimeCore.cs','Configuration.cs','CompiledEntry.cs'))
         for forbidden in ('powershell.exe','System.Management.Automation','-ExecutionPolicy','Start.ps1'):

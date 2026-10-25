@@ -28,8 +28,8 @@ namespace DesktopRuntime {
    using(var s=new MemoryStream(Encoding.UTF8.GetBytes(markup)))window=(Window)XamlReader.Load(s);
    window.Title=Text("title");using(var s=new MemoryStream(Data.Bytes("MC.ico")))window.Icon=BitmapFrame.Create(s,BitmapCreateOptions.None,BitmapCacheOption.OnLoad);
    if(!self){window.Width=Math.Max(window.MinWidth,Math.Min(window.Width,SystemParameters.WorkArea.Width-32));window.Height=Math.Max(window.MinHeight,Math.Min(window.Height,SystemParameters.WorkArea.Height-48));}
-   string[] names={"Eyebrow","Subtitle","Quality","DisplayTitle","ResolutionLabel","ResolutionNote","WindowLabel","WindowResolutionLabel","WindowResolutionNote","FrameLabel","FrameNote","Pending"};
-   string[] keys={"eyebrow","subtitle","quality","display","resolution","resolution_note","window_mode","window_resolution","window_resolution_note","frame_rate","frame_note","pending"};
+   string[] names={"Eyebrow","Subtitle","DisplayTitle","ResolutionLabel","ResolutionNote","WindowLabel","WindowResolutionLabel","WindowResolutionNote","FrameLabel","FrameNote","Pending"};
+   string[] keys={"eyebrow","subtitle","display","resolution","resolution_note","window_mode","window_resolution","window_resolution_note","frame_rate","frame_note","pending"};
    for(int i=0;i<names.Length;i++)Find<TextBlock>(names[i]).Text=Text(keys[i]);Find<Image>("LogoImage").Source=Image("config/configuration-logo.png");
    var author=Find<Hyperlink>("AuthorLink");author.Inlines.Add(Text("author"));var uri=new Uri(Text("author_url"));if(uri.Scheme!="https")throw new InvalidDataException("Author link must use HTTPS");author.NavigateUri=uri;author.ToolTip=uri.AbsoluteUri;author.RequestNavigate+=(s,e)=>{if(e.Uri==uri)Process.Start(new ProcessStartInfo(uri.AbsoluteUri){UseShellExecute=true});e.Handled=true;};
    status=Find<TextBlock>("Status");loading=true;var choices=Data.Object(text["choices"]);
@@ -62,12 +62,18 @@ namespace DesktopRuntime {
    var scroll=((Grid)window.Content).Children.OfType<ScrollViewer>().Single();if(Data.Text(Controls(),"window_mode")!="windowed"&&scroll.ScrollableHeight>.5)throw new Exception("Default layout requires scrolling");
    var bitmap=new RenderTargetBitmap((int)window.Width,(int)window.Height,96,96,PixelFormats.Pbgra32);var visual=new DrawingVisual();using(var draw=visual.RenderOpen()){draw.DrawRectangle(window.Background,null,new Rect(0,0,window.Width,window.Height));draw.DrawRectangle(new VisualBrush(surface),null,new Rect(24,18,w,h));}bitmap.Render(visual);var encoder=new PngBitmapEncoder();encoder.Frames.Add(BitmapFrame.Create(bitmap));using(var file=File.Create(path))encoder.Save(file);
   }
+  void CheckHeader(){
+   var header=Find<Grid>("HeaderGrid");var logo=Find<Image>("LogoImage");
+   var center=logo.TransformToAncestor(header).Transform(new Point(logo.ActualWidth/2,logo.ActualHeight/2));
+   if(header.ActualWidth<=0||Math.Abs(center.X-header.ActualWidth/2)>.5||Math.Abs(center.Y-header.ActualHeight/2)>.5||window.FindName("Quality")!=null)throw new Exception("Header logo alignment or obsolete note mismatch");
+   Console.WriteLine("COMPILED_HEADER PASS centered=true quality_note=absent");
+  }
   void SelfTest(string preview){window.RaiseEvent(new RoutedEventArgs(FrameworkElement.LoadedEvent));int count=0;var original=Controls();foreach(var group in groups)foreach(var option in group.Value){option.Value.IsChecked=true;if(Controls()[group.Key].ToString()!=option.Key)throw new Exception("Selection roundtrip failed");count++;}
    groups["window_mode"]["windowed"].IsChecked=true;if(Find<StackPanel>("WindowResolutionPanel").Visibility!=Visibility.Visible)throw new Exception("Window size hidden");foreach(ComboBoxItem option in windowSize.Items){windowSize.SelectedItem=option;if(Data.Text(Controls(),"window_resolution")!=(string)option.Tag)throw new Exception("Window size roundtrip failed");count++;}
    groups["window_mode"]["borderless"].IsChecked=true;if(Find<StackPanel>("WindowResolutionPanel").Visibility!=Visibility.Collapsed)throw new Exception("Window size not hidden");Busy(true);if(windowSize.IsEnabled||groups["resolution"].Values.Any(x=>x.IsEnabled))throw new Exception("Busy controls active");Busy(false);SetControls(original);
    var surface=(FrameworkElement)window.Content;surface.Measure(new Size(window.Width-48,window.Height-32));surface.Arrange(new Rect(0,0,window.Width-48,window.Height-32));surface.UpdateLayout();
    var radio=groups["resolution"]["1080p"];radio.ApplyTemplate();radio.IsChecked=false;WaitAnimation(250);var shell=(Border)radio.Template.FindName("Shell",radio);var before=((SolidColorBrush)shell.Background).Color;radio.IsChecked=true;WaitAnimation(350);var after=((SolidColorBrush)shell.Background).Color;if(before==after)throw new Exception("Selection color transition missing");SetControls(original);Notify(Text("ready"));
-   if(window.IsVisible||window.Icon==null||Find<Image>("LogoImage").Source==null)throw new Exception("Headless UI / branding mismatch");if(preview!=null)Render(preview);
+   if(window.IsVisible||window.Icon==null||Find<Image>("LogoImage").Source==null)throw new Exception("Headless UI / branding mismatch");if(preview!=null)Render(preview);CheckHeader();
    Console.WriteLine("COMPILED_CONFIGURE PASS choices="+count+" icon=embedded resources=embedded visible=false game_started=false");
   }
   public static int Run(string root,string settings,bool self,string preview){var ui=new Configuration(root,settings,self);if(self){ui.SelfTest(preview);ui.window.Close();return 0;}ui.timer.Start();try{ui.window.ShowDialog();return 0;}finally{ui.timer.Stop();if(ui.child!=null)ui.child.Dispose();}}
