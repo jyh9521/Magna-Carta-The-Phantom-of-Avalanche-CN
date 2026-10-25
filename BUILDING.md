@@ -366,3 +366,13 @@ python tools/cleanup_release.py --apply
 ```
 
 首条命令只生成绝对路径清单；第二条仅删除已被正式包替代的旧交付 ZIP 与校验文件。正式 v1.0 ZIP、通关输入覆盖包、原始统一增量包、原盘、共享游戏数据、存档及构建/回滚证据保留。根目录 `Clean-generated.cmd` 调用此保留式清理，不再执行历史整目录删除流程。
+
+### 用户数据迁移构建
+
+```powershell
+cmake --build build/native --config Release --target workspace_launcher
+python tools/build_desktop_entries.py --output build/desktop-entries
+python tools/build_release_v1.py --source dist/ACCEPTED_OVERLAY.zip --source-sha256 ACCEPTED_SHA256 --entries build/desktop-entries --launcher build/native/Release/workspace_launcher.exe --output dist/MagnaCarta-zh-CN-v1.0.zip
+```
+
+用户缓存版本要求原生启动器包含 `USER_DATA_CACHE_V1` 标记。现有运行目录使用 `tools/deploy_user_storage.py apply --runtime RUNTIME --entries ENTRIES --launcher LAUNCHER --record NEW_RECORD` 更新；回滚使用 `rollback --runtime RUNTIME --record RECORD`，先核对当前与原始摘要。回滚恢复运行文件但保留迁移后的用户配置，旧配置仍在原位置。

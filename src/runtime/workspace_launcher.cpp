@@ -26,6 +26,20 @@ bool inside(const fs::path& path, const fs::path& root) {
     return p.size() >= r.size() && !_wcsnicmp(p.c_str(), r.c_str(), r.size());
 }
 
+bool userCachePaths(const fs::path& setting, const fs::path& log) {
+    wchar_t local[32768]{};
+    DWORD count=GetEnvironmentVariableW(L"LOCALAPPDATA",local,32768);
+    if(count==0||count>=32768) return false;
+    fs::path app=fs::weakly_canonical(fs::path(local)/L"MagnaCarta"/L"Installations");
+    fs::path cache=fs::weakly_canonical(setting.parent_path());
+    auto id=cache.parent_path().filename().wstring();
+    return cache.filename()==L"cache" && id.size()==16 &&
+        id.find_first_not_of(L"0123456789abcdef")==std::wstring::npos &&
+        inside(cache.parent_path().parent_path(),app) && inside(app,cache.parent_path().parent_path()) &&
+        setting.filename()==L"profile.bin" && log.filename()==L"profile.log" &&
+        inside(log.parent_path(),cache) && inside(cache,log.parent_path());
+}
+
 bool ansiPath(const wchar_t* path) {
     UINT codePage = GetACP();
     BOOL usedDefault = FALSE;
@@ -243,7 +257,7 @@ int wmain(int argc, wchar_t** argv) {
 #endif
             bool sameRoot=inside(workspace,original)&&inside(original,workspace);
             require(sameRoot||(!inside(workspace,original)&&!inside(original,workspace)),"Overlay must not contain or be nested in the registered installation");
-            require(inside(shim,workspace/L"modules")&&inside(setting,workspace/L"cache")&&inside(log,workspace/L"cache"),"Overlay module/profile/log paths must stay in their runtime folders");
+            require(inside(shim,workspace/L"modules")&&((inside(setting,workspace/L"cache")&&inside(log,workspace/L"cache"))||userCachePaths(setting,log)),"Overlay module/profile/log paths must stay in runtime or USER_DATA_CACHE_V1 folders");
         }else{
             require(!inside(workspace, original) && !inside(original, workspace), "Original install must not be used as workspace");
             require(!inside(log, original), "Log must not be written inside the original installation");

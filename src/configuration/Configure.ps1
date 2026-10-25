@@ -4,7 +4,12 @@ if($VerifyEntry -and -not $SelfTest){throw 'VerifyEntry is only supported with S
 if($VerifyEntry -and (-not $SettingsFile -or [IO.Path]::GetFullPath($SettingsFile) -eq [IO.Path]::GetFullPath((Join-Path $PSScriptRoot 'enhancements.json')))){throw 'VerifyEntry requires a separate explicit fixture settings path'}
 Import-Module (Join-Path $PSScriptRoot 'EnhancementSettings.psm1') -Force
 Add-Type -AssemblyName PresentationFramework,PresentationCore,WindowsBase
-if(-not $SettingsFile){$SettingsFile=Join-Path $PSScriptRoot 'enhancements.json'}
+if(-not $SettingsFile){
+ if($SelfTest){
+  $paths=Get-EnhancementUserPaths (Split-Path -Parent $PSScriptRoot)
+  $SettingsFile=if(Test-Path -LiteralPath $paths.Settings){$paths.Settings}else{Join-Path $PSScriptRoot 'enhancements.json'}
+ }else{$SettingsFile=Initialize-EnhancementUserSettings (Split-Path -Parent $PSScriptRoot)}
+}
 $text=Get-Content -LiteralPath (Join-Path $PSScriptRoot 'configuration-ui.json') -Raw -Encoding UTF8|ConvertFrom-Json
 $settings=Convert-EnhancementSettings (Read-EnhancementSettings $SettingsFile)
 $settings.native_gamepad=$false;$settings.free_view=$false

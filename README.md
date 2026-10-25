@@ -28,7 +28,7 @@
 
 将 ZIP 中全部文件解压到匹配的纯净游戏目录（`MagnaCarta.exe` 所在层），替换同名文件。
 原版独立备份须保留。双击 **`Configure.exe`** 配置，双击 **`Game.exe`** 启动；不再使用 CMD 作为玩家入口。
-两份 EXE 各约 7 KiB，依赖 Windows 自带 .NET Framework 4.x、Windows PowerShell 5.1 与 WPF。
+两份 EXE 各约 8 KiB，依赖 Windows 自带 .NET Framework 4.x、Windows PowerShell 5.1 与 WPF。
 `config/`、`modules/`、`fonts/`、`maps/` 与 `Start.ps1` 为外置运行组件，须完整保留。
 默认 1080P、无边框、60 帧；配置工具支持切换 30/60 帧。
 完整安装、校验、恢复与构建说明见 [v1.0 发布说明](docs/RELEASE_V1.0.md)。
@@ -86,3 +86,9 @@ python tools/build_release_v1.py --source dist/ACCEPTED_OVERLAY.zip --source-sha
 本项目使用独立仓库与独立提交历史。英文汉化工具参考来自 [Nejuf/magnacarta](https://github.com/Nejuf/magnacarta)，署名 Talbain（Lakuuna）、Sobodash、Nejuf；来源版本与验证范围见[运行调查](docs/RUNTIME_RESEARCH.md)。
 
 项目原创代码与文档采用 MIT，原创译文采用 CC BY-SA 4.0；字体和第三方组件遵循各自许可。原始游戏文本与商业资源不在上述授权范围内，不发布完整原版游戏文件。详见[许可与来源](LICENSING.md)及[译文许可](LICENSE-translations.md)。
+
+## 配置与日志位置
+
+增强设置与运行日志保存到当前用户的 `%LOCALAPPDATA%\MagnaCarta\Installations\<安装标识>`。
+`enhancements.json` 保存设置，`cache/` 保存启动日志与运行配置；安装标识由规范化安装路径生成，不同安装互不覆盖。
+首次运行导入游戏目录已有设置，旧文件保留；后续更新不覆盖已保存的用户设置。存档位置保持原样。

@@ -1,6 +1,32 @@
 ﻿Set-StrictMode -Version Latest
 $profiles=@('baseline','render4k','wide4k','fps60','combined')
 $windowResolutions=@('960x540','1280x720','1600x900','1920x1080','2560x1440')
+function Get-EnhancementUserPaths([string]$RuntimeRoot) {
+ $root=[IO.Path]::GetFullPath($RuntimeRoot).TrimEnd([char[]]'\/').ToUpperInvariant()
+ $base=[Environment]::GetEnvironmentVariable('LOCALAPPDATA')
+ if(-not $base -or -not [IO.Path]::IsPathRooted($base)){throw 'LOCALAPPDATA must identify an absolute user directory'}
+ $id=(Get-EnhancementByteHash ([Text.Encoding]::UTF8.GetBytes($root))).ToLowerInvariant().Substring(0,16)
+ $directory=Join-Path ([IO.Path]::GetFullPath($base)) ('MagnaCarta/Installations/'+$id)
+ [pscustomobject]@{Root=$directory;Settings=(Join-Path $directory 'enhancements.json');Cache=(Join-Path $directory 'cache');InstallationId=$id}
+}
+function Initialize-EnhancementUserSettings([string]$RuntimeRoot) {
+ $paths=Get-EnhancementUserPaths $RuntimeRoot
+ $null=[IO.Directory]::CreateDirectory($paths.Root)
+ $lock=[Threading.Mutex]::new($false,('Local\MagnaCartaSettings_'+$paths.InstallationId))
+ $held=$false
+ try{
+  $held=$lock.WaitOne(15000);if(-not $held){throw 'User settings migration is busy'}
+  if(Test-Path -LiteralPath $paths.Settings){$null=Read-EnhancementSettings $paths.Settings}
+  else{
+   $legacy=Join-Path $RuntimeRoot 'config/enhancements.json'
+   $value=if(Test-Path -LiteralPath $legacy){Read-EnhancementSettings $legacy}else{New-EnhancementSettings}
+   $null=Write-EnhancementSettings $paths.Settings $value
+   $info=[ordered]@{schema=1;installation=[IO.Path]::GetFullPath($RuntimeRoot);legacy_settings=$legacy}
+   [IO.File]::WriteAllText((Join-Path $paths.Root 'installation.json'),($info|ConvertTo-Json -Compress),[Text.UTF8Encoding]::new($false))
+  }
+  $paths.Settings
+ }finally{if($held){$lock.ReleaseMutex()};$lock.Dispose()}
+}
 function New-EnhancementSettings {
  [pscustomobject]@{schema=2;resolution='4k';window_mode='borderless';window_resolution='1280x720';frame_rate=30;native_gamepad=$false;free_view=$false}
 }
@@ -64,12 +90,14 @@ function Write-EnhancementSettings([string]$Path,$Value) {
 }
 function Get-EnhancementLaunchSpec([string]$ConfigDirectory,[string]$SettingsFile,[bool]$VerifyOnly=$false) {
  $directory=[IO.Path]::GetFullPath($ConfigDirectory)
- if(-not $SettingsFile){$SettingsFile=Join-Path $directory 'enhancements.json'}
- $settings=[IO.Path]::GetFullPath($SettingsFile)
  $root=Split-Path -Parent $directory
+ if(-not $SettingsFile){
+  if(Test-Path -LiteralPath (Join-Path $root 'runtime.json')){$SettingsFile=Initialize-EnhancementUserSettings $root}else{$SettingsFile=Join-Path $directory 'enhancements.json'}
+ }
+ $settings=[IO.Path]::GetFullPath($SettingsFile)
  if(Test-Path -LiteralPath (Join-Path $root 'runtime.json') -PathType Leaf){
   $entry=Join-Path $root 'Start.ps1';$parameters=@('-Recipe','configured','-SettingsFile',$settings)
-  $layout='shared';$log=Join-Path $root 'cache/profile.log'
+  $layout='shared';$log=Join-Path (Get-EnhancementUserPaths $root).Cache 'profile.log'
  }else{
   $entry=Join-Path $directory 'StartEnhanced.ps1';$parameters=@('-SettingsFile',$settings)
   $layout='legacy';$log=Join-Path $directory 'session-*/profile.log'
@@ -128,4 +156,4 @@ function Invoke-EnhancementDisplayTransaction([string]$Path,[byte[]]$Candidate,[
   }
  }
 }
-Export-ModuleMember -Function New-EnhancementSettings,Test-EnhancementSettings,Convert-EnhancementSettings,Get-EnhancementRuntimeSettings,Read-EnhancementSettings,Write-EnhancementSettings,Get-EnhancementLaunchSpec,Invoke-EnhancementDisplayTransaction
+Export-ModuleMember -Function Get-EnhancementUserPaths,Initialize-EnhancementUserSettings,New-EnhancementSettings,Test-EnhancementSettings,Convert-EnhancementSettings,Get-EnhancementRuntimeSettings,Read-EnhancementSettings,Write-EnhancementSettings,Get-EnhancementLaunchSpec,Invoke-EnhancementDisplayTransaction

@@ -14,7 +14,7 @@ function Hash($p){$s=[IO.File]::OpenRead($p);$h=[Security.Cryptography.SHA256]::
 foreach($p in $manifest.data.PSObject.Properties){if((Hash (Join-Path $game $p.Name)) -ne $p.Value){throw ('Game input changed: '+$p.Name)}}
 foreach($p in $manifest.files.PSObject.Properties){if((Hash (Join-Path $runtimeRoot $p.Name)) -ne $p.Value){throw ('Runtime input changed: '+$p.Name)}}
 Import-Module (Join-Path $runtimeRoot 'config/EnhancementSettings.psm1') -Force
-if(-not $SettingsFile){$SettingsFile=Join-Path $runtimeRoot 'config/enhancements.json'}
+if(-not $SettingsFile){$SettingsFile=Initialize-EnhancementUserSettings $runtimeRoot}
 $settings=Read-EnhancementSettings $SettingsFile
 $selected=$manifest.recipes.$Recipe
 if($selected.settings){$settings=Test-EnhancementSettings $selected.settings}
@@ -83,7 +83,7 @@ try{
  . (Join-Path $runtimeRoot 'config/PrepareProfile.ps1')
  $profile=Convert-CompatibilityProfile $profile
 
- $cache=Join-Path $runtimeRoot 'cache'
+ $cache=(Get-EnhancementUserPaths $runtimeRoot).Cache
  if(-not (Test-Path -LiteralPath $cache)){New-Item -ItemType Directory -Path $cache | Out-Null}
  # The native launcher requires a fresh log; the shared mutex owns this cache.
  # Verify-only must not destroy the previous session's diagnostic log.
@@ -122,7 +122,7 @@ try{
  if($VerifyOnly){$args+='--verify-only'}
  & (Join-Path $runtimeRoot 'modules/workspace_launcher.exe') @args 1>(Join-Path $cache 'launcher.stdout.txt') 2>(Join-Path $cache 'launcher.stderr.txt')
  $code=$LASTEXITCODE
- if($code -ne 0){throw ('Shared launcher exit='+$code+'; see runtime/cache')}
+ if($code -ne 0){throw ('Shared launcher exit='+$code+'; see user cache')}
  Write-Output ('SHARED_RUNTIME PASS recipe='+$Recipe+' module='+$module+' verify_only='+[bool]$VerifyOnly+' data='+$game+' field_return_height='+[bool]$fieldReturnEnabled+' gui_parent_guard='+[bool]$guiParentEnabled+' scaled_font='+[bool]$scaledFontEnabled)
  }
 }finally{

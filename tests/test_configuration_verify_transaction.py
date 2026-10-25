@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULE = ROOT/'src/configuration/EnhancementSettings.psm1'
@@ -97,6 +98,7 @@ class SharedVerifyIntegrationTests(unittest.TestCase):
         cls.temporary.cleanup()
 
     def fixture(self, root):
+        storage_env=patch.dict(os.environ, {'LOCALAPPDATA':str(root/'user data')});storage_env.start();self.addCleanup(storage_env.stop)
         (root/'data').mkdir(); (root/'config/profiles').mkdir(parents=True); (root/'modules').mkdir()
         start = Path(os.environ.get('TRANSACTION_START_SOURCE', ROOT/'src/configuration/StartShared.ps1'))
         module = Path(os.environ.get('TRANSACTION_MODULE_SOURCE', MODULE))

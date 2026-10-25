@@ -2,8 +2,9 @@
 import argparse,hashlib,json,subprocess,zipfile
 from pathlib import Path
 from build_clean_overlay import safe_name,raw_sha
+from deploy_user_storage import replacements
 ROOT=Path(__file__).resolve().parents[1]
-README='''《真名法典：冰之魅影》简体中文汉化＋最终修复版 v1.0
+README=r'''《真名法典：冰之魅影》简体中文汉化＋最终修复版 v1.0
 发布版本：v1.0。2026-10-25 已收到完整流程通关且测试无误的验收反馈。
 
 将 ZIP 全部内容解压到匹配的纯净游戏目录（MagnaCarta.exe 所在层），替换同名文件。
@@ -18,10 +19,11 @@ F5 切换随机遇敌，F10 普通连招辅助，F11 暴走连招辅助，F8/F9 
 文件检查：powershell -NoProfile -ExecutionPolicy Bypass -File Verify-Overlay.ps1 -Action CheckInstalled
 恢复原版：powershell -NoProfile -ExecutionPolicy Bypass -File Verify-Overlay.ps1 -Action Rollback -Source "原版备份目录"
 恢复预检覆盖资源摘要，保留存档与设置；恢复后使用原版游戏入口。
-出现启动错误时检查 cache/Game.log、cache/Configure.log 及 cache/profile.log。
+配置和日志位于 %LOCALAPPDATA%\MagnaCarta\Installations\安装标识；首次迁移现有设置，旧配置保留。
+出现启动错误时检查该目录 cache 下的 Game.log、Configure.log 及 profile.log。
 游戏验收基于通关反馈；EXE 入口与紧凑界面另经离线验证，不冒充新增游戏画面验收。
 '''
-def build(source,source_sha256,entries,output):
+def build(source,source_sha256,entries,output,launcher=None):
  source,entries,output=map(lambda p:Path(p).resolve(),(source,entries,output))
  if output.exists() or output==source or output.suffix!='.zip':raise ValueError('New ZIP path required')
  if raw_sha(source.read_bytes())!=source_sha256:raise ValueError('Accepted archive hash mismatch')
@@ -46,6 +48,10 @@ def build(source,source_sha256,entries,output):
   payload[name]=b;runtime['files'][name]=raw_sha(b)
  for name in ('Configure.xaml','EnhancementSettings.psm1'):
   n='config/'+name;payload[n]=(ROOT/'src/configuration'/name).read_bytes();runtime['files'][n]=raw_sha(payload[n])
+ # Preserve accepted candidate routing while relocating mutable settings and logs.
+ updated=replacements(payload.get('Start.ps1',(ROOT/'src/configuration/StartShared.ps1').read_bytes()),entries,launcher or ROOT/'build/native/Release/workspace_launcher.exe')
+ for n,b in updated.items():payload[n]=b;runtime['files'][n]=raw_sha(b)
+ runtime['user_storage']=dict(schema=1,kind='localappdata_per_installation',legacy_settings='config/enhancements.json')
  runtime['release']=dict(version='1.0',status='released',acceptance='completed_playthrough_report',date='2026-10-25',configure_entry='Configure.exe',game_entry='Game.exe')
  if runtime.get('test_candidates'):
   runtime['test_candidates']['stable_entry']='Start.ps1 -WithoutTestCandidates'
@@ -56,6 +62,7 @@ def build(source,source_sha256,entries,output):
   if n in payload:payload[n]=(ROOT/Path(n).name).read_bytes()
  manifest=dict(original)
  manifest.update(version='1.0',status='released',in_game_verified=True,acceptance=dict(kind='completed_playthrough_report',date='2026-10-25',automated_game_launch=False),accepted_archive_sha256=source_sha256,source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),files={n:raw_sha(b) for n,b in payload.items()})
+ manifest['user_storage']=runtime['user_storage']
  if manifest.get('test_candidates'):manifest['test_candidates']=runtime['test_candidates']
  if any(raw_sha(payload[n])!=h for n,h in before.items()):raise ValueError('Accepted game resources changed')
  payload['Overlay-Manifest.json']=(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n').encode()
@@ -73,4 +80,5 @@ if __name__=='__main__':
  p=argparse.ArgumentParser(description=__doc__)
  for n in ('source','entries','output'):p.add_argument('--'+n,type=Path,required=True)
  p.add_argument('--source-sha256',required=True)
+ p.add_argument('--launcher',type=Path)
  build(**vars(p.parse_args()))

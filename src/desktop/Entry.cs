@@ -3,10 +3,22 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 [assembly: AssemblyTitle("Magna Carta Desktop Launcher")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 internal static class Entry {
+ private static string UserCache(string root) {
+  string local=Environment.GetEnvironmentVariable("LOCALAPPDATA");
+  if(String.IsNullOrEmpty(local)||!Path.IsPathRooted(local)) throw new IOException("LOCALAPPDATA must identify an absolute user directory");
+  string key=Path.GetFullPath(root).TrimEnd(Path.DirectorySeparatorChar,Path.AltDirectorySeparatorChar).ToUpperInvariant();
+  using(var hash=SHA256.Create()) {
+   byte[] digest=hash.ComputeHash(Encoding.UTF8.GetBytes(key));var id=new StringBuilder();
+   for(int i=0;i<8;i++)id.Append(digest[i].ToString("x2"));
+   return Path.Combine(local,"MagnaCarta","Installations",id.ToString(),"cache");
+  }
+ }
  [STAThread] private static int Main(string[] args) {
   string root=AppDomain.CurrentDomain.BaseDirectory;
 #if CONFIGURE
@@ -35,7 +47,7 @@ internal static class Entry {
    info.RedirectStandardOutput=true;info.RedirectStandardError=true;
    using(var child=new Process()) {
     child.StartInfo=info;
-    string log=Path.Combine(root,"cache");Directory.CreateDirectory(log);
+    string log=UserCache(root);Directory.CreateDirectory(log);
     string name=Path.GetFileNameWithoutExtension(Application.ExecutablePath);
     using(var output=new StreamWriter(Path.Combine(log,name+".log"),false,System.Text.Encoding.UTF8)) {
      object sync=new object();DataReceivedEventHandler receive=(s,e)=>{if(e.Data!=null)lock(sync){output.WriteLine(e.Data);output.Flush();}};

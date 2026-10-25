@@ -458,3 +458,9 @@ A fully opaque field curtain may be drawn behind the native dialogue box. Never 
 正常目录继续使用同目录临时文件和原子替换。仅捕获权限拒绝时，改用 `FileMode.Open`、`ReadWrite`、`FileShare.Read` 锁定现有 INI，保存原字节，写入、刷新并校验摘要；写入失败在同一句柄补偿原字节。预检成功或失败均恢复原 INI，外部修改继续拒绝覆盖。该路径不创建新 INI，不扩大目录权限，也不修改存档或设置。
 
 回归使用真实 Windows ACL：禁止父目录 `CreateFiles`，保留现有文件写入；旧模块失败，新模块通过预检恢复与正常配置写入。实际安装目录的 Game 隐藏预检及配置 GUI 隐藏启动链均返回 0；实际游戏画面仍由手动启动确认。
+
+## 可变用户数据与只读安装资源分离（2026-10-25）
+
+不能只迁移 GUI 的 JSON 而保留游戏入口读取旧文件，也不能只移动 PowerShell 日志而遗漏 EXE 包装器或原生启动器的 cache 路径守卫。当前三条路径统一到安装路径哈希对应的 LOCALAPPDATA 子目录。原生启动器允许项目专属用户 cache，但不放宽至任意外部路径；真实预检覆盖允许目录、越界路径与 traversal 拒绝。
+
+兼容层显示 INI 是游戏侧接口，仍需原位置已有文件可写；工具 JSON 和日志迁移不等于所有商业游戏文件、存档及兼容组件均支持完全只读安装目录。
