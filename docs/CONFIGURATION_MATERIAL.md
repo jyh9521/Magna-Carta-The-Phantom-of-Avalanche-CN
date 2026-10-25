@@ -107,4 +107,4 @@ AsrD3DDrv的RVA 0x2a2f在窗口模式中调用GetClientRect（RVA 0x2a4c，返�
 
 ## 编译式封装与横排提示修订
 
-当前源码的默认窗口为 790×600 DIP，底部四项快捷键横排、项目间两个空格。WPF 布局仍共用 Configure.xaml，玩家包内嵌资源并由 C# 实现设置交互；外置 PowerShell 保留用于开发基线。详见 [封装说明](COMPILED_DESKTOP_RELEASE.md)。
+当前源码的默认窗口为 720×600 DIP，底部四项快捷键横排、项目间两个空格。WPF 布局仍共用 Configure.xaml，玩家包内嵌资源并由 C# 实现设置交互；外置 PowerShell 保留用于开发基线。详见 [封装说明](COMPILED_DESKTOP_RELEASE.md)。

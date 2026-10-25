@@ -82,7 +82,7 @@ foreach($p in @('baseline','render4k','wide4k','fps60','combined')){
             self.assertIn('ENHANCEMENT_MOTION_SELFTEST PASS', result.stdout)
             from PIL import Image
             with Image.open(preview) as image:
-                self.assertEqual(image.size, (1185, 900))
+                self.assertEqual(image.size, (1080, 900))
                 self.assertGreater(len(image.getcolors(image.width*image.height)), 100)
             self.assertFalse((d/'enhancements.json').exists())
 

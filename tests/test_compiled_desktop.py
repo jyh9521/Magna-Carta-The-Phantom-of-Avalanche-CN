@@ -137,7 +137,7 @@ class CompiledDesktopTests(unittest.TestCase):
         preview=self.case/'preview.png';log=self.run_entry('Configure','--self-test','--preview',preview)
         self.assertIn('choices=14 icon=embedded resources=embedded visible=false',log)
         self.assertFalse((self.user/'enhancements.json').exists())
-        with Image.open(preview) as im:self.assertEqual(im.size,(790,600));self.assertGreater(len(im.getcolors(1000000)),20)
+        with Image.open(preview) as im:self.assertEqual(im.size,(720,600));self.assertGreater(len(im.getcolors(1000000)),20)
     def test_complete_baseline_modified_rollback_on_owned_files(self):
         original=self.case/'original';original.mkdir();(original/'scene.bin').write_bytes(b'original owned scene')
         self.run_entry('Game','--check-baseline',original);self.run_entry('Game','--check-installed')
@@ -156,7 +156,7 @@ class CompiledDesktopTests(unittest.TestCase):
         self.assertNotIn('\n',catalog['pending'])
         self.assertEqual(catalog['pending'],catalog['controls'])
         markup=(ROOT/'src/configuration/Configure.xaml').read_text(encoding='utf-8-sig')
-        self.assertIn('Height="600"',markup)
+        self.assertIn('Width="720" Height="600"',markup)
         self.assertIn('Name="Pending" Style="{StaticResource Hint}" Margin="12,0,12,0" LineHeight="17"',markup)
 
     def test_no_interpreter_code_in_compiled_sources(self):

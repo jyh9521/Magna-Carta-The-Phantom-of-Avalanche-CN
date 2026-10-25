@@ -21,7 +21,7 @@
 
 设置路径为 `%LOCALAPPDATA%/MagnaCarta/Installations/<安装目录标识>/enhancements.json`，日志与运行配置在同级 `cache/`。标识沿用安装根目录标准化后 SHA-256 前 16 位。已存在的用户设置优先；仅当用户设置不存在时迁移旧 config/enhancements.json，否则使用内嵌默认值（1080P / 无边框 / 60 帧）。存档位置不变。游戏目录显示 INI 仍按原生组件要求保留。
 
-配置窗口默认 790×600 DIP，保留小工作区滚动和窗口化尺寸选项。底部提示改为横排，相邻项目用两个空格分隔：
+配置窗口默认 720×600 DIP，保留小工作区滚动和窗口化尺寸选项。底部提示改为横排，相邻项目用两个空格分隔：
 
 ```text
 F5切换随机遇敌  F9切换小地图  F10普通自动连招  F11暴走模式自动连招
@@ -34,8 +34,8 @@ F5切换随机遇敌  F9切换小地图  F10普通自动连招  F11暴走模式�
 输入仍为已验收覆盖 ZIP 和明确摘要，不构造完整游戏副本。MC.ico 由调用者提供，不提交图标原文件。命令中的输入摘要必须来自对应文件，不使用占位值绕过校验。
 
 ```powershell
-python tools/build_compiled_release.py --source dist/MagnaCarta-zh-CN-v1.0.zip --source-sha256 44875140bcb101c017aa3759a3570f80949d8d1f7b99ad41989977f70eb38911 --icon V:/MC.ico --runtime runtime --work build/compiled-release-v1-final --output dist/MagnaCarta-zh-CN-v1.0-desktop.zip
-python tools/verify_compiled_release.py --archive dist/MagnaCarta-zh-CN-v1.0-desktop.zip --icon V:/MC.ico
+python tools/build_compiled_release.py --source dist/MagnaCarta-zh-CN-v1.0.zip --source-sha256 44875140bcb101c017aa3759a3570f80949d8d1f7b99ad41989977f70eb38911 --icon V:/MC.ico --runtime runtime --work build/compiled-release-v1-width720 --output dist/MagnaCarta-zh-CN-v1.0-desktop-compact.zip
+python tools/verify_compiled_release.py --archive dist/MagnaCarta-zh-CN-v1.0-desktop-compact.zip --icon V:/MC.ico
 python -m unittest discover -s tests -p test_compiled_desktop.py
 python -m unittest discover -s tests -p test_configuration_material.py
 ```
@@ -63,4 +63,6 @@ python -m unittest discover -s tests -p test_configuration_material.py
 
 2026-10-25 用户提供安全软件截图：HEUR:Trojan/MSIL.Loader.d，文件被删除。临时 native-preflight/OwnedEntry.exe 在编译后缺失，调用失败为 WinError 2；对应源码是临时反射校验入口，不属于分发包。该临时程序没有恢复或重跑，未更改安全软件设置。仅凭截图和缺失文件不判定误报；真实原生入口的该次校验未执行，不能记录为通过。正式发布包的文件审计和功能测试不等于杀毒软件扫描通过。
 
-本轮测试记录：全套 1076 项通过（3 项跳过）；随后横排提示调整的编译桌面 18 项与 WPF 5 项重新通过。790×600 离屏预览回读正常，默认布局无需滚动。自有数据独立回滚恢复 1 项、移除 12 项新增文件，存档和用户设置保持原字节；正常修改副本保留。详细命令、输出与本地归档摘要保留在 runtime/maintenance/compiled-desktop-v1-20261025。
+本轮测试记录：全套 1076 项通过（3 项跳过）；随后横排提示调整的编译桌面 18 项与 WPF 5 项重新通过。720×600 离屏预览回读正常，默认布局无需滚动。自有数据独立回滚恢复 1 项、移除 12 项新增文件，存档和用户设置保持原字节；正常修改副本保留。详细命令、输出与本地归档摘要保留在 runtime/maintenance/compiled-desktop-v1-20261025。
+
+横向收紧修订：窗口宽度 790 → 720 DIP，高度和文字字号不变；四项快捷键保持横排。此修订单独重跑桌面与 WPF 测试，使用独立界面资源副本验证 720 → 790 的撤回；不运行游戏。
