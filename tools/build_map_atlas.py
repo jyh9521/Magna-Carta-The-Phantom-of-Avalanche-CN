@@ -9,6 +9,85 @@ import struct
 from pathlib import Path
 from resource_wrd import parse
 
+RENDER_STYLES = ('solid', 'feature-edges')
+
+
+def map_labels(path):
+    """Validate locale text before any atlas output is created."""
+    raw = Path(path).read_bytes()
+    if len(raw) > 65536:
+        raise ValueError('Map labels file is too large')
+    def unique_object(pairs):
+        value = {}
+        for key, text in pairs:
+            if key in value:
+                raise ValueError('Duplicate map label field')
+            value[key] = text
+        return value
+    value = json.loads(raw.decode('utf-8-sig'), object_pairs_hook=unique_object)
+    fields = {'map_title': 'label.txt', 'map_legend': 'legend.txt', 'map_hint': 'hint.txt'}
+    if not isinstance(value, dict) or 'map_title' not in value or set(value) - set(fields):
+        raise ValueError('Unknown or missing map label fields')
+    files = {}
+    for key, text in value.items():
+        if (not isinstance(text, str) or not text.strip()
+                or any(char in text for char in '\0\r\n\v\f\x1c\x1d\x1e\x85\u2028\u2029')):
+            raise ValueError('Invalid map label text: ' + key)
+        try:
+            encoded = text.encode('utf-16le')
+        except UnicodeEncodeError as error:
+            raise ValueError('Invalid map label Unicode: ' + key) from error
+        if len(encoded) > 510:
+            raise ValueError('Map label exceeds 255 UTF-16 code units: ' + key)
+        files[fields[key]] = encoded
+    return files, {'source_sha256': hashlib.sha256(raw).hexdigest(),
+                   'encoding': 'utf-16le',
+                   'files': {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}}
+
+
+def feature_edges(polygons):
+    """Keep boundaries and folds without letting roofs occlude lower geometry.
+
+    This is a first-frame X-ray projection, not a floor or navigation model.
+    Rounded world-space endpoints join duplicate seam vertices. Only a pair of
+    coplanar faces on opposite sides of their common edge loses that edge;
+    overlapping, duplicate, and non-manifold faces retain their boundaries.
+    """
+    edges = {}
+    for polygon in polygons:
+        points = [tuple(round(value, 4) for value in point) for point in polygon]
+        normal = [0., 0., 0.]
+        # Newell's method also handles the quads emitted by height clipping.
+        for a, b in zip(points, points[1:] + points[:1]):
+            normal[0] += (a[1] - b[1]) * (a[2] + b[2])
+            normal[1] += (a[2] - b[2]) * (a[0] + b[0])
+            normal[2] += (a[0] - b[0]) * (a[1] + b[1])
+        length = math.sqrt(sum(value * value for value in normal))
+        if length <= 1e-9:
+            continue
+        normal = tuple(value / length for value in normal)
+        center = tuple(sum(point[i] for point in points) / len(points) for i in range(3))
+        for a, b in zip(points, points[1:] + points[:1]):
+            if a != b:
+                edges.setdefault(tuple(sorted((a, b))), []).append((normal, center))
+    result = []
+    for (a, b), faces in sorted(edges.items()):
+        if len(faces) == 2:
+            (normal_a, center_a), (normal_b, center_b) = faces
+            parallel = abs(sum(normal_a[i] * normal_b[i] for i in range(3))) > .9999
+            direction = tuple(b[i] - a[i] for i in range(3))
+            def side(center):
+                offset = tuple(center[i] - a[i] for i in range(3))
+                return (direction[1] * offset[2] - direction[2] * offset[1],
+                        direction[2] * offset[0] - direction[0] * offset[2],
+                        direction[0] * offset[1] - direction[1] * offset[0])
+            left, right = side(center_a), side(center_b)
+            opposite = sum(left[i] * right[i] for i in range(3)) < 0
+            if parallel and opposite:
+                continue
+        result.append((a, b))
+    return result
+
 def project_scene(result):
     meshes=[]
     for instance in result['instances']:
@@ -55,9 +134,10 @@ def clip_at_height(triangle,height):
     if len(output)>1 and output[0]==output[-1]:output.pop()
     return output if len(output)>=3 else []
 
-def raster(meshes,bounds,size,clip_z_max=None):
+def raster(meshes,bounds,size,clip_z_max=None,style='solid'):
     from PIL import Image,ImageDraw
     if size<128 or size>2048:raise ValueError('Atlas size outside supported range')
+    if style not in RENDER_STYLES:raise ValueError('Unsupported map render style')
     image=Image.new('RGB',(size,size),(19,32,39));draw=ImageDraw.Draw(image)
     scale=min((size-24)/(bounds[2]-bounds[0]),(size-24)/(bounds[3]-bounds[1]))
     origin=((size-(bounds[2]-bounds[0])*scale)/2,(size-(bounds[3]-bounds[1])*scale)/2)
@@ -68,17 +148,23 @@ def raster(meshes,bounds,size,clip_z_max=None):
         if not triangles:clip_at_height([(0,0,0)]*3,clip_z_max)
         triangles=[polygon for triangle in triangles if (polygon:=clip_at_height(triangle,clip_z_max))]
         if not triangles:raise ValueError('Cutaway removed all geometry; choose a higher plane')
-    if clip_z_max is None:triangles.sort(key=lambda t:sum(p[2] for p in t))
-    else:triangles.sort(key=lambda t:sum(p[2] for p in t)/len(t))
-    for triangle in triangles:
-        points=[xy(p) for p in triangle]
-        draw.polygon(points,fill=(65,86,84));draw.line(points+[points[0]],fill=(99,119,110),width=max(1,size//512))
+    if style == 'feature-edges':
+        for a,b in feature_edges(triangles):
+            draw.line([xy(a),xy(b)],fill=(177,211,194),width=max(1,size//512))
+    else:
+        if clip_z_max is None:triangles.sort(key=lambda t:sum(p[2] for p in t))
+        else:triangles.sort(key=lambda t:sum(p[2] for p in t)/len(t))
+        for triangle in triangles:
+            points=[xy(p) for p in triangle]
+            draw.polygon(points,fill=(65,86,84));draw.line(points+[points[0]],fill=(99,119,110),width=max(1,size//512))
     return image,(origin[0],origin[1],scale)
 
-def build(source,output,size=512,identifiers=None,clip_z_max=None):
+def build(source,output,size=512,identifiers=None,clip_z_max=None,style='solid',labels=None):
     source=source.resolve(strict=True);output=output.resolve()
     if output.exists() or output.is_relative_to(source) or source.is_relative_to(output):raise ValueError('New independent map asset directory required')
     if clip_z_max is not None:clip_at_height([(0,0,0)]*3,clip_z_max)
+    if style not in RENDER_STYLES:raise ValueError('Unsupported map render style')
+    label_files,label_record=map_labels(labels) if labels is not None else ({},None)
     paths=sorted(source.glob('*.wrd'))
     selected=None
     if identifiers is not None:
@@ -91,7 +177,7 @@ def build(source,output,size=512,identifiers=None,clip_z_max=None):
     for path in paths:
         before=path.read_bytes();source_hash=hashlib.sha256(before).hexdigest()
         try:
-            result=parse(before);meshes,bounds=project_scene(result);image,viewport=raster(meshes,bounds,size,clip_z_max)
+            result=parse(before);meshes,bounds=project_scene(result);image,viewport=raster(meshes,bounds,size,clip_z_max,style)
         except ValueError as error:
             rejected.append(dict(file=path.name,reason=str(error)));continue
         identifier=int(path.stem);png=output/f'{identifier:04d}.png';image.save(png)
@@ -102,10 +188,16 @@ def build(source,output,size=512,identifiers=None,clip_z_max=None):
     manifest=dict(schema=1,size=size,projection='first_instance_frame_column_major_XY',navigation_verified=False,accepted=accepted,rejected=rejected,source_unchanged=True)
     if selected is not None:manifest['selected_ids']=sorted(selected)
     if clip_z_max is not None:manifest['render_filter']={'clip_z_max':float(clip_z_max),'geometry_only':True}
+    if style != 'solid':manifest['render_style']=style
+    if label_record is not None:
+        if hashlib.sha256(Path(labels).read_bytes()).hexdigest()!=label_record['source_sha256']:
+            raise ValueError('Map labels changed while generating atlas')
+        for name,data in label_files.items():(output/name).write_bytes(data)
+        manifest['labels']=label_record
     (output/'manifest.json').write_bytes((json.dumps(manifest,indent=2)+'\n').encode('utf8'))
     return manifest
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--source',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--size',type=int,default=512);p.add_argument('--ids',type=int,nargs='+',help='Generate only these map identifiers; omit for a full build');p.add_argument('--clip-z-max',type=float,help='Optional geometry-only cutaway plane; not automatic floor detection');a=p.parse_args()
-    result=build(a.source,a.output,a.size,a.ids,a.clip_z_max)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--source',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--size',type=int,default=512);p.add_argument('--ids',type=int,nargs='+',help='Generate only these map identifiers; omit for a full build');p.add_argument('--clip-z-max',type=float,help='Optional geometry-only cutaway plane; not automatic floor detection');p.add_argument('--style',choices=RENDER_STYLES,default='solid',help='Feature edges expose lower geometry without a guessed floor height');p.add_argument('--labels',type=Path,help='Locale map-ui JSON; emits source-bound UTF-16LE label, legend and hint files');a=p.parse_args()
+    result=build(a.source,a.output,a.size,a.ids,a.clip_z_max,a.style,a.labels)
     print(f"MAP_ATLAS PASS accepted={len(result['accepted'])} rejected={len(result['rejected'])} source_unchanged=true navigation_verified=false")

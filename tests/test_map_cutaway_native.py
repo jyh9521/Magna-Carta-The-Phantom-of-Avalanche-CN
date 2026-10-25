@@ -44,7 +44,7 @@ class NativeMapCutawayTests(unittest.TestCase):
                 images.append(self.run_overlay(assets, root/(assets.name+'.png'), mini))
                 self.assertEqual(hashes, {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in assets.iterdir()})
             self.assertIsNotNone(ImageChops.difference(*images).getbbox(), 'Cutaway must alter rendered terrain')
-            for color in [(255, 166, 35), (75, 205, 244), (181, 114, 235)]:
+            for color in [(255, 166, 35), (75, 220, 110), (181, 114, 235)]:
                 masks = []
                 for image in images:
                     raw = image.tobytes()

@@ -68,6 +68,31 @@ if($manifest.PSObject.Properties['scaled_font']){
  $scaledFontEnabled=$fix.enabled -and $Recipe -ne 'baseline' -and -not $WithoutScaledFont
  if($scaledFontEnabled){$module=$fix.module}
 }
+# MAP_OVERLAY_DEFAULT_ROUTE: the current combined module retains the selected fixes.
+# The map starts hidden; F9 cycles mini, full translucent map, then hidden.
+$mapOverlayEnabled=[bool]$selected.maps
+if($manifest.PSObject.Properties['map_overlay']){
+ $map=$manifest.map_overlay
+ if($map.schema -isnot [int] -or $map.schema -ne 1 -or $map.enabled -isnot [bool] -or $map.module -ne 'minimap'){throw 'Invalid map overlay integration'}
+ $mapOverlayEnabled=$map.enabled -and $Recipe -in @('configured','maps')
+ if($mapOverlayEnabled){
+  foreach($name in @('modules/minimap.dll','maps/manifest.json','maps/label.txt')){
+   if(-not $manifest.files.PSObject.Properties[$name]){throw ('Missing hash-locked map input: '+$name)}
+  }
+  $atlas=Get-Content -LiteralPath (Join-Path $runtimeRoot 'maps/manifest.json') -Raw -Encoding UTF8|ConvertFrom-Json
+  if($atlas.schema -isnot [int] -or $atlas.schema -ne 1 -or $atlas.navigation_verified -isnot [bool] -or $atlas.navigation_verified -ne $false -or @($atlas.accepted).Count -lt 1){throw 'Unsupported map atlas'}
+  $seen=@{}
+  foreach($row in $atlas.accepted){
+   if($row.id -isnot [int] -or $row.id -lt 0 -or $row.id -gt 9999 -or $seen.ContainsKey($row.id)){throw 'Invalid map atlas identifier'}
+   $seen[$row.id]=$true
+   foreach($pair in @(@('png','png_sha256'),@('map','metadata_sha256'))){
+    $name='maps/{0:D4}.{1}' -f $row.id,$pair[0];$digest=$row.($pair[1])
+    if($digest -isnot [string] -or $digest -notmatch '^[0-9a-f]{64}$' -or -not $manifest.files.PSObject.Properties[$name] -or $manifest.files.$name -cne $digest){throw ('Map asset manifest mismatch: '+$name)}
+   }
+  }
+  $module=$map.module
+ }
+}
 $ini=Join-Path $game 'DDrawCompat-MagnaCarta.ini'
 $known=@($manifest.profiles.PSObject.Properties.Value)
 if((Hash $ini) -notin $known){throw 'Unknown active display configuration'}
@@ -112,10 +137,10 @@ try{
  $env:MC_MOTION60_COMPLETE=if($settings.motion60 -or $cameraEnabled){'1'}else{'0'}
  $env:MC_TITLE_BACKGROUND4K='1'
  $env:MC_FREE_VIEW=if($cameraEnabled){'1'}else{'0'}
- $env:MC_MAP_OVERLAY=if($selected.maps){'1'}else{'0'}
- $env:MC_MAP_ASSETS=if($selected.maps){Join-Path $runtimeRoot 'maps'}else{''}
+ $env:MC_MAP_OVERLAY=if($mapOverlayEnabled){'1'}else{'0'}
+ $env:MC_MAP_ASSETS=if($mapOverlayEnabled){Join-Path $runtimeRoot 'maps'}else{''}
  $args=@('--workspace',$game,'--shim',(Join-Path $runtimeRoot ('modules/'+$module+'.dll')),'--profile',(Join-Path $cache 'profile.bin'),'--log',$log,'--native-text-step','--system-messages','--focus-guard','--display-profile',$settings.display_profile)
- if($settings.native_gamepad){$args+='--native-gamepad'}elseif($selected.maps -or $cameraEnabled){$args+='--input-passthrough'}
+ if($settings.native_gamepad){$args+='--native-gamepad'}elseif($mapOverlayEnabled -or $cameraEnabled){$args+='--input-passthrough'}
  if($selected.texture){$args+='--texture-lifetime'}
  if($CaptureException){$args+='--capture-exception'}
  if($layout -eq '.'){$args+='--in-place-overlay'}
@@ -123,7 +148,7 @@ try{
  & (Join-Path $runtimeRoot 'modules/workspace_launcher.exe') @args 1>(Join-Path $cache 'launcher.stdout.txt') 2>(Join-Path $cache 'launcher.stderr.txt')
  $code=$LASTEXITCODE
  if($code -ne 0){throw ('Shared launcher exit='+$code+'; see user cache')}
- Write-Output ('SHARED_RUNTIME PASS recipe='+$Recipe+' module='+$module+' verify_only='+[bool]$VerifyOnly+' data='+$game+' field_return_height='+[bool]$fieldReturnEnabled+' gui_parent_guard='+[bool]$guiParentEnabled+' scaled_font='+[bool]$scaledFontEnabled)
+ Write-Output ('SHARED_RUNTIME PASS recipe='+$Recipe+' module='+$module+' verify_only='+[bool]$VerifyOnly+' data='+$game+' field_return_height='+[bool]$fieldReturnEnabled+' gui_parent_guard='+[bool]$guiParentEnabled+' scaled_font='+[bool]$scaledFontEnabled+' map_overlay='+[bool]$mapOverlayEnabled)
  }
 }finally{
  foreach($key in $environment.Keys){[Environment]::SetEnvironmentVariable($key,$environment[$key],'Process')}

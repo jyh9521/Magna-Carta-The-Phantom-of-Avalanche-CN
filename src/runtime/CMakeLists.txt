@@ -256,6 +256,9 @@ target_compile_definitions(map_overlay_fixture PRIVATE MAP_OVERLAY_TEST)
 target_link_libraries(map_overlay_fixture PRIVATE gdiplus gdi32 user32)
 set_property(TARGET map_overlay_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 target_compile_options(map_overlay_fixture PRIVATE /W4 /utf-8)
+add_executable(map_collectibles_fixture map_collectibles_fixture.cpp)
+set_property(TARGET map_collectibles_fixture PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+target_compile_options(map_collectibles_fixture PRIVATE /W4 /utf-8)
 
 # Read-only actual ANI pose admission and interpolation traversal (no export).
 add_executable(bone_pose_audit bone_pose_audit.cpp render_timeline.cpp)

@@ -6,6 +6,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import re
 import shutil
 import struct
 from build_configuration_profiles import build as build_display_profiles
@@ -37,6 +38,58 @@ def check_capture_helper(data):
             or optional_size < 96 or not 1 <= sections <= 96
             or offset+24+optional_size+40*sections > len(data)):
         raise ValueError('Expected PE32 x86 capture helper executable, not DLL')
+
+
+def map_assets(atlas, require_nonempty=False):
+    """Bind only manifest-listed local atlas assets before creating output."""
+    manifest=json.loads((atlas/'manifest.json').read_text(encoding='utf8'))
+    rows=manifest.get('accepted')
+    if (type(manifest.get('schema')) is not int or manifest['schema'] != 1
+            or manifest.get('navigation_verified') is not False
+            or not isinstance(rows,list) or (require_nonempty and not rows)):
+        raise ValueError('Unsupported map atlas')
+    files={};seen=set()
+    for row in rows:
+        identifier=row.get('id')
+        if type(identifier) is not int or not 0<=identifier<=9999 or identifier in seen:
+            raise ValueError('Invalid map atlas identifier')
+        seen.add(identifier)
+        for extension,key in [('png','png_sha256'),('map','metadata_sha256')]:
+            name=f'{identifier:04d}.{extension}'
+            if sha(atlas/name)!=row.get(key):
+                raise ValueError('Map asset drift')
+            files['maps/'+name]=row[key]
+    for name in ['manifest.json','label.txt']:
+        files['maps/'+name]=sha(atlas/name)
+    for name in ['legend.txt','hint.txt']:
+        if (atlas/name).is_file():
+            files['maps/'+name]=sha(atlas/name)
+    if 'labels' in manifest:
+        labels=manifest['labels']
+        allowed={'label.txt','legend.txt','hint.txt'}
+        valid_sha=lambda value:isinstance(value,str) and re.fullmatch('[0-9a-f]{64}',value) is not None
+        if (not isinstance(labels,dict) or set(labels)!={'source_sha256','encoding','files'}
+                or labels['encoding']!='utf-16le' or not valid_sha(labels['source_sha256'])
+                or not isinstance(labels['files'],dict) or 'label.txt' not in labels['files']
+                or set(labels['files'])-allowed):
+            raise ValueError('Invalid map labels provenance')
+        present={name for name in allowed if 'maps/'+name in files}
+        if set(labels['files'])!=present:
+            raise ValueError('Map label inventory mismatch')
+        for name,expected in labels['files'].items():
+            if not valid_sha(expected) or files['maps/'+name]!=expected:
+                raise ValueError('Map label source drift: '+name)
+            data=(atlas/name).read_bytes()
+            try:
+                text=data.decode('utf-16le')
+            except UnicodeDecodeError as error:
+                raise ValueError('Invalid UTF-16LE map label: '+name) from error
+            if (not text.strip() or len(data)>510
+                    or any(char in text for char in '\0\r\n\v\f\x1c\x1d\x1e\x85\u2028\u2029')):
+                raise ValueError('Invalid map label text: '+name)
+    from map_point_assets import point_assets
+    files.update(point_assets(atlas/'points'))
+    return files
 
 
 def prepare(source, modules, atlas, output, scaled_font_cache=None, capture_helper=None):
@@ -86,6 +139,7 @@ def prepare(source, modules, atlas, output, scaled_font_cache=None, capture_help
         raise ValueError('Current configuration module is required')
     if 'gui-parent-guard' in modules and 'field-return-height' not in modules:
         raise ValueError('GUI integration requires retained field return baseline')
+    atlas_files=map_assets(atlas,require_nonempty='minimap' in modules)
     output.mkdir(parents=True)
     files={}
     def copy(path, name):
@@ -134,19 +188,12 @@ def prepare(source, modules, atlas, output, scaled_font_cache=None, capture_help
     recipes['camera-gamepad']=dict(module=gamepad if 'input-diagnostics' in modules else 'camera',settings=settings('combined',True,True),camera=True)
     recipes['maps']=dict(module='maps',settings=settings(),maps=True)
     recipes['maps-gamepad']=dict(module=gamepad if 'input-diagnostics' in modules else 'maps',settings=settings(pad=True),maps=True)
-    atlas_manifest=json.loads((atlas/'manifest.json').read_text(encoding='utf8'))
-    if atlas_manifest.get('schema')!=1 or atlas_manifest.get('navigation_verified') is not False:
-        raise ValueError('Unsupported map atlas')
-    for row in atlas_manifest['accepted']:
-        for extension,key in [('png','png_sha256'),('map','metadata_sha256')]:
-            name=f"{row['id']:04d}.{extension}"
-            if sha(atlas/name)!=row[key]:
-                raise ValueError('Map asset drift')
-            files['maps/'+name]=row[key]
-    for name in ['manifest.json','label.txt']:
-        files['maps/'+name]=sha(atlas/name)
-    if (atlas/'legend.txt').is_file():
-        files['maps/legend.txt']=sha(atlas/'legend.txt')
+    files.update(atlas_files)
+    if 'minimap' in modules:
+        for name,digest in atlas_files.items():
+            copy(atlas/Path(name).relative_to('maps'),name)
+            if files[name]!=digest:
+                raise ValueError('Map asset changed during packaging')
     title_original=b'@echo off\r\nsetlocal\r\nset MC_TITLE_STYLE=0\r\ncall "%~dp0Play.cmd"\r\n'
     (output/'Play-title-original.cmd').write_bytes(title_original)
     files['Play-title-original.cmd']=sha(output/'Play-title-original.cmd')
@@ -164,6 +211,8 @@ def prepare(source, modules, atlas, output, scaled_font_cache=None, capture_help
         manifest['scaled_font']=dict(schema=1,enabled=True,module='scaled-font',scale=4)
         if 'launcher_output_snapshot'.encode('utf-16le') in modules['scaled-font'].read_bytes():
             manifest['scaled_font_output']=dict(schema=1,source='launcher_display_snapshot')
+    if 'minimap' in modules:
+        manifest['map_overlay']=dict(schema=1,enabled=True,module='minimap')
     copy(ROOT/'locales/zh-CN/encounter-ui.json','config/encounter-ui.json')
     manifest['archived_features']=['native_gamepad','free_view']
     (output/'runtime.json').write_bytes((json.dumps(manifest,indent=2)+'\n').encode('utf8'))
@@ -187,6 +236,7 @@ if __name__=='__main__':
     parser.add_argument('--scene-loading',type=Path)
     parser.add_argument('--native-loading',type=Path)
     parser.add_argument('--scaled-font',type=Path)
+    parser.add_argument('--minimap',type=Path,help='Current combined module with F9 map cycling; requires a nonempty atlas')
     parser.add_argument('--scaled-font-cache',type=Path)
     parser.add_argument('--capture-helper',type=Path)
     a=parser.parse_args()
@@ -199,5 +249,6 @@ if __name__=='__main__':
     if a.scene_loading: modules['scene-loading']=a.scene_loading
     if a.native_loading: modules['native-loading']=a.native_loading
     if a.scaled_font: modules['scaled-font']=a.scaled_font
+    if a.minimap: modules['minimap']=a.minimap
     prepare(a.source,modules,a.atlas,a.output,a.scaled_font_cache,a.capture_helper)
     print('SHARED_PACKAGE PASS copied_game_data=false data_move_pending=true')

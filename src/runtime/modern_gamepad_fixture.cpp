@@ -1,6 +1,7 @@
 #include "modern_gamepad.h"
 #include "battle_edge.h"
 #include "battle_pad_context.h"
+#include "map_input.h"
 #include <cstring>
 #include <iostream>
 #include <stdexcept>
@@ -13,6 +14,8 @@ int main(int argc,char** argv){
     bool battleTest=argc==2&&!strcmp(argv[1],"--battle-context");
     bool battleKeyboard=argc==2&&!strcmp(argv[1],"--battle-keyboard");
     bool battleEdge=argc==2&&!strcmp(argv[1],"--battle-edge");
+    bool mapEdge=argc==2&&!strcmp(argv[1],"--map-edge");
+    if(mapEdge){SetEnvironmentVariableW(L"MC_INPUT_PASSTHROUGH",L"1");SetEnvironmentVariableW(L"MC_MAP_OVERLAY",L"1");}
     try {
         auto image=static_cast<BYTE*>(VirtualAlloc(nullptr,0x10b000,MEM_COMMIT|MEM_RESERVE,PAGE_READWRITE));check(image!=nullptr);
         auto dos=reinterpret_cast<IMAGE_DOS_HEADER*>(image);dos->e_magic=IMAGE_DOS_SIGNATURE;dos->e_lfanew=0x80;
@@ -35,10 +38,42 @@ int main(int argc,char** argv){
         DWORD previous;check(VirtualProtect(image+0x2000,0x1000,PAGE_EXECUTE_READ,&previous)!=FALSE);
         check(VirtualProtect(image+0xbd000,0x1000,PAGE_READONLY,&previous)!=FALSE);
         nt->OptionalHeader.SizeOfImage=1;check(!installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr));check(*slot==system);nt->OptionalHeader.SizeOfImage=0x10b000;
-        check(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr,battleKeyboard||battleEdge));DWORD modified=*slot;check(modified!=system);
+        check(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr,battleKeyboard||battleEdge||mapEdge));DWORD modified=*slot;check(modified!=system);
         check(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr));check(*slot==modified);
         MEMORY_BASIC_INFORMATION info{};VirtualQuery(slot,&info,sizeof(info));check(info.Protect==PAGE_READONLY);
         configureModernGamepadFixture(keyboard,poll,true);
+        if(mapEdge){
+            HWND window=CreateWindowExA(0,"STATIC","offline F9 input fixture",WS_POPUP,0,0,1,1,nullptr,nullptr,GetModuleHandleW(nullptr),nullptr);check(window!=nullptr&&!IsWindowVisible(window));
+            *reinterpret_cast<HWND*>(image+0xf1b44)=window;
+            BYTE msgCaller[]={0x55,0x8b,0xec,0xff,0x75,0x14,0xff,0x75,0x10,0xff,0x75,0x0c,0xff,0x75,0x08};
+            memcpy(image+0xbdec,msgCaller,sizeof(msgCaller));image[0xbe01]=0x5d;image[0xbe02]=0xc2;image[0xbe03]=16;image[0xbe04]=0;
+            check(VirtualProtect(image+0xb000,0x1000,PAGE_EXECUTE_READWRITE,&previous)!=FALSE);
+            using Message=BOOL(WINAPI*)(LPMSG,HWND,UINT,UINT);auto get=reinterpret_cast<Message>(image+0xbdec);
+            using Call=BOOL(WINAPI*)();auto call=reinterpret_cast<Call>(image+0x2fca);auto keys=image+0xf1b94;
+            auto post=[&](UINT kind,LPARAM flags,WPARAM key=VK_F9,bool source=true){check(PostMessageA(window,kind,key,flags)!=FALSE);MSG msg{};auto invoke=source?get:reinterpret_cast<Message>(*messageSlot);check(invoke(&msg,window,kind,kind)>0);check(msg.message==kind&&msg.wParam==key);};
+            int scene=0;modernGamepadWorldScope(true);modernGamepadMapContext(&scene,9,true);check(call());
+            post(WM_KEYDOWN,1);post(WM_KEYUP,LPARAM(3ul<<30)|1); // Complete tap before UI refresh.
+            check(modernGamepadConsumeMapCycles(true)==1);check(modernGamepadConsumeMapCycles(true)==0);
+            post(WM_KEYDOWN,1);post(WM_KEYDOWN,LPARAM(1ul<<30)|1);post(WM_KEYDOWN,LPARAM(1ul<<30)|1);
+            check(modernGamepadConsumeMapCycles(true)==1);post(WM_KEYUP,LPARAM(3ul<<30)|1);
+            for(int i=0;i<3;++i){post(WM_KEYDOWN,1);post(WM_KEYUP,LPARAM(3ul<<30)|1);}check(modernGamepadConsumeMapCycles(true)==3);
+            post(WM_KEYDOWN,1,VK_F8);post(WM_KEYUP,LPARAM(3ul<<30)|1,VK_F8);check(modernGamepadConsumeMapCycles(true)==0);
+            post(WM_KEYDOWN,1,VK_F9,false);post(WM_KEYUP,LPARAM(3ul<<30)|1,VK_F9,false);check(modernGamepadConsumeMapCycles(true)==0);
+            post(WM_KEYDOWN,1);check(modernGamepadConsumeMapCycles(false)==0);check(modernGamepadConsumeMapCycles(true)==0);
+            reserved=true;modernGamepadMapContext(&scene,9,true);check(call());post(WM_KEYDOWN,LPARAM(1ul<<30)|1);check(modernGamepadConsumeMapCycles(true)==0);
+            post(WM_KEYUP,LPARAM(3ul<<30)|1);reserved=false;check(call());post(WM_KEYDOWN,1);post(WM_KEYUP,LPARAM(3ul<<30)|1);check(modernGamepadConsumeMapCycles(true)==1);
+            post(WM_KEYDOWN,1);configureModernGamepadFixture(keyboard,poll,false);post(WM_KEYUP,LPARAM(3ul<<30)|1);check(modernGamepadConsumeMapCycles(true)==0);
+            configureModernGamepadFixture(keyboard,poll,true);modernGamepadMapContext(&scene,9,true);check(call());post(WM_KEYDOWN,1);modernGamepadMapContext(&scene,10,true);check(modernGamepadConsumeMapCycles(true)==0);
+            check(call());post(WM_KEYDOWN,1);post(WM_KEYUP,LPARAM(3ul<<30)|1);modernGamepadMapContext(nullptr,0,false);check(modernGamepadConsumeMapCycles(true)==0);
+            modernGamepadMapContext(&scene,10,true);check(call());for(int i=0;i<12;++i){post(WM_KEYDOWN,1);post(WM_KEYUP,LPARAM(3ul<<30)|1);}check(modernGamepadConsumeMapCycles(true)==8);
+            reserved=true;check(call());check(keys[VK_F8]==0x80&&keys[VK_F9]==0&&polls==0);reserved=false;
+            check(removeModernGamepad(reinterpret_cast<HMODULE>(image)));check(*slot==system&&*messageSlot==systemMessage);check(modernGamepadConsumeMapCycles(true)==0);
+            DestroyWindow(window);VirtualFree(image,0,MEM_RELEASE);SetEnvironmentVariableW(L"MC_INPUT_PASSTHROUGH",nullptr);SetEnvironmentVariableW(L"MC_MAP_OVERLAY",nullptr);
+            map_input::CycleLatch latch;latch.context(1,9,10,true);latch.keyboard(10,false,true);latch.message(20,20,true,false,true);latch.message(21,21,false,false,true);check(latch.consume(30,true)==1);check(latch.consume(31,true)==0);
+            latch.message(40,40,true,false,true);latch.context(1,9,260,true);check(latch.consume(291,true)==0);
+            latch.context(1,9,0xfffffff0,true);latch.keyboard(0xfffffff0,false,true);latch.message(5,5,true,false,true);check(latch.consume(20,true)==1);
+            std::cout<<"MAP_F9_MESSAGE PASS short_tap=latched held=single_edge queue_bound=8 source_site=BE01 F8=preserved focus_cancel=true scene_cancel=true stale_cancel=true wrap=true controller_poll=0 rollback=both_IATs game_started=false\n";return 0;
+        }
         if(battleEdge){
             // Fixture obtains scene vptr from the constructor operand, not a
             // handwritten preceding-table address. Both production IATs execute.
@@ -141,7 +176,7 @@ int main(int argc,char** argv){
         check(removeModernGamepad(reinterpret_cast<HMODULE>(image)));
         SetEnvironmentVariableW(L"MC_INPUT_PASSTHROUGH",L"1");SetEnvironmentVariableW(L"MC_MAP_OVERLAY",L"1");
         check(installModernGamepad(reinterpret_cast<HMODULE>(image),nullptr));configureModernGamepadFixture(keyboard,poll,true);reserved=true;int oldPolls=polls;
-        check(call());check(keys[VK_F8]==0&&keys[VK_F9]==0&&keys[32]==1&&keys[65]==0x80&&polls==oldPolls);
+        check(call());check(keys[VK_F8]==0x80&&keys[VK_F9]==0&&keys[32]==1&&keys[65]==0x80&&polls==oldPolls);
         check(removeModernGamepad(reinterpret_cast<HMODULE>(image)));check(*slot==system);SetEnvironmentVariableW(L"MC_INPUT_PASSTHROUGH",nullptr);SetEnvironmentVariableW(L"MC_MAP_OVERLAY",nullptr);
         check(VirtualProtect(slot,sizeof(DWORD),PAGE_READWRITE,&previous)!=FALSE);*slot=system;DWORD ignored;check(VirtualProtect(slot,sizeof(DWORD),previous,&ignored)!=FALSE);check(*slot==system);
         VirtualFree(image,0,MEM_RELEASE);

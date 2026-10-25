@@ -2,6 +2,7 @@
 #include "modern_input.h"
 #include "battle_input.h"
 #include "battle_edge.h"
+#include "map_input.h"
 #include "battle_pad_context.h"
 #include "world_gamepad.h"
 #include "gamepad_cursor.h"
@@ -33,6 +34,7 @@ bool backendTried=false;
 combat_input::PadContextGate padContext;
 bool battleReady=false;thread_local bool battleScope=false;combat_input::ComboAssist comboAssist;bool assistPadOwned=false,assistBurst=false;
 bool nativeRouting=false;bool passthroughOnly=false,mapReservedKeys=false;volatile LONG mapPadButtons=0;
+SRWLOCK mapInputLock=SRWLOCK_INIT;map_input::CycleLatch mapCycles;
 BYTE* engine=nullptr;
 thread_local bool worldScope=false;
 thread_local modern_input::MoveIntent movement;
@@ -75,6 +77,14 @@ BOOL WINAPI messageHook(LPMSG msg,HWND window,UINT first,UINT last){
  auto source=reinterpret_cast<ULONG_PTR>(_ReturnAddress());
  BOOL result=originalMessage(msg,window,first,last);
  if(source==reinterpret_cast<ULONG_PTR>(engine+0xbe01)){
+  if(mapReservedKeys){
+   const bool focused=result>0&&msg&&battleFocused();
+   AcquireSRWLockExclusive(&mapInputLock);
+   if(!focused||(msg->message==WM_KILLFOCUS)||(msg->message==WM_ACTIVATEAPP&&!msg->wParam))mapCycles.clear();
+   else if(gameWindow&&msg->hwnd==*gameWindow&&(msg->message==WM_KEYDOWN||msg->message==WM_KEYUP)&&msg->wParam==VK_F9)
+    mapCycles.message(GetTickCount(),msg->time,msg->message==WM_KEYDOWN,(msg->lParam&(1ul<<30))!=0,true);
+   ReleaseSRWLockExclusive(&mapInputLock);
+  }
   bool valid=result>0&&msg&&battleFocused()&&edgeValid(edgeScene);
   if(!valid){spaceEdges.clear();edgeScene=nullptr;}
   else if((msg->message==WM_KILLFOCUS)||(msg->message==WM_ACTIVATEAPP&&!msg->wParam)){spaceEdges.clear();edgeScene=nullptr;}
@@ -148,13 +158,16 @@ BOOL __cdecl keyboardInner(PBYTE keys,ULONG_PTR returnAddress,void* nativeFrame)
     InterlockedExchange(&cancelMenuPress,0);
     InterlockedExchange(&mapPadButtons,0);
     if(mapReservedKeys&&!worldScope)notifyWorldTickObserver(nullptr,false);
-    if(ok&&mapReservedKeys){keys[VK_F8]=keys[VK_F9]=0;}
+    // One physical key owns the complete off/mini/full map cycle. F8 stays native.
+    const bool physicalMapKey=ok&&(keys[VK_F9]&0x80)!=0;
+    if(ok&&mapReservedKeys){keys[VK_F9]=0;}
     DWORD owner=0;HWND front=GetForegroundWindow();
     if(front)GetWindowThreadProcessId(front,&owner);
     bool focused=gameWindow && front==*gameWindow && owner==GetCurrentProcessId() && !IsIconic(front);
 #ifdef MODERN_INPUT_TEST
     focused=fixtureForeground;
 #endif
+    if(mapReservedKeys){AcquireSRWLockExclusive(&mapInputLock);mapCycles.keyboard(GetTickCount(),physicalMapKey,ok&&focused&&worldScope);ReleaseSRWLockExclusive(&mapInputLock);}
     if(keyboardObserver)keyboardObserver(ok?keys:nullptr,focused);
     auto battle=battleScene(nativeFrame);battleScope=battle!=nullptr;
     unsigned mode=battleMode(battle);
@@ -318,6 +331,12 @@ bool modernGamepadMenuCancellation(){return InterlockedCompareExchange(&cancelMe
 bool modernGamepadConsumeInteraction(){bool value=worldScope&&pendingInteraction;pendingInteraction=false;return value;}
 modern_input::MoveIntent modernGamepadMoveIntent(){return worldScope?movement:modern_input::MoveIntent{};}
 unsigned modernGamepadMapButtons(){return static_cast<unsigned>(InterlockedCompareExchange(&mapPadButtons,0,0));}
+void modernGamepadMapContext(const void* owner,unsigned generation,bool controlled){
+ AcquireSRWLockExclusive(&mapInputLock);mapCycles.context(reinterpret_cast<uintptr_t>(owner),generation,GetTickCount(),mapReservedKeys&&controlled&&battleFocused());ReleaseSRWLockExclusive(&mapInputLock);
+}
+unsigned modernGamepadConsumeMapCycles(bool active){
+ AcquireSRWLockExclusive(&mapInputLock);unsigned count=mapCycles.consume(GetTickCount(),mapReservedKeys&&active);ReleaseSRWLockExclusive(&mapInputLock);return count;
+}
 GamepadNavigation modernGamepadNavigation(){return navigation;}
 void modernGamepadFocusCursor(float x,float y){if(!nativeRouting||!engine||!navigation.active)return;int w=*reinterpret_cast<int*>(engine+0xf1b48),h=*reinterpret_cast<int*>(engine+0xf1b4c);controllerCursor.focus(x,y,w,h);writeControllerCursor(static_cast<int>(x),static_cast<int>(y));}
 
@@ -356,6 +375,7 @@ bool installModernGamepad(HMODULE module,void(*logger)(const wchar_t*),bool batt
     if(!systemMessage||*messageSlot!=reinterpret_cast<DWORD>(systemMessage))return false;
     wchar_t passFlag[8]{};passthroughOnly=GetEnvironmentVariableW(L"MC_INPUT_PASSTHROUGH",passFlag,8)==1&&passFlag[0]==L'1';passthroughOnly=passthroughOnly||battleOnly;
     mapReservedKeys=GetEnvironmentVariableW(L"MC_MAP_OVERLAY",passFlag,8)==1&&passFlag[0]==L'1';
+    AcquireSRWLockExclusive(&mapInputLock);mapCycles.clear();ReleaseSRWLockExclusive(&mapInputLock);
     wchar_t mode[8]{};bool native=GetEnvironmentVariableW(L"MC_GAMEPAD_NATIVE",mode,8)==1&&mode[0]==L'1'&&!battleOnly;
     if(native&&passthroughOnly)return false;
     if(native&&(!canSetWorldGamepad(module,true)||!canSetGamepadUi(module,true)))return false;
@@ -399,6 +419,7 @@ bool removeModernGamepad(HMODULE module){
     if(nativeRouting&&!removeGamepadUi(module)){installWorldGamepad(module,nullptr);return false;}
     DWORD old;if(!VirtualProtect(slot,4,PAGE_READWRITE,&old)){if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}*slot=originalIat;*reinterpret_cast<DWORD*>(p+0xbd42c)=messageIat;DWORD ignored;
     if(!VirtualProtect(slot,4,old,&ignored)){*slot=reinterpret_cast<DWORD>(&keyboardBridge);*reinterpret_cast<DWORD*>(p+0xbd42c)=reinterpret_cast<DWORD>(&messageHook);VirtualProtect(slot,4,old,&ignored);if(nativeRouting){installWorldGamepad(module,nullptr);installGamepadUi(module,nullptr);}return false;}
+    AcquireSRWLockExclusive(&mapInputLock);mapCycles.clear();ReleaseSRWLockExclusive(&mapInputLock);
     padContext.reset();spaceEdges.clear();edgeScene=nullptr;comboAssist.reset();battleScope=battleReady=false;assistPadOwned=assistBurst=false;router=modern_input::Router();menuDirection=modern_input::MenuDirection();cursorHidden=cursorArmed=cursorRightEngaged=cursorMenu=false;cursorButtons=0;worldScope=false;movement={};syntheticLeftOwned=syntheticRightOwned=false;syntheticLeftDevice=0xffffffff;InterlockedExchange(&cancelMenuPress,0);InterlockedExchange(&mapPadButtons,0);return true;
 }
 

@@ -1,5 +1,13 @@
 # 文件格式
 
+## MCP1 场景出口点（2026-10-25）
+
+自有派生格式：16 字节 little-endian 头 `<4sIII>` 为 magic `MCP1`、Field ID、WRD ID、记录数；
+每条 36 字节 `<iiiiiIfff>` 保存事件索引、区域 ID、目标 Field/WRD、触发 actor、条件标志及中心 XYZ。
+每场景最多 64 条，要求精确文件长度、有限坐标、场景/地图双重匹配；不等同于当前可通行性。
+构建器、清单和原生读取共同校验，完整字段及证据见 [出口点资料](MAP_EXIT_POINTS.md)。
+语言标题、图例与按键提示独立生成 UTF-16LE 文件，并由 atlas manifest 绑定摘要。
+
 ## GID BSP与WRD绑定（2026-10-24）
 
 GID原生加载器fb56先读1024保留字节和计数sublevel，每项3个DWORD及count×32顶点；随后为
