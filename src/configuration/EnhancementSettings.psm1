@@ -87,8 +87,28 @@ function Write-EnhancementBytesAtomic([string]$Path,[byte[]]$Bytes) {
  if($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint)){throw 'Unexpected display configuration path type'}
  $temporary=Join-Path (Split-Path -Parent $Path) ('enhancement-'+[guid]::NewGuid().ToString('N')+'.tmp')
  try{
-  [IO.File]::WriteAllBytes($temporary,$Bytes)
-  [IO.File]::Replace($temporary,$Path,[NullString]::Value)
+  try{
+   [IO.File]::WriteAllBytes($temporary,$Bytes)
+   [IO.File]::Replace($temporary,$Path,[NullString]::Value)
+  }catch [UnauthorizedAccessException]{
+   # Program Files can permit existing-file writes but deny parent FILE_ADD_FILE.
+   # Keep directory ACLs intact; lock the existing file and compensate on failure.
+   $stream=[IO.File]::Open($Path,[IO.FileMode]::Open,[IO.FileAccess]::ReadWrite,[IO.FileShare]::Read)
+   try{
+    $saved=[IO.MemoryStream]::new()
+    try{$stream.CopyTo($saved);$before=$saved.ToArray()}finally{$saved.Dispose()}
+    try{
+     $stream.Position=0;$stream.Write($Bytes,0,$Bytes.Length);$stream.SetLength($Bytes.Length);$stream.Flush($true)
+     $stream.Position=0;$check=[IO.MemoryStream]::new()
+     try{$stream.CopyTo($check);$written=$check.ToArray()}finally{$check.Dispose()}
+     if((Get-EnhancementByteHash $written) -ne (Get-EnhancementByteHash $Bytes)){throw 'Display configuration write verification failed'}
+    }catch{
+     $failure=$_
+     $stream.Position=0;$stream.Write($before,0,$before.Length);$stream.SetLength($before.Length);$stream.Flush($true)
+     throw $failure
+    }
+   }finally{$stream.Dispose()}
+  }
  }finally{if(Test-Path -LiteralPath $temporary){Remove-Item -LiteralPath $temporary -ErrorAction Stop}}
 }
 function Invoke-EnhancementDisplayTransaction([string]$Path,[byte[]]$Candidate,[bool]$Restore,[scriptblock]$Action) {

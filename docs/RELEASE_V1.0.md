@@ -37,7 +37,7 @@ python tools/build_desktop_entries.py --output build/desktop-entries
 python tools/build_release_v1.py --source dist/ACCEPTED_OVERLAY.zip --source-sha256 ACCEPTED_SHA256 --entries build/desktop-entries --output dist/MagnaCarta-zh-CN-v1.0.zip
 ```
 
-`ACCEPTED_OVERLAY.zip` 为已验收的完整覆盖包；`ACCEPTED_SHA256` 为对应摘要。打包器校验输入 ZIP CRC、所有文件摘要、资源目标摘要、运行依赖及输出回读；只替换配置 XAML、桌面入口、发布说明与相关清单，移除 CMD 玩家入口。814 份已修改游戏资源及既有修复模块保持字节不变。
+`ACCEPTED_OVERLAY.zip` 为已验收的完整覆盖包；`ACCEPTED_SHA256` 为对应摘要。打包器校验输入 ZIP CRC、所有文件摘要、资源目标摘要、运行依赖及输出回读；只替换配置 XAML、设置模块、桌面入口、发布说明与相关清单，移除 CMD 玩家入口。814 份已修改游戏资源及既有修复模块保持字节不变。
 
 ### 通关输入身份
 
@@ -50,3 +50,7 @@ python tools/build_release_v1.py --source dist/ACCEPTED_OVERLAY.zip --source-sha
 - 桌面入口：真实 EXE 编译、小尺寸检查、脚本路由与隐藏验证退出码测试。
 - 发布归档：CRC、逐文件 SHA-256、通关资源不变、无 CMD 入口、独立夹具恢复。
 - 新桌面入口与紧凑布局未另行启动商业游戏；自动检查与完整通关反馈分别记录。
+
+## 受保护安装目录启动修正（2026-10-25）
+
+修复已存在的显示 INI 可写、但父目录禁止创建临时文件时的启动退出 1。设置模块保留正常目录原子替换，受限目录使用已有文件的受锁写入、摘要回读及失败补偿，不修改目录权限。实际安装目录的 `Game.exe --verify-only` 和配置工具隐藏启动链已通过；游戏资源、模块、存档与个人设置保持原样。当前 ZIP 已包含该修正。

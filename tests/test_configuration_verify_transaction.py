@@ -18,6 +18,28 @@ class ConfigurationVerifyTransactionTests(unittest.TestCase):
                 "Invoke-EnhancementDisplayTransaction $p ([byte[]](4,5,6)) $"+str(restore).lower()+" {"+action+"}")
         return subprocess.run(['powershell.exe', '-NoProfile', '-Command', code], capture_output=True, text=True, timeout=20)
 
+    def test_existing_writable_ini_in_non_creatable_directory(self):
+        # The installed game grants file write but no parent FILE_ADD_FILE.
+        with tempfile.TemporaryDirectory(dir=ROOT/'build', prefix='restricted-display-') as d:
+            root=Path(d); ini=root/'display.ini'; ini.write_bytes(b'original')
+            code=("$ErrorActionPreference='Stop';"
+                  "$dir='"+str(root)+"';$file=Join-Path $dir 'display.ini';"
+                  "$sid=[Security.Principal.WindowsIdentity]::GetCurrent().User;"
+                  "$old=[IO.Directory]::GetAccessControl($dir);"
+                  "$acl=[IO.Directory]::GetAccessControl($dir);"
+                  "$deny=[Security.AccessControl.FileSystemAccessRule]::new($sid,[Security.AccessControl.FileSystemRights]::CreateFiles,[Security.AccessControl.AccessControlType]::Deny);"
+                  "$acl.AddAccessRule($deny);[IO.Directory]::SetAccessControl($dir,$acl);"
+                  "try{Import-Module '"+str(Path(os.environ.get('TRANSACTION_MODULE_SOURCE',MODULE)))+"' -Force;"
+                  "Invoke-EnhancementDisplayTransaction $file ([byte[]](4,5,6)) $true {if(([IO.File]::ReadAllBytes($file)-join ',') -ne '4,5,6'){throw 'Candidate missing'}};"
+                  "Invoke-EnhancementDisplayTransaction $file ([byte[]](7,8)) $false {};"
+                  "if(([IO.File]::ReadAllBytes($file)-join ',') -ne '7,8'){throw 'Normal launch value missing'};"
+                  "'RESTRICTED_DISPLAY PASS verify_restore=exact normal_write=exact'"
+                  "}finally{[IO.Directory]::SetAccessControl($dir,$old)}")
+            result=subprocess.run(['powershell.exe','-NoProfile','-Command',code],capture_output=True,text=True,timeout=20)
+            self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+            self.assertIn('RESTRICTED_DISPLAY PASS',result.stdout)
+            self.assertEqual(ini.read_bytes(),bytes([7,8]))
+
     def test_verify_restores_exact_original_bytes_on_success(self):
         with tempfile.TemporaryDirectory(dir=ROOT/'build', prefix='verify-transaction-') as d:
             root = Path(d); ini = root/'display.ini'; ini.write_bytes(b'\x00original\r\n\xff')

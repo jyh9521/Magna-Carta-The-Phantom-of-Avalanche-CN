@@ -201,4 +201,4 @@ Asura 两条基础 renderer 的直接绝对骨骼调用与 MCAlpha 派生实现�
 
 已验证：`src/desktop/Entry.cs` 分别编译配置与游戏 WinExe，两份入口各 7168 字节，读取 EXE 所在目录而非调用端工作目录。配置入口以隐藏子进程调用 `config/Configure.ps1`；游戏入口以隐藏子进程调用 `Start.ps1 -Recipe configured`。正常使用无控制台窗口；错误提示关联 `cache/Configure.log` 或 `cache/Game.log`。退出码透传，标准输出与错误异步写入日志，避免管道阻塞。
 
-`--verify-only` 在配置入口映射为 WPF `-SelfTest`，在游戏入口映射为 `-VerifyOnly`；两条路径均不启动商业游戏。窗口宽高由 1040×850 收紧为 790×670 DIP，显示选项布局与页脚同步收紧。发布器绑定通关归档摘要，保留 814 份游戏资源与修复模块原字节，仅改 XAML、EXE 入口、说明与清单。共享目录部署使用 `tools/deploy_desktop_entries.py`，按文件保存原字节与前后摘要；独立副本回滚核实摘要后恢复，存档及设置不写入。
+`--verify-only` 在配置入口映射为 WPF `-SelfTest`，在游戏入口映射为 `-VerifyOnly`；两条路径均不启动商业游戏。窗口宽高由 1040×850 收紧为 790×670 DIP，显示选项布局与页脚同步收紧。发布器绑定通关归档摘要，保留 814 份游戏资源与修复模块原字节，仅改 XAML、设置模块、EXE 入口、说明与清单。共享目录部署使用 `tools/deploy_desktop_entries.py`，按文件保存原字节与前后摘要；独立副本回滚核实摘要后恢复，存档及设置不写入。

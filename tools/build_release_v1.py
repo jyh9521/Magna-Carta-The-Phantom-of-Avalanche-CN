@@ -44,7 +44,8 @@ def build(source,source_sha256,entries,output):
   b=(entries/name).read_bytes()
   if not b.startswith(b'MZ') or len(b)>32768:raise ValueError('Invalid desktop entry')
   payload[name]=b;runtime['files'][name]=raw_sha(b)
- n='config/Configure.xaml';payload[n]=(ROOT/'src/configuration/Configure.xaml').read_bytes();runtime['files'][n]=raw_sha(payload[n])
+ for name in ('Configure.xaml','EnhancementSettings.psm1'):
+  n='config/'+name;payload[n]=(ROOT/'src/configuration'/name).read_bytes();runtime['files'][n]=raw_sha(payload[n])
  runtime['release']=dict(version='1.0',status='released',acceptance='completed_playthrough_report',date='2026-10-25',configure_entry='Configure.exe',game_entry='Game.exe')
  if runtime.get('test_candidates'):
   runtime['test_candidates']['stable_entry']='Start.ps1 -WithoutTestCandidates'

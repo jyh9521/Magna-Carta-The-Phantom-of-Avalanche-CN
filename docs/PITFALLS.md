@@ -450,3 +450,11 @@ DirectSound，单独预设偏好15不足以固定该环境。
 
 ### Curtain opacity does not imply dialogue occlusion
 A fully opaque field curtain may be drawn behind the native dialogue box. Never infer that a visible dialogue needs an overlay from opacity alone. Require explicit box/root hidden state; regress all four curtain slots and visibility transitions.
+
+## 已有文件可写不等于父目录可创建临时文件（2026-10-25）
+
+已验证：受保护安装目录下，现有 `DDrawCompat-MagnaCarta.ini` 授予当前账户写入权限，但父目录禁止创建文件。旧显示配置事务在父目录新建 `enhancement-*.tmp`，导致 `UnauthorizedAccessException`，Game 与配置启动均在原生启动器之前退出 1。可写开发目录的预检未覆盖该条件。
+
+正常目录继续使用同目录临时文件和原子替换。仅捕获权限拒绝时，改用 `FileMode.Open`、`ReadWrite`、`FileShare.Read` 锁定现有 INI，保存原字节，写入、刷新并校验摘要；写入失败在同一句柄补偿原字节。预检成功或失败均恢复原 INI，外部修改继续拒绝覆盖。该路径不创建新 INI，不扩大目录权限，也不修改存档或设置。
+
+回归使用真实 Windows ACL：禁止父目录 `CreateFiles`，保留现有文件写入；旧模块失败，新模块通过预检恢复与正常配置写入。实际安装目录的 Game 隐藏预检及配置 GUI 隐藏启动链均返回 0；实际游戏画面仍由手动启动确认。
