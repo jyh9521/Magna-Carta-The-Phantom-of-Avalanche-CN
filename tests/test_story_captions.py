@@ -54,6 +54,79 @@ class StoryCaptionsTests(unittest.TestCase):
   with self.assertRaises(ValueError):overlay.build(Path('no-source'),'',Path('no-runtime'),Path('no-output'),frame_rate=61)
   q=subprocess.run([sys.executable,str(ROOT/'tools/build_clean_overlay.py'),'--help'],capture_output=True,text=True)
   self.assertEqual(q.returncode,0);self.assertIn('--frame-rate {30,60}',q.stdout)
+ def test_all_ordinary_bindings_native_visibility_matrix(self):
+  import struct
+  from resource_field_script import parse
+  if not (ROOT/'runtime/data/Field').exists():self.skipTest('Local Field resources required')
+  records=[]
+  texts={}
+  for p in (ROOT/'locales/zh-CN/text').glob('*.json'):
+   for r in json.loads(p.read_text('utf8')):
+    if isinstance(r,dict) and r.get('target') and r.get('id','').startswith('Fpb/'):
+     a=r['id'].split(':');texts[(int(a[0][4:8]),int(a[-1]))]=r['target'].replace('$n','\n')
+  for path in (ROOT/'runtime/data/Field').glob('*.fld'):
+   try:field=parse(path.read_bytes())
+   except ValueError:continue
+   for event in field['events']:
+    for action in event['actions']:
+     if action['opcode'] in (700,704) and action['parameters'][7]>=0:
+      text=texts[(field['playbook_id'],action['parameters'][6])].encode('utf-16le');records.append(struct.pack('<16iI',int(path.stem),action['opcode'],*action['parameters'],len(text))+text)
+  self.assertEqual(len(records),2374)
+  with tempfile.TemporaryDirectory() as t:
+   p=Path(t)/'matrix.bin';p.write_bytes(b'SCM1'+struct.pack('<I',len(records))+b''.join(records))
+   self.assertIn('SUBTITLE_MATRIX PASS bindings=2374 cases=109204',self.run_fixture('story_captions_fixture.exe','--matrix',p))
+ def test_native_dialogue_and_choices_have_global_priority(self):
+  self.assertIn('SUBTITLE_ARBITRATION PASS native700_701_704_705=priority choices=priority',self.run_fixture('story_captions_fixture.exe'))
+ def test_all_standalone_speech_bindings_full_cue_lifetime(self):
+  import struct
+  from resource_field_script import parse
+  catalog=captions.read_catalog(ROOT/'locales/zh-CN/story-captions.json');speech={r['id']:r for r in catalog['resources'] if r['kind']=='speech'};records=[]
+  for p in (ROOT/'runtime/data/Field').glob('*.fld'):
+   try:field=parse(p.read_bytes())
+   except ValueError:continue
+   for event in field['events']:
+    for action in event['actions']:
+     if action['opcode']!=603 or action['parameters'][0] not in speech:continue
+     cues=speech[action['parameters'][0]]['cues'];data=struct.pack('<16iI',int(p.stem),603,*action['parameters'],len(cues))
+     for cue in cues:
+      text=cue['target'].encode('utf-16le');data+=struct.pack('<III',cue['start_ms'],cue['end_ms'],len(text))+text
+     records.append(data)
+  with tempfile.TemporaryDirectory() as t:
+   p=Path(t)/'voice.bin';p.write_bytes(b'SCV1'+struct.pack('<I',len(records))+b''.join(records))
+   self.assertIn('start_mid_tail=exact final_pause=held end_skip=cleared',self.run_fixture('story_captions_fixture.exe','--voice-matrix',p))
+ def test_removing_any_reviewed_phrase_is_rejected(self):
+  catalog=json.loads((ROOT/'locales/zh-CN/story-captions.json').read_text('utf8'))
+  for row in catalog['resources']:
+   if row['kind']!='speech':continue
+   for index in range(len(row['cues'])):
+    c=copy.deepcopy(catalog);r=next(r for r in c['resources'] if r['id']==row['id']);del r['cues'][index]
+    with tempfile.TemporaryDirectory() as t:
+     p=Path(t)/'catalog.json';p.write_text(json.dumps(c))
+     with self.assertRaises(ValueError):captions.read_catalog(p)
+ def test_reviewed_tail_time_cannot_be_cropped(self):
+  c=json.loads((ROOT/'locales/zh-CN/story-captions.json').read_text('utf8'));r=next(r for r in c['resources'] if r['id']==472);r['cues'][-1]['end_ms']=5000
+  with tempfile.TemporaryDirectory() as t:
+   p=Path(t)/'catalog.json';p.write_text(json.dumps(c))
+   with self.assertRaisesRegex(ValueError,'Uncovered reviewed speech'):captions.read_catalog(p)
+ def test_complete_installed_dialogue_bytes_are_checked(self):
+  from audit_story_caption_coverage import bind_private_text
+  mapping={};bind_private_text(b'\xca\x40$nA','字$nA',mapping)
+  self.assertEqual(mapping,{'字':b'\xca\x40'})
+  for raw in [b'\xca\x40$n',b'\xca\x40$nAB',b'\xca\x40$nB']:
+   with self.assertRaises(ValueError):bind_private_text(raw,'字$nA',mapping)
+ def test_approved_reference_validator_rejects_suffix_loss(self):
+  c=captions.read_catalog(ROOT/'locales/zh-CN/story-captions.json')
+  texts={r['id']:r['target'] for p in (ROOT/'locales/zh-CN/text').glob('*.json') for r in json.loads(p.read_text('utf8')) if isinstance(r,dict) and r.get('target')}
+  self.assertEqual(captions.validate_approved(c,texts),8)
+  r=next(r for r in c['resources'] if r['id']==472);r['cues'].pop()
+  with self.assertRaisesRegex(ValueError,'Truncated approved translation'):captions.validate_approved(c,texts)
+ def test_existing_translation_is_not_truncated(self):
+  c=captions.read_catalog(ROOT/'locales/zh-CN/story-captions.json')
+  texts={r['id']:r['target'] for p in (ROOT/'locales/zh-CN/text').glob('*.json') for r in json.loads(p.read_text('utf8')) if isinstance(r,dict) and r.get('target')}
+  normalized=lambda s:''.join(x for x in s if x.isalnum())
+  for r in c['resources']:
+   ref=r.get('existing_translation_reference')
+   if ref:self.assertEqual(normalized(''.join(q['target'] for q in r['cues'])),normalized(texts[ref]),'Truncated approved translation: '+str(r['id']))
  def test_missing_translation_and_out_of_audio_range_rejected(self):
   c=json.loads((ROOT/'locales/zh-CN/story-captions.json').read_text('utf8'));r=next(x for x in c['resources'] if x['kind']=='speech')
   for mutation in ['empty','range']:

@@ -49,13 +49,26 @@ int __fastcall dispatch(void* value,void*,int index){
 #endif
  SetLastError(error);return result;
 }
-bool hidden(BYTE* box){if(word(box,0xd0))return true;auto gui=ptr(scene,0x10c8);if(readable(gui,0x1a0)){auto parent=ptr(gui,0x19c);if(readable(parent,0xd4)&&word(parent,0xd0))return true;}
+bool hidden(BYTE* box){if(word(box,0xd0))return true;auto gui=ptr(scene,0x10c8);if(readable(gui,0x1a0)){if(word(gui,0xd0))return true;auto parent=ptr(gui,0x19c);if(readable(parent,0xd4)&&word(parent,0xd0))return true;}
  // A full curtain can be behind a visible dialogue box; opacity is not visibility evidence.
  return false;}
+bool dialogueBox(BYTE* box){return readable(box,0x200)&&(ptr(box,0)==engine+0xbfcec||ptr(box,0)==engine+0xbfee4);}
+bool visibleNativeDialogue(BYTE* slots,unsigned count){
+ for(unsigned i=0;i<count;++i){auto slot=slots+i*40;if(!word(slot,4))continue;unsigned op=word(slot,0);
+  if(op!=700&&op!=701&&op!=704&&op!=705)continue;
+  auto box=ptr(slot,op==704?0x1c:0x18);
+  if(dialogueBox(box)&&word(box,0x190)>=1&&word(box,0x190)<=5&&!hidden(box))return true;
+ }
+ // Choice questions are owned by the GUI, not by the 702/703 event slot.
+ auto gui=ptr(scene,0x10c8);if(!readable(gui,0x1a8)||word(gui,0xd0))return false;
+ auto choice=ptr(gui,0x1a4);if(!readable(choice,0x1e4)||ptr(choice,0)!=engine+0xc04e8||word(choice,0xd0))return false;
+ auto question=ptr(choice,0x1dc);return dialogueBox(question)&&!word(question,0xd0)&&word(question,0x190)>=1&&word(question,0x190)<=5;
+}
 const wchar_t* text(){
  if(!engine||frame!=word(engine,0xf1b5c)||!readable(scene,0x1738)||ptr(scene,0)!=engine+0xc12bc)return nullptr;
  auto dealer=ptr(scene,0x3c);if(!readable(dealer,0x58)||ptr(dealer,0)!=engine+0xc1320||ptr(dealer,0x54)!=scene||word(dealer,0x4c))return nullptr;
  unsigned n=word(dealer,0x38);auto slots=ptr(dealer,0x34);if(n<1||n>256||!readable(slots,size_t(n)*40))return nullptr;
+ if(visibleNativeDialogue(slots,n))return nullptr;
  const wchar_t* ordinary=nullptr;const wchar_t* narration=nullptr;uint64_t latest=0;
  for(unsigned i=0;i<n;++i){auto slot=slots+i*40;unsigned op=word(slot,0);if((op!=603&&op!=700&&op!=704)||!word(slot,4))continue;
   auto parameters=ptr(slot,0x14);if(!readable(parameters,56))continue;unsigned signature=hash(parameters);
@@ -67,7 +80,7 @@ const wchar_t* text(){
    if(state!=4&&!(!cursor.running&&(state==8||state==2)))continue;
    for(const auto& cue:storyCues)if(cue.resource==binding->resource&&cue.start<=cursor.milliseconds&&cursor.milliseconds<cue.end&&cursor.generation>=latest){latest=cursor.generation;narration=cue.text;break;}
   }else{
-   auto box=ptr(slot,op==704?0x1c:0x18);if(!readable(box,0x200)||(ptr(box,0)!=engine+0xbfcec&&ptr(box,0)!=engine+0xbfee4)||word(box,0x190)<2||word(box,0x190)>4||!hidden(box))continue;
+   auto box=ptr(slot,op==704?0x1c:0x18);if(!dialogueBox(box)||word(box,0x190)<2||word(box,0x190)>4||!hidden(box))continue;
 #ifndef STORY_CAPTIONS_TEST
    auto stream=dialogueCaptionStream(box);if(!stream||!position)continue;int total=0,current=0;position(stream,&total,&current);if(total<=0||current<0||current>=total)continue;
 #endif
@@ -106,6 +119,7 @@ bool installStoryCaptions(HMODULE module,void(*logger)(const wchar_t*)){
 bool removeStoryCaptions(HMODULE m){if(engine!=reinterpret_cast<BYTE*>(m)||word(engine,0xc12c8)!=DWORD(&draw)||word(engine,0xc12bc)!=DWORD(&destroy)||word(engine,0xc1364)!=DWORD(&dispatch)||!sampleClockOwned(m))return false;setFramePanel(0,nullptr);
  if(!replace(reinterpret_cast<DWORD*>(engine+0xc12c8),DWORD(&draw),DWORD(originalDraw))||!replace(reinterpret_cast<DWORD*>(engine+0xc12bc),DWORD(&destroy),DWORD(originalDestroy))||!replace(reinterpret_cast<DWORD*>(engine+0xc1364),DWORD(&dispatch),DWORD(originalDispatch))||!removeSampleClock(m))return false;engine=scene=nullptr;frame=~0u;return true;}
 #ifdef STORY_CAPTIONS_TEST
+const wchar_t* storyCaptionFixtureText(){return text();}
 void storyCaptionFixture(BYTE* p,BYTE* s,Status sampleStatus){engine=p;status=sampleStatus;capture(s);}
 void storyCaptionFixtureFrame(){if(scene)capture(scene);}
 void storyCaptionFixtureReset(){engine=scene=nullptr;frame=~0u;fixtureCuts=0;}

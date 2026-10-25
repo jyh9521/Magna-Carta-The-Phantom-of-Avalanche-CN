@@ -1,5 +1,5 @@
 """Compile locale-owned captions and audit every Field resource without rewriting it."""
-import argparse,hashlib,json,struct
+import argparse,hashlib,json,struct,re
 from pathlib import Path
 from resource_field_script import parse
 
@@ -7,6 +7,21 @@ def fnv(data):
  h=2166136261
  for b in data:h=((h^b)*16777619)&0xffffffff
  return h
+
+def semantic_text(text):
+ # Display-only normalization; original control bytes and locale records remain unchanged.
+ text=re.sub(r'\$[dDcC][0-9]{2}|\$[A-Za-z]','',text)
+ return ''.join(c for c in text if c.isalnum())
+
+def validate_approved(catalog,texts):
+ checked=0
+ for row in catalog['resources']:
+  ref=row.get('existing_translation_reference')
+  if not ref:continue
+  if ref not in texts:raise ValueError('Missing approved reference: '+ref)
+  if semantic_text(''.join(q['target'] for q in row['cues']))!=semantic_text(texts[ref]):raise ValueError('Truncated approved translation: '+str(row['id']))
+  checked+=1
+ return checked
 
 def read_catalog(path):
  c=json.loads(path.read_text('utf8'))
@@ -20,6 +35,17 @@ def read_catalog(path):
   for q in r['cues']:
    if not last<=q['start_ms']<q['end_ms']<=r['duration_ms'] or not q['target'].strip() or not q['source_ko'].strip() or q.get('state')!='translated' or '\0' in q['target']:raise ValueError('Invalid or missing caption cue')
    last=q['end_ms']
+  if r['kind']=='speech':
+   review=r.get('audio_review',{})
+   if review.get('audio_sha256')!=r['audio_sha256'] or not review.get('speech_spans_ms'):raise ValueError('Missing source audio review')
+   if semantic_text(review.get('complete_source_text',''))!=semantic_text(''.join(q['source_ko'] for q in r['cues'])):raise ValueError('Truncated reviewed source text')
+   if semantic_text(review.get('complete_target_text',''))!=semantic_text(''.join(q['target'] for q in r['cues'])):raise ValueError('Truncated reviewed target text')
+   previous=0
+   for a,b in review['speech_spans_ms']:
+    if not previous<=a<b<=r['duration_ms']:raise ValueError('Invalid reviewed speech span')
+    covered=sum(max(0,min(b,q['end_ms'])-max(a,q['start_ms'])) for q in r['cues'])
+    if b-a-covered>150:raise ValueError('Uncovered reviewed speech: '+str(r['id']))
+    previous=b
  return c
 
 def compile(catalog,source,output,report):
@@ -29,13 +55,14 @@ def compile(catalog,source,output,report):
   report=Path(report).resolve()
   if report==output or report.is_relative_to(source) or report.is_relative_to(catalog.parent):raise ValueError('Independent audit report required')
  c=read_catalog(catalog);by_id={r['id']:r for r in c['resources']}
- texts={}
+ texts={};approved={}
  for p in (catalog.parent/'text').glob('*.json'):
   rows=json.loads(p.read_text('utf8'))
   if not isinstance(rows,list):continue
   for r in rows:
    if isinstance(r,dict) and r.get('target') and r.get('id','').startswith('Fpb/'):
-    a=r['id'].split(':');texts[(int(a[0][4:8]),int(a[-1]))]=r['target']
+    a=r['id'].split(':');texts[(int(a[0][4:8]),int(a[-1]))]=r['target'];approved[r['id']]=r['target']
+ approved_matches=validate_approved(c,approved)
  cues=[];bindings=[];rejected=[];accepted=0;raw603=[];seen=set()
  for p in sorted((source/'Field').glob('*.fld')):
   d=p.read_bytes();fid=int(p.stem)
@@ -71,7 +98,7 @@ def compile(catalog,source,output,report):
  lines+=['{%du,%du,%du,%du,%s},'%(f,o,h,n,wide(t)) for f,o,h,n,t in bindings];lines+=['};']
  output.parent.mkdir(parents=True,exist_ok=True);content=('\n'.join(lines)+'\n').encode()
  if not output.exists() or output.read_bytes()!=content:output.write_bytes(content)
- result=dict(schema=1,fields_scanned=accepted+len(rejected),parsed_fields=accepted,rejected_fields=rejected,voice_only_commands=raw603,resources=len(seen),speech_resources=sum(r['kind']=='speech' for r in c['resources']),cues=len(cues),normal_dialogue_bindings=len(bindings)-len(raw603),missing_translations=[],audio_hashes_verified=True,original_curtain_modified=False,game_started=False)
+ result=dict(schema=1,fields_scanned=accepted+len(rejected),parsed_fields=accepted,rejected_fields=rejected,voice_only_commands=raw603,resources=len(seen),speech_resources=sum(r['kind']=='speech' for r in c['resources']),cues=len(cues),normal_dialogue_bindings=len(bindings)-len(raw603),missing_translations=[],audio_hashes_verified=True,approved_translation_matches=approved_matches,complete_speech_reviews=sum(r['kind']=='speech' for r in c['resources']),original_curtain_modified=False,game_started=False)
  if report:report.parent.mkdir(parents=True,exist_ok=True);report.write_bytes((json.dumps(result,ensure_ascii=False,indent=2)+'\n').encode())
  print('STORY_CAPTIONS_BUILD PASS fields='+str(result['fields_scanned'])+' voice_only_commands='+str(len(raw603))+' resources='+str(len(seen))+' cues='+str(len(cues))+' missing=0 game_started=false')
  return result
