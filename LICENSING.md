@@ -20,3 +20,5 @@ Bink1离线压缩研究使用RAD官方RADTools.7z（https://www.radgametools.com
 主界面中文艺术字标单独保存为原创透明RGBA素材；背景修复仅提交源摘要锁定的增量，不提交完整原游戏背景。游戏原画、品牌、版权字卡和名称的原有权利不因标题回写转移；设计与可复现构建见docs/TITLE_ARTWORK.md。
 
 原生灰度覆盖与单色字形采用相同锁定Noto Sans SC来源和OFL许可，衍生覆盖名为Locale Glyph Coverage；覆盖嵌入自有profile，不分发完整轮廓字体。原游戏Font文件及Field文件只以来源绑定增量交付。
+
+桌面封装的 MC.ico 来自用户提供的独立构建输入，SHA-256 为 0bdb54b9098c2d53e060a81c9c280aa6b9729573c21e4bb0ab81b2b0d55fd3ce。图标原文件不提交仓库；内嵌不改变其权利归属。构建保留既有字体、兼容层和第三方模块许可文件。

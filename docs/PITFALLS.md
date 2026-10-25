@@ -475,3 +475,7 @@ A fully opaque field curtain may be drawn behind the native dialogue box. Never 
 不能只迁移 GUI 的 JSON 而保留游戏入口读取旧文件，也不能只移动 PowerShell 日志而遗漏 EXE 包装器或原生启动器的 cache 路径守卫。当前三条路径统一到安装路径哈希对应的 LOCALAPPDATA 子目录。原生启动器允许项目专属用户 cache，但不放宽至任意外部路径；真实预检覆盖允许目录、越界路径与 traversal 拒绝。
 
 兼容层显示 INI 是游戏侧接口，仍需原位置已有文件可写；工具 JSON 和日志迁移不等于所有商业游戏文件、存档及兼容组件均支持完全只读安装目录。
+
+## 编译式配置器自检
+
+离屏 Measure/Arrange 不自动触发 Window.Loaded；自检须显式覆盖该事件，避免仅预览通过而实际打开时类型转换失败。ContentRoot 是 StackPanel，不应硬转为 Grid。桌面集成测试与完整原生入口测试须串行，避免全局空闲保护造成并行测试冲突。安全软件删除临时校验程序时，应记录失败而非恢复文件或宣称误报；本轮记录见 COMPILED_DESKTOP_RELEASE.md。

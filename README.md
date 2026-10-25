@@ -1,5 +1,7 @@
 # 《真名法典：冰之魅影》本地化工程 / Magna Carta: The Phantom of Avalanche Localization
 
+编译式桌面封装修订（本地 v1.0 ZIP）：配置器、启动和校验逻辑编译，静态资源内嵌，玩家设置迁入用户数据目录，快捷键提示改为紧凑横排。构建、迁移与验收边界见 [编译式桌面入口](docs/COMPILED_DESKTOP_RELEASE.md)。既有 GitHub 发布附件不在本轮自动替换。
+
 ## 项目简介
 
 初代 PC 版《真名法典：冰之魅影》（마그나카르타: 눈사태의 망령）的简体中文汉化与现代 Windows 兼容性工程。

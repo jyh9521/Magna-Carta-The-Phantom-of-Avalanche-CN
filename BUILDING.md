@@ -383,3 +383,7 @@ python tools/build_release_v1.py --source dist/ACCEPTED_OVERLAY.zip --source-sha
 ```
 
 用户缓存版本要求原生启动器包含 `USER_DATA_CACHE_V1` 标记。现有运行目录使用 `tools/deploy_user_storage.py apply --runtime RUNTIME --entries ENTRIES --launcher LAUNCHER --record NEW_RECORD` 更新；回滚使用 `rollback --runtime RUNTIME --record RECORD`，先核对当前与原始摘要。回滚恢复运行文件但保留迁移后的用户配置，旧配置仍在原位置。
+
+## 编译式桌面封装
+
+新的无外置脚本 v1.0 ZIP 构建、用户设置迁移与校验命令见 [编译式桌面入口](docs/COMPILED_DESKTOP_RELEASE.md)。历史脚本构建保留作为原版基线。

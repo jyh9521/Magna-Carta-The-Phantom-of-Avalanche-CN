@@ -215,3 +215,7 @@ Asura 两条基础 renderer 的直接绝对骨骼调用与 MCAlpha 派生实现�
 已验证：PowerShell 与小型 EXE 对安装根目录执行完整路径规范化、去除末尾分隔符、Invariant 大写，再对 UTF-8 字节计算 SHA-256，取前16位小写十六进制作为安装标识。用户数据根为 `%LOCALAPPDATA%\MagnaCarta\Installations\<id>`。迁移加安装级互斥锁；仅缺少用户配置时导入旧配置，验证后原子写入。默认 GUI 与游戏入口读取同一用户配置；显式夹具 SettingsFile 参数继续保留。
 
 原生 overlay 启动器保持游戏与模块指纹守卫。profile/log 除原有 cache 布局外，仅允许当前 LOCALAPPDATA 下项目专属 Installations、16位标识、cache 层级及固定文件名；canonical 校验拒绝越界与路径穿越。原生修复 DLL 不重建；仅启动器更新。游戏显示 INI 的引擎接口保持原位置，不将可变工具设置迁移等同于整个游戏目录完全只读支持。
+
+## 编译式桌面入口
+
+配置、启动和覆盖校验实现迁入 src/desktop 的 C#；数据仍为结构化语言资源，打包时内嵌。清单自摘要边界、设置路径、回滚预检与离线验收边界见 [编译式桌面入口](docs/COMPILED_DESKTOP_RELEASE.md)。
