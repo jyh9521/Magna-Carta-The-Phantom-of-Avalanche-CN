@@ -125,6 +125,43 @@ class CompiledDesktopTests(unittest.TestCase):
             self.settings(**changes);self.run_entry('Game','--verify-only',code=1);self.assertEqual((self.root/'DDrawCompat-MagnaCarta.ini').read_bytes(),b'base display')
     def test_hash_drift_rejects_before_native_launch(self):
         (self.root/'scene.bin').write_bytes(b'drift');self.run_entry('Game','--verify-only',code=1);self.assertFalse((self.cache/'launcher.stdout.txt').exists())
+    def test_installed_check_includes_unbundled_baseline_dependency(self):
+        resources=self.case/'changed resources';shutil.copytree(self.resources,resources)
+        runtime=json.loads((resources/'runtime.json').read_bytes())
+        runtime['data']['Asura.dll']=sha(b'owned supported library')
+        (resources/'runtime.json').write_bytes(blob(runtime))
+        compiler.core(self.root/'modules/DesktopRuntime.dll',resources)
+        (self.root/'Asura.dll').write_bytes(b'owned other library version')
+        self.assertIn('Hash mismatch: Asura.dll',self.run_entry('Game','--check-installed',code=1))
+        self.assertFalse((self.cache/'launcher.stdout.txt').exists())
+        (self.root/'Asura.dll').write_bytes(b'owned supported library')
+        self.assertIn('OVERLAY_MODIFIED PASS',self.run_entry('Game','--check-installed'))
+
+    def test_hash_error_records_expected_and_actual_digests(self):
+        (self.root/'scene.bin').write_bytes(b'drift')
+        log=self.run_entry('Game','--verify-only',code=1)
+        self.assertIn('expected='+sha(b'modified owned scene'),log)
+        self.assertIn('actual='+sha(b'drift'),log)
+
+    def diagnostic_status(self,started):
+        script="$ErrorActionPreference='Stop'; [Console]::OutputEncoding=[Text.UTF8Encoding]::new($false); [Reflection.Assembly]::LoadFrom($args[0]) | Out-Null; [DesktopRuntime.LaunchDiagnostics]::Failure($args[1],1,[DateTime]::Parse($args[2]).ToUniversalTime())"
+        path=self.case/'diagnostic.ps1';path.write_text(script,encoding='utf-8-sig')
+        r=subprocess.run(['powershell.exe','-NoProfile','-File',str(path),str(self.root/'modules/DesktopRuntime.dll'),str(self.cache),started],capture_output=True,timeout=30)
+        self.assertEqual(r.returncode,0,r.stderr.decode(errors='replace'))
+        return r.stdout.decode('utf8').strip()
+
+    def test_failed_status_names_mismatched_file_and_retains_log_path(self):
+        (self.root/'scene.bin').write_bytes(b'drift');self.run_entry('Game','--verify-only',code=1)
+        text=self.diagnostic_status('2000-01-01T00:00:00Z')
+        self.assertIn('scene.bin',text);self.assertIn('文件版本不匹配',text);self.assertIn(str(self.cache),text)
+        self.assertNotIn('System.IO',text);self.assertNotIn('expected=',text)
+
+    def test_failed_status_ignores_stale_or_missing_diagnostics(self):
+        self.cache.mkdir(parents=True)
+        (self.cache/'Game.log').write_text('COMPILED_DESKTOP FAIL System.IO.InvalidDataException: Hash mismatch: old.dll',encoding='utf-8-sig')
+        text=self.diagnostic_status('2100-01-01T00:00:00Z');self.assertNotIn('old.dll',text)
+        (self.cache/'Game.log').unlink();self.assertEqual(text,self.diagnostic_status('2000-01-01T00:00:00Z'))
+
     def test_failure_restores_ini_and_preserves_prior_profile_log(self):
         self.settings();self.cache.mkdir();(self.cache/'profile.log').write_bytes(b'prior diagnostic');self.env['OWNED_FAIL']='1'
         self.assertIn('exit=17',self.run_entry('Game','--verify-only',code=1));self.assertEqual((self.root/'DDrawCompat-MagnaCarta.ini').read_bytes(),b'base display');self.assertEqual((self.cache/'profile.log').read_bytes(),b'prior diagnostic')
@@ -180,6 +217,8 @@ class CompiledDesktopTests(unittest.TestCase):
         for p in self.resources.rglob('*'):
             if p.is_file() and p.relative_to(self.resources).as_posix().startswith('config/'):
                 payload[p.relative_to(self.resources).as_posix()]=p.read_bytes()
+        old_ui=json.loads(payload['config/configuration-ui.json']);old_ui.pop('failed_detail',None);old_ui.pop('file_mismatch',None)
+        payload['config/configuration-ui.json']=blob(old_ui)
         payload['Start.ps1']=b'owned previous startup';payload['Verify-Overlay.ps1']=b'owned previous verifier'
         runtime=json.loads((self.resources/'runtime.json').read_bytes())
         runtime['files'].update({n:sha(b) for n,b in payload.items() if n.startswith('config/') or n.endswith('.ps1')})
@@ -203,6 +242,8 @@ class CompiledDesktopTests(unittest.TestCase):
         self.user=self.case/'user data/MagnaCarta/Installations'/key;self.cache=self.user/'cache'
         self.run_entry('Game','--check-installed');self.run_entry('Game','--verify-only');self.run_entry('Configure','--self-test')
         self.assertFalse(json.loads((work/'resources/Overlay-Manifest.json').read_bytes())['in_game_verified'])
+        (self.root/'scene.bin').write_bytes(b'drift');self.run_entry('Game','--verify-only',code=1)
+        self.assertIn('文件版本不匹配',self.diagnostic_status('2000-01-01T00:00:00Z'))
 
     def test_bad_source_hash_and_icon_rejected(self):
         source=self.case/'wrong.zip';source.write_bytes(b'owned invalid source')

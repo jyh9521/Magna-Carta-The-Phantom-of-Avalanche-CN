@@ -479,3 +479,12 @@ A fully opaque field curtain may be drawn behind the native dialogue box. Never 
 ## 编译式配置器自检
 
 离屏 Measure/Arrange 不自动触发 Window.Loaded；自检须显式覆盖该事件，避免仅预览通过而实际打开时类型转换失败。ContentRoot 是 StackPanel，不应硬转为 Grid。桌面集成测试与完整原生入口测试须串行，避免全局空闲保护造成并行测试冲突。安全软件删除临时校验程序时，应记录失败而非恢复文件或宣称误报；本轮记录见 COMPILED_DESKTOP_RELEASE.md。
+
+
+## 覆盖包通过不代表包外基础库通过（2026-10-26）
+
+已验证：覆盖包不含 Asura.dll，现场保留了不同版本，导致最新编译入口在基础输入预检退出 1。
+原 CheckInstalled 只检查 overlay.files，因此漏掉 runtime.data 中的包外依赖；
+现两组均校验，仍拒绝不同摘要。配置窗口展示本次日志中的具体文件与原因，
+不能只以通用“入口失败”替代诊断，也不把历史 profile.log 当作本次成功证据。
+详见 COMPILED_DESKTOP_RELEASE.md 的包外基础库版本记录。

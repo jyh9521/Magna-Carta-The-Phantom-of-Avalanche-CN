@@ -27,7 +27,7 @@ namespace DesktopRuntime {
    root=Path.GetFullPath(root).TrimEnd('\\','/');var full=Path.GetFullPath(Path.Combine(root,name));
    if(!full.StartsWith(root+Path.DirectorySeparatorChar,StringComparison.OrdinalIgnoreCase))throw new IOException("Escaping path");NoLinks(full);return full;
   }
-  public static void Check(string root,string name,string hash) {if(hash.Length!=64||hash.Any(c=>!"0123456789abcdef".Contains(c)))throw new InvalidDataException("Invalid digest");if(HashFile(Located(root,name))!=hash)throw new InvalidDataException("Hash mismatch: "+name);}
+  public static void Check(string root,string name,string hash) {if(hash.Length!=64||hash.Any(c=>!"0123456789abcdef".Contains(c)))throw new InvalidDataException("Invalid digest");string actual=HashFile(Located(root,name));if(actual!=hash)throw new InvalidDataException("Hash mismatch: "+name+" (expected="+hash+", actual="+actual+")");}
   public static void Atomic(string path,byte[] bytes,bool existingFallback=false) {
    NoLinks(path);var tmp=Path.Combine(Path.GetDirectoryName(Path.GetFullPath(path)),"write-"+Guid.NewGuid().ToString("N")+".tmp");
    try {try {File.WriteAllBytes(tmp,bytes);if(File.Exists(path))File.Replace(tmp,path,null);else File.Move(tmp,path);}
@@ -37,6 +37,25 @@ namespace DesktopRuntime {
    }finally{if(File.Exists(tmp))File.Delete(tmp);}
   }
   public static string Quote(string s) {var b=new StringBuilder("\"");int slash=0;foreach(char c in s){if(c=='\\'){slash++;continue;}if(c=='"'){b.Append('\\',slash*2+1);b.Append(c);slash=0;continue;}b.Append('\\',slash);slash=0;b.Append(c);}b.Append('\\',slash*2);return b.Append('"').ToString();}
+ }
+ public static class LaunchDiagnostics {
+  public static string Failure(string cache,int code,DateTime startedUtc) {
+   var text=Data.Resource("config/configuration-ui.json");string fallback=String.Format(Data.Text(text,"failed"),code,cache);
+   try {
+    string path=Path.Combine(cache,"Game.log");Data.NoLinks(path);
+    if(!File.Exists(path)||File.GetLastWriteTimeUtc(path)<startedUtc)return fallback;
+    string line;using(var stream=new FileStream(path,FileMode.Open,FileAccess.Read,FileShare.ReadWrite))using(var reader=new StreamReader(stream,Encoding.UTF8,true)){
+     var chars=new char[1024];int count=reader.ReadBlock(chars,0,chars.Length);line=new string(chars,0,count).Split(new[]{'\r','\n'},2)[0];
+    }
+    const string prefix="COMPILED_DESKTOP FAIL ";if(!line.StartsWith(prefix,StringComparison.Ordinal))return fallback;
+    string reason=line.Substring(prefix.Length);int separator=reason.IndexOf(": ",StringComparison.Ordinal);if(separator>=0)reason=reason.Substring(separator+2);
+    const string mismatch="Hash mismatch: ";if(reason.StartsWith(mismatch,StringComparison.Ordinal)){
+     string name=reason.Substring(mismatch.Length);int digest=name.IndexOf(" (expected=",StringComparison.Ordinal);if(digest>=0)name=name.Substring(0,digest);
+     reason=String.Format(Data.Text(text,"file_mismatch"),name);
+    }
+    return String.Format(Data.Text(text,"failed_detail"),code,reason,cache);
+   }catch(IOException){return fallback;}catch(UnauthorizedAccessException){return fallback;}
+  }
  }
  public sealed class UserPaths {
   public readonly string Root,Settings,Cache,Id;
@@ -78,6 +97,7 @@ namespace DesktopRuntime {
   public static Dictionary<string,object> Manifest(){var m=Data.Resource("Overlay-Manifest.json");if(Data.Number(m,"schema")!=1||Data.Text(m,"kind")!="clean_game_overlay"||Data.Text(m,"layout")!="flat")throw new InvalidDataException("Unsupported overlay manifest");return m;}
   public static void Check(string root,bool baseline) {
    var m=Manifest();var files=Data.Object(m[baseline?"source_files":"files"]);foreach(var p in files){if(!baseline&&p.Key=="DDrawCompat-MagnaCarta.ini")continue;Data.Check(root,p.Key,(string)p.Value);}
+   if(!baseline){var runtime=Data.Resource("runtime.json");if(Data.Text(runtime,"data_root")!=".")throw new InvalidDataException("Overlay requires flat runtime inputs");foreach(var p in Data.Object(runtime["data"]))Data.Check(root,p.Key,(string)p.Value);}
    Console.WriteLine("OVERLAY_"+(baseline?"BASELINE":"MODIFIED")+" PASS files="+files.Count+" writes=0 game_started=false");
   }
   public static void Idle(){if(Process.GetProcessesByName("MagnaCarta").Length!=0||Process.GetProcessesByName("workspace_launcher").Length!=0)throw new IOException("Exit game and native launcher first");}

@@ -25,3 +25,8 @@ ZIP 不含 config 文件夹、PS1/PSM1 脚本、外置 runtime.json 或 Overlay-
 覆盖旧版不会自动删除旧脚本。可在成功校验并保存用户设置后移走旧版 config、Start.ps1、
 Verify-Overlay.ps1、runtime.json、Overlay-Manifest.json；新程序不执行这些旧文件。
 完整源码与构建流程继续保留在项目仓库。
+
+基础库版本：覆盖包不替换 Asura.dll。增强模块要求该文件为 516096 字节，
+SHA-256 f81e7c458d43b77210311499b39b9be2c4895e3a3b356d2e848b6e84210d2557。
+“检查覆盖文件”也检查这类包外基础依赖。若显示文件版本不匹配，先备份该文件，
+再从匹配版本的原版备份恢复，不要反复覆盖补丁或删除个人设置。

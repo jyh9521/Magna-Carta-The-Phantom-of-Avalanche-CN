@@ -18,7 +18,7 @@ namespace DesktopRuntime {
   readonly Window window;readonly Dictionary<string,object> text;readonly string root,settingsFile;
   readonly Dictionary<string,Dictionary<string,RadioButton>> groups=new Dictionary<string,Dictionary<string,RadioButton>>();
   readonly ComboBox windowSize;readonly TextBlock status;readonly Button save,defaults,verify,play;readonly DispatcherTimer timer;
-  bool loading;Process child;
+  bool loading;Process child;DateTime childStartedUtc;
   T Find<T>(string name) where T:class {var control=window.FindName(name) as T;if(control==null)throw new InvalidDataException("Missing UI component: "+name);return control;}
   string Text(string key){return Data.Text(text,key);}
   BitmapImage Image(string resource){var b=new BitmapImage();using(var s=new MemoryStream(Data.Bytes(resource))){b.BeginInit();b.CacheOption=BitmapCacheOption.OnLoad;b.StreamSource=s;b.EndInit();b.Freeze();}return b;}
@@ -44,7 +44,7 @@ namespace DesktopRuntime {
    save.Click+=(s,e)=>Guard(()=>{Settings.Write(settingsFile,Controls());Notify(Text("saved"));});
    defaults.Click+=(s,e)=>Guard(()=>{var d=Settings.Defaults();Settings.Write(settingsFile,d);SetControls(d);Notify(Text("default_note"));});
    verify.Click+=(s,e)=>Guard(()=>Launch(true));play.Click+=(s,e)=>Guard(()=>Launch(false));
-   timer=new DispatcherTimer{Interval=TimeSpan.FromMilliseconds(400)};timer.Tick+=(s,e)=>{if(child!=null&&child.HasExited){Notify(child.ExitCode==0?String.Format(Text("finished"),new UserPaths(root).Cache):String.Format(Text("failed"),child.ExitCode,new UserPaths(root).Cache));child.Dispose();child=null;Busy(false);}};
+   timer=new DispatcherTimer{Interval=TimeSpan.FromMilliseconds(400)};timer.Tick+=(s,e)=>{if(child!=null&&child.HasExited){Notify(child.ExitCode==0?String.Format(Text("finished"),new UserPaths(root).Cache):LaunchDiagnostics.Failure(new UserPaths(root).Cache,child.ExitCode,childStartedUtc));child.Dispose();child=null;Busy(false);}};
    window.Closing+=(s,e)=>{if(child!=null&&!child.HasExited){e.Cancel=true;Notify(Text("running"));}};
    window.Loaded+=(s,e)=>{if(SystemParameters.ClientAreaAnimation){var content=Find<FrameworkElement>("ContentRoot");content.BeginAnimation(UIElement.OpacityProperty,new DoubleAnimation(0,1,TimeSpan.FromMilliseconds(320)));var slide=new DoubleAnimation(16,0,TimeSpan.FromMilliseconds(360)){EasingFunction=new CubicEase{EasingMode=EasingMode.EaseOut}};content.RenderTransform.BeginAnimation(TranslateTransform.YProperty,slide);}};
    SetControls(Settings.Read(settingsFile));Notify(Text("ready"));
@@ -56,7 +56,7 @@ namespace DesktopRuntime {
   void Guard(Action action){try{action();}catch(Exception e){Notify(Text("error")+": "+e.Message);}}
   void Busy(bool value){foreach(var button in new Control[]{save,defaults,verify,play,windowSize})button.IsEnabled=!value;foreach(var group in groups.Values)foreach(var radio in group.Values)radio.IsEnabled=!value;}
   void Launch(bool check){Settings.Write(settingsFile,Controls());var args=new List<string>{"--settings-file",settingsFile};if(check)args.Add("--verify-only");
-   child=Process.Start(new ProcessStartInfo(Data.Located(root,"Game.exe"),String.Join(" ",args.Select(Data.Quote))){UseShellExecute=false,CreateNoWindow=true,WindowStyle=ProcessWindowStyle.Hidden,WorkingDirectory=root});Busy(true);Notify(Text("running"));}
+   childStartedUtc=DateTime.UtcNow;child=Process.Start(new ProcessStartInfo(Data.Located(root,"Game.exe"),String.Join(" ",args.Select(Data.Quote))){UseShellExecute=false,CreateNoWindow=true,WindowStyle=ProcessWindowStyle.Hidden,WorkingDirectory=root});Busy(true);Notify(Text("running"));}
   void WaitAnimation(int milliseconds){var watch=Stopwatch.StartNew();while(watch.ElapsedMilliseconds<milliseconds){window.Dispatcher.Invoke(DispatcherPriority.Background,new Action(()=>{}));System.Threading.Thread.Sleep(10);}}
   void Render(string path){var surface=(FrameworkElement)window.Content;surface.Margin=new Thickness(0);double w=window.Width-48,h=window.Height-32;surface.Measure(new Size(w,h));surface.Arrange(new Rect(0,0,w,h));surface.UpdateLayout();WaitAnimation(400);
    var scroll=((Grid)window.Content).Children.OfType<ScrollViewer>().Single();if(Data.Text(Controls(),"window_mode")!="windowed"&&scroll.ScrollableHeight>.5)throw new Exception("Default layout requires scrolling");

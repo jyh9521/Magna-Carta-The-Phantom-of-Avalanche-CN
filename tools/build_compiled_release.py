@@ -88,6 +88,8 @@ def build(source, source_sha256, icon, work, output, runtime=None, locale=None):
     ui['default_note'] = catalog['packaged_default_note']
     ui['pending'] = catalog['pending']
     ui['controls'] = catalog['controls']
+    for key in ('failed_detail', 'file_mismatch'):
+        ui[key] = catalog[key]
     embedded['config/configuration-ui.json'] = (json.dumps(ui, ensure_ascii=False)+'\n').encode()
     embedded['MC.ico'] = icon_data
     payload.update(entries(work/'entries', icon))
