@@ -23,7 +23,7 @@ namespace DesktopRuntime {
   string Text(string key){return Data.Text(text,key);}
   BitmapImage Image(string resource){var b=new BitmapImage();using(var s=new MemoryStream(Data.Bytes(resource))){b.BeginInit();b.CacheOption=BitmapCacheOption.OnLoad;b.StreamSource=s;b.EndInit();b.Freeze();}return b;}
   Configuration(string installation,string settings,bool self) {
-   root=installation;text=Data.Resource("config/configuration-ui.json");settingsFile=settings??(self?new UserPaths(root).Settings:Settings.Initialize(root));
+   root=installation;text=Data.Resource("config/configuration-ui.json");settingsFile=settings??(self?Settings.PathFor(root):Settings.Initialize(root));
    string markup=Encoding.UTF8.GetString(Data.Bytes("config/Configure.xaml")).TrimStart('\ufeff');if(!SystemParameters.ClientAreaAnimation)markup=Regex.Replace(markup,"Duration=\"[^\"]+\"","Duration=\"0:0:0\"");
    using(var s=new MemoryStream(Encoding.UTF8.GetBytes(markup)))window=(Window)XamlReader.Load(s);
    window.Title=Text("title");using(var s=new MemoryStream(Data.Bytes("MC.ico")))window.Icon=BitmapFrame.Create(s,BitmapCreateOptions.None,BitmapCacheOption.OnLoad);

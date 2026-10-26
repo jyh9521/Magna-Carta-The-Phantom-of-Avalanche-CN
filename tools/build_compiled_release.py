@@ -99,6 +99,8 @@ def build(source, source_sha256, icon, work, output, runtime=None, locale=None, 
     if output.exists() or work.exists() or output == source or output.suffix != '.zip':
         raise ValueError('Independent new work directory and ZIP required')
     payload, release, manifest = inspect_archive(source, source_sha256)
+    if 'enhancements.json' in payload:
+        raise ValueError('Accepted archive must not contain player root settings')
     protected = {row['resource']: row['target_sha256'] for row in manifest['changes']}
     for n, h in protected.items():
         if raw_sha(payload[n]) != h:
@@ -148,7 +150,7 @@ def build(source, source_sha256, icon, work, output, runtime=None, locale=None, 
     ui['default_note'] = catalog['packaged_default_note']
     ui['pending'] = catalog['pending']
     ui['controls'] = catalog['controls']
-    for key in ('failed_detail', 'file_mismatch'):
+    for key in ('failed_detail', 'file_mismatch', 'elevation_cancelled', 'elevation_failed'):
         ui[key] = catalog[key]
     embedded['config/configuration-ui.json'] = (json.dumps(ui, ensure_ascii=False)+'\n').encode()
     embedded['MC.ico'] = icon_data
@@ -156,8 +158,9 @@ def build(source, source_sha256, icon, work, output, runtime=None, locale=None, 
     for n in ('Configure.exe', 'Game.exe'):
         release['files'][n] = raw_sha(payload[n])
     release['desktop'] = dict(schema=2, implementation='compiled_managed', resources='embedded',
-                              icon_sha256=raw_sha(icon_data), powershell_required=False)
-    release['release'] = dict(release.get('release', {}), version='1.0', desktop_revision=3,
+                              icon_sha256=raw_sha(icon_data), powershell_required=False,
+                              settings_location='installation_root', elevation='on_write_denied')
+    release['release'] = dict(release.get('release', {}), version='1.0', desktop_revision=4,
                               desktop_in_game_verified=False)
     if release.get('test_candidates'):
         release['test_candidates']['stable_entry'] = 'Game.exe --without-test-candidates'

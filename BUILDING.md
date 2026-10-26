@@ -405,3 +405,11 @@ python -m unittest discover -s tests -p test_compiled_complete.py
 旧版本审计曾允许“包外但原版清单存在”，该回退现已取消。
 逐项身份、一次覆盖回放与人工入口见 [完整统一覆盖](docs/COMPILED_DESKTOP_RELEASE.md#完整统一覆盖与旧安装兼容2026-10-26)。
 归档清理保留当前统一 ZIP、centered 对照基线和三份必需构建输入；移除被替代的局部交付。
+
+
+当前桌面 revision 4 的根目录设置/UAC 完整包为
+`dist/MagnaCarta-zh-CN-v1.0-unified-uac-20261026.zip`。
+构建时使用新的 `build/compiled-release-v1-uac` 工作目录；其余完整输入与兼容计划不变。
+权限回归命令为 `python -m unittest discover -s tests -p test_compiled_permissions.py`。
+该测试使用真实 Windows ACL、自有微型数据及截获的提权调度，不显示 UAC 或启动游戏。
+前一 unified ZIP 保留作回滚基线；新包为完整覆盖包，不需叠加单项更新。

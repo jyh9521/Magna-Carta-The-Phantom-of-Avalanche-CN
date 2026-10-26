@@ -500,3 +500,15 @@ A fully opaque field curtain may be drawn behind the native dialogue box. Never 
 最小回滚视图使用硬链接时，不得原地写回备份字节，否则会写穿正常修改副本。
 恢复须新文件原子替换；漂移与备份摘要应在任何写入前全量校验。
 来源锁、原生 24 组预检和真实旧输入回放见 COMPILED_DESKTOP_RELEASE.md。
+
+
+## 现有 INI 写入兜底仍需文件权限（2026-10-26）
+
+已验证：编译式入口沿用了仅处理“父目录禁止创建临时文件”的既有写入兜底，
+当显示 INI 本身拒绝写入时仍返回退出码 1。迁移用户 JSON 不能替代游戏侧 INI 写权限。
+当前改为游戏根目录 settings 加按需 UAC，授权前完成门禁；不通过扩大目录 ACL 修复。
+根目录 enhancements.json 不随 ZIP 分发，迁移顺序和验证层次见 COMPILED_DESKTOP_RELEASE.md。
+
+Windows ACL 夹具恢复必须明确标记 Access 部分已修改：直接把未变更的旧 FileSecurity
+传回 SetAccessControl 可能不持久化；SetSecurityDescriptorSddlForm 应明确指定 Access，
+否则可能请求不必要的 SACL/SeSecurityPrivilege。生产入口不修改 ACL。

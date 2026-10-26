@@ -30,11 +30,13 @@ namespace DesktopRuntime {
   public static void Check(string root,string name,string hash) {if(hash.Length!=64||hash.Any(c=>!"0123456789abcdef".Contains(c)))throw new InvalidDataException("Invalid digest");string actual=HashFile(Located(root,name));if(actual!=hash)throw new InvalidDataException("Hash mismatch: "+name+" (expected="+hash+", actual="+actual+")");}
   public static void Atomic(string path,byte[] bytes,bool existingFallback=false) {
    NoLinks(path);var tmp=Path.Combine(Path.GetDirectoryName(Path.GetFullPath(path)),"write-"+Guid.NewGuid().ToString("N")+".tmp");
-   try {try {File.WriteAllBytes(tmp,bytes);if(File.Exists(path))File.Replace(tmp,path,null);else File.Move(tmp,path);}
+   FileAttributes? attributes=null;
+   try {if(File.Exists(path)){var current=File.GetAttributes(path);if((current&FileAttributes.ReadOnly)!=0){File.SetAttributes(path,current&~FileAttributes.ReadOnly);attributes=current;}}
+    try {File.WriteAllBytes(tmp,bytes);if(File.Exists(path))File.Replace(tmp,path,null);else File.Move(tmp,path);}
     catch(UnauthorizedAccessException) {if(!existingFallback||!File.Exists(path))throw;
      using(var s=new FileStream(path,FileMode.Open,FileAccess.ReadWrite,FileShare.Read)){var m=new MemoryStream();s.CopyTo(m);var old=m.ToArray();try{s.Position=0;s.Write(bytes,0,bytes.Length);s.SetLength(bytes.Length);s.Flush(true);s.Position=0;var check=new MemoryStream();s.CopyTo(check);if(Hash(check.ToArray())!=Hash(bytes))throw new IOException("Write readback mismatch");}catch{s.Position=0;s.Write(old,0,old.Length);s.SetLength(old.Length);s.Flush(true);throw;}}
     }
-   }finally{if(File.Exists(tmp))File.Delete(tmp);}
+   }finally{try{if(File.Exists(tmp))File.Delete(tmp);}finally{if(attributes.HasValue&&File.Exists(path))File.SetAttributes(path,attributes.Value);}}
   }
   public static string Quote(string s) {var b=new StringBuilder("\"");int slash=0;foreach(char c in s){if(c=='\\'){slash++;continue;}if(c=='"'){b.Append('\\',slash*2+1);b.Append(c);slash=0;continue;}b.Append('\\',slash);slash=0;b.Append(c);}b.Append('\\',slash*2);return b.Append('"').ToString();}
  }
@@ -66,6 +68,7 @@ namespace DesktopRuntime {
   }
  }
  public static class Settings {
+  public static string PathFor(string installation){return Data.Located(installation,"enhancements.json");}
   public static readonly string[] Sizes={"960x540","1280x720","1600x900","1920x1080","2560x1440"};
   public static Dictionary<string,object> Defaults(){return Validate(Data.Resource("config/enhancements.json"));}
   public static Dictionary<string,object> Validate(Dictionary<string,object> d) {
@@ -84,11 +87,11 @@ namespace DesktopRuntime {
    var d=new Dictionary<string,object>(Validate(source));if(Data.Number(d,"schema")==1){var p=Data.Text(d,"display_profile");d=Defaults();d["resolution"]=new[]{"baseline","fps60"}.Contains(p)?"1080p":"4k";d["frame_rate"]=new[]{"fps60","combined"}.Contains(p)?60:30;}
    if(!d.ContainsKey("window_resolution"))d["window_resolution"]="1280x720";d["native_gamepad"]=false;d["free_view"]=false;return d;
   }
-  public static void Write(string path,Dictionary<string,object> value) {Validate(value);if(File.Exists(path))Read(path);if(File.Exists(path+".previous"))throw new IOException("Previous settings backup exists");Data.Atomic(path,Encoding.UTF8.GetBytes(Data.Json.Serialize(value)));Read(path);}
+  public static void Write(string path,Dictionary<string,object> value) {Validate(value);if(File.Exists(path))Read(path);if(File.Exists(path+".previous"))throw new IOException("Previous settings backup exists");Data.Atomic(path,Encoding.UTF8.GetBytes(Data.Json.Serialize(value)),true);Read(path);}
   public static string Initialize(string installation) {
-   var p=new UserPaths(installation);Directory.CreateDirectory(p.Root);using(var m=new Mutex(false,"Local\\MagnaCartaSettings_"+p.Id)){
+   var p=new UserPaths(installation);string path=PathFor(installation);using(var m=new Mutex(false,"Local\\MagnaCartaSettings_"+p.Id)){
     bool held=false;try{try{held=m.WaitOne(15000);}catch(AbandonedMutexException){held=true;}if(!held)throw new IOException("Settings migration is busy");
-     if(File.Exists(p.Settings))Read(p.Settings);else{string old=Data.Located(installation,"config/enhancements.json");Write(p.Settings,File.Exists(old)?Read(old):Defaults());Data.Atomic(Path.Combine(p.Root,"installation.json"),Encoding.UTF8.GetBytes(Data.Json.Serialize(new {schema=1,installation=Path.GetFullPath(installation),legacy_settings=old})));}return p.Settings;
+     if(File.Exists(path))Read(path);else{string old=Data.Located(installation,"config/enhancements.json");Write(path,File.Exists(p.Settings)?Read(p.Settings):File.Exists(old)?Read(old):Defaults());}return path;
     }finally{if(held)m.ReleaseMutex();}
    }
   }
@@ -168,14 +171,30 @@ namespace DesktopRuntime {
  }
  public static class Entry {
   public static int Run(string root,bool configure,string[] args) {
-   string settings=null,preview=null,recipe="configured",action="",original=null;bool verify=false,self=false,stable=false;
-   for(int i=0;i<args.Length;i++){string a=args[i];switch(a){case "--verify-only":verify=true;break;case "--self-test":self=true;break;case "--without-test-candidates":stable=true;break;case "--check-installed":action="check";break;case "--check-baseline":action="baseline";if(++i>=args.Length)return 2;original=args[i];break;case "--rollback":action="rollback";if(++i>=args.Length)return 2;original=args[i];break;case "--settings-file":if(++i>=args.Length)return 2;settings=Path.GetFullPath(args[i]);break;case "--recipe":if(++i>=args.Length)return 2;recipe=args[i];break;case "--preview":if(++i>=args.Length)return 2;preview=Path.GetFullPath(args[i]);break;default:return 2;}}
+   return RunWithElevation(root,configure,args,Elevation.Start);
+  }
+  // The dispatcher seam lets offline tests verify the real permission gate,
+  // argument forwarding and cancellation without displaying a UAC dialog.
+  public static int RunWithElevation(string root,bool configure,string[] args,Func<ProcessStartInfo,int> elevate) {
+   string settings=null,preview=null,recipe="configured",action="",original=null,local=null;bool verify=false,self=false,stable=false,elevated=false;
+   for(int i=0;i<args.Length;i++){string a=args[i];switch(a){case "--elevated":if(elevated)return 2;elevated=true;break;case "--user-local-data":if(local!=null||++i>=args.Length)return 2;local=args[i];break;case "--verify-only":verify=true;break;case "--self-test":self=true;break;case "--without-test-candidates":stable=true;break;case "--check-installed":action="check";break;case "--check-baseline":action="baseline";if(++i>=args.Length)return 2;original=args[i];break;case "--rollback":action="rollback";if(++i>=args.Length)return 2;original=args[i];break;case "--settings-file":if(++i>=args.Length)return 2;settings=Path.GetFullPath(args[i]);break;case "--recipe":if(++i>=args.Length)return 2;recipe=args[i];break;case "--preview":if(++i>=args.Length)return 2;preview=Path.GetFullPath(args[i]);break;default:return 2;}}
    if((preview!=null&&!self)||(!configure&&self)||(!configure&&preview!=null)||(configure&&action!="")||(action!=""&&(verify||self||stable||settings!=null||recipe!="configured")))return 2;
+   if(elevated!=(local!=null)||(elevated&&(!Elevation.IsAdministrator()||!Path.IsPathRooted(local))))return 2;
+   if(elevated){Data.NoLinks(local);Environment.SetEnvironmentVariable("LOCALAPPDATA",Path.GetFullPath(local));}
    var paths=new UserPaths(root);Directory.CreateDirectory(paths.Cache);string name=configure?"Configure":"Game";
+   // Relaunch before opening the log, migrating settings or changing the INI.
+   // Otherwise the parent would lock the same log used by the elevated child.
+   if(!Elevation.IsAdministrator()&&action!="check"&&action!="baseline"&&!(configure&&(self||verify))){
+    try {if(Elevation.Required(root,settings,!configure)){
+     DateTime started=DateTime.UtcNow;int code=elevate(Elevation.StartInfo(root,configure,args));string logPath=Path.Combine(paths.Cache,name+".log");
+     if(code!=0&&(code==1223||!File.Exists(logPath)||File.GetLastWriteTimeUtc(logPath)<started)){string message=Data.Text(Data.Resource("config/configuration-ui.json"),code==1223?"elevation_cancelled":"elevation_failed");File.WriteAllText(logPath,"COMPILED_DESKTOP FAIL "+message+" (exit="+code+")\n",Encoding.UTF8);}
+     return code;
+    }}catch(Exception e){File.WriteAllText(Path.Combine(paths.Cache,name+".log"),"COMPILED_DESKTOP FAIL "+e+"\n",Encoding.UTF8);return 1;}
+   }
    using(var log=new StreamWriter(Path.Combine(paths.Cache,name+".log"),false,Encoding.UTF8)){var old=Console.Out;Console.SetOut(log);try{
     if(action=="check"){Overlay.Check(root,false);return 0;}if(action=="baseline"){Overlay.Check(original,true);return 0;}if(action=="rollback"){Overlay.Rollback(root,original);return 0;}
     if(configure){return Configuration.Run(root,settings,self||verify,preview);}return Launcher.Run(root,settings,recipe,verify,stable);
-   }catch(Exception e){log.WriteLine("COMPILED_DESKTOP FAIL "+e);if(args.Length==0)System.Windows.MessageBox.Show(e.Message,"Magna Carta");return 1;}finally{Console.SetOut(old);}}
+   }catch(Exception e){log.WriteLine("COMPILED_DESKTOP FAIL "+e);if(args.Length==0||(elevated&&args.Length==3))System.Windows.MessageBox.Show(e.Message,"Magna Carta");return 1;}finally{Console.SetOut(old);}}
   }
  }
 }

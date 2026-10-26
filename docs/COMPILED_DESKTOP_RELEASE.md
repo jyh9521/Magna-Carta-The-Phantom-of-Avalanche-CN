@@ -1,6 +1,6 @@
 # 编译式桌面入口与 v1.0 封装修订
 
-**当前统一覆盖构建：`MagnaCarta-zh-CN-v1.0-unified-20261026.zip`。包含完整汉化、修复模块、固定运行依赖及旧安装兼容资源，不再叠加单项修复 ZIP。以下旧版与单项修复记录保留作历史证据。**
+**当前统一覆盖构建：`MagnaCarta-zh-CN-v1.0-unified-uac-20261026.zip`（desktop revision 4）。包含完整汉化、修复模块、固定运行依赖、旧安装兼容资源及按需 UAC 入口，不再叠加单项修复 ZIP。以下旧版与单项修复记录保留作历史证据。**
 
 ## 状态与边界
 
@@ -21,7 +21,7 @@
 
 ## 用户设置与布局
 
-设置路径为 `%LOCALAPPDATA%/MagnaCarta/Installations/<安装目录标识>/enhancements.json`，日志与运行配置在同级 `cache/`。标识沿用安装根目录标准化后 SHA-256 前 16 位。已存在的用户设置优先；仅当用户设置不存在时迁移旧 config/enhancements.json，否则使用内嵌默认值（1080P / 无边框 / 60 帧）。存档位置不变。游戏目录显示 INI 仍按原生组件要求保留。
+当前设置路径为游戏根目录的 `enhancements.json`；日志和临时运行缓存仍在 `%LOCALAPPDATA%/MagnaCarta/Installations/<安装目录标识>/cache/`。标识沿用安装根目录标准化后 SHA-256 前 16 位。根目录已有设置优先；根目录缺失时依次读取旧用户目录设置、旧 `config/enhancements.json`，两者都缺失时才生成内嵌默认值（1080P / 无边框 / 60 帧）。旧设置保留，不删除；无效设置直接报错而非静默重置。存档位置不变。游戏目录显示 INI 仍按原生组件要求保留。
 
 配置窗口默认 720×600 DIP，保留小工作区滚动和窗口化尺寸选项。底部提示改为横排，相邻项目用两个空格分隔：
 
@@ -147,3 +147,57 @@ python -m unittest discover -s tests -p test_configuration_material.py
 已清理 14 项旧 ZIP/校验文件，释放 1,057,028,889 字节；保留三份构建输入、
 centered 对照基线和当前统一覆盖 ZIP，并保留共享数据、存档、设置与必要回滚证据。
 不再把本轮单项修复包作为当前交付。
+
+
+## 根目录设置与按需 UAC（2026-10-26）
+
+已验证的现场原因：用户 JSON 与日志迁移至用户目录，并未解决原生显示层仍需写入
+`DDrawCompat-MagnaCarta.ini` 的要求。此前补偿路径只覆盖“父目录禁止创建，但已有文件可写”；
+当 INI 本身也没有写权限时，锁定原文件写入同样抛出 UnauthorizedAccessException。
+
+当前行为：
+
+- Configure 与 Game 在迁移设置、持有设置/运行互斥锁、打开本次日志之前检查写入路径。
+  根目录用 DeleteOnClose 微型探针验证创建权，现有设置及显示 INI 用只打开、不改字节的方式检查。
+- 权限不足且当前令牌未提升时，通过 `ShellExecute/runas` 重启同一个入口并等待退出码。
+  Configure 重开可见窗口，Game 保持后台入口；已经提升的进程不再次请求 UAC。
+- 路径参数在重启前转成绝对路径，保留配方、预检、候选开关及原调用者 LOCALAPPDATA。
+  原调用者路径用于导入旧设置及写入日志，避免使用管理员凭据时误读另一账户的设置。
+- UAC 取消保留退出码 1223，写入明确提示；不会继续原生入口，也不会创建根目录设置。
+  子进程已有的本次具体错误日志优先保留，不以通用提权错误覆盖。
+- EXE 显式内嵌 `asInvoker` 清单，关闭隐式文件虚拟化；实际提权由写入门禁决定。
+  程序不执行 SetAccessControl，不修改安装目录或文件 ACL，不要求手动“完全控制”。
+- `enhancements.json` 只在首次运行生成，不放入 ZIP，因此再次覆盖补丁不会重置根目录设置。
+  INI/设置写入临时解除并恢复只读属性；该处理不替代权限提升。预检恢复 INI 原字节。
+- `--check-installed`、`--check-baseline` 和 Configure 隐藏自检不请求 UAC。
+  游戏 `--verify-only` 会验证真实写入事务，在受保护目录中仍可能需要 UAC，但不会启动游戏。
+
+构建使用与前一完整统一包相同的来源锁、兼容计划、图标及运行输入，只更新桌面封装和说明。
+新包保留 814 个已接受游戏资源以及 488 项固定运行输入，未重建游戏修复 DLL。
+
+```powershell
+$env:PYTHONPATH=(Resolve-Path runtime/dependencies).Path
+python tools/build_compiled_release.py --source dist/MagnaCarta-zh-CN-v1.0.zip --source-sha256 44875140bcb101c017aa3759a3570f80949d8d1f7b99ad41989977f70eb38911 --icon ICON_PATH --runtime runtime --compatibility-plan assets/release/baseline-compatibility.json --work build/compiled-release-v1-uac --output dist/MagnaCarta-zh-CN-v1.0-unified-uac-20261026.zip
+python tools/verify_compiled_release.py --archive dist/MagnaCarta-zh-CN-v1.0-unified-uac-20261026.zip --icon ICON_PATH
+python -m unittest discover -s tests -p "test_compiled*.py"
+```
+
+验证分层：真实 Windows ACL 回归覆盖目录拒绝创建、INI 拒绝写入、提权前无设置/INI改写、
+授权取消、参数转发、只读属性恢复、根目录设置优先与迁移。自动化截获 UAC 调度并在自有夹具中
+模拟授权完成，不自动点击系统授权框；真实 UAC 同意/取消交互与游戏画面由测试者手动验收。
+正常可写路径继续执行真实原生 `--verify-only`，不把模拟授权视为系统 UAC 实测。
+
+人工入口：退出旧配置窗口，完整覆盖新 ZIP；从受保护目录双击 Configure，允许 UAC，
+保存设置后确认游戏根目录生成 enhancements.json，再点“检查入口”。根目录已有设置应被保留，
+旧用户目录设置应保持原字节。取消 UAC 应退出且不启动游戏。游戏仍由测试者手动启动。
+本地完整命令、原摘要、三态回放与独立撤回记录位于
+`runtime/maintenance/display-access-20261026/VERIFICATION.txt`。
+
+
+本修订的自动验证结果：全套 1106 项（3 项跳过）通过；最终权限专项 9 项通过。
+最小 ACL 回放的旧版返回 UnauthorizedAccessException / 退出码 1；新版请求一次 UAC 调度，
+在夹具模拟授权后完成根目录迁移和预检 / 退出码 0；独立 DLL 回滚恢复原摘要并重现旧错误。
+完整包复用此前稀疏覆盖夹具，通过 24 种显示组合的真实原生预检和隐藏配置自检，
+INI 字节恢复、旧用户设置及来源夹具保持不变。归档 2115 项仅桌面 EXE 两份、
+DesktopRuntime.dll 和说明 4 项改变；其余 2111 项与前一完整统一包字节一致。
+系统 UAC 点击交互和实际游戏仍未在本轮自动执行。

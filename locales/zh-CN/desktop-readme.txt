@@ -6,10 +6,13 @@
 配置、启动、校验逻辑已编译，图标、界面、配置模板和校验清单内嵌，无需 PowerShell 或 Python。
 保留 modules、fonts、maps 等运行资产目录。modules/DesktopRuntime.dll 是编译后的公共程序集。
 
-默认 1080P、无边框、60 帧。玩家设置位于：
-%LOCALAPPDATA%\MagnaCarta\Installations\安装标识\enhancements.json
-同一安装路径继续使用已有用户设置；首次读取旧 config/enhancements.json 时迁移而不删除原文件。
-日志在同一位置的 cache 目录。存档不移动、不重置。
+默认 1080P、无边框、60 帧。玩家设置位于游戏根目录的 enhancements.json。
+根目录已有设置优先保留；首次运行依次导入旧用户目录设置、旧 config/enhancements.json，
+都不存在时才生成默认值。旧设置保留作备份，不删除；覆盖 ZIP 不携带 enhancements.json。
+安装在 Program Files 等受保护目录时，配置/游戏入口在写入前请求 UAC 管理员授权。
+允许后继续原操作；取消则退出，不修改设置或启动游戏。普通可写目录无需提权。
+日志与临时运行缓存仍在 %LOCALAPPDATA%\MagnaCarta\Installations\安装标识\cache。
+存档不移动、不重置；程序不修改游戏目录或文件的访问权限。
 F5 随机遇敌，F10 普通连招辅助，F11 暴走辅助；F9 小地图 → 全屏半透明地图 → 关闭。
 本次小地图呈现和桌面封装为离线验证结果，不冒充新增通关或真实帧率验收。
 

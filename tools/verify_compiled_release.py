@@ -9,12 +9,35 @@ import struct
 import subprocess
 import tempfile
 import zipfile
+import xml.etree.ElementTree as ET
 
 from build_compiled_desktop import ROOT, compiler, icon_bytes
 from build_clean_overlay import safe_name
 
 
 def sha(b):return hashlib.sha256(b).hexdigest()
+
+
+def exe_execution_level(path):
+    """Inspect the embedded manifest, without launching the executable."""
+    k=ctypes.WinDLL('kernel32',use_last_error=True)
+    k.LoadLibraryExW.argtypes=[w.LPCWSTR,w.HANDLE,w.DWORD];k.LoadLibraryExW.restype=w.HMODULE
+    k.FreeLibrary.argtypes=[w.HMODULE]
+    k.FindResourceW.argtypes=[w.HMODULE,ctypes.c_void_p,ctypes.c_void_p];k.FindResourceW.restype=w.HRSRC
+    k.SizeofResource.argtypes=[w.HMODULE,w.HRSRC];k.SizeofResource.restype=w.DWORD
+    k.LoadResource.argtypes=[w.HMODULE,w.HRSRC];k.LoadResource.restype=w.HGLOBAL
+    k.LockResource.argtypes=[w.HGLOBAL];k.LockResource.restype=ctypes.c_void_p
+    module=k.LoadLibraryExW(str(path),None,2)
+    if not module:raise OSError('PE resource load failed')
+    try:
+        item=k.FindResourceW(module,1,24)
+        if not item:raise ValueError('Missing embedded execution manifest')
+        data=ctypes.string_at(k.LockResource(k.LoadResource(module,item)),k.SizeofResource(module,item))
+        tree=ET.fromstring(data)
+        node=tree.find('.//{urn:schemas-microsoft-com:asm.v3}requestedExecutionLevel')
+        if node is None or node.get('uiAccess')!='false':raise ValueError('Invalid execution manifest')
+        return node.get('level')
+    finally:k.FreeLibrary(module)
 
 
 def exe_icon_frames(path):
@@ -84,8 +107,14 @@ def verify(archive,icon,report=None):
                 p=temp/Path(name).name;p.write_bytes(z.read(name))
             for name in ('Game.exe','Configure.exe'):
                 if exe_icon_frames(temp/name)!=sorted(frames):raise ValueError('EXE icon differs from supplied ICO: '+name)
+                if exe_execution_level(temp/name)!='asInvoker':raise ValueError('Expected explicit asInvoker manifest: '+name)
             info=read_embedded(temp/'DesktopRuntime.dll')
     assets=info['resources'];runtime=info['runtime.json'];overlay=info['Overlay-Manifest.json']
+    if 'enhancements.json' in names:raise ValueError('Player settings must not be shipped or overwritten')
+    if runtime.get('release',{}).get('desktop_revision',0)>=4 and (
+            runtime.get('desktop',{}).get('settings_location')!='installation_root' or
+            runtime.get('desktop',{}).get('elevation')!='on_write_denied'):
+        raise ValueError('Desktop settings/elevation contract mismatch')
     if assets.get('mc/MC.ico')!=sha(original):raise ValueError('Window icon resource mismatch')
     if any(n.lower().endswith(('.ps1','.psm1','.cs','.cmd','.bat','.py')) for n in assets):raise ValueError('Embedded executable source')
     if overlay['files']!={n:h for n,h in hashes.items() if n!='modules/DesktopRuntime.dll'}:raise ValueError('Embedded overlay manifest mismatch')
@@ -117,7 +146,8 @@ def verify(archive,icon,report=None):
     result=dict(sha256=sha(archive.read_bytes()),bytes=archive.stat().st_size,files=len(names),scripts=0,
                 config_files=0,external_manifests=0,icon_sha256=sha(original),native_icon_frames=count,
                 embedded_resources=len(assets),game_resources=len(overlay['changes']),game_started=False)
-    result.update(bundled_inputs=len(runtime['data']),external_inputs=0)
+    result.update(bundled_inputs=len(runtime['data']),external_inputs=0,execution_level='asInvoker',
+                  settings_location=runtime.get('desktop',{}).get('settings_location','legacy_user'))
     if report:Path(report).write_text(json.dumps(result,indent=2)+'\n',encoding='utf8')
     print('COMPILED_PACKAGE PASS scripts=0 config_files=0 external_manifests=0 native_icons=exact window_icon=exact game_resources='+str(result['game_resources'])+' bundled_inputs='+str(result['bundled_inputs'])+' external_inputs=0 game_started=false')
     return result

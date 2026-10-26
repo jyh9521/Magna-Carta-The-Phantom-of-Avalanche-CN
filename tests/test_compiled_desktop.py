@@ -89,7 +89,7 @@ class CompiledDesktopTests(unittest.TestCase):
         log=self.cache/(name+'.log');text=log.read_text(encoding='utf-8-sig') if log.exists() else result.stderr.decode(errors='replace')
         self.assertEqual(result.returncode,code,text);return text
     def settings(self,**updates):
-        d=dict(DEFAULT,**updates);self.user.mkdir(parents=True,exist_ok=True);(self.user/'enhancements.json').write_bytes(blob(d));return d
+        d=dict(DEFAULT,**updates);(self.root/'enhancements.json').write_bytes(blob(d));return d
     def launch_record(self): return json.loads((self.cache/'launcher.stdout.txt').read_text(encoding='utf-8-sig'))
     def test_compiled_launch_preserves_routes_flags_and_display_restore(self):
         self.assertIn('module=minimap',self.run_entry('Game','--verify-only'))
@@ -99,7 +99,8 @@ class CompiledDesktopTests(unittest.TestCase):
         self.assertEqual(data['env']['MC_FREE_VIEW'],'0');self.assertEqual(data['ini'],'owned md3-1080p-borderless-60')
         self.assertEqual((self.root/'DDrawCompat-MagnaCarta.ini').read_bytes(),b'base display')
         self.assertEqual((self.cache/'profile.bin').read_bytes(),bytes(52))
-        self.assertEqual(json.loads((self.user/'enhancements.json').read_text()),DEFAULT)
+        self.assertEqual(json.loads((self.root/'enhancements.json').read_text()),DEFAULT)
+        self.assertFalse((self.user/'enhancements.json').exists())
         self.assertFalse((self.root/'config').exists())
     def test_all_24_display_profiles_and_window_size(self):
         for quality in ('1080p','2k','4k','auto'):
@@ -112,11 +113,22 @@ class CompiledDesktopTests(unittest.TestCase):
                     self.assertEqual(data['env'].get('MC_WINDOW_RESOLUTION',''),'1600x900' if mode=='windowed' else '')
     def test_existing_user_settings_win_over_legacy(self):
         value=self.settings(resolution='2k',frame_rate=30);(self.root/'config').mkdir();(self.root/'config/enhancements.json').write_bytes(blob(DEFAULT))
-        self.run_entry('Game','--verify-only');self.assertEqual(json.loads((self.user/'enhancements.json').read_text()),value)
+        self.run_entry('Game','--verify-only');self.assertEqual(json.loads((self.root/'enhancements.json').read_text()),value)
         self.assertEqual(json.loads((self.root/'config/enhancements.json').read_text()),DEFAULT)
     def test_legacy_migration_and_preservation(self):
         legacy=dict(DEFAULT,resolution='auto',frame_rate=30);(self.root/'config').mkdir();p=self.root/'config/enhancements.json';p.write_bytes(blob(legacy));before=p.read_bytes()
-        self.run_entry('Game','--verify-only');self.assertEqual((self.user/'enhancements.json').read_text(),json.dumps(legacy,separators=(',',':')));self.assertEqual(p.read_bytes(),before)
+        self.run_entry('Game','--verify-only');self.assertEqual((self.root/'enhancements.json').read_text(),json.dumps(legacy,separators=(',',':')));self.assertEqual(p.read_bytes(),before)
+    def test_root_settings_import_previous_user_settings_before_legacy(self):
+        self.user.mkdir(parents=True);old=self.user/'enhancements.json';value=dict(DEFAULT,resolution='auto',frame_rate=30);old.write_bytes(blob(value));before=old.read_bytes()
+        (self.root/'config').mkdir();(self.root/'config/enhancements.json').write_bytes(blob(DEFAULT))
+        self.run_entry('Game','--verify-only');self.assertEqual(json.loads((self.root/'enhancements.json').read_text()),value);self.assertEqual(old.read_bytes(),before)
+        current=self.settings(resolution='4k');self.run_entry('Game','--verify-only');self.assertEqual(json.loads((self.root/'enhancements.json').read_text()),current)
+    def test_invalid_previous_user_settings_do_not_create_root_defaults(self):
+        self.user.mkdir(parents=True);(self.user/'enhancements.json').write_bytes(b'invalid')
+        self.run_entry('Game','--verify-only',code=1);self.assertFalse((self.root/'enhancements.json').exists())
+    def test_existing_root_settings_ignore_invalid_old_user_settings(self):
+        value=self.settings(resolution='2k');self.user.mkdir(parents=True);(self.user/'enhancements.json').write_bytes(b'invalid')
+        self.run_entry('Game','--verify-only');self.assertEqual(json.loads((self.root/'enhancements.json').read_text()),value)
     def test_baseline_and_stable_preserve_isolated_toggle_semantics(self):
         self.run_entry('Game','--verify-only','--recipe','baseline');data=self.launch_record();self.assertIn(str(self.root/'modules/display.dll'),data['args']);self.assertEqual(data['env']['MC_MAP_OVERLAY'],'0');self.assertEqual(data['env']['MC_SCALED_FONT'],'0')
         self.run_entry('Game','--verify-only','--without-test-candidates');data=self.launch_record();self.assertEqual(data['env']['MC_COLLISION_GUARD'],'0');self.assertEqual(data['env']['MC_MAP_OVERLAY'],'1')
@@ -163,7 +175,7 @@ class CompiledDesktopTests(unittest.TestCase):
         (self.cache/'Game.log').unlink();self.assertEqual(text,self.diagnostic_status('2000-01-01T00:00:00Z'))
 
     def test_failure_restores_ini_and_preserves_prior_profile_log(self):
-        self.settings();self.cache.mkdir();(self.cache/'profile.log').write_bytes(b'prior diagnostic');self.env['OWNED_FAIL']='1'
+        self.settings();self.cache.mkdir(parents=True);(self.cache/'profile.log').write_bytes(b'prior diagnostic');self.env['OWNED_FAIL']='1'
         self.assertIn('exit=17',self.run_entry('Game','--verify-only',code=1));self.assertEqual((self.root/'DDrawCompat-MagnaCarta.ini').read_bytes(),b'base display');self.assertEqual((self.cache/'profile.log').read_bytes(),b'prior diagnostic')
     def test_external_display_edit_preserved(self):
         self.env['OWNED_EXTERNAL_EDIT']='1';self.assertIn('External display edit preserved',self.run_entry('Game','--verify-only',code=1));self.assertEqual((self.root/'DDrawCompat-MagnaCarta.ini').read_text(),'external edit')
@@ -174,13 +186,14 @@ class CompiledDesktopTests(unittest.TestCase):
         preview=self.case/'preview.png';log=self.run_entry('Configure','--self-test','--preview',preview)
         self.assertIn('choices=14 icon=embedded resources=embedded visible=false',log)
         self.assertFalse((self.user/'enhancements.json').exists())
+        self.assertFalse((self.root/'enhancements.json').exists())
         with Image.open(preview) as im:self.assertEqual(im.size,(720,600));self.assertGreater(len(im.getcolors(1000000)),20)
     def test_complete_baseline_modified_rollback_on_owned_files(self):
         original=self.case/'original';original.mkdir();(original/'scene.bin').write_bytes(b'original owned scene')
         self.run_entry('Game','--check-baseline',original);self.run_entry('Game','--check-installed')
         (self.root/'MC00.SAV').write_bytes(b'personal save');value=self.settings(resolution='4k')
         self.assertIn('OVERLAY_ROLLBACK PASS',self.run_entry('Game','--rollback',original))
-        self.assertEqual((self.root/'scene.bin').read_bytes(),b'original owned scene');self.assertEqual((self.root/'MC00.SAV').read_bytes(),b'personal save');self.assertEqual(json.loads((self.user/'enhancements.json').read_text()),value)
+        self.assertEqual((self.root/'scene.bin').read_bytes(),b'original owned scene');self.assertEqual((self.root/'MC00.SAV').read_bytes(),b'personal save');self.assertEqual(json.loads((self.root/'enhancements.json').read_text()),value)
         self.assertTrue((self.root/'Game.exe').exists());self.assertTrue((self.root/'modules/DesktopRuntime.dll').exists());self.run_entry('Game','--check-baseline',self.root)
     def test_bad_rollback_original_preflight_has_no_partial_writes(self):
         original=self.case/'original';original.mkdir();(original/'scene.bin').write_bytes(b'wrong original');before={p.relative_to(self.root).as_posix():p.read_bytes() for p in self.root.rglob('*') if p.is_file()}

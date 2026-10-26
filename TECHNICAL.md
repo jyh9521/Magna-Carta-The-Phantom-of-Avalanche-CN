@@ -219,3 +219,13 @@ Asura 两条基础 renderer 的直接绝对骨骼调用与 MCAlpha 派生实现�
 ## 编译式桌面入口
 
 配置、启动和覆盖校验实现迁入 src/desktop 的 C#；数据仍为结构化语言资源，打包时内嵌。清单自摘要边界、设置路径、回滚预检与离线验收边界见 [编译式桌面入口](docs/COMPILED_DESKTOP_RELEASE.md)。
+
+
+## 根目录配置和按需提升令牌
+
+桌面 revision 4 的 Settings.PathFor 指向安装根目录 enhancements.json。
+Settings.Initialize 优先保留根目录设置，缺失时从旧用户设置、旧 config 目录依次导入，
+保留来源原文件。Elevation 在修改前探测目录创建权和现有文件写入权，拒绝时通过 runas
+重启同一编译式入口；父进程不占用子进程日志或互斥锁。asInvoker 清单禁用隐式 VirtualStore，
+提升令牌不以修改 ACL 代替。UAC 取消退出码 1223；已提升实例不递归重启。
+受限 ACL 回归与 UAC 人工验收分别记录，详见 docs/COMPILED_DESKTOP_RELEASE.md。

@@ -35,7 +35,8 @@ def entries(output, icon):
     for name, define in [('Configure', True), ('Game', False)]:
         target = output/(name+'.exe')
         args = [str(compiler()), '/nologo', '/target:winexe', '/platform:anycpu', '/optimize+',
-                '/reference:System.Windows.Forms.dll', '/win32icon:'+str(icon), '/out:'+str(target)]
+                '/reference:System.Windows.Forms.dll', '/win32icon:'+str(icon),
+                '/win32manifest:'+str(ROOT/'src/desktop/app.manifest'), '/out:'+str(target)]
         if define:
             args.append('/define:CONFIGURE')
         subprocess.run(args+[str(ROOT/'src/desktop/CompiledEntry.cs')], check=True)
@@ -58,7 +59,7 @@ def core(output, resources):
             raise ValueError('Source code cannot be a runtime resource: '+path.name)
         name = path.relative_to(resources).as_posix()
         args.append('/resource:'+str(path)+',mc/'+name)
-    sources = ['RuntimeCore.cs', 'Configuration.cs']
+    sources = ['RuntimeCore.cs', 'Configuration.cs', 'Elevation.cs']
     subprocess.run(args+[str(ROOT/'src/desktop'/n) for n in sources], check=True)
     print('COMPILED_DESKTOP PASS core_sha256='+hashlib.sha256(output.read_bytes()).hexdigest())
 
