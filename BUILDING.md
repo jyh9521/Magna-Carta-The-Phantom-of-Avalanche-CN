@@ -4,8 +4,8 @@
 
 ## 1. 源码与附件状态
 
-2026-10-26 核对 GitHub：仓库源码已同步，但 Release 与标签列表为空。本轮不发布附件。
-最新本地完整覆盖包为 `MagnaCarta-zh-CN-v1.0-unified-uac-20261026.zip`，桌面 revision 4。
+v1.0 正式版使用编译式桌面 revision 4，玩家包为 `MagnaCarta-zh-CN-v1.0-release.zip`。
+玩家下载、功能与安装见 [v1.0 发布说明](docs/RELEASE_V1.0.md)及 [GitHub Release](https://github.com/jyh9521/Magna-Carta-The-Phantom-of-Avalanche-CN/releases/tag/v1.0)；本页面向源码维护与构建。
 
 干净检出可以运行源码、自有夹具和编译式桌面回归。完整玩家包重建仍需要下列外部输入；GitHub 仓库不含原版游戏、已验收覆盖 ZIP、图标、运行数据或生成头。
 源码回归通过不等于完整资源从零重建，也不等于游戏画面验收。
@@ -47,7 +47,7 @@ $env:PYTHONDONTWRITEBYTECODE = '1'
 
 | 输入 | 身份与用途 | 是否随源码提供 |
 | --- | --- | --- |
-| 本地初版 `MagnaCarta-zh-CN-v1.0.zip` | SHA-256 `44875140bcb101c017aa3759a3570f80949d8d1f7b99ad41989977f70eb38911`；包含 814 项已验收变更及旧封装清单 | 否；暂不发布附件 |
+| 本地初版 `MagnaCarta-zh-CN-v1.0.zip` | SHA-256 `44875140bcb101c017aa3759a3570f80949d8d1f7b99ad41989977f70eb38911`；包含 814 项已验收变更及旧封装清单 | 否；历史构建输入，不是当前玩家附件 |
 | `MC.ico` | SHA-256 `0bdb54b9098c2d53e060a81c9c280aa6b9729573c21e4bb0ab81b2b0d55fd3ce`；桌面图标 | 否；明确提供文件路径 |
 | 当前共享运行输入 | `runtime.json`、清单登记的 modules/maps/config 等文件和 data 中的固定输入；构建器逐项验摘要 | 否；不能用空目录代替 |
 | 兼容资源计划 | `assets/release/baseline-compatibility.json`；绑定原版清单与 297 项资源身份 | 是 |

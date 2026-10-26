@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 KEEP=('MagnaCarta-zh-CN-v1.0.zip','MagnaCarta-clean-game-caption-complete-test-20261025.zip','MagnaCarta-unified-test-hud-fix-20261023.zip',
       'MagnaCarta-zh-CN-v1.0-desktop-centered.zip','MagnaCarta-zh-CN-v1.0-unified-20261026.zip',
-      'MagnaCarta-zh-CN-v1.0-unified-uac-20261026.zip')
+      'MagnaCarta-zh-CN-v1.0-unified-uac-20261026.zip','MagnaCarta-zh-CN-v1.0-release.zip')
 def sha(p):
  with p.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
 def checked(p):

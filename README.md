@@ -1,4 +1,6 @@
-# 《真名法典：冰之魅影》本地化工程
+# 《真名法典：冰之魅影》简体中文汉化 + 全面增强补丁
+
+**Magna Carta: The Phantom of Avalanche Simplified Chinese Localization & Enhancement Patch**
 
 初代 PC 版《真名法典：冰之魅影》（마그나카르타: 눈사태의 망령）的简体中文汉化与现代 Windows 兼容性工程。
 
@@ -7,7 +9,7 @@
 - 当前源码对应编译式桌面入口 **revision 4**：根目录设置、按需 UAC、完整运行输入校验和旧安装兼容计划。
 - 汉化结构目录包含 4,137 个字段：4,091 条译文、46 条明确保留项；保留图片、视频、字体及运行模块的重建工具。
 - 2026-10-25 收到此前完整补丁的通关反馈；后续地图和桌面入口修订分别记录离线检查与游戏验收。
-- **2026-10-26 已核对：GitHub 尚无 Release 或标签。本轮只整理源码与构建文档，不发布附件。** 本地 ZIP 不等于 GitHub 下载。
+- **v1.0 正式版**：[发布说明与下载](https://github.com/jyh9521/Magna-Carta-The-Phantom-of-Avalanche-CN/releases/tag/v1.0)。功能汇总、安装步骤和快捷键见 [v1.0 使用说明](docs/RELEASE_V1.0.md)。
 
 ## 开发与重建
 
@@ -17,7 +19,7 @@
 2. **最新桌面封装重建**：从当前源码编译 Configure.exe、Game.exe 和 DesktopRuntime.dll；完整补丁打包另需明确的摘要锁定外部输入。
 3. **原生与资源管线**：原版资源、字体、生成头和本地验收输入分别准备；不把忽略目录视为克隆后自带内容。
 
-当前完整本地包名为 `MagnaCarta-zh-CN-v1.0-unified-uac-20261026.zip`。其外部构建输入尚未发布，因此**当前 GitHub 源码本身不是完整玩家包，也不是无需额外输入的一键完整重建包**。
+v1.0 玩家附件为 `MagnaCarta-zh-CN-v1.0-release.zip`。仓库和 GitHub 自动生成的 Source code 压缩包是工程源码，不是玩家补丁；完整源码重建需要[构建说明](BUILDING.md)列出的外部输入。
 
 最新封装用法：Configure.exe 修改游戏根目录的 `enhancements.json`，Game.exe 启动；日志保存在当前用户缓存目录。旧用户目录设置和旧 config 设置仅用于首次迁移，已有根目录设置优先。详细行为见[编译式桌面入口](docs/COMPILED_DESKTOP_RELEASE.md)。
 
