@@ -1,0 +1,4 @@
+# Reuse the same dependency declarations in a clean checkout.
+-r requirements-localization.txt
+-r requirements-research.txt
+-r requirements-native-replay.txt

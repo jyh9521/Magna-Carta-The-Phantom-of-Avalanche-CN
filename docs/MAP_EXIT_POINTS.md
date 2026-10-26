@@ -34,7 +34,7 @@ and `map-exit-rea-evidence.json`. Decompilation is evidence, not original source
 prefix, and an exact-EOF event tail. It accepts exactly one condition 304 in an
 event, selector `10000..19999`, an existing nonnegative region ID, and action 4
 or 5 with destination Field `0..9999`. Multiple region conditions are skipped
-rather than guessing their logical relationship. Unknown commands are preserved
+rather than guessing the logical relationship. Unknown commands are preserved
 by the structural parser but not interpreted as exit markers.
 
 Each row preserves the trigger actor ID. Rendering additionally matches that ID

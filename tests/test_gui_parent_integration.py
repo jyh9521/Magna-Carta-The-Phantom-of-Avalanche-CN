@@ -93,6 +93,8 @@ class RouteTests(unittest.TestCase):
 
 class CompiledGuardTests(unittest.TestCase):
     def test_current_engine_matches_production_identity_sites(self):
+        if not (ROOT/'runtime/data/MCAlpha.dll').is_file():
+            self.skipTest('Local supported engine not supplied')
         import pefile
         import struct
         pe=pefile.PE(str(ROOT/'runtime/data/MCAlpha.dll'))

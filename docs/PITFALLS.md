@@ -512,3 +512,15 @@ A fully opaque field curtain may be drawn behind the native dialogue box. Never 
 Windows ACL 夹具恢复必须明确标记 Access 部分已修改：直接把未变更的旧 FileSecurity
 传回 SetAccessControl 可能不持久化；SetSecurityDescriptorSddlForm 应明确指定 Access，
 否则可能请求不必要的 SACL/SeSecurityPrivilege。生产入口不修改 ACL。
+
+## 干净源码检出与本机验证必须分开（2026-10-26）
+
+已验证：仅从 Git 导出的源码与公开依赖运行全套测试时，旧测试有两项隐含本机前提：
+GUI 引擎检查直接打开忽略目录中的 MCAlpha.dll，音频时钟检查在确认夹具是否构建前断言模拟 DLL 存在。
+输入缺失应明确跳过对应资源/原生检查，而不是把干净检出记为代码错误。
+存在夹具时仍须核对模拟 DLL，存在引擎时仍执行全部版本与指令检查；全量本地验证继续覆盖这些分支。
+
+同一源码在带有旧 build/runtime 的目录中通过，不能证明依赖已记录或新克隆可复现。
+当前依赖统一入口为 tools/requirements-dev.txt；源码与当前指南检查不读取本机 runtime。
+GitHub Release 的存在以远端实际对象为准，不从本地 ZIP、清单中的 released 字段或历史文案推定。
+当前构建入口与外部输入清单见[构建说明](../BUILDING.md)。

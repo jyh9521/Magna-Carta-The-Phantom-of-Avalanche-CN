@@ -18,6 +18,8 @@ class StoryCaptionsTests(unittest.TestCase):
  def test_visible_native_dialogue_over_curtain_is_not_duplicated(self):
   self.assertIn('SUBTITLE_DEDUP PASS visible_native=priority curtain_slots=4 opacity_cases=4 hidden_box=retained visibility_transition=immediate',self.run_fixture('story_captions_fixture.exe'))
  def test_real_import_slot_calls_and_rollback(self):
+  if not (ROOT/'build/native/Release/sample_clock_fixture.exe').is_file():
+   self.skipTest('Build owned sample_clock_fixture first')
   api=ROOT/'build/native/owned_audio_clock/Release/Mss32.dll'
   self.assertTrue(api.exists())
   self.assertIn('SAMPLE_CLOCK_IAT PASS',self.run_fixture('sample_clock_fixture.exe',api))
