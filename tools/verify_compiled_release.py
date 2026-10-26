@@ -51,6 +51,18 @@ def exe_icon_frames(path):
     finally:k.FreeLibrary(module)
 
 
+def read_embedded(core_path):
+    """Read metadata without loading or executing the audited runtime."""
+    with tempfile.TemporaryDirectory(prefix='desktop metadata audit ') as folder:
+        reader=Path(folder)/'inspect.exe'
+        subprocess.run([str(compiler()),'/nologo','/target:exe','/r:System.Web.Extensions.dll',
+                        '/out:'+str(reader),str(ROOT/'tools/inspect_desktop_resources.cs')],
+                       check=True,capture_output=True)
+        inspected=subprocess.run([str(reader),str(Path(core_path).resolve())],check=True,
+                                 capture_output=True,encoding='utf8')
+        return json.loads(inspected.stdout)
+
+
 def verify(archive,icon,report=None):
     archive,icon=Path(archive).resolve(),Path(icon).resolve()
     original=icon_bytes(icon);count=struct.unpack_from('<H',original,4)[0]
@@ -72,10 +84,7 @@ def verify(archive,icon,report=None):
                 p=temp/Path(name).name;p.write_bytes(z.read(name))
             for name in ('Game.exe','Configure.exe'):
                 if exe_icon_frames(temp/name)!=sorted(frames):raise ValueError('EXE icon differs from supplied ICO: '+name)
-            reader=temp/'inspect.exe'
-            subprocess.run([str(compiler()),'/nologo','/target:exe','/r:System.Web.Extensions.dll','/out:'+str(reader),str(ROOT/'tools/inspect_desktop_resources.cs')],check=True,capture_output=True)
-            inspected=subprocess.run([str(reader),str(temp/'DesktopRuntime.dll')],check=True,capture_output=True,encoding='utf8')
-            info=json.loads(inspected.stdout)
+            info=read_embedded(temp/'DesktopRuntime.dll')
     assets=info['resources'];runtime=info['runtime.json'];overlay=info['Overlay-Manifest.json']
     if assets.get('mc/MC.ico')!=sha(original):raise ValueError('Window icon resource mismatch')
     if any(n.lower().endswith(('.ps1','.psm1','.cs','.cmd','.bat','.py')) for n in assets):raise ValueError('Embedded executable source')
@@ -83,14 +92,34 @@ def verify(archive,icon,report=None):
     for n,h in runtime['files'].items():
         if hashes.get(n)!=h:raise ValueError('Embedded runtime checksum mismatch: '+n)
     for n,h in runtime['data'].items():
-        if hashes.get(n,overlay['source_files'].get(n))!=h:raise ValueError('Effective game input mismatch: '+n)
+        if n not in hashes:raise ValueError('Missing bundled runtime input: '+n)
+        if hashes[n]!=h:raise ValueError('Effective game input mismatch: '+n)
+    native={}
+    for n in overlay['source_files']:
+        if Path(n).suffix.lower() in {'.dll','.exe','.m3d','.flt','.asi'}:
+            if n not in hashes:raise ValueError('Missing bundled native input: '+n)
+            native[n]=hashes[n]
+    complete=runtime.get('complete_inputs')
+    if complete and (complete.get('schema')!=1 or complete.get('required') is not True or
+                     complete.get('external_inputs')!=0 or complete.get('files')!=runtime['data'] or
+                     complete.get('native_files')!=native or
+                     any(runtime['data'].get(n)!=h for n,h in native.items())):
+        raise ValueError('Complete input manifest mismatch')
+    compatible=runtime.get('baseline_compatibility')
+    if compatible:
+        identity=sha(json.dumps(overlay['source_files'],sort_keys=True,separators=(',',':')).encode())
+        if (compatible.get('schema')!=1 or compatible.get('source_manifest_sha256')!=identity or
+            any(overlay['source_files'].get(n)!=h or runtime['data'].get(n)!=h or hashes.get(n)!=h
+                for n,h in compatible.get('files',{}).items())):
+            raise ValueError('Baseline compatibility manifest mismatch')
     for row in overlay['changes']:
         if hashes.get(row['resource'])!=row['target_sha256']:raise ValueError('Accepted changed resource drift')
     result=dict(sha256=sha(archive.read_bytes()),bytes=archive.stat().st_size,files=len(names),scripts=0,
                 config_files=0,external_manifests=0,icon_sha256=sha(original),native_icon_frames=count,
                 embedded_resources=len(assets),game_resources=len(overlay['changes']),game_started=False)
+    result.update(bundled_inputs=len(runtime['data']),external_inputs=0)
     if report:Path(report).write_text(json.dumps(result,indent=2)+'\n',encoding='utf8')
-    print('COMPILED_PACKAGE PASS scripts=0 config_files=0 external_manifests=0 native_icons=exact window_icon=exact game_resources='+str(result['game_resources'])+' game_started=false')
+    print('COMPILED_PACKAGE PASS scripts=0 config_files=0 external_manifests=0 native_icons=exact window_icon=exact game_resources='+str(result['game_resources'])+' bundled_inputs='+str(result['bundled_inputs'])+' external_inputs=0 game_started=false')
     return result
 
 

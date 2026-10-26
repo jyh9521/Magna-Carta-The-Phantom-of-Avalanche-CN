@@ -387,3 +387,21 @@ python tools/build_release_v1.py --source dist/ACCEPTED_OVERLAY.zip --source-sha
 ## 编译式桌面封装
 
 新的无外置脚本 v1.0 ZIP 构建、用户设置迁移与校验命令见 [编译式桌面入口](docs/COMPILED_DESKTOP_RELEASE.md)。历史脚本构建保留作为原版基线。
+
+
+## 完整统一覆盖包（2026-10-26）
+
+不再把未修改基础库当作隐含安装前提。构建输入、兼容计划与校验器必须共同使用：
+
+```powershell
+$env:PYTHONPATH=(Resolve-Path runtime/dependencies).Path
+python tools/build_compiled_release.py --source dist/MagnaCarta-zh-CN-v1.0.zip --source-sha256 44875140bcb101c017aa3759a3570f80949d8d1f7b99ad41989977f70eb38911 --icon ICON_PATH --runtime runtime --compatibility-plan assets/release/baseline-compatibility.json --work build/compiled-release-v1-unified --output dist/MagnaCarta-zh-CN-v1.0-unified-20261026.zip
+python tools/verify_compiled_release.py --archive dist/MagnaCarta-zh-CN-v1.0-unified-20261026.zip --icon ICON_PATH
+python -m unittest discover -s tests -p test_compiled_complete.py
+```
+
+`--source-game` 可显式指定匹配输入，默认复用 runtime/data，不新建完整游戏副本。
+所有固定输入和源清单原生二进制均须实际包含在 ZIP 中，兼容计划须与原版清单及字节匹配。
+旧版本审计曾允许“包外但原版清单存在”，该回退现已取消。
+逐项身份、一次覆盖回放与人工入口见 [完整统一覆盖](docs/COMPILED_DESKTOP_RELEASE.md#完整统一覆盖与旧安装兼容2026-10-26)。
+归档清理保留当前统一 ZIP、centered 对照基线和三份必需构建输入；移除被替代的局部交付。
