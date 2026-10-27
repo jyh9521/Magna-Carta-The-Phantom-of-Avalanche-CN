@@ -429,3 +429,18 @@ set_property(TARGET map_presentation_fixture PROPERTY MSVC_RUNTIME_LIBRARY Multi
 target_compile_options(map_presentation_fixture PRIVATE /W4 /utf-8)
 target_link_libraries(workspace_profile PRIVATE msimg32)
 target_link_libraries(frame_overlay_fixture PRIVATE msimg32)
+
+set(TITLE_VERSION_CATALOG "${CMAKE_CURRENT_SOURCE_DIR}/../../locales/zh-CN/title-version.json" CACHE FILEPATH "Locale title version labels")
+add_custom_command(OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/title_version_data.h"
+ COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/../../tools/build_title_version.py" --catalog "${TITLE_VERSION_CATALOG}" --output "${CMAKE_CURRENT_BINARY_DIR}/title_version_data.h"
+ DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/../../tools/build_title_version.py" "${TITLE_VERSION_CATALOG}"
+ VERBATIM)
+add_custom_target(title_version_data DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/title_version_data.h")
+target_sources(workspace_profile PRIVATE title_version.cpp)
+add_dependencies(workspace_profile title_version_data)
+add_executable(title_version_fixture title_version_fixture.cpp title_version.cpp)
+target_compile_definitions(title_version_fixture PRIVATE TITLE_VERSION_TEST)
+target_include_directories(title_version_fixture PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+add_dependencies(title_version_fixture title_version_data)
+target_compile_options(title_version_fixture PRIVATE /W4 /utf-8)
+set_property(TARGET title_version_fixture PROPERTY MSVC_RUNTIME_LIBRARY MultiThreaded)

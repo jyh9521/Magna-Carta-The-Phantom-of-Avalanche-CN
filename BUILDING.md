@@ -5,6 +5,7 @@
 ## 1. 源码与附件状态
 
 v1.0 正式版使用编译式桌面 revision 4，玩家包为 `MagnaCarta-zh-CN-v1.0-release.zip`。
+标题版本文字修订采用原生双行标识；文案源、全部角色模块刷新与离线回放见[标题版本标识](docs/TITLE_VERSION_LABEL.md)。
 玩家下载、功能与安装见 [v1.0 发布说明](docs/RELEASE_V1.0.md)及 [GitHub Release](https://github.com/jyh9521/Magna-Carta-The-Phantom-of-Avalanche-CN/releases/tag/v1.0)；本页面向源码维护与构建。
 
 干净检出可以运行源码、自有夹具和编译式桌面回归。完整玩家包重建仍需要下列外部输入；GitHub 仓库不含原版游戏、已验收覆盖 ZIP、图标、运行数据或生成头。
@@ -75,7 +76,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Package audit failed' }
 
 ## 4. 原生模块与资源重建
 
-原生工程为 `src/runtime/CMakeLists.txt`。完整功能构建需要四份生成头，而不是只有默认 CMake 配置：
+原生工程为 `src/runtime/CMakeLists.txt`。完整功能构建需要指定字体、系统消息和开篇生成头，并生成剧情字幕与版本文字头，而不是只有默认 CMake 配置：
 
 | CMake 参数 | 生成入口或来源 |
 | --- | --- |
@@ -84,6 +85,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Package audit failed' }
 | `OPENING_LAYOUT_DATA_HEADER` | `tools/build_opening_layout.py`；开篇资源与 `locales/zh-CN/opening-layout.json` |
 | `SCALED_FONT_DATA_HEADER` | `tools/integrate_scaled_font.py --cache CACHE --header NEW_HEADER`；已验证高清字模缓存 |
 | `STORY_CAPTION_SOURCE_ROOT` | 匹配的 Field/SED 等源资源；CMake 调用 `tools/build_story_captions.py` 生成字幕头 |
+| `TITLE_VERSION_CATALOG` | 默认 `locales/zh-CN/title-version.json`；生成双行版本文字头，复用原生字体 |
 
 字体来源锁和许可位于 `assets/font-sources/noto-sans-sc.json`、`assets/licenses/NotoSansSC-OFL.txt`。
 不要重新排序已冻结的私有字槽，也不要用缺省空映射编译替代完整模块。

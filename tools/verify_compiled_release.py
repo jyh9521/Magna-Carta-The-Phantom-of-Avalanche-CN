@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 
 from build_compiled_desktop import ROOT, compiler, icon_bytes
 from build_clean_overlay import safe_name
+from build_compiled_release import TITLE_MARKER, PROFILE_MODULES
 
 
 def sha(b):return hashlib.sha256(b).hexdigest()
@@ -143,11 +144,25 @@ def verify(archive,icon,report=None):
             raise ValueError('Baseline compatibility manifest mismatch')
     for row in overlay['changes']:
         if hashes.get(row['resource'])!=row['target_sha256']:raise ValueError('Accepted changed resource drift')
+    title=runtime.get('title_version')
+    if title:
+        modules=title.get('modules', {})
+        if (title.get('schema')!=1 or title.get('font')!='native' or title.get('background')!='none' or
+                title.get('alignment')!='right' or set(modules)!=set((*PROFILE_MODULES, 'modules/minimap.dll'))):
+            raise ValueError('Title-version metadata mismatch')
+        with zipfile.ZipFile(archive) as z:
+            for name, expected in modules.items():
+                data=z.read(name)
+                if (hashes.get(name)!=expected or runtime['files'].get(name)!=expected or TITLE_MARKER not in data or
+                        title['original_prefix'].encode('ascii')+b'\0' not in data or
+                        title['patch_line'].encode('ascii')+b'\0' not in data):
+                    raise ValueError('Title-version payload mismatch: '+name)
     result=dict(sha256=sha(archive.read_bytes()),bytes=archive.stat().st_size,files=len(names),scripts=0,
                 config_files=0,external_manifests=0,icon_sha256=sha(original),native_icon_frames=count,
                 embedded_resources=len(assets),game_resources=len(overlay['changes']),game_started=False)
     result.update(bundled_inputs=len(runtime['data']),external_inputs=0,execution_level='asInvoker',
                   settings_location=runtime.get('desktop',{}).get('settings_location','legacy_user'))
+    if title:result['title_version']=title
     if report:Path(report).write_text(json.dumps(result,indent=2)+'\n',encoding='utf8')
     print('COMPILED_PACKAGE PASS scripts=0 config_files=0 external_manifests=0 native_icons=exact window_icon=exact game_resources='+str(result['game_resources'])+' bundled_inputs='+str(result['bundled_inputs'])+' external_inputs=0 game_started=false')
     return result

@@ -8,12 +8,45 @@ import zipfile
 
 from build_clean_overlay import raw_sha, safe_name
 from build_compiled_desktop import entries, core, icon_bytes
+from build_title_version import labels as title_labels
+from update_runtime_modules import MODULES as PROFILE_MODULES
 
 ROOT = Path(__file__).resolve().parents[1]
 STATIC = {'config/Configure.xaml', 'config/configuration-ui.json', 'config/configuration-logo.png',
           'config/enhancements.json', 'config/encounter-ui.json', 'config/profile-base.bin'}
 REMOVED = {'Start.ps1', 'Verify-Overlay.ps1', 'runtime.json', 'Overlay-Manifest.json'}
 NATIVE_SUFFIXES = {'.dll', '.exe', '.m3d', '.flt', '.asi'}
+TITLE_MARKER = 'TITLE_VERSION_V1'.encode('utf-16le')
+
+
+def refresh_profiles(payload, release, current, runtime, protected, locale):
+    """Refresh the selected profile routes, not only the map entry route."""
+    names = (*PROFILE_MODULES, 'modules/minimap.dll')
+    updates = {}
+    for name in names:
+        if (name in protected or name not in current['files'] or
+                (name not in release['files'] and name != 'modules/minimap.dll')):
+            raise ValueError('Expected owned runtime profile: '+name)
+        data = (Path(runtime)/name).read_bytes()
+        if raw_sha(data) != current['files'][name]:
+            raise ValueError('Current runtime profile drift: '+name)
+        updates[name] = data
+    title = None
+    if any(TITLE_MARKER in data for data in updates.values()):
+        labels = title_labels(Path(locale)/'title-version.json')
+        for name, data in updates.items():
+            if (TITLE_MARKER not in data or labels['original_prefix'].encode()+b'\0' not in data or
+                    labels['patch_line'].encode()+b'\0' not in data):
+                raise ValueError('Mixed title-version profile or locale: '+name)
+        title = dict(labels, font='native', background='none', alignment='right',
+                     modules={n: raw_sha(b) for n, b in updates.items()}, in_game_verified=False)
+    payload.update(updates)
+    release['files'].update({n: raw_sha(b) for n, b in updates.items()})
+    if title:
+        release['title_version'] = title
+    else:
+        release.pop('title_version', None)
+    return title
 
 
 def inspect_archive(source, expected):
@@ -114,6 +147,7 @@ def build(source, source_sha256, icon, work, output, runtime=None, locale=None, 
         for n, h in current['data'].items():
             if raw_sha((runtime/'data'/safe_name(n)).read_bytes()) != h:
                 raise ValueError('Current source resource drift: '+n)
+        refresh_profiles(payload, release, current, runtime, protected, locale)
         for n, h in current['files'].items():
             if n.startswith('maps/') or n == 'modules/minimap.dll':
                 payload[n] = (runtime/n).read_bytes()

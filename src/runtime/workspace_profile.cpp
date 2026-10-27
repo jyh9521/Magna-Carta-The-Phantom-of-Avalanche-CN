@@ -29,6 +29,7 @@
 #include "motion60.h"
 #include "title_layout.h"
 #include "title_style.h"
+#include "title_version.h"
 #include "mouse_view.h"
 
 namespace {
@@ -263,6 +264,9 @@ void patch(HMODULE module) {
     }
     if(localizedModule && !installTitleLayout(module,trace)) {
         trace(L"TITLE_LAYOUT_REJECTED");ExitProcess(125);
+    }
+    if(localizedModule && !installTitleVersion(module,trace)) {
+        trace(L"TITLE_VERSION_REJECTED");ExitProcess(125);
     }
     if(localizedModule && (render60||cameraInput) && !installMotion60(module,trace)) {
         trace(L"MOTION60_REJECTED");ExitProcess(125);
