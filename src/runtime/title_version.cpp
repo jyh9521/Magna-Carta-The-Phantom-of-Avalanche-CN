@@ -23,20 +23,87 @@ struct Pending {void* first=nullptr;void* second=nullptr;int originalWidth=0;};
 thread_local Pending pending;
 template<class T>T& field(void* p,size_t offset){return *reinterpret_cast<T*>(static_cast<BYTE*>(p)+offset);}
 
+// Legacy engine callbacks can alter EBX/ESI/EDI. Modern C++ keeps live object
+// pointers in those registers: in particular, the second text construction
+// used to erase the first constructor's return value cached in ESI. Preserve
+// the caller's registers at every native boundary, while retaining native EAX
+// results and thiscall argument cleanup. Do not suppress the game's assertion.
+__declspec(naked) void* __fastcall callConstruct(void*,void*,const char*,void*,int){__asm {
+    push ebx
+    push esi
+    push edi
+    push dword ptr[esp+24]
+    push dword ptr[esp+24]
+    push dword ptr[esp+24]
+    call dword ptr[construct]
+    pop edi
+    pop esi
+    pop ebx
+    ret 12
+}}
+__declspec(naked) void __fastcall callPosition(void*,void*,float,float,float){__asm {
+    push ebx
+    push esi
+    push edi
+    push dword ptr[esp+24]
+    push dword ptr[esp+24]
+    push dword ptr[esp+24]
+    call dword ptr[position]
+    pop edi
+    pop esi
+    pop ebx
+    ret 12
+}}
+__declspec(naked) void* __cdecl callAllocate(unsigned){__asm {
+    push ebx
+    push esi
+    push edi
+    push dword ptr[esp+16]
+    call dword ptr[allocate]
+    add esp,4
+    pop edi
+    pop esi
+    pop ebx
+    ret
+}}
+__declspec(naked) int* __fastcall callMeasure(void*,void*,int*,const char*){__asm {
+    push ebx
+    push esi
+    push edi
+    push dword ptr[esp+20]
+    push dword ptr[esp+20]
+    call dword ptr[measure]
+    pop edi
+    pop esi
+    pop ebx
+    ret 8
+}}
+__declspec(naked) void __fastcall callActivate(void*){__asm {
+    push ebx
+    push esi
+    push edi
+    mov eax,dword ptr[ecx]
+    call dword ptr[eax+18h]
+    pop edi
+    pop esi
+    pop ebx
+    ret
+}}
+
 void* __fastcall constructHook(void* self,void*,const char* text,void* parent,int id){
     pending={};
     // This is not a global text replacement and never writes the original
     // eight-byte sprintf stack buffer or changes the game's version metadata.
-    if(!text||strcmp(text,"v1.04a")||id!=0x155)return construct(self,text,parent,id);
+    if(!text||strcmp(text,"v1.04a")||id!=0x155)return callConstruct(self,nullptr,text,parent,id);
     auto service=field<BYTE*>(engine,0xf22a8);
     int originalSize[2]{};
-    measure(field<void*>(service,0x2c),originalSize,text);
-    void* extra=allocate(0x15c);
-    if(!extra)return construct(self,text,parent,id);
+    callMeasure(field<void*>(service,0x2c),nullptr,originalSize,text);
+    void* extra=callAllocate(0x15c);
+    if(!extra)return callConstruct(self,nullptr,text,parent,id);
     char first[96]{};
     sprintf_s(first,"%s%s",titleOriginalPrefix,text);
-    void* result=construct(self,first,parent,id);
-    void* second=construct(extra,titlePatchLine,parent,-1);
+    void* result=callConstruct(self,nullptr,first,parent,id);
+    void* second=callConstruct(extra,nullptr,titlePatchLine,parent,-1);
     pending={result,second,originalSize[0]};
     return result;
 }
@@ -44,17 +111,16 @@ void* __fastcall constructHook(void* self,void*,const char* text,void* parent,in
 void __fastcall positionHook(void* self,void*,float x,float y,float z){
     auto pair=pending;
     pending={};
-    if(pair.first!=self||!pair.second){position(self,x,y,z);return;}
+    if(pair.first!=self||!pair.second){callPosition(self,nullptr,x,y,z);return;}
     const float right=x+pair.originalWidth;
     const int firstWidth=field<int>(self,0x12c),secondWidth=field<int>(pair.second,0x12c);
     const int height=std::max(field<int>(self,0x130),field<int>(pair.second,0x130));
-    position(self,right-firstWidth,y-height-4,z);
-    position(pair.second,right-secondWidth,y,z);
+    callPosition(self,nullptr,right-firstWidth,y-height-4,z);
+    callPosition(pair.second,nullptr,right-secondWidth,y,z);
     // The existing call activates the first line; activate its sibling through
     // exactly the same native virtual method. Font, tint, alpha and blending
     // remain entirely native; no panel, background, GDI or frame overlay.
-    auto table=field<BYTE*>(pair.second,0);
-    reinterpret_cast<Activate>(field<void*>(table,0x18))(pair.second);
+    callActivate(pair.second);
 }
 
 struct Site {DWORD rva;BYTE original[5];void* hook;};
@@ -106,7 +172,7 @@ bool installTitleVersion(HMODULE module,void(*log)(const wchar_t*)){
         return false;
     }
     engine=p;
-    if(log)log(L"TITLE_VERSION_V1 lines=2 alignment=right font=native background=none");
+    if(log)log(L"TITLE_VERSION_V2 lines=2 alignment=right font=native background=none native_abi=preserved");
     return true;
 }
 bool removeTitleVersion(){

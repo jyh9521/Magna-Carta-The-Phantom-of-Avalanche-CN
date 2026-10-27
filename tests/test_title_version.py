@@ -53,11 +53,17 @@ class CatalogTests(unittest.TestCase):
 
     @unittest.skipUnless(os.name == 'nt' and (ROOT/'build/native/Release/title_version_fixture.exe').exists(), 'Native Win32 fixture not built')
     def test_native_baseline_modified_rollback(self):
-        for mode in ('baseline', 'modified', 'rollback'):
+        for mode in ('baseline', 'modified', 'rollback', 'legacy-abi'):
             with self.subTest(mode=mode):
                 result = subprocess.run([str(ROOT/'build/native/Release/title_version_fixture.exe'), '--'+mode], capture_output=True, text=True, check=True)
-                self.assertIn('TITLE_VERSION_'+mode.upper()+' PASS', result.stdout)
+                self.assertIn('TITLE_VERSION_'+mode.upper().replace('-', '_')+' PASS', result.stdout)
                 self.assertIn('game_started=false', result.stdout)
+
+    @unittest.skipUnless(os.name == 'nt' and (ROOT/'build/native/Release/title_version_fixture.exe').exists(), 'Native Win32 fixture not built')
+    def test_actual_null_constructor_is_not_suppressed(self):
+        result=subprocess.run([str(ROOT/'build/native/Release/title_version_fixture.exe'), '--null-constructor'],capture_output=True,text=True)
+        self.assertEqual(result.returncode,1)
+        self.assertIn('MCTitle.cpp:282 pNumber != NULL',result.stderr)
 
 
 class ProfilePackagingTests(unittest.TestCase):
@@ -83,7 +89,17 @@ class ProfilePackagingTests(unittest.TestCase):
         title = self.refresh()
         self.assertEqual(set(title['modules']), set(self.names))
         self.assertEqual(title['background'], 'none')
+        self.assertEqual(title['native_abi'], 'preserve-ebx-esi-edi')
         self.assertTrue(all(b == self.data for b in self.payload.values()))
+
+    def test_all_legacy_v1_routes_rejected_before_payload_changes(self):
+        data=self.data.replace(release.TITLE_MARKER, 'TITLE_VERSION_V1'.encode('utf-16le'))
+        for name in self.names:
+            (self.root/name).write_bytes(data)
+            self.current['files'][name]=release.raw_sha(data)
+        with self.assertRaisesRegex(ValueError, 'Unfixed title-version V1'):
+            self.refresh()
+        self.assertTrue(all(b == b'old' for b in self.payload.values()))
 
     def test_one_stale_route_is_rejected_atomically(self):
         name = self.names[3]

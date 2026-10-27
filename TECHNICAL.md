@@ -1,5 +1,11 @@
 # 技术说明
 
+## 标题版本构造返回值（2026-10-27）
+
+双行版本文字首版的 `pNumber != NULL` 现场与原生 ABI 边界修复见
+[标题版本标识](docs/TITLE_VERSION_LABEL.md#标题初始化断言修复2026-10-27)。
+必须区别成功创建对象与成功返回对象指针；保留真正 NULL 失败和原生断言。
+
 地图现复用 `frame_overlay` 原生 backbuffer 合成，不再通过窗口 DC 绘制；指南针 FDI 0136/BGR 0234 与虚拟 UI 高度的源码锁定证据见 [地图呈现修复](docs/MINIMAP_PRESENTATION_REPAIR.md)。
 
 ## F9 区域地图与半透明图层（2026-10-25）

@@ -1,5 +1,16 @@
 # 技术陷阱
 
+## 版本文字不能只验证理想 ABI 回调（2026-10-27）
+
+标题双行初版把第一份文字指针缓存到 ESI，跨第二次原生构造后得到零，触发
+`MCTitle.cpp:282 pNumber != NULL`。两份对象实际均已创建并挂入父节点；
+仅检查对象数量、包哈希或使用遵守标准 ABI 的假回调会漏报。
+原生调用边界须保护 EBX/ESI/EDI，保留真正返回值与栈清理；负向夹具还须证明真实 NULL
+不会被掩盖。构建器拒绝 `TITLE_VERSION_V1`，改用 V2 标记与寄存器干扰回放。
+现场、证据边界与修复见[标题版本标识](TITLE_VERSION_LABEL.md#标题初始化断言修复2026-10-27)。
+旧 `capture_helper` 的共享 runtime 布局检查不兼容平铺发行目录，
+`ENGINE_FULL_CAPTURE_FAILED` 不是已取样成功；诊断前应先核对目标和输出布局。
+
 2026-10-25：地图 `WM_PAINT` 的窗口 DC 在旧 DDrawCompat 环境可进入虚拟屏幕路径，叠加游戏本身的呈现，造成左上角残影风险。不要用叠加窗口的位置/重绘频率掩盖此问题。地图改用既有 EndScene 后、native present 前的 backbuffer 通道；固定槽位按 map → caption → notice 合成。地形缓存必须随尺寸/模式/裁剪变化失效，缓存 DIB 读写前须 GdiFlush；见 [回归与测量](MINIMAP_PRESENTATION_REPAIR.md)。
 
 ## 地图状态与场景身份（2026-10-25）

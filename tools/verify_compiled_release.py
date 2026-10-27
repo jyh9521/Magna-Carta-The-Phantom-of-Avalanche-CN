@@ -148,7 +148,8 @@ def verify(archive,icon,report=None):
     if title:
         modules=title.get('modules', {})
         if (title.get('schema')!=1 or title.get('font')!='native' or title.get('background')!='none' or
-                title.get('alignment')!='right' or set(modules)!=set((*PROFILE_MODULES, 'modules/minimap.dll'))):
+                title.get('alignment')!='right' or title.get('native_abi')!='preserve-ebx-esi-edi' or
+                set(modules)!=set((*PROFILE_MODULES, 'modules/minimap.dll'))):
             raise ValueError('Title-version metadata mismatch')
         with zipfile.ZipFile(archive) as z:
             for name, expected in modules.items():

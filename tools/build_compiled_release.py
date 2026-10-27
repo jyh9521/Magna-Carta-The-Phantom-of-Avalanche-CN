@@ -16,7 +16,7 @@ STATIC = {'config/Configure.xaml', 'config/configuration-ui.json', 'config/confi
           'config/enhancements.json', 'config/encounter-ui.json', 'config/profile-base.bin'}
 REMOVED = {'Start.ps1', 'Verify-Overlay.ps1', 'runtime.json', 'Overlay-Manifest.json'}
 NATIVE_SUFFIXES = {'.dll', '.exe', '.m3d', '.flt', '.asi'}
-TITLE_MARKER = 'TITLE_VERSION_V1'.encode('utf-16le')
+TITLE_MARKER = 'TITLE_VERSION_V2'.encode('utf-16le')
 
 
 def refresh_profiles(payload, release, current, runtime, protected, locale):
@@ -32,13 +32,15 @@ def refresh_profiles(payload, release, current, runtime, protected, locale):
             raise ValueError('Current runtime profile drift: '+name)
         updates[name] = data
     title = None
+    if any('TITLE_VERSION_V1'.encode('utf-16le') in data for data in updates.values()):
+        raise ValueError('Unfixed title-version V1 native ABI')
     if any(TITLE_MARKER in data for data in updates.values()):
         labels = title_labels(Path(locale)/'title-version.json')
         for name, data in updates.items():
             if (TITLE_MARKER not in data or labels['original_prefix'].encode()+b'\0' not in data or
                     labels['patch_line'].encode()+b'\0' not in data):
                 raise ValueError('Mixed title-version profile or locale: '+name)
-        title = dict(labels, font='native', background='none', alignment='right',
+        title = dict(labels, font='native', background='none', alignment='right', native_abi='preserve-ebx-esi-edi',
                      modules={n: raw_sha(b) for n, b in updates.items()}, in_game_verified=False)
     payload.update(updates)
     release['files'].update({n: raw_sha(b) for n, b in updates.items()})
