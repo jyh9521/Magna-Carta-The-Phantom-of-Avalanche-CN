@@ -52,3 +52,8 @@ v1.0 玩家附件为 `MagnaCarta-zh-CN-v1.0-release.zip`。仓库和 GitHub 自�
 项目使用独立仓库与历史。英文汉化工具参考 [Nejuf/magnacarta](https://github.com/Nejuf/magnacarta)，署名 Talbain（Lakuuna）、Sobodash、Nejuf；固定来源及验证范围见[运行调查](docs/RUNTIME_RESEARCH.md)。
 
 原创代码与文档采用 MIT，原创译文采用 CC BY-SA 4.0；字体和第三方组件遵循各自许可。原始游戏文本与商业资源不属于上述原创授权。详见[许可与来源](LICENSING.md)及[译文许可](LICENSE-translations.md)。
+
+
+## 维护规范
+
+本项目已接入汉化基准 **2.1**；本次仅更新工程文档，不改变上述补丁版本、发布内容或验证状态。维护前读取 [AGENTS](AGENTS.md) 与[迁移说明](docs/MIGRATION.md)，再按任务查阅[工程规范](docs/LOCALIZATION_STANDARD.md)、[验收标准](docs/ACCEPTANCE.md)、[README写作规范](docs/README_STANDARD.md)和[中文风格](locales/zh-CN/STYLE.md)。

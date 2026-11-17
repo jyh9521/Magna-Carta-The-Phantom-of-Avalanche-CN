@@ -1,5 +1,7 @@
 # 文件格式
 
+> 新增格式记录按[研究与格式规范](RESEARCH_STANDARD.md)补齐边界、偏移基准和往返证据；以下项目专属格式与历史结论保留。
+
 ## MCP1 场景出口点（2026-10-25）
 
 自有派生格式：16 字节 little-endian 头 `<4sIII>` 为 magic `MCP1`、Field ID、WRD ID、记录数；

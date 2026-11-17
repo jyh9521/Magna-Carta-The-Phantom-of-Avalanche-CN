@@ -1,5 +1,7 @@
 # 当前源码构建与验证
 
+> 共享构建要求见[构建规范](docs/BUILD_STANDARD.md)、[安装与恢复](docs/INSTALLATION_STANDARD.md)和[验收标准](docs/ACCEPTANCE.md)。本页保留本作实际输入、命令与历史结果；规范迁移未重建游戏产物。
+
 本页是当前构建入口。旧阶段命令集中保存在[历史构建记录](docs/BUILD_HISTORY.md)，其旧路径、阶段状态与发布措辞不作为当前默认值。
 
 ## 1. 源码与附件状态
